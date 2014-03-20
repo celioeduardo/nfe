@@ -9,8 +9,12 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 public class LoteService {
 	
 	private NotaFiscalRepositorio notaFiscalRepositorio;
+	private LoteRepositorio loteRepositorio;
 	
-	public LoteService(NotaFiscalRepositorio notaFiscalRepositorio){
+	public LoteService(
+			LoteRepositorio loteRepositorio,
+			NotaFiscalRepositorio notaFiscalRepositorio){
+		this.loteRepositorio=loteRepositorio;
 		this.notaFiscalRepositorio=notaFiscalRepositorio;
 	}
 	
@@ -29,8 +33,8 @@ public class LoteService {
 						"Nota Fiscal "+notaFiscalId.id()+
 						" não está Pendente de Transmissão.");
 		}
-		
-		return new Lote(notas);
+				
+		return Lote.gerar(notas,loteRepositorio);
 	}
 	
 }

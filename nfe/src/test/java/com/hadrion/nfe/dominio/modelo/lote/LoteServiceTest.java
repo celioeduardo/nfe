@@ -1,9 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,13 +15,10 @@ import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockLoteRepositori
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockNotaFiscalRepositorio;
 
 
-public class LoteTest {
-	private LoteRepositorio loteRepositorio;
-	private NotaFiscalRepositorio notaFiscalRepositorio;
-	
-	private NotaFiscalId notaFiscalId;
-	private LoteId loteId;
-	
+public class LoteServiceTest {
+	LoteService loteService;
+	LoteRepositorio loteRepositorio;
+	NotaFiscalRepositorio notaFiscalRepositorio;
 	@Before
 	public void setup(){
 		
@@ -38,48 +33,49 @@ public class LoteTest {
 		notaFiscalRepositorio.salvar(fixtureNotaInutilizada());
 		notaFiscalRepositorio.salvar(fixtureNotaDenegada());
 		
+		loteService = new LoteService(
+				loteRepositorio,
+				notaFiscalRepositorio);
 	}
 	
 	@Test
-	public void gerar_lote(){
+	public void gerarLoteNotasPendentes(){
+		
 		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
 		notas.add(new NotaFiscalId("1234"));
+		notas.add(new NotaFiscalId("1235"));
+		notas.add(new NotaFiscalId("1236"));
 		
-		/*loteId = null;
-		notaFiscalId = null;
-		
-		EventoDominioAssinante<InclusaoNotaSolicitada> assinante = 
-				new EventoDominioAssinante<InclusaoNotaSolicitada>(){
-			@Override
-			public void tratarEvento(InclusaoNotaSolicitada eventoDominio) {
-				loteId = eventoDominio.loteId();
-				notaFiscalId = eventoDominio.notaFiscalId();
-			}
-
-			@Override
-			public Class<InclusaoNotaSolicitada> inscritoParaTipoEvento() {
-				return InclusaoNotaSolicitada.class;
-			}
-			
-		};
-		
-		EventoDominioPublicador.instancia().assinar(assinante);*/
-		
-		Lote lote = Lote.gerar(notas,loteRepositorio);
-		assertEquals(1,lote.quantidadeNotas());
+		Lote lote = loteService.gerarLote(notas);		
+		assertEquals(3,lote.quantidadeNotas());
 		
 	}
 	
-	@Test
-	public void cancelar_lote(){
-		Lote lote = Lote.gerar(listaNotaFiscalId("1234"), loteRepositorio);
-		lote.cancelar();
+	@Test(expected=IllegalArgumentException.class)
+	public void naoGeraLoteNotaAutorizada(){
+		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
+		notas.add(new NotaFiscalId("1237"));
+		loteService.gerarLote(notas);		
 	}
 	
-	@Test
-	public void lote_transmitido(){
-		Lote lote = Lote.gerar(listaNotaFiscalId("1234"), loteRepositorio);
-		lote.transmitido();
+	@Test(expected=IllegalArgumentException.class)
+	public void naoGeraLoteNotaCancelada(){
+		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
+		notas.add(new NotaFiscalId("1238"));
+		loteService.gerarLote(notas);		
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void naoGeraLoteNotaInutilizada(){
+		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
+		notas.add(new NotaFiscalId("1239"));
+		loteService.gerarLote(notas);		
+	}
+	@Test(expected=IllegalArgumentException.class)
+	public void naoGeraLoteNotaDenegada(){
+		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
+		notas.add(new NotaFiscalId("1240"));
+		loteService.gerarLote(notas);		
 	}
 	
 	private Set<NotaFiscal> fixtureNotasPendentesDeTransmissao(){
@@ -126,13 +122,5 @@ public class LoteTest {
 		nf.emitida();
 		nf.denegada();
 		return nf;		
-	}
-	
-	private Set<NotaFiscalId> listaNotaFiscalId(String... lista){
-		Set<NotaFiscalId> result = new HashSet<NotaFiscalId>();
-		for (String string : lista) {
-			result.add(new NotaFiscalId(string));
-		}
-		return result;
 	}
 }

@@ -13,43 +13,31 @@ public class NotaFiscal {
 	}
 	
 	public boolean pendenteDeTransmissao(){
-		return this.situacao == Situacao.EMITIDA ||
-				this.situacao == Situacao.FALHA_CONSISTENCIA ||
-				this.situacao == Situacao.ERRO_TRANSMISSAO;
+		return this.situacao == Situacao.EMITIDA;
 	}
 	
 	public void emitida(){
 		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.INDEFINIDA);
 		this.situacao=Situacao.EMITIDA;
 	}
-	public void erroTransmissao(){
-		assertSituacaoIgual("Situação inválida: "+this.situacao,
-				Situacao.EMITIDA);
-		this.situacao=Situacao.ERRO_TRANSMISSAO;
-	}
-	public void falhaConsistencia(){
-		assertSituacaoIgual("Situação inválida: "+this.situacao,
-				Situacao.EMITIDA, Situacao.EM_PROCESSAMENTO);
-		this.situacao=Situacao.FALHA_CONSISTENCIA;
-	}
-	public void transmitida() {
-		assertSituacaoIgual("Situação inválida: "+this.situacao,
-				Situacao.EMITIDA, Situacao.FALHA_CONSISTENCIA, Situacao.ERRO_TRANSMISSAO);
-		this.situacao=Situacao.EM_PROCESSAMENTO;
-	}
 	public void autorizada() {
 		assertSituacaoIgual("Situação inválida: "+this.situacao,
-				Situacao.EM_PROCESSAMENTO);
-		this.situacao=Situacao.AUTORIZA;
+				Situacao.EMITIDA);
+		this.situacao=Situacao.AUTORIZADA;
 	}
 	public void cancelada() {
 		assertSituacaoIgual("Situação inválida: "+this.situacao,
-				Situacao.AUTORIZA);
+				Situacao.AUTORIZADA);
 		this.situacao=Situacao.CANCELADA;
 	}
 	public void inutilizada() {
 		assertSituacaoIgual("Situação inválida: "+this.situacao,
-				Situacao.EMITIDA, Situacao.FALHA_CONSISTENCIA);
+				Situacao.EMITIDA);
+		this.situacao=Situacao.INUTILIZADA;
+	}
+	public void denegada() {
+		assertSituacaoIgual("Situação inválida: "+this.situacao,
+				Situacao.EMITIDA);
 		this.situacao=Situacao.INUTILIZADA;
 	}
 	private void assertSituacaoIgual(String mensagem,Situacao... esperadas){

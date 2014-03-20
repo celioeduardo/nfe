@@ -1,25 +1,25 @@
-package com.hadrion.nfe.dominio.modelo.nf;
+package com.hadrion.nfe.dominio.modelo.lote;
 
-public class NotaFiscalId {
-
-	private String id;
-
-	public NotaFiscalId(String id) {
-		this.id = id;
+public class LoteId {
+	
+	private String id; 
+	
+	public LoteId(String id){
+		this.id=id;
 	}
-
-	public String id() {
+	
+	public String id(){
 		return this.id;
 	}
-
+	
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;
 
 		if (objeto != null && this.getClass() == objeto.getClass()) {
-			NotaFiscalId objetoTipado = (NotaFiscalId) objeto;
+			LoteId objetoTipado = (LoteId) objeto;
 			objetosIguais = this.id().equals(objetoTipado.id());
-		}
+		} 
 
 		return objetosIguais;
 	}
@@ -27,14 +27,13 @@ public class NotaFiscalId {
 	@Override
 	public int hashCode() {
 		int hashCodeValue = 
-				+ (2785 * 5) 
+				+ (7844 * 5) 
 				+ this.id().hashCode();
 		return hashCodeValue;
 	}
 	
 	@Override
 	public String toString() {
-		return "NotaFiscalId [id=" + id + "]";
+		return "LoteId [id=" + id + "]";
 	}
-
 }
