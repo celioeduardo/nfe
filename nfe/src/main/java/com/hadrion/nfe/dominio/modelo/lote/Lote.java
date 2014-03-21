@@ -36,6 +36,10 @@ public class Lote {
 		return lote;
 	}
 
+	public LoteId loteId(){
+		return loteId;
+	}
+	
 	public void cancelar() {
 		if (situacao != SituacaoLote.NAO_ENVIADO)
 			throw new UnsupportedOperationException(
@@ -47,6 +51,31 @@ public class Lote {
 			throw new UnsupportedOperationException(
 					"Não é permitido cancelar um lote com situação: "+situacao);
 		situacao = SituacaoLote.CANCELADO;
+	}
+	
+	public boolean temNota(NotaFiscalId notaFiscalId){
+		for (LoteNotaFiscal loteNotaFiscal: notas) {
+			if (loteNotaFiscal.notaFiscalId().equals(notaFiscalId))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean estaNaoEnviado() {
+		return situacao == SituacaoLote.NAO_ENVIADO;
+	}
+
+	public String numero() {
+		// TODO criar numero do lote
+		return loteId.id();
+	}
+
+	public void emProcessamento() {
+		situacao = SituacaoLote.EM_PROCESSAMENTO;
+	}
+
+	public boolean estaEmProcessamento() {
+		return situacao == SituacaoLote.EM_PROCESSAMENTO;
 	}
 	
 }
