@@ -3,6 +3,7 @@ package com.hadrion.nfe.dominio.modelo.lote;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.hadrion.nfe.dominio.modelo.Mensagem;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 
 public class Lote {
@@ -10,6 +11,8 @@ public class Lote {
 	private LoteId loteId;
 	private Set<LoteNotaFiscal> notas;
 	private SituacaoLote situacao;
+	private NumeroReciboLote numeroRecibo;
+	private Mensagem mensagemErro;
 	
 	public int quantidadeNotas() {
 		return notas.size();
@@ -70,12 +73,46 @@ public class Lote {
 		return loteId.id();
 	}
 
-	public void emProcessamento() {
+	private void emProcessamento() {
+		assertLoteNaoEnviado();
 		situacao = SituacaoLote.EM_PROCESSAMENTO;
 	}
 
 	public boolean estaEmProcessamento() {
 		return situacao == SituacaoLote.EM_PROCESSAMENTO;
+	}
+
+	public NumeroReciboLote numeroRecibo() {
+		return this.numeroRecibo;
+	}
+	
+	public void recebido(NumeroReciboLote numeroRecibo){
+		this.numeroRecibo = numeroRecibo;
+		emProcessamento();
+	}
+	
+	public void inconsistente(Mensagem erro){
+		this.mensagemErro = erro;
+		this.falhaConsistencia();
+	}
+	
+	private void falhaConsistencia(){
+		assertLoteNaoEnviado();
+		this.situacao = SituacaoLote.FALHA_CONSISTENCIA;
+	}
+
+	public boolean estaInconsistente() {
+		return situacao == SituacaoLote.FALHA_CONSISTENCIA;
+	}
+	
+	private void assertLoteNaoEnviado(){
+		if (situacao != SituacaoLote.NAO_ENVIADO)
+			throw new UnsupportedOperationException(
+					"Situação do Lote é diferente de Não Enviado"); 
+	}
+	
+	public Mensagem mensagemErro(){
+		return mensagemErro;
 	}
 	
 }

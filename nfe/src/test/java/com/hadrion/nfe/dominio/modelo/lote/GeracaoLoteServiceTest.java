@@ -10,16 +10,12 @@ import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockLoteRepositorio;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockNotaFiscalRepositorio;
 
 
-public class GeracaoLoteServiceTest {
+public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 	GeracaoLoteService loteService;
-	LoteRepositorio loteRepositorio;
-	NotaFiscalRepositorio notaFiscalRepositorio;
-	
 	@Before
 	public void setup(){
 		
@@ -147,21 +143,13 @@ public class GeracaoLoteServiceTest {
 		return nf;		
 	}
 	
-	private Set<NotaFiscalId> listaNotaFiscalId(String... lista){
-		Set<NotaFiscalId> result = new HashSet<NotaFiscalId>();
-		for (String string : lista) {
-			result.add(new NotaFiscalId(string));
-		}
-		return result;
-	}
-	
-	private Lote fixtureLoteNaoEnviado(){
-		return Lote.gerar(listaNotaFiscalId("1111"), loteRepositorio);
-	}
-	
-	private Lote fixtureLoteEmProcessamento(){
+	protected Lote fixtureLoteEmProcessamento(){
 		Lote lote = Lote.gerar(listaNotaFiscalId("1112"), loteRepositorio);
-		lote.emProcessamento();
+		lote.recebido(new NumeroReciboLote(""));
 		return lote;
+	}
+	
+	protected Lote fixtureLoteNaoEnviado() {
+		return Lote.gerar(listaNotaFiscalId("1111"), loteRepositorio);
 	}
 }

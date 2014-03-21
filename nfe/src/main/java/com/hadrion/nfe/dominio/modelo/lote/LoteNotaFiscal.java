@@ -15,4 +15,8 @@ public class LoteNotaFiscal {
 	public NotaFiscalId notaFiscalId(){
 		return notaFiscalId;
 	}
+	
+	public boolean naoProcessada(){
+		return this.situacao == SituacaoLoteNotaFiscal.NAO_PROCESSADA;
+	}
 }
