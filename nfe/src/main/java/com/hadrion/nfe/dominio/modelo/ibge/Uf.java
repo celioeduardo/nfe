@@ -22,5 +22,4 @@ public class Uf {
 		return codigo;
 	}
 	
-	
 }

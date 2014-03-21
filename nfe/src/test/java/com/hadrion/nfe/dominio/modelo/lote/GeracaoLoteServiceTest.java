@@ -15,7 +15,8 @@ import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockNotaFiscalRepo
 
 
 public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
-	GeracaoLoteService loteService;
+	private GeracaoLoteService loteService;
+	
 	@Before
 	public void setup(){
 		

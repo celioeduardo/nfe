@@ -2,15 +2,19 @@ package com.hadrion.nfe.dominio.modelo;
 
 
 /**
- * Representa a tabela 5.1.1 - Tabela de Códigos de Erros e Descrições de Mensagens de Erros
+ * Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor. (NT 2011/004)
  * @author celioeduardo
  *
  */
-public class Mensagem {
+public class MensagemSefaz {
 	private int codigo;
 	private String descricao;
 	
-	public Mensagem(int codigo, String descricao) {
+	public static MensagemSefaz vazia(){
+		return new MensagemSefaz(-1, "");
+	}
+	
+	public MensagemSefaz(int codigo, String descricao) {
 		super();
 		this.codigo = codigo;
 		this.descricao = descricao;
@@ -29,7 +33,7 @@ public class Mensagem {
 		boolean objetosIguais = false;
 
 		if (objeto != null && this.getClass() == objeto.getClass()) {
-			Mensagem objetoTipado = (Mensagem) objeto;
+			MensagemSefaz objetoTipado = (MensagemSefaz) objeto;
 			objetosIguais = this.codigo() == objetoTipado.codigo() 
 					&& this.descricao().equals(objetoTipado.descricao());
 		} 
@@ -40,7 +44,7 @@ public class Mensagem {
 	@Override
 	public int hashCode() {
 		int hashCodeValue = 
-				+ (6844 * 3) 
+				+ (8734 * 9) 
 				+ Integer.valueOf(codigo()).hashCode()
 				+ descricao().hashCode();
 		return hashCodeValue;
@@ -48,6 +52,6 @@ public class Mensagem {
 	
 	@Override
 	public String toString() {
-		return "Mensagem [codigo=" + codigo() + ", descrição="+descricao()+"]";
+		return "MensagemSefaz [codigo=" + codigo() + ", descrição="+descricao()+"]";
 	}
 }

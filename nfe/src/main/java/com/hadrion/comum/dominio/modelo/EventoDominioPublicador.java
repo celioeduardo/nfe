@@ -21,7 +21,7 @@ public class EventoDominioPublicador {
         return instance.get();
     }
 
-    public <T> void pulicar(final T umEventoDominio) {
+    public <T> void publicar(final T umEventoDominio) {
         if (!this.estaPublicando() && this.temAssinantes()) {
 
             try {
@@ -48,7 +48,7 @@ public class EventoDominioPublicador {
 
     public void publicarTodos(Collection<EventoDominio> eventosDominio) {
         for (EventoDominio eventoDominio : eventosDominio) {
-            this.pulicar(eventoDominio);
+            this.publicar(eventoDominio);
         }
     }
 
