@@ -66,7 +66,8 @@ public class CancelarNotaServiceTest {
 		
 		cancelarNotaService = new CancelarNotaService(
 				cancelamentoNfeService, 
-				solicitacaoCancelamentoRepositorio);
+				solicitacaoCancelamentoRepositorio,
+				notaFiscalRepositorio);
 		
 		
 		notaFiscalId = null;
@@ -105,13 +106,31 @@ public class CancelarNotaServiceTest {
 		
 		cancelarNotaService = new CancelarNotaService(
 				cancelamentoNfeService, 
-				solicitacaoCancelamentoRepositorio);
+				solicitacaoCancelamentoRepositorio,
+				notaFiscalRepositorio);
 		
 		notaFiscalId = null;
 		notaFiscalRepositorio.salvar(fixtureNotaAutorizadaEmProducao("1111"));
 		cancelarNotaService.cancelarEmProducao(new NotaFiscalId("1111"));
 		assertEquals(new NotaFiscalId("1111"), notaFiscalId);
 		
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void nao_cancelar_em_homologacao_nota_emitida(){
+		cancelarNotaService = new CancelarNotaService(
+				null, 
+				solicitacaoCancelamentoRepositorio,
+				notaFiscalRepositorio);
+		
+		notaFiscalRepositorio.salvar(this.fixtureNotaEmitida("10"));
+		cancelarNotaService.cancelarEmHomologacao(new NotaFiscalId("10"));
+	} 
+	
+	private NotaFiscal fixtureNotaEmitida(String numero){
+		NotaFiscal nf = new NotaFiscal(new NotaFiscalId(numero));
+		nf.emitida();
+		return nf;
 	}
 	
 	private NotaFiscal fixtureNotaAutorizadaEmHomologacao(String numero){

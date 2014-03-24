@@ -1,7 +1,9 @@
 package com.hadrion.nfe.dominio.modelo.cancelamento;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.portal.cancelamento.CancelamentoNfeService;
 import com.hadrion.nfe.dominio.modelo.portal.cancelamento.RetornoCancelamento;
 
@@ -9,15 +11,23 @@ public class CancelarNotaService {
 	
 	private CancelamentoNfeService cancelamentoNfeService;
 	private SolicitacaoCancelamentoRepositorio solicitacaoCancelamentoRepositorio;
+	private NotaFiscalRepositorio notafiscalRepositorio;
 	
 	public CancelarNotaService(
 			CancelamentoNfeService cancelamentoNfeService,
-			SolicitacaoCancelamentoRepositorio solicitacaoCancelamentoRepositorio){
+			SolicitacaoCancelamentoRepositorio solicitacaoCancelamentoRepositorio,
+			NotaFiscalRepositorio notaFiscalRepositorio){
 		this.cancelamentoNfeService = cancelamentoNfeService;
 		this.solicitacaoCancelamentoRepositorio = solicitacaoCancelamentoRepositorio;
+		this.notafiscalRepositorio = notaFiscalRepositorio;
 	}  
 	
 	public void cancelarEmHomologacao(NotaFiscalId notaFiscalId) {
+		
+		if (!notaFiscalNaoNula(notaFiscalId).
+				estaCanceladaEmHomologacao())
+			throw new IllegalArgumentException(
+					"Somente Nota Fiscal AUTORIZADA pode ser Cancelada.");
 		
 		SolicitacaoCancelamento solicitacao = new SolicitacaoCancelamento(
 				solicitacaoCancelamentoRepositorio.proximaIdentidade(), 
@@ -31,6 +41,12 @@ public class CancelarNotaService {
 	}
 
 	public void cancelarEmProducao(NotaFiscalId notaFiscalId) {
+		
+		if (!notaFiscalNaoNula(notaFiscalId).
+				estaCanceladaEmHomologacao())
+			throw new IllegalArgumentException(
+					"Somente Nota Fiscal AUTORIZADA pode ser Cancelada.");
+		
 		SolicitacaoCancelamento solicitacao = new SolicitacaoCancelamento(
 				solicitacaoCancelamentoRepositorio.proximaIdentidade(), 
 				Ambiente.PRODUCAO, 
@@ -54,5 +70,12 @@ public class CancelarNotaService {
 					retorno.mensagem(), 
 					retorno.dataHoraProcessamento());
 	}
-
+	
+	private NotaFiscal notaFiscalNaoNula(NotaFiscalId notaFiscalId){
+		NotaFiscal nf = notafiscalRepositorio.notaFiscalPeloId(notaFiscalId);
+		if (nf == null)
+			throw new IllegalArgumentException("Nota Fiscal inexistente.");
+		return nf; 
+	}
+	
 }
