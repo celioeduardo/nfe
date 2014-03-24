@@ -2,6 +2,7 @@ package com.hadrion.nfe.dominio.modelo.lote;
 
 import java.util.Set;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
@@ -19,27 +20,28 @@ public class GeracaoLoteService {
 	}
 	
 	public Lote gerarLoteEmHomologacao(Set<NotaFiscalId> notas){
-		assertPreCondicoes(notas);		
+		assertPreCondicoes(notas, Ambiente.HOMOLOGACAO);		
 		return Lote.gerarEmHomologacao(notas,loteRepositorio);
 	}
 	
 	public Lote gerarLoteEmProducao(Set<NotaFiscalId> notas) {
-		assertPreCondicoes(notas);
+		assertPreCondicoes(notas, Ambiente.PRODUCAO);
 		return Lote.gerarEmProducao(notas, loteRepositorio);
 	}
 	
-	private void assertPreCondicoes(Set<NotaFiscalId> notas){
+	private void assertPreCondicoes(Set<NotaFiscalId> notas, Ambiente ambiente){
 		for (NotaFiscalId notaFiscalId : notas) {
 			NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(notaFiscalId);
 			assertNotaExiste(nf,notaFiscalId);
 			assertNotaPendenteDeTransmissao(nf);
-			assertNotaNaoEstaPendenteEmOutrosLotes(nf);
+			assertNotaNaoEstaPendenteEmOutrosLotes(nf, ambiente);
 		}
 	}
 	
-	private void assertNotaNaoEstaPendenteEmOutrosLotes(NotaFiscal nf){
+	private void assertNotaNaoEstaPendenteEmOutrosLotes(NotaFiscal nf, 
+			Ambiente ambiente){
 		assertLotesNaoEstaoPendentes(
-				loteRepositorio.lotesDaNota(nf.notaFiscalId()),nf);
+				loteRepositorio.lotesDaNota(nf.notaFiscalId()),nf,ambiente);
 	}
 	
 	private void assertNotaExiste(NotaFiscal nf, NotaFiscalId notaFiscalId){
@@ -55,9 +57,11 @@ public class GeracaoLoteService {
 					" não está Pendente de Transmissão.");
 	}
 	
-	private void assertLotesNaoEstaoPendentes(Set<Lote> lotes, NotaFiscal nf){
+	private void assertLotesNaoEstaoPendentes(
+			Set<Lote> lotes, NotaFiscal nf, Ambiente ambiente){
 		for (Lote lote :lotes) 
-			if (lote.estaNaoEnviado() || lote.estaEmProcessamento())
+			if (lote.ambiente() == ambiente && 
+				(lote.estaNaoEnviado() || lote.estaEmProcessamento()))
 				throw new IllegalArgumentException(
 						"Nota Fiscal "+nf.notaFiscalId()+
 						" já está no Lote "+lote.numero());
