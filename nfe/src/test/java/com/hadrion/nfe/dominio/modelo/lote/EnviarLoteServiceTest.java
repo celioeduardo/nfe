@@ -7,9 +7,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hadrion.nfe.dominio.modelo.Mensagem;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.recepcao.MockRecepcaoLoteService;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockLoteRepositorio;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockNotaFiscalRepositorio;

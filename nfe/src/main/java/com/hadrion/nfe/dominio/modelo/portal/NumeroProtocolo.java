@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo.recepcao.consulta;
+package com.hadrion.nfe.dominio.modelo.portal;
 
 
 public class NumeroProtocolo {

@@ -1,8 +1,11 @@
 package com.hadrion.nfe.dominio.modelo.recepcao;
 
-import com.hadrion.nfe.dominio.modelo.Mensagem;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.NumeroReciboLote;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.RecepcaoLoteService;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.ReciboLote;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.RetornoRecepcaoLote;
 
 public class MockRecepcaoLoteService implements RecepcaoLoteService{
 	

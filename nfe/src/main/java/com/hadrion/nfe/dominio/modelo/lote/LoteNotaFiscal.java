@@ -4,12 +4,10 @@ import java.util.Date;
 
 import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
-import com.hadrion.nfe.dominio.modelo.Mensagem;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalAutorizada;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalDenegada;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
-import com.hadrion.nfe.dominio.modelo.recepcao.consulta.NumeroProtocolo;
-import com.hadrion.nfe.dominio.modelo.recepcao.consulta.ProtocoloNotaProcessada;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.ProtocoloNotaProcessada;
 
 public class LoteNotaFiscal {
 	private NotaFiscalId notaFiscalId;

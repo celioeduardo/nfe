@@ -1,6 +1,6 @@
-package com.hadrion.nfe.dominio.modelo.recepcao;
+package com.hadrion.nfe.dominio.modelo.portal.recepcao;
 
-import com.hadrion.nfe.dominio.modelo.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 
 public class RetornoRecepcaoLote {
 	

@@ -1,9 +1,9 @@
-package com.hadrion.nfe.dominio.modelo.recepcao.consulta;
+package com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta;
 
 import java.util.List;
 
-import com.hadrion.nfe.dominio.modelo.Mensagem;
-import com.hadrion.nfe.dominio.modelo.MensagemSefaz;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
 
 public class RetornoConsultaProcessamentoLote {
 	

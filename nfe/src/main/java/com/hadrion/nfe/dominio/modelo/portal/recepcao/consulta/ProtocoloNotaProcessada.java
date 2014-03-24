@@ -1,9 +1,10 @@
-package com.hadrion.nfe.dominio.modelo.recepcao.consulta;
+package com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta;
 
 import java.util.Date;
 
-import com.hadrion.nfe.dominio.modelo.Mensagem;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 
 public class ProtocoloNotaProcessada {
 	

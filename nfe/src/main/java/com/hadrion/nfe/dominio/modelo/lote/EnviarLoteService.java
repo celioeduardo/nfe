@@ -1,7 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
-import com.hadrion.nfe.dominio.modelo.recepcao.RecepcaoLoteService;
-import com.hadrion.nfe.dominio.modelo.recepcao.RetornoRecepcaoLote;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.RecepcaoLoteService;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.RetornoRecepcaoLote;
 
 
 public class EnviarLoteService {

@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo.recepcao.consulta;
+package com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta;
 
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 

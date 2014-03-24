@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo;
+package com.hadrion.nfe.dominio.modelo.portal;
 
 
 /**
@@ -23,6 +23,11 @@ public class Mensagem {
 	public String descricao(){
 		return descricao;
 	}
+	
+	public boolean cancelamentoHomologado(){
+		return codigo() == 101;
+	}
+	
 	
 	@Override
 	public boolean equals(Object objeto) {

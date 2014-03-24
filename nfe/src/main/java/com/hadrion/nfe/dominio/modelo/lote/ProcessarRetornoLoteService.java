@@ -1,7 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
-import com.hadrion.nfe.dominio.modelo.recepcao.consulta.ConsultaProcessamentoLoteService;
-import com.hadrion.nfe.dominio.modelo.recepcao.consulta.RetornoConsultaProcessamentoLote;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.ConsultaProcessamentoLoteService;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.RetornoConsultaProcessamentoLote;
 
 public class ProcessarRetornoLoteService {
 	

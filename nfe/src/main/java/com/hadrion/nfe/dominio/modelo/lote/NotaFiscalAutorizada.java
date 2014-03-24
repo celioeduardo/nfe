@@ -1,18 +1,21 @@
-package com.hadrion.nfe.dominio.modelo.nf;
+package com.hadrion.nfe.dominio.modelo.lote;
 
 import java.util.Date;
 
 import com.hadrion.comum.dominio.modelo.EventoDominio;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 
-public class NotaFiscalDenegada implements EventoDominio {
+public class NotaFiscalAutorizada implements EventoDominio {
 	
 	private int versaoEvento;
 	private Date ocorridoEm;
 	private NotaFiscalId notaFiscalId;
 	private Ambiente ambiente;
 
-	public NotaFiscalDenegada(NotaFiscalId notaFiscalId,Ambiente ambiente) {
+	public NotaFiscalAutorizada(
+			NotaFiscalId notaFiscalId,
+			Ambiente ambiente) {
 		this.ocorridoEm = new Date();
 		this.versaoEvento = 1;
 		this.notaFiscalId = notaFiscalId;
@@ -32,8 +35,8 @@ public class NotaFiscalDenegada implements EventoDominio {
 	public NotaFiscalId notaFiscalId(){
 		return notaFiscalId;
 	}
-
-	public Ambiente ambiente() {
+	
+	public Ambiente ambiente(){
 		return ambiente;
 	}
 }

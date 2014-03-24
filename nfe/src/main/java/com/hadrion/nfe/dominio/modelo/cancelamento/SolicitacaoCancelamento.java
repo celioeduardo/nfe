@@ -1,0 +1,70 @@
+package com.hadrion.nfe.dominio.modelo.cancelamento;
+
+import java.util.Date;
+
+import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
+import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
+
+public class SolicitacaoCancelamento {
+	
+	private SolicitacaoCancelamentoId solicitacaoCancelamentoId;
+	private NotaFiscalId notaFiscalId;
+	private Date dataHoraSolicitacao;
+	private Ambiente ambiente;
+	private Mensagem retorno;
+	private Date dataHoraProcessamento;
+	private NumeroProtocolo numeroProtocolo;
+	
+	public SolicitacaoCancelamento(
+			SolicitacaoCancelamentoId solicitacaoCancelamentoId,
+			Ambiente ambiente,
+			NotaFiscalId notaFiscalId) {
+		super();
+		this.solicitacaoCancelamentoId = solicitacaoCancelamentoId;
+		this.notaFiscalId = notaFiscalId;
+		this.ambiente = ambiente;
+		this.dataHoraSolicitacao = new Date();
+	}
+
+	public SolicitacaoCancelamentoId solicitacaoCancelamentoId(){
+		return solicitacaoCancelamentoId;
+	}
+	
+	public Date dataHoraSolicitacao(){
+		return dataHoraSolicitacao;
+	}
+	public Date dataHoraProcessamento(){
+		return dataHoraProcessamento;
+	}
+	
+	public Mensagem retorno(){
+		return this.retorno;
+	}
+	
+	public NumeroProtocolo numeroProtocolo(){
+		return this.numeroProtocolo;
+	}
+	
+	public void sucesso(
+			NumeroProtocolo numeroProtocolo,
+			Mensagem mensagem, 
+			Date dataHoraProcessamento){
+		this.numeroProtocolo = numeroProtocolo;
+		this.retorno = mensagem;
+		this.dataHoraProcessamento = dataHoraProcessamento;
+		
+		EventoDominioPublicador.instancia().publicar(
+				new CancelamentoHomologado(notaFiscalId, ambiente));
+	}
+	
+	public void fracasso(
+			Mensagem mensagem, 
+			Date dataHoraProcessamento){
+		this.retorno = mensagem;
+		this.dataHoraProcessamento = dataHoraProcessamento;
+	}
+
+}

@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
-import com.hadrion.nfe.dominio.modelo.Mensagem;
-import com.hadrion.nfe.dominio.modelo.MensagemSefaz;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
-import com.hadrion.nfe.dominio.modelo.recepcao.consulta.ProtocoloNotaProcessada;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.ProtocoloNotaProcessada;
 
 public class Lote {
 	

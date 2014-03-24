@@ -5,9 +5,11 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hadrion.nfe.dominio.modelo.Mensagem;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.NumeroReciboLote;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.RecepcaoLoteService;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.RetornoRecepcaoLote;
 
 public class RecepcaoLoteServiceTest {
 

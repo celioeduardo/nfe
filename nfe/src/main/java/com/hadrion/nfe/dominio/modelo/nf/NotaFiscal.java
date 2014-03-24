@@ -40,11 +40,19 @@ public class NotaFiscal {
 				Situacao.EMITIDA);
 		this.situacao=Situacao.INUTILIZADA;
 	}
+	
 	private void assertSituacaoIgual(String mensagem,Situacao... esperadas){
 		for (Situacao esperada : esperadas) {
 			if (esperada == this.situacao)
 				return;
 		}
 		throw new UnsupportedOperationException(mensagem);
+	}
+	
+	public boolean estaCanceladaEmHomologacao() {
+		return false;
+	}
+	public boolean estaCanceladaEmProducao() {
+		return false;
 	}
 }

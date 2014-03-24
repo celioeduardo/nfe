@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo;
+package com.hadrion.nfe.dominio.modelo.portal;
 
 public class ChaveAcesso {
 	private String chave;
