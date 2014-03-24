@@ -51,7 +51,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	}
 	
 	protected Lote fixtureLoteNaoEnviado() {
-		return geracaoLoteService.gerarLote(listaNotaFiscalId("1111"));
+		return geracaoLoteService.gerarLoteEmHomologacao(listaNotaFiscalId("1111"));
 	}
 	
 	private NotaFiscal fixtureNoteFiscal(){

@@ -41,6 +41,8 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		
 		notaFiscalRepositorio.salvar(fixtureNotaFiscalEmitida("1111"));
 		notaFiscalRepositorio.salvar(fixtureNotaFiscalEmitida("1112"));
+		
+		EventoDominioPublicador.instancia().reset();
 	}
 	
 	@Test
@@ -231,7 +233,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 	}
 	
 	protected Lote fixtureLoteEmProcessamento() {
-		Lote lote = geracaoLoteService.gerarLote(listaNotaFiscalId("1111","1112"));
+		Lote lote = geracaoLoteService.gerarLoteEmHomologacao(listaNotaFiscalId("1111","1112"));
 		lote.recebido(new NumeroReciboLote("123456"));
 		return lote;
 	}

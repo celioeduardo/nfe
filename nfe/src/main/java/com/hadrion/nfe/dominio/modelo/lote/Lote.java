@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.Mensagem;
 import com.hadrion.nfe.dominio.modelo.MensagemSefaz;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
@@ -18,6 +19,7 @@ public class Lote {
 	private Mensagem mensagemErro;
 	private Mensagem mensagemProcessamento;
 	private MensagemSefaz mensagemSefaz;
+	private Ambiente ambiente;
 	
 	public int quantidadeNotas() {
 		return notas.size();
@@ -27,19 +29,33 @@ public class Lote {
 		
 	}
 
-	public static Lote gerar(Set<NotaFiscalId> lista,
+	public static Lote gerarEmHomologacao(Set<NotaFiscalId> lista,
 			LoteRepositorio loteRepositorio) {
+		return new Lote(
+				loteRepositorio.proximaIdentidade(),
+				lista,
+				Ambiente.HOMOLOGACAO);
+	}
+
+	public static Lote gerarEmProducao(Set<NotaFiscalId> lista,
+			LoteRepositorio loteRepositorio) {
+		return new Lote(
+				loteRepositorio.proximaIdentidade(),
+				lista,
+				Ambiente.PRODUCAO);
+	}
+	
+	private Lote(
+			LoteId loteId,
+			Set<NotaFiscalId> notasId,
+			Ambiente ambiente){
+		this.loteId = loteId;
+		this.situacao = SituacaoLote.NAO_ENVIADO;
+		this.notas = new HashSet<LoteNotaFiscal>();
+		this.ambiente = ambiente;
 		
-		Lote lote = new Lote();
-		lote.loteId = loteRepositorio.proximaIdentidade();
-		lote.situacao = SituacaoLote.NAO_ENVIADO;
-		lote.notas = new HashSet<LoteNotaFiscal>();
-		
-		for (NotaFiscalId notaFiscalId : lista){
-			lote.notas.add(new LoteNotaFiscal(notaFiscalId));
-		}
-		
-		return lote;
+		for (NotaFiscalId notaFiscalId : notasId)
+			this.notas.add(new LoteNotaFiscal(notaFiscalId));
 	}
 
 	public LoteId loteId(){
@@ -188,5 +204,9 @@ public class Lote {
 	public boolean estaDenegada(NotaFiscalId notaFiscalId) {
 		LoteNotaFiscal result = loteNotaFiscal(notaFiscalId);
 		return result != null && result.estaDenegada();
+	}
+
+	public Ambiente ambiente() {
+		return ambiente;
 	}
 }

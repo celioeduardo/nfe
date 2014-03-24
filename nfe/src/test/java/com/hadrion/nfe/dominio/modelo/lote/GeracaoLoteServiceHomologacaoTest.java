@@ -8,13 +8,14 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockLoteRepositorio;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockNotaFiscalRepositorio;
 
 
-public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
+public class GeracaoLoteServiceHomologacaoTest extends AbstractLoteServiceTest {
 	private GeracaoLoteService loteService;
 	
 	@Before
@@ -40,54 +41,55 @@ public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 	}
 	
 	@Test
-	public void gerarLoteNotasPendentes(){
+	public void gerar_lote_notas_pendentes(){
 		
 		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
 		notas.add(new NotaFiscalId("1234"));
 		notas.add(new NotaFiscalId("1235"));
 		notas.add(new NotaFiscalId("1236"));
 		
-		Lote lote = loteService.gerarLote(notas);		
+		Lote lote = loteService.gerarLoteEmHomologacao(notas);		
 		assertEquals(3,lote.quantidadeNotas());
+		assertEquals(lote.ambiente(),Ambiente.HOMOLOGACAO);
 		
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void naoGeraLoteNotaAutorizada(){
+	public void nao_gera_lote_nota_autorizada(){
 		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
 		notas.add(new NotaFiscalId("1237"));
-		loteService.gerarLote(notas);		
+		loteService.gerarLoteEmHomologacao(notas);		
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void naoGeraLoteNotaCancelada(){
+	public void nao_gera_lote_nota_cancelada(){
 		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
 		notas.add(new NotaFiscalId("1238"));
-		loteService.gerarLote(notas);		
+		loteService.gerarLoteEmHomologacao(notas);		
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void naoGeraLoteNotaInutilizada(){
+	public void nao_gera_lote_nota_inutilizada(){
 		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
 		notas.add(new NotaFiscalId("1239"));
-		loteService.gerarLote(notas);		
+		loteService.gerarLoteEmHomologacao(notas);		
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void naoGeraLoteNotaDenegada(){
+	public void nao_gera_lote_nota_denegada(){
 		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
 		notas.add(new NotaFiscalId("1240"));
-		loteService.gerarLote(notas);		
+		loteService.gerarLoteEmHomologacao(notas);		
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nota_ja_existe_em_lote_nao_enviado(){
-		loteService.gerarLote(listaNotaFiscalId("1111"));
+		loteService.gerarLoteEmHomologacao(listaNotaFiscalId("1111"));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nota_ja_existe_em_lote_em_processamento(){
-		loteService.gerarLote(listaNotaFiscalId("1112"));
+		loteService.gerarLoteEmHomologacao(listaNotaFiscalId("1112"));
 	}
 	
 	private Set<NotaFiscal> fixtureNotasPendentesDeTransmissao(){
@@ -145,12 +147,12 @@ public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 	}
 	
 	protected Lote fixtureLoteEmProcessamento(){
-		Lote lote = Lote.gerar(listaNotaFiscalId("1112"), loteRepositorio);
+		Lote lote = Lote.gerarEmHomologacao(listaNotaFiscalId("1112"), loteRepositorio);
 		lote.recebido(new NumeroReciboLote(""));
 		return lote;
 	}
 	
 	protected Lote fixtureLoteNaoEnviado() {
-		return Lote.gerar(listaNotaFiscalId("1111"), loteRepositorio);
+		return Lote.gerarEmHomologacao(listaNotaFiscalId("1111"), loteRepositorio);
 	}
 }

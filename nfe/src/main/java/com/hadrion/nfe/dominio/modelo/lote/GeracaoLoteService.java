@@ -18,17 +18,28 @@ public class GeracaoLoteService {
 		this.notaFiscalRepositorio=notaFiscalRepositorio;
 	}
 	
-	public Lote gerarLote(Set<NotaFiscalId> notas){
-		
+	public Lote gerarLoteEmHomologacao(Set<NotaFiscalId> notas){
+		assertPreCondicoes(notas);		
+		return Lote.gerarEmHomologacao(notas,loteRepositorio);
+	}
+	
+	public Lote gerarLoteEmProducao(Set<NotaFiscalId> notas) {
+		assertPreCondicoes(notas);
+		return Lote.gerarEmProducao(notas, loteRepositorio);
+	}
+	
+	private void assertPreCondicoes(Set<NotaFiscalId> notas){
 		for (NotaFiscalId notaFiscalId : notas) {
 			NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(notaFiscalId);
 			assertNotaExiste(nf,notaFiscalId);
 			assertNotaPendenteDeTransmissao(nf);
-			Set<Lote> outrosLotesDaNota = loteRepositorio.lotesDaNota(notaFiscalId);
-			assertLotesNaoEstaoPendentes(outrosLotesDaNota,nf);
+			assertNotaNaoEstaPendenteEmOutrosLotes(nf);
 		}
-				
-		return Lote.gerar(notas,loteRepositorio);
+	}
+	
+	private void assertNotaNaoEstaPendenteEmOutrosLotes(NotaFiscal nf){
+		assertLotesNaoEstaoPendentes(
+				loteRepositorio.lotesDaNota(nf.notaFiscalId()),nf);
 	}
 	
 	private void assertNotaExiste(NotaFiscal nf, NotaFiscalId notaFiscalId){
