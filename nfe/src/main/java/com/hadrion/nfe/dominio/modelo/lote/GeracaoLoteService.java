@@ -61,7 +61,7 @@ public class GeracaoLoteService {
 			Set<Lote> lotes, NotaFiscal nf, Ambiente ambiente){
 		for (Lote lote :lotes) 
 			if (lote.ambiente() == ambiente && 
-				(lote.estaNaoEnviado() || lote.estaEmProcessamento()))
+				(lote.estaNaoEnviado() || lote.estaProcessando()))
 				throw new IllegalArgumentException(
 						"Nota Fiscal "+nf.notaFiscalId()+
 						" já está no Lote "+lote.numero());

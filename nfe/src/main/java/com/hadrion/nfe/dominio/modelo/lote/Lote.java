@@ -100,13 +100,13 @@ public class Lote {
 		return loteId.id();
 	}
 
-	private void emProcessamento() {
+	private void processando() {
 		assertLoteNaoEnviado();
-		situacao = SituacaoLote.EM_PROCESSAMENTO;
+		situacao = SituacaoLote.PROCESSANDO;
 	}
 
-	public boolean estaEmProcessamento() {
-		return situacao == SituacaoLote.EM_PROCESSAMENTO;
+	public boolean estaProcessando() {
+		return situacao == SituacaoLote.PROCESSANDO;
 	}
 
 	public NumeroReciboLote numeroRecibo() {
@@ -115,7 +115,7 @@ public class Lote {
 	
 	public void recebido(NumeroReciboLote numeroRecibo){
 		this.numeroRecibo = numeroRecibo;
-		emProcessamento();
+		processando();
 	}
 	
 	public void inconsistente(Mensagem erro){
@@ -125,10 +125,10 @@ public class Lote {
 	
 	private void falhaConsistencia(){
 		if (situacao != SituacaoLote.NAO_ENVIADO && 
-			situacao != SituacaoLote.EM_PROCESSAMENTO)
+			situacao != SituacaoLote.PROCESSANDO)
 			throw new UnsupportedOperationException(
 					"Lote não pode ser definida para Falha Consistência."
-					+ "Situação é diferente de Não Enviado e Em Processamento"); 
+					+ "Situação é diferente de Não Enviado e Processando"); 
 		this.situacao = SituacaoLote.FALHA_CONSISTENCIA;
 	}
 

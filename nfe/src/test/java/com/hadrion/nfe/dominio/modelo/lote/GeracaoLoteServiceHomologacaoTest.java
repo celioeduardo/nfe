@@ -37,7 +37,7 @@ public class GeracaoLoteServiceHomologacaoTest extends AbstractLoteServiceTest {
 				notaFiscalRepositorio);
 		
 		loteRepositorio.salvar(fixtureLoteNaoEnviado());
-		loteRepositorio.salvar(fixtureLoteEmProcessamento());
+		loteRepositorio.salvar(fixtureLoteProcessando());
 	}
 	
 	@Test
@@ -88,7 +88,7 @@ public class GeracaoLoteServiceHomologacaoTest extends AbstractLoteServiceTest {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void nota_ja_existe_em_lote_em_processamento(){
+	public void nota_ja_existe_em_lote_processando(){
 		loteService.gerarLoteEmHomologacao(listaNotaFiscalId("1112"));
 	}
 	
@@ -146,7 +146,7 @@ public class GeracaoLoteServiceHomologacaoTest extends AbstractLoteServiceTest {
 		return nf;		
 	}
 	
-	protected Lote fixtureLoteEmProcessamento(){
+	protected Lote fixtureLoteProcessando(){
 		Lote lote = Lote.gerarEmHomologacao(listaNotaFiscalId("1112"), loteRepositorio);
 		lote.recebido(new NumeroReciboLote(""));
 		return lote;

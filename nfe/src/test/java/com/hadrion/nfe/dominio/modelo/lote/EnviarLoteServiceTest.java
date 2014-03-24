@@ -33,7 +33,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 		EnviarLoteService enviarLoteService = new EnviarLoteService(
 				new MockRecepcaoLoteService("123456"));
 		enviarLoteService.enviar(lote);
-		assertTrue("Lote tem que estar Em Processamento",lote.estaEmProcessamento());
+		assertTrue("Lote tem que estar Processando",lote.estaProcessando());
 		assertEquals(new NumeroReciboLote("123456"),lote.numeroRecibo());
 		assertNull(lote.mensagemErro());
 	}

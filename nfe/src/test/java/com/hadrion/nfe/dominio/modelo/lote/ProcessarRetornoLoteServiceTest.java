@@ -57,13 +57,13 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
 				});
-		Lote lote = fixtureLoteEmProcessamento();
+		Lote lote = fixtureLoteProcessando();
 		processarRetorno.processar(lote);
 		assertTrue("Lote deve estar processado.",lote.estaProcessado());
 	}
 	
 	@Test
-	public void lote_em_processamento(){
+	public void lote_processando(){
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
@@ -74,9 +74,9 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
 				});
-		Lote lote = fixtureLoteEmProcessamento();
+		Lote lote = fixtureLoteProcessando();
 		processarRetorno.processar(lote);
-		assertTrue("Lote deve estar em processamento.",lote.estaEmProcessamento());
+		assertTrue("Lote deve estar processando.",lote.estaProcessando());
 	}
 	
 	@Test
@@ -91,7 +91,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
 				});
-		Lote lote = fixtureLoteEmProcessamento();
+		Lote lote = fixtureLoteProcessando();
 		processarRetorno.processar(lote);
 		assertTrue("Lote deve estar inconsistente.",lote.estaInconsistente());
 	}
@@ -138,7 +138,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 					}
 		});
 		
-		Lote lote = fixtureLoteEmProcessamento();
+		Lote lote = fixtureLoteProcessando();
 		processarRetorno.processar(lote);
 		assertTrue("Lote processado.",lote.estaProcessado());
 		assertTrue("Nota está autorizada",lote.estaAutorizada(new NotaFiscalId("1111")));
@@ -174,7 +174,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 				});
 		
 		
-		Lote lote = fixtureLoteEmProcessamento();
+		Lote lote = fixtureLoteProcessando();
 		processarRetorno.processar(lote);
 		assertTrue("Lote deve estar processado.",lote.estaProcessado());
 		assertTrue("Nota não está rejeitada",lote.estaRejeitada(new NotaFiscalId("1111")));
@@ -223,7 +223,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 					}
 		});
 		
-		Lote lote = fixtureLoteEmProcessamento();
+		Lote lote = fixtureLoteProcessando();
 		processarRetorno.processar(lote);
 		assertTrue("Lote deve estar processado.",lote.estaProcessado());
 		assertTrue("Nota não está denegada",lote.estaDenegada(new NotaFiscalId("1111")));
@@ -232,7 +232,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		assertTrue("Evento disparado", listaNotaFiscalId.contains(new NotaFiscalId("1112")));
 	}
 	
-	protected Lote fixtureLoteEmProcessamento() {
+	protected Lote fixtureLoteProcessando() {
 		Lote lote = geracaoLoteService.gerarLoteEmHomologacao(listaNotaFiscalId("1111","1112"));
 		lote.recebido(new NumeroReciboLote("123456"));
 		return lote;
