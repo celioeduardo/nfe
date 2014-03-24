@@ -3,6 +3,7 @@ package com.hadrion.nfe.dominio.modelo.lote;
 import java.util.Date;
 
 import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.Mensagem;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalAutorizada;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalDenegada;
@@ -12,15 +13,18 @@ import com.hadrion.nfe.dominio.modelo.recepcao.consulta.ProtocoloNotaProcessada;
 
 public class LoteNotaFiscal {
 	private NotaFiscalId notaFiscalId;
+	private Ambiente ambiente;
 	private SituacaoLoteNotaFiscal situacao;
 	private Date dataHoraProcessamento;
 	private NumeroProtocolo numeroProtocolo;
 	private Mensagem mensagem;
 	
-	public LoteNotaFiscal(NotaFiscalId notaFiscalId) {
+	public LoteNotaFiscal(NotaFiscalId notaFiscalId, 
+			Ambiente ambiente) {
 		super();
 		this.notaFiscalId = notaFiscalId;
 		this.situacao = SituacaoLoteNotaFiscal.NAO_PROCESSADA;
+		this.ambiente = ambiente;
 	}
 	
 	public NotaFiscalId notaFiscalId(){
@@ -62,7 +66,9 @@ public class LoteNotaFiscal {
 		this.mudarParaAutorizada();
 		
 		EventoDominioPublicador.instancia().
-			publicar(new NotaFiscalAutorizada(notaFiscalId()));
+			publicar(new NotaFiscalAutorizada(
+					notaFiscalId(),
+					ambiente));
 	}
 	
 	private void rejeitada(
@@ -83,7 +89,7 @@ public class LoteNotaFiscal {
 		this.mudarParaDenegada();
 		
 		EventoDominioPublicador.instancia().
-			publicar(new NotaFiscalDenegada(notaFiscalId()));
+			publicar(new NotaFiscalDenegada(notaFiscalId(),ambiente));
 
 	}
 	

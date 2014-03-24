@@ -55,7 +55,8 @@ public class Lote {
 		this.ambiente = ambiente;
 		
 		for (NotaFiscalId notaFiscalId : notasId)
-			this.notas.add(new LoteNotaFiscal(notaFiscalId));
+			this.notas.add(
+					new LoteNotaFiscal(notaFiscalId,ambiente));
 	}
 
 	public LoteId loteId(){
