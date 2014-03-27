@@ -80,11 +80,11 @@ public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 		Set<NotaFiscal> result = new HashSet<NotaFiscal>();
 		
 		NotaFiscal nf = new NotaFiscal(new NotaFiscalId("1111"));
-		nf.emitida();
+		nf.emitidaHomologacao();
 		result.add(nf);
 		
 		nf = new NotaFiscal(new NotaFiscalId("1112"));
-		nf.emitida();
+		nf.emitidaHomologacao();
 		result.add(nf);
 		
 		return result;

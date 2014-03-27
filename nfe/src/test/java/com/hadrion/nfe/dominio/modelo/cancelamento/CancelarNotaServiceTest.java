@@ -129,20 +129,20 @@ public class CancelarNotaServiceTest {
 	
 	private NotaFiscal fixtureNotaEmitida(String numero){
 		NotaFiscal nf = new NotaFiscal(new NotaFiscalId(numero));
-		nf.emitida();
+		nf.emitidaHomologacao();
 		return nf;
 	}
 	
 	private NotaFiscal fixtureNotaAutorizadaEmHomologacao(String numero){
 		NotaFiscal nf = new NotaFiscal(new NotaFiscalId(numero));
-		nf.emitida();
-		nf.autorizada();
+		nf.emitidaHomologacao();
+		nf.autorizadaHomologacao();
 		return nf;
 	}
 	private NotaFiscal fixtureNotaAutorizadaEmProducao(String numero){
 		NotaFiscal nf = new NotaFiscal(new NotaFiscalId(numero));
-		nf.emitida();
-		nf.autorizada();
+		nf.emitidaProducao();
+		nf.autorizadaProducao();
 		return nf;
 	}
 	

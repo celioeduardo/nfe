@@ -56,7 +56,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	private NotaFiscal fixtureNoteFiscal(){
 		NotaFiscal nf = new NotaFiscal(new NotaFiscalId("1111"));
-		nf.emitida();
+		nf.emitidaHomologacao();
 		return nf;
 	}
 	

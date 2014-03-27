@@ -96,23 +96,23 @@ public class GeracaoLoteServiceHomologacaoTest extends AbstractLoteServiceTest {
 		Set<NotaFiscal> result = new HashSet<NotaFiscal>();
 		
 		NotaFiscal nf = new NotaFiscal(new NotaFiscalId("1111"));
-		nf.emitida();
+		nf.emitidaHomologacao();
 		result.add(nf);
 		
 		nf = new NotaFiscal(new NotaFiscalId("1112"));
-		nf.emitida();
+		nf.emitidaHomologacao();
 		result.add(nf);
 		
 		nf = new NotaFiscal(new NotaFiscalId("1234"));
-		nf.emitida();
+		nf.emitidaHomologacao();
 		result.add(nf);
 		
 		nf = new NotaFiscal(new NotaFiscalId("1235"));
-		nf.emitida();
+		nf.emitidaHomologacao();
 		result.add(nf);
 		
 		nf = new NotaFiscal(new NotaFiscalId("1236"));
-		nf.emitida();
+		nf.emitidaHomologacao();
 		result.add(nf);		
 		
 		return result;
@@ -120,29 +120,29 @@ public class GeracaoLoteServiceHomologacaoTest extends AbstractLoteServiceTest {
 	
 	private NotaFiscal fixtureNotaAutorizada(){		
 		NotaFiscal nf = new NotaFiscal(new NotaFiscalId("1237"));
-		nf.emitida();
-		nf.autorizada();
+		nf.emitidaHomologacao();
+		nf.autorizadaHomologacao();
 		return nf;		
 	}
 	
 	private NotaFiscal fixtureNotaCancelada(){		
 		NotaFiscal nf = new NotaFiscal(new NotaFiscalId("1238"));
-		nf.emitida();
-		nf.autorizada();
-		nf.cancelada();
+		nf.emitidaHomologacao();
+		nf.autorizadaHomologacao();
+		nf.canceladaHomologacao();
 		return nf;		
 	}
 	
 	private NotaFiscal fixtureNotaInutilizada(){		
 		NotaFiscal nf = new NotaFiscal(new NotaFiscalId("1239"));
-		nf.emitida();
-		nf.inutilizada();
+		nf.emitidaHomologacao();
+		nf.inutilizadaHomologacao();
 		return nf;		
 	}
 	private NotaFiscal fixtureNotaDenegada(){		
 		NotaFiscal nf = new NotaFiscal(new NotaFiscalId("1240"));
-		nf.emitida();
-		nf.denegada();
+		nf.emitidaHomologacao();
+		nf.denegadaHomologacao();
 		return nf;		
 	}
 	

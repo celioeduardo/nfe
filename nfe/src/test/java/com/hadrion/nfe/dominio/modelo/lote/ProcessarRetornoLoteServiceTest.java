@@ -350,7 +350,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 	
 	private NotaFiscal fixtureNotaFiscalEmitida(String numero){
 		NotaFiscal nf = new NotaFiscal(new NotaFiscalId(numero));
-		nf.emitida();
+		nf.emitidaHomologacao();
 		return nf;
 	}
 	

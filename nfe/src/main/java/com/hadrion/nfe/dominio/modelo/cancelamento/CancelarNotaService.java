@@ -25,7 +25,7 @@ public class CancelarNotaService {
 	public void cancelarEmHomologacao(NotaFiscalId notaFiscalId) {
 		
 		if (!notaFiscalNaoNula(notaFiscalId).
-				estaCanceladaEmHomologacao())
+				estaAutorizadaEmHomologacao())
 			throw new IllegalArgumentException(
 					"Somente Nota Fiscal AUTORIZADA pode ser Cancelada.");
 		
@@ -43,7 +43,7 @@ public class CancelarNotaService {
 	public void cancelarEmProducao(NotaFiscalId notaFiscalId) {
 		
 		if (!notaFiscalNaoNula(notaFiscalId).
-				estaCanceladaEmHomologacao())
+				estaAutorizadaEmProducao())
 			throw new IllegalArgumentException(
 					"Somente Nota Fiscal AUTORIZADA pode ser Cancelada.");
 		

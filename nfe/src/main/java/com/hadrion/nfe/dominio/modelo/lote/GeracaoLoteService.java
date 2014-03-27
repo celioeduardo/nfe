@@ -51,7 +51,7 @@ public class GeracaoLoteService {
 					" não encontrada.");
 	}
 	private void assertNotaPendenteDeTransmissao(NotaFiscal nf){
-		if (!nf.pendenteDeTransmissao())
+		if (!nf.pendenteDeTransmissaoHomologacao())
 			throw new IllegalArgumentException(
 					"Nota Fiscal "+nf.notaFiscalId()+
 					" não está Pendente de Transmissão.");
