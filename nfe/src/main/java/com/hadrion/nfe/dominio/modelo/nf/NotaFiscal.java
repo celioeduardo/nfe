@@ -22,24 +22,20 @@ public class NotaFiscal {
 		this.situacaoHomologacao=Situacao.EMITIDA;
 	}
 	public void autorizadaHomologacao() {
-		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,
-				Situacao.EMITIDA);
+		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,Situacao.EMITIDA);
 		this.situacaoHomologacao=Situacao.AUTORIZADA;
 	}
 	public void canceladaHomologacao() {
-		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,
-				Situacao.AUTORIZADA);
+		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,Situacao.AUTORIZADA);
 		this.situacaoHomologacao=Situacao.CANCELADA;
 	}
 	public void inutilizadaHomologacao() {
-		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,
-				Situacao.EMITIDA);
+		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,Situacao.EMITIDA);
 		this.situacaoHomologacao=Situacao.INUTILIZADA;
 	}
 	public void denegadaHomologacao() {
-		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,
-				Situacao.EMITIDA);
-		this.situacaoHomologacao=Situacao.INUTILIZADA;
+		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,Situacao.EMITIDA);
+		this.situacaoHomologacao=Situacao.DENEGADA;
 	}
 	
 	private void assertSituacaoIgualHomologacao(String mensagem,Situacao... esperadas){
@@ -59,24 +55,20 @@ public class NotaFiscal {
 		this.situacaoProducao=Situacao.EMITIDA;
 	}
 	public void autorizadaProducao() {
-		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,
-				Situacao.EMITIDA);
+		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,Situacao.EMITIDA);
 		this.situacaoProducao=Situacao.AUTORIZADA;
 	}
 	public void canceladaProducao() {
-		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,
-				Situacao.AUTORIZADA);
+		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,Situacao.AUTORIZADA);
 		this.situacaoProducao=Situacao.CANCELADA;
 	}
 	public void inutilizadaProducao() {
-		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,
-				Situacao.EMITIDA);
+		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,Situacao.EMITIDA);
 		this.situacaoProducao=Situacao.INUTILIZADA;
 	}
 	public void denegadaProducao() {
-		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,
-				Situacao.EMITIDA);
-		this.situacaoProducao=Situacao.INUTILIZADA;
+		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,Situacao.EMITIDA);
+		this.situacaoProducao=Situacao.DENEGADA;
 	}
 	
 	private void assertSituacaoIgualProducao(String mensagem,Situacao... esperadas){

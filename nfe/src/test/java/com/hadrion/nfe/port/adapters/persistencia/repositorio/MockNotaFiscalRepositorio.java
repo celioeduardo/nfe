@@ -13,10 +13,10 @@ public class MockNotaFiscalRepositorio implements NotaFiscalRepositorio {
 	private Map<String,NotaFiscal> store=new HashMap<String, NotaFiscal>();
 	
 	@Override
-	public List<NotaFiscal> pendentesTransmissao() {
-		
+	public List<NotaFiscal> pendentesTransmissao() {		
 		return null;
 	}
+	
 	public void salvar(NotaFiscal notaFiscal){
 		store.put(notaFiscal.notaFiscalId().id(), notaFiscal);
 	}
