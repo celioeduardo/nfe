@@ -41,4 +41,9 @@ public class MockLoteRepositorio implements LoteRepositorio {
 		return result;
 	}
 
+	@Override
+	public void limpar() {
+		store.clear();
+	}
+
 } 

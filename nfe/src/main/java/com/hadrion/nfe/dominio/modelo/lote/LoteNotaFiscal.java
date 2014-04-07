@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
@@ -17,10 +18,27 @@ public class LoteNotaFiscal {
 	private NumeroProtocolo numeroProtocolo;
 	private Mensagem mensagem;
 	
-	public LoteNotaFiscal(NotaFiscalId notaFiscalId, 
+	public LoteNotaFiscal(NotaFiscal notaFiscal, 
 			Ambiente ambiente) {
 		super();
-		this.notaFiscalId = notaFiscalId;
+		
+		if (notaFiscal == null)
+			throw new IllegalArgumentException(
+					"Nota Fiscal não pode ser nula.");
+		
+		if (ambiente == Ambiente.HOMOLOGACAO && 
+				!notaFiscal.pendenteDeTransmissaoHomologacao())
+			throw new IllegalArgumentException(
+					"Nota Fiscal "+notaFiscal.notaFiscalId()+
+					" não está Pendente de Transmissão em Homologação.");
+		
+		if (ambiente == Ambiente.PRODUCAO && 
+				!notaFiscal.pendenteDeTransmissaoProducao())
+			throw new IllegalArgumentException(
+					"Nota Fiscal "+notaFiscal.notaFiscalId()+
+					" não está Pendente de Transmissão em Produção.");
+		
+		this.notaFiscalId = notaFiscal.notaFiscalId();
 		this.situacao = SituacaoLoteNotaFiscal.NAO_PROCESSADA;
 		this.ambiente = ambiente;
 	}

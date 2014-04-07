@@ -4,6 +4,7 @@ public interface SolicitacaoCancelamentoRepositorio {
 	
 	SolicitacaoCancelamentoId proximaIdentidade();
 	void salvar(SolicitacaoCancelamento solicitacaoCancelamento);
+	void limpar();
 	
 	
 }

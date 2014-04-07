@@ -7,8 +7,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.recepcao.MockRecepcaoLoteService;
 
@@ -18,12 +16,11 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	@Before
 	public void setup() throws Exception{
 		super.setUp();
-		notaFiscalRepositorio.salvar(fixtureNoteFiscal());
 	}
 	
 	@Test
 	public void enviar_com_sucesso(){
-		Lote lote = fixtureLoteNaoEnviado();
+		Lote lote = loteEmHomologacaoNaoEnviado();
 		EnviarLoteService enviarLoteService = new EnviarLoteService(
 				new MockRecepcaoLoteService("123456"));
 		enviarLoteService.enviar(lote);
@@ -35,7 +32,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	@Test
 	public void enviar_com_falha_consistencia(){
-		Lote lote = fixtureLoteNaoEnviado();
+		Lote lote = loteEmHomologacaoNaoEnviado();
 		EnviarLoteService enviarLoteService = new EnviarLoteService(
 				new MockRecepcaoLoteService(
 						new Mensagem(214, "Rejeição: Tamanho da mensagem excedeu o limite estabelecido")));
@@ -45,15 +42,11 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 		assertEquals(new Mensagem(214, "Rejeição: Tamanho da mensagem excedeu o limite estabelecido"),lote.mensagemErro());
 	}
 	
-	protected Lote fixtureLoteNaoEnviado() {
-		return geracaoLoteService.gerarLoteEmHomologacao(listaNotaFiscalId("1111"));
+	protected Lote loteEmHomologacaoNaoEnviado() {
+		Lote lote = geracaoLoteService.gerarLoteEmHomologacao(
+				notaEmitidaHomologacaoPersistidaParaTest("1111"));
+		loteRepositorio.salvar(lote);
+		return lote;
 	}
-	
-	private NotaFiscal fixtureNoteFiscal(){
-		NotaFiscal nf = new NotaFiscal(new NotaFiscalId("1111"));
-		nf.emitidaHomologacao();
-		return nf;
-	}
-	
 	
 }

@@ -10,4 +10,6 @@ public interface LoteRepositorio {
 	public void salvar(Lote lote);
 	public Set<Lote> lotesDaNota(NotaFiscalId notaFiscalId);
 	
+	public void limpar();
+	
 }

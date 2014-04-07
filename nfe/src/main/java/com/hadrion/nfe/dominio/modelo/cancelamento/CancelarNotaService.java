@@ -1,27 +1,24 @@
 package com.hadrion.nfe.dominio.modelo.cancelamento;
 
+import org.springframework.stereotype.Service;
+
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.portal.cancelamento.CancelamentoNfeService;
 import com.hadrion.nfe.dominio.modelo.portal.cancelamento.RetornoCancelamento;
 
+@Service
 public class CancelarNotaService {
-	
 	private CancelamentoNfeService cancelamentoNfeService;
-	private SolicitacaoCancelamentoRepositorio solicitacaoCancelamentoRepositorio;
-	private NotaFiscalRepositorio notafiscalRepositorio;
 	
-	public CancelarNotaService(
-			CancelamentoNfeService cancelamentoNfeService,
-			SolicitacaoCancelamentoRepositorio solicitacaoCancelamentoRepositorio,
-			NotaFiscalRepositorio notaFiscalRepositorio){
+	CancelarNotaService(){}
+	
+	void configurarCancelamentoNfeService(CancelamentoNfeService cancelamentoNfeService){
 		this.cancelamentoNfeService = cancelamentoNfeService;
-		this.solicitacaoCancelamentoRepositorio = solicitacaoCancelamentoRepositorio;
-		this.notafiscalRepositorio = notaFiscalRepositorio;
-	}  
-	
+	}
+
 	public void cancelarEmHomologacao(NotaFiscalId notaFiscalId) {
 		
 		if (!notaFiscalNaoNula(notaFiscalId).
@@ -30,7 +27,7 @@ public class CancelarNotaService {
 					"Somente Nota Fiscal AUTORIZADA pode ser Cancelada.");
 		
 		SolicitacaoCancelamento solicitacao = new SolicitacaoCancelamento(
-				solicitacaoCancelamentoRepositorio.proximaIdentidade(), 
+				DominioRegistro.solicitacaoCancelamentoRepositorio().proximaIdentidade(), 
 				Ambiente.HOMOLOGACAO, 
 				notaFiscalId);
 		
@@ -48,7 +45,7 @@ public class CancelarNotaService {
 					"Somente Nota Fiscal AUTORIZADA pode ser Cancelada.");
 		
 		SolicitacaoCancelamento solicitacao = new SolicitacaoCancelamento(
-				solicitacaoCancelamentoRepositorio.proximaIdentidade(), 
+				DominioRegistro.solicitacaoCancelamentoRepositorio().proximaIdentidade(), 
 				Ambiente.PRODUCAO, 
 				notaFiscalId);
 		
@@ -72,7 +69,7 @@ public class CancelarNotaService {
 	}
 	
 	private NotaFiscal notaFiscalNaoNula(NotaFiscalId notaFiscalId){
-		NotaFiscal nf = notafiscalRepositorio.notaFiscalPeloId(notaFiscalId);
+		NotaFiscal nf = DominioRegistro.notaFiscalRepositorio().notaFiscalPeloId(notaFiscalId);
 		if (nf == null)
 			throw new IllegalArgumentException("Nota Fiscal inexistente.");
 		return nf; 

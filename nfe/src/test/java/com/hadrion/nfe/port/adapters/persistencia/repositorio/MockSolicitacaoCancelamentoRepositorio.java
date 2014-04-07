@@ -4,10 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
+
 import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamento;
 import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamentoId;
 import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamentoRepositorio;
 
+@Profile("teste")
+@Repository("solicitacaoCancelamentoRepositorio")
 public class MockSolicitacaoCancelamentoRepositorio  implements SolicitacaoCancelamentoRepositorio {
 
 	private Map<String,SolicitacaoCancelamento> store= new HashMap<String, SolicitacaoCancelamento>();
@@ -22,6 +27,11 @@ public class MockSolicitacaoCancelamentoRepositorio  implements SolicitacaoCance
 	public void salvar(SolicitacaoCancelamento solicitacaoCancelamento) {
 		store.put(solicitacaoCancelamento.solicitacaoCancelamentoId().toString(), 
 				solicitacaoCancelamento);		
+	}
+
+	@Override
+	public void limpar() {
+		store.clear();
 	}
 
 }

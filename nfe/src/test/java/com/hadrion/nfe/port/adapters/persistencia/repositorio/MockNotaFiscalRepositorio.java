@@ -29,4 +29,10 @@ public class MockNotaFiscalRepositorio implements NotaFiscalRepositorio {
 	public NotaFiscal notaFiscalPeloId(NotaFiscalId notaFiscalId){
 		return store.get(notaFiscalId.id());
 	}
+
+	@Override
+	public void limpar() {
+		store.clear();
+	}
+	
 } 

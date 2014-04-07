@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
@@ -28,16 +29,31 @@ public class Lote {
 	protected Lote(){
 		
 	}
-
-	public static Lote gerarEmHomologacao(Set<NotaFiscalId> lista,
+	
+	public static Lote gerarEmHomologacao(NotaFiscal nota,
 			LoteRepositorio loteRepositorio) {
+		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
+		notas.add(nota);
+		return gerarEmHomologacao(notas, loteRepositorio);
+	}
+	
+	public static Lote gerarEmHomologacao(Set<NotaFiscal> lista,
+			LoteRepositorio loteRepositorio) {
+		
 		return new Lote(
 				loteRepositorio.proximaIdentidade(),
 				lista,
 				Ambiente.HOMOLOGACAO);
 	}
-
-	public static Lote gerarEmProducao(Set<NotaFiscalId> lista,
+	
+	public static Lote gerarEmProducao(NotaFiscal nota,
+			LoteRepositorio loteRepositorio) {
+		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
+		notas.add(nota);
+		return gerarEmProducao(notas, loteRepositorio);
+	}
+	
+	public static Lote gerarEmProducao(Set<NotaFiscal> lista,
 			LoteRepositorio loteRepositorio) {
 		return new Lote(
 				loteRepositorio.proximaIdentidade(),
@@ -47,16 +63,17 @@ public class Lote {
 	
 	private Lote(
 			LoteId loteId,
-			Set<NotaFiscalId> notasId,
+			Set<NotaFiscal> notas,
 			Ambiente ambiente){
+		
 		this.loteId = loteId;
 		this.situacao = SituacaoLote.NAO_ENVIADO;
 		this.notas = new HashSet<LoteNotaFiscal>();
 		this.ambiente = ambiente;
 		
-		for (NotaFiscalId notaFiscalId : notasId)
+		for (NotaFiscal notaFiscal : notas)
 			this.notas.add(
-					new LoteNotaFiscal(notaFiscalId,ambiente));
+					new LoteNotaFiscal(notaFiscal,ambiente));
 	}
 
 	public LoteId loteId(){

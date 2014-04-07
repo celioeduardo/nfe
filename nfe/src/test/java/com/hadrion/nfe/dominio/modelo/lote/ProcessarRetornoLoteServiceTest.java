@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,10 +31,8 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 	private List<NotaFiscalId> listaNotaFiscalId;
 	
 	@Before
-	public void setUp(){
-		notaFiscalRepositorio.salvar(fixtureNotaFiscalEmitida("1111"));
-		notaFiscalRepositorio.salvar(fixtureNotaFiscalEmitida("1112"));
-		EventoDominioPublicador.instancia().reset();
+	public void setup() throws Exception{
+		super.setUp();
 	}
 	
 	@Test
@@ -329,20 +329,21 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 	}
 	
 	protected Lote fixtureLoteProcessandoEmHomologacao() {
-		Lote lote = geracaoLoteService.gerarLoteEmHomologacao(listaNotaFiscalId("1111","1112"));
+		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
+		notas.add(notaEmitidaHomologacaoPersistidaParaTest("1111"));
+		notas.add(notaEmitidaHomologacaoPersistidaParaTest("1112"));
+		Lote lote = geracaoLoteService.gerarLoteEmHomologacao(notas);
 		lote.recebido(new NumeroReciboLote("123456"));
 		return lote;
 	}
 	protected Lote fixtureLoteProcessandoEmProducao() {
-		Lote lote = geracaoLoteService.gerarLoteEmProducao(listaNotaFiscalId("1111","1112"));
+		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
+		notas.add(notaEmitidaProducaoPersistidaParaTest("1111"));
+		notas.add(notaEmitidaProducaoPersistidaParaTest("1112"));
+		Lote lote = geracaoLoteService.gerarLoteEmProducao(notas);
 		lote.recebido(new NumeroReciboLote("654321"));
 		return lote;
 	}
 	
-	private NotaFiscal fixtureNotaFiscalEmitida(String numero){
-		NotaFiscal nf = new NotaFiscal(new NotaFiscalId(numero));
-		nf.emitidaHomologacao();
-		return nf;
-	}
 	
 }

@@ -16,17 +16,16 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 	
 	@Before
-	public void setup(){
-		for (NotaFiscal nf : fixtureNotasPendentesDeTransmissao()) 
-			notaFiscalRepositorio.salvar(nf);
+	public void setup() throws Exception{
+		super.setUp();
 	}
 	
 	@Test
 	public void gerar_lote_nota_em_homologacao_que_esta_em_producao(){
 		
-		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
-		notas.add(new NotaFiscalId("1111"));
-		notas.add(new NotaFiscalId("1112"));
+		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
+		notas.add(notaEmitidaProducao_e_HomologacaoPersistidaParaTest("1111"));
+		notas.add(notaEmitidaProducao_e_HomologacaoPersistidaParaTest("1112"));
 		
 		Lote loteEmHomologacao = geracaoLoteService.gerarLoteEmHomologacao(notas);
 		loteRepositorio.salvar(loteEmHomologacao);
@@ -46,9 +45,9 @@ public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 	@Test
 	public void gerar_lote_nota_em_producao_que_esta_em_homologacao(){
 		
-		Set<NotaFiscalId> notas = new HashSet<NotaFiscalId>();
-		notas.add(new NotaFiscalId("1111"));
-		notas.add(new NotaFiscalId("1112"));
+		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
+		notas.add(notaEmitidaProducao_e_HomologacaoPersistidaParaTest("1111"));
+		notas.add(notaEmitidaProducao_e_HomologacaoPersistidaParaTest("1112"));
 		
 		Lote loteEmProducao = geracaoLoteService.gerarLoteEmProducao(notas);
 		loteRepositorio.salvar(loteEmProducao);
@@ -65,18 +64,12 @@ public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 		
 	}
 	
-	private Set<NotaFiscal> fixtureNotasPendentesDeTransmissao(){
-		Set<NotaFiscal> result = new HashSet<NotaFiscal>();
-		
-		NotaFiscal nf = new NotaFiscal(new NotaFiscalId("1111"));
+	private NotaFiscal notaEmitidaProducao_e_HomologacaoPersistidaParaTest(String id){
+		NotaFiscal nf = new NotaFiscal(new NotaFiscalId(id));
 		nf.emitidaHomologacao();
-		result.add(nf);
-		
-		nf = new NotaFiscal(new NotaFiscalId("1112"));
-		nf.emitidaHomologacao();
-		result.add(nf);
-		
-		return result;
+		nf.emitidaProducao();
+		notaFiscalRepositorio.salvar(nf);
+		return nf;
 	}
 	
 }
