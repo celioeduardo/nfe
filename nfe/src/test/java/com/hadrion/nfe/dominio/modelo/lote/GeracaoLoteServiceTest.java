@@ -11,25 +11,14 @@ import org.junit.Test;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockLoteRepositorio;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockNotaFiscalRepositorio;
 
 
 public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
-	private GeracaoLoteService loteService;
 	
 	@Before
 	public void setup(){
-		
-		notaFiscalRepositorio = new MockNotaFiscalRepositorio();
-		loteRepositorio = new MockLoteRepositorio();
-		
 		for (NotaFiscal nf : fixtureNotasPendentesDeTransmissao()) 
 			notaFiscalRepositorio.salvar(nf);
-		
-		loteService = new GeracaoLoteService(
-				loteRepositorio,
-				notaFiscalRepositorio);
 	}
 	
 	@Test
@@ -39,12 +28,12 @@ public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 		notas.add(new NotaFiscalId("1111"));
 		notas.add(new NotaFiscalId("1112"));
 		
-		Lote loteEmHomologacao = loteService.gerarLoteEmHomologacao(notas);
+		Lote loteEmHomologacao = geracaoLoteService.gerarLoteEmHomologacao(notas);
 		loteRepositorio.salvar(loteEmHomologacao);
 		assertEquals(2,loteEmHomologacao.quantidadeNotas());
 		assertEquals(loteEmHomologacao.ambiente(),Ambiente.HOMOLOGACAO);
 		
-		Lote loteEmProducao = loteService.gerarLoteEmProducao(notas);
+		Lote loteEmProducao = geracaoLoteService.gerarLoteEmProducao(notas);
 		loteRepositorio.salvar(loteEmProducao);
 		assertEquals(2,loteEmProducao.quantidadeNotas());
 		assertEquals(loteEmProducao.ambiente(),Ambiente.PRODUCAO);
@@ -61,12 +50,12 @@ public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 		notas.add(new NotaFiscalId("1111"));
 		notas.add(new NotaFiscalId("1112"));
 		
-		Lote loteEmProducao = loteService.gerarLoteEmProducao(notas);
+		Lote loteEmProducao = geracaoLoteService.gerarLoteEmProducao(notas);
 		loteRepositorio.salvar(loteEmProducao);
 		assertEquals(2,loteEmProducao.quantidadeNotas());
 		assertEquals(loteEmProducao.ambiente(),Ambiente.PRODUCAO);
 		
-		Lote loteEmHomologacao = loteService.gerarLoteEmHomologacao(notas);
+		Lote loteEmHomologacao = geracaoLoteService.gerarLoteEmHomologacao(notas);
 		loteRepositorio.salvar(loteEmHomologacao);
 		assertEquals(2,loteEmHomologacao.quantidadeNotas());
 		assertEquals(loteEmHomologacao.ambiente(),Ambiente.HOMOLOGACAO);

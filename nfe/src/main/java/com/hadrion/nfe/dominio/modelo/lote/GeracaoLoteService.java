@@ -2,22 +2,21 @@ package com.hadrion.nfe.dominio.modelo.lote;
 
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
+@Service
 public class GeracaoLoteService {
 	
+	@Autowired
 	private NotaFiscalRepositorio notaFiscalRepositorio;
+	@Autowired
 	private LoteRepositorio loteRepositorio;
-	
-	public GeracaoLoteService(
-			LoteRepositorio loteRepositorio,
-			NotaFiscalRepositorio notaFiscalRepositorio){
-		this.loteRepositorio=loteRepositorio;
-		this.notaFiscalRepositorio=notaFiscalRepositorio;
-	}
 	
 	public Lote gerarLoteEmHomologacao(Set<NotaFiscalId> notas){
 		assertPreCondicoes(notas, Ambiente.HOMOLOGACAO);		

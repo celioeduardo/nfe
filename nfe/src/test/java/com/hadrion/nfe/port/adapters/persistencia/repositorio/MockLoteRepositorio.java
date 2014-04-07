@@ -6,11 +6,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
+
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.LoteId;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 
+@Profile("teste")
+@Repository("loteRepositorio")
 public class MockLoteRepositorio implements LoteRepositorio {
 
 	private Map<String,Lote> store=new HashMap<String, Lote>();

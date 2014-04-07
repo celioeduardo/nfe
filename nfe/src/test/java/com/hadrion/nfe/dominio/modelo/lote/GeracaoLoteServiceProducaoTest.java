@@ -11,8 +11,6 @@ import org.junit.Test;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockLoteRepositorio;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockNotaFiscalRepositorio;
 
 
 public class GeracaoLoteServiceProducaoTest extends AbstractLoteServiceTest {
@@ -21,9 +19,6 @@ public class GeracaoLoteServiceProducaoTest extends AbstractLoteServiceTest {
 	@Before
 	public void setup(){
 		
-		notaFiscalRepositorio = new MockNotaFiscalRepositorio();
-		loteRepositorio = new MockLoteRepositorio();
-		
 		for (NotaFiscal nf : fixtureNotasPendentesDeTransmissao()) 
 			notaFiscalRepositorio.salvar(nf);
 		
@@ -31,10 +26,6 @@ public class GeracaoLoteServiceProducaoTest extends AbstractLoteServiceTest {
 		notaFiscalRepositorio.salvar(fixtureNotaCancelada());
 		notaFiscalRepositorio.salvar(fixtureNotaInutilizada());
 		notaFiscalRepositorio.salvar(fixtureNotaDenegada());
-		
-		loteService = new GeracaoLoteService(
-				loteRepositorio,
-				notaFiscalRepositorio);
 		
 		loteRepositorio.salvar(fixtureLoteNaoEnviado());
 		loteRepositorio.salvar(fixtureLoteProcessando());

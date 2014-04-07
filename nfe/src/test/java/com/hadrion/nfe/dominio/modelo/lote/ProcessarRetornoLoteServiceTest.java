@@ -1,6 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,25 +23,15 @@ import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.ConsultaProcessamentoLoteService;
 import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.ProtocoloNotaProcessada;
 import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.RetornoConsultaProcessamentoLote;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockLoteRepositorio;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.MockNotaFiscalRepositorio;
 
 public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
-	
-	private GeracaoLoteService geracaoLoteService;
 	
 	private List<NotaFiscalId> listaNotaFiscalId;
 	
 	@Before
 	public void setUp(){
-		notaFiscalRepositorio = new MockNotaFiscalRepositorio();
-		loteRepositorio = new MockLoteRepositorio();
-		geracaoLoteService = new GeracaoLoteService(
-				loteRepositorio, notaFiscalRepositorio);
-		
 		notaFiscalRepositorio.salvar(fixtureNotaFiscalEmitida("1111"));
 		notaFiscalRepositorio.salvar(fixtureNotaFiscalEmitida("1112"));
-		
 		EventoDominioPublicador.instancia().reset();
 	}
 	
