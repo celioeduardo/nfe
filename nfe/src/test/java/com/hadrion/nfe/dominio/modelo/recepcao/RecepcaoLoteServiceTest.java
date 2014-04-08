@@ -19,14 +19,14 @@ public class RecepcaoLoteServiceTest {
 	}
 	
 	@Test
-	public void recepcionarLoteComSucesso(){
+	public void recepcionarLoteComSucesso() throws Throwable{
 		Lote lote = fixtureLote();
 		RecepcaoLoteService recepcaoLoteService = new MockRecepcaoLoteService("123456");
 		RetornoRecepcaoLote retorno = recepcaoLoteService.recepcionar(lote);
 		assertEquals(new NumeroReciboLote("123456"), retorno.recibo().numero());
 	} 
 	@Test
-	public void recepcionarLoteComFracasso(){
+	public void recepcionarLoteComFracasso() throws Throwable{
 		Lote lote = fixtureLote();
 		RecepcaoLoteService recepcaoLoteService = new MockRecepcaoLoteService(
 				new Mensagem(123, "facasso"));

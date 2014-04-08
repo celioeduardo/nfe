@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
@@ -30,33 +31,29 @@ public class Lote {
 		
 	}
 	
-	public static Lote gerarEmHomologacao(NotaFiscal nota,
-			LoteRepositorio loteRepositorio) {
+	public static Lote gerarEmHomologacao(NotaFiscal nota) {
 		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
 		notas.add(nota);
-		return gerarEmHomologacao(notas, loteRepositorio);
+		return gerarEmHomologacao(notas);
 	}
 	
-	public static Lote gerarEmHomologacao(Set<NotaFiscal> lista,
-			LoteRepositorio loteRepositorio) {
+	public static Lote gerarEmHomologacao(Set<NotaFiscal> lista) {
 		
 		return new Lote(
-				loteRepositorio.proximaIdentidade(),
+				DominioRegistro.loteRepositorio().proximaIdentidade(),
 				lista,
 				Ambiente.HOMOLOGACAO);
 	}
 	
-	public static Lote gerarEmProducao(NotaFiscal nota,
-			LoteRepositorio loteRepositorio) {
+	public static Lote gerarEmProducao(NotaFiscal nota) {
 		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
 		notas.add(nota);
-		return gerarEmProducao(notas, loteRepositorio);
+		return gerarEmProducao(notas);
 	}
 	
-	public static Lote gerarEmProducao(Set<NotaFiscal> lista,
-			LoteRepositorio loteRepositorio) {
+	public static Lote gerarEmProducao(Set<NotaFiscal> lista) {
 		return new Lote(
-				loteRepositorio.proximaIdentidade(),
+				DominioRegistro.loteRepositorio().proximaIdentidade(),
 				lista,
 				Ambiente.PRODUCAO);
 	}
@@ -131,7 +128,7 @@ public class Lote {
 		return this.numeroRecibo;
 	}
 	
-	public void recebido(NumeroReciboLote numeroRecibo){
+	public void transmitido(NumeroReciboLote numeroRecibo){
 		this.numeroRecibo = numeroRecibo;
 		processando();
 	}
@@ -228,5 +225,18 @@ public class Lote {
 
 	public Ambiente ambiente() {
 		return ambiente;
+	}
+
+	public boolean comErroTransmissao() {
+		return situacao == SituacaoLote.ERRO_TRANSMISSAO;
+	}
+
+	public void erroTransmissao(Mensagem erro) {
+		this.mensagemErro = erro;
+		if (situacao != SituacaoLote.NAO_ENVIADO)
+			throw new UnsupportedOperationException(
+					"Lote não pode ser definido para Erro de Transmissão."
+					+ "Situação é diferente de Não Enviado."); 
+		this.situacao = SituacaoLote.ERRO_TRANSMISSAO;
 	}
 }

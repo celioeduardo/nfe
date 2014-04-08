@@ -333,7 +333,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		notas.add(notaEmitidaHomologacaoPersistidaParaTest("1111"));
 		notas.add(notaEmitidaHomologacaoPersistidaParaTest("1112"));
 		Lote lote = geracaoLoteService.gerarLoteEmHomologacao(notas);
-		lote.recebido(new NumeroReciboLote("123456"));
+		lote.transmitido(new NumeroReciboLote("123456"));
 		return lote;
 	}
 	protected Lote fixtureLoteProcessandoEmProducao() {
@@ -341,7 +341,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		notas.add(notaEmitidaProducaoPersistidaParaTest("1111"));
 		notas.add(notaEmitidaProducaoPersistidaParaTest("1112"));
 		Lote lote = geracaoLoteService.gerarLoteEmProducao(notas);
-		lote.recebido(new NumeroReciboLote("654321"));
+		lote.transmitido(new NumeroReciboLote("654321"));
 		return lote;
 	}
 	

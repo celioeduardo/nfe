@@ -73,14 +73,14 @@ public class GeracaoLoteServiceProducaoTest extends AbstractLoteServiceTest {
 	}
 	
 	protected Lote loteGeradoEmProducaoPersistidoParaTest(NotaFiscal nf){
-		Lote lote = Lote.gerarEmProducao(nf, loteRepositorio);
+		Lote lote = Lote.gerarEmProducao(nf);
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
 	
 	protected Lote loteProcessadoPersistidoParaTest(NotaFiscal nf){
-		Lote lote = Lote.gerarEmProducao(nf, loteRepositorio);
-		lote.recebido(new NumeroReciboLote(""));
+		Lote lote = Lote.gerarEmProducao(nf);
+		lote.transmitido(new NumeroReciboLote(""));
 		loteRepositorio.salvar(lote);
 		return lote;
 	}

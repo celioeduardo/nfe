@@ -1,3 +1,7 @@
+Requisitos
+--permitir envio de notas em ambiente diferente do lote ja existente
+Emissao de lote somente com notas do mesmo ambiente 
+
 =======================================================
 
 Caso de Uso: Geração de Lote em Homologação

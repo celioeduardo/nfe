@@ -4,5 +4,5 @@ import com.hadrion.nfe.dominio.modelo.lote.Lote;
 
 public interface RecepcaoLoteService {
 	
-	RetornoRecepcaoLote recepcionar(Lote lote);
+	RetornoRecepcaoLote recepcionar(Lote lote) throws Throwable ;
 }

@@ -18,7 +18,7 @@ public class LoteNotaFiscal {
 	private NumeroProtocolo numeroProtocolo;
 	private Mensagem mensagem;
 	
-	public LoteNotaFiscal(NotaFiscal notaFiscal, 
+	LoteNotaFiscal(NotaFiscal notaFiscal, 
 			Ambiente ambiente) {
 		super();
 		

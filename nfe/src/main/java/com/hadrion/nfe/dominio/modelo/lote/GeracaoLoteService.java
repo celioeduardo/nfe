@@ -25,7 +25,7 @@ public class GeracaoLoteService {
 	}
 	public Lote gerarLoteEmHomologacao(Set<NotaFiscal> notas){
 		assertPreCondicoes(notas, Ambiente.HOMOLOGACAO);		
-		return Lote.gerarEmHomologacao(notas,loteRepositorio);
+		return Lote.gerarEmHomologacao(notas);
 	}
 	
 	public Lote gerarLoteEmProducao(NotaFiscal nota) {
@@ -36,7 +36,7 @@ public class GeracaoLoteService {
 	
 	public Lote gerarLoteEmProducao(Set<NotaFiscal> notas) {
 		assertPreCondicoes(notas, Ambiente.PRODUCAO);
-		return Lote.gerarEmProducao(notas, loteRepositorio);
+		return Lote.gerarEmProducao(notas);
 	}
 	
 	private void assertPreCondicoes(Set<NotaFiscal> notas, Ambiente ambiente){

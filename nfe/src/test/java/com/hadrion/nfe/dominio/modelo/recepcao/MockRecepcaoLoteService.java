@@ -11,7 +11,7 @@ public class MockRecepcaoLoteService implements RecepcaoLoteService{
 	
 	private Mensagem erro;
 	private NumeroReciboLote numeroReciboLote;
-	
+	private Throwable erroTransmissao;
 	
 	public MockRecepcaoLoteService(
 			Mensagem erro){
@@ -22,9 +22,15 @@ public class MockRecepcaoLoteService implements RecepcaoLoteService{
 			String numeroReciboLote){
 		this.numeroReciboLote = new NumeroReciboLote(numeroReciboLote);
 	}
-	
+
+	public MockRecepcaoLoteService(
+			Throwable erroTransmissao){
+		this.erroTransmissao = erroTransmissao;
+	}
 	@Override
-	public RetornoRecepcaoLote recepcionar(Lote lote) {
+	public RetornoRecepcaoLote recepcionar(Lote lote) throws Throwable {
+		if (erroTransmissao != null)
+			throw erroTransmissao;
 		return numeroReciboLote != null ?
 				new RetornoRecepcaoLote(
 						new ReciboLote(numeroReciboLote)) :

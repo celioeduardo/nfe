@@ -73,14 +73,14 @@ public class GeracaoLoteServiceHomologacaoTest extends AbstractLoteServiceTest {
 	}
 	
 	protected Lote loteGeradoEmHomologacaoPersistidoParaTest(NotaFiscal nf){
-		Lote lote = Lote.gerarEmHomologacao(nf, loteRepositorio);
+		Lote lote = Lote.gerarEmHomologacao(nf);
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
 	
 	protected Lote loteProcessadoPersistidoParaTest(NotaFiscal nf){
-		Lote lote = Lote.gerarEmHomologacao(nf, loteRepositorio);
-		lote.recebido(new NumeroReciboLote(""));
+		Lote lote = Lote.gerarEmHomologacao(nf);
+		lote.transmitido(new NumeroReciboLote(""));
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
