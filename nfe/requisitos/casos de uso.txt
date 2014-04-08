@@ -1,0 +1,102 @@
+=======================================================
+
+Caso de Uso: Geração de Lote em Homologação
+Pré-condições:
+	As Notas do Lote precisam estar pendentes de transmissão no Ambiente de Homologação.
+	Nenhuma Nota pode estar pendente em outro Lote no Ambiente de Homologação.
+	
+Cenário de Sucesso Principal:
+	1 - O sistema cria o Lote com as Notas informadas.
+
+Extensões:	
+
+=======================================================
+
+Caso de Uso: Geração de Lote em Produção
+Pré-condições:
+	As Notas do Lote precisam estar pendentes de transmissão no Ambiente de Produção.
+	Nenhuma Nota pode estar pendente em outro Lote no Ambiente de Produção.
+	
+Cenário de Sucesso Principal:
+	1 - O sistema cria o Lote com as Notas informadas.
+
+Extensões:	
+
+
+=======================================================
+
+Caso de Uso: Enviar Lote
+Pré-condições
+	Lote está como Não Enviado
+	O mesmo Lote não pode estar sendo enviado paralelamente.
+
+Cenário de Sucesso Principal:
+	1 - Usuário solicita o envio do Lote
+	2 - O sistema chama o serviço remoto de Recepção de Lote da Receita 
+	3 - O sistema obtêm o Recibo do Lote.
+	4 - O sistema atualiza o Lote com o Número do Recibo.
+	5 - O sistema define o Lote como Em Processamento.
+
+Extensões:	
+3a Falha de Consistência:
+	3a1 - O sistema não define o Número do Recibo do Lote
+	3a2 - O sistema define o Lote como Falha de Consistencia
+	
+=======================================================
+
+Caso de Uso: Recepcionar Lote
+Pré-condições
+	
+Cenário de Sucesso Principal:
+	1 - O sistema faz a chamada da Recepção do Lote da Receita passando a Lote
+	2 - O sistema retorna a Recibo do Lote com o Número do Recibo
+
+Extensões:	
+2a Falha de Consistência:
+	2a1 - O sistema não retorna o Recibo do Lote
+
+
+=======================================================
+
+Caso de Uso: Processar Retorno Envio Lote
+Pré-condições
+	Lote precisa ter o Número do Recibo preenchido.
+	Lote precisa estar Em Processamento
+
+Cenário de Sucesso Principal:
+	1 - O sistema chama o serviço remoto de Consulta de Processamento de Lote
+	2 - O sistema obtêm o Retorno da Consulta de Processamento
+	3 - O sistema preenche a mensagem de Resposta no Lote
+	4 - O sistema preenche a mensagem da Sefaz no Lote
+	5 - O sistema obtêm os Protocolos das Notas do Lote
+	6 - Para cada Nota do Lote o sistema preenche: 
+		Data e Hora de Processamento
+		Número do Protocolo da NFe
+		Mensagem de Retorno
+	7 - Para cada Nota do Lote o sistema atualiza a situação da Nota
+	8 - Para cada Nota do Lote o sistema notifica a situação da Nota no Ambiente processado.
+	9 - O sistema atualiza a situação do Lote para Processado.
+	
+Extensões:
+	2a Falha de consistência do Lote
+		2a1 - O sistema obtêm o Retorno da Consulta de Processamento
+		2a2 - O sistema atribui a mensagem de erro ao Lote
+		2a3 - O sistema define a situação do Lote como Inconsistente.
+	2b Lote continua Em Processamento
+		2b1 - O sistema mantêm a situação do Lote Em Processamento.
+		
+=======================================================
+
+Caso de Uso: Cancelar Nota em Homologação
+Pré-condições
+	Nota Fiscal tem que estar Autorizada no Ambiente de Homologação
+	
+Cenário de Sucesso Principal:
+	1 - O sistema chama o serviço remoto de Cancelamento de Nota
+	2 - O sistema obtêm o Retorno da Solicitação do Cancelamento
+	3 - O sistema preenche a Data e Hora de Processamento
+	4 - O sistema preenche a Mensagem de Retorno
+	5 - O sistema preenche o Número do Protocolo de Cancelamento
+	6 - O sistema define a Nota como Cancelada em Homologação
+	
+Extensões:
