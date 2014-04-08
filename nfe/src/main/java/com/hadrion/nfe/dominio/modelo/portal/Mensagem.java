@@ -23,6 +23,14 @@ public class Mensagem {
 	public String descricao(){
 		return descricao;
 	}
+
+	public boolean notaAutorizada(){
+		return codigo() == 100;
+	}
+	
+	public boolean notaDenegada(){
+		return codigo() == 110;
+	}
 	
 	public boolean cancelamentoHomologado(){
 		return codigo() == 101;

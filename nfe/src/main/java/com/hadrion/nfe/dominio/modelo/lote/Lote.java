@@ -168,11 +168,14 @@ public class Lote {
 		return situacao == SituacaoLote.PROCESSADO;
 	}
 
-	public void processado(Mensagem mensagem, 
+	public void processado(
+			Mensagem mensagem, 
 			MensagemSefaz mensagemSefaz, 
 			List<ProtocoloNotaProcessada> protocolos) {
+		
 		this.setMensagemProcessamento(mensagem);
 		this.setMensagemSefaz(mensagemSefaz);
+		
 		for (ProtocoloNotaProcessada protocolo : protocolos) 
 			this.processarNotaPeloProtocolo(protocolo);
 		this.mudarParaProcessado();
@@ -185,8 +188,7 @@ public class Lote {
 	private void processarNotaPeloProtocolo(
 			ProtocoloNotaProcessada protocolo){
 		
-		LoteNotaFiscal loteNotaFiscal = 
-				loteNotaFiscal(protocolo.notaFiscalId());
+		LoteNotaFiscal loteNotaFiscal = loteNotaFiscal(protocolo.notaFiscalId());
 		if (loteNotaFiscal != null)
 			loteNotaFiscal.processar(protocolo);
 	}

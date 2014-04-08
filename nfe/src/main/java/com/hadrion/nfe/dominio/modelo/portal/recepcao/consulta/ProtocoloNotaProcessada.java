@@ -24,11 +24,11 @@ public class ProtocoloNotaProcessada {
 	}
 	
 	public boolean notaAutorizada(){
-		return mensagem.codigo() == 100;
+		return mensagem.notaAutorizada();
 	}
 	
 	public boolean notaDenegada(){
-		return mensagem.codigo() == 110;
+		return mensagem.notaDenegada();
 	}
 	
 	

@@ -10,7 +10,6 @@ import org.junit.Test;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.recepcao.MockRecepcaoLoteService;
 
-
 public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	@Before
@@ -47,6 +46,5 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 				notaEmitidaHomologacaoPersistidaParaTest("1111"));
 		loteRepositorio.salvar(lote);
 		return lote;
-	}
-	
+	}	
 }
