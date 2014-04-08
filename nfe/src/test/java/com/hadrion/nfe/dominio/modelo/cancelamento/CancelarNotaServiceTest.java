@@ -21,44 +21,31 @@ public class CancelarNotaServiceTest extends DominioTest {
 	
 	@Test
 	public void cancelar_nota_autorizada_em_homologacao(){
-		notaFiscalRepositorio.salvar(fixtureNotaAutorizadaEmHomologacao("1111"));
-		cancelarNotaService.cancelarEmHomologacao(new NotaFiscalId("1111"));
+		NotaFiscal nota= notaAutorizadaHomologacaoPersistidaParaTest("1111");
+		cancelarNotaService.cancelarEmHomologacao(nota);
 		eventosEsperados(1);
 		eventoEsperado(CancelamentoHomologado.class);
 	}
 	
 	@Test
 	public void cancelar_nota_autorizada_em_producao(){
-		notaFiscalRepositorio.salvar(fixtureNotaAutorizadaEmProducao("1111"));
-		cancelarNotaService.cancelarEmProducao(new NotaFiscalId("1111"));
+		NotaFiscal nota = notaAutorizadaProducaoPersistidaParaTest("1111");
+		cancelarNotaService.cancelarEmProducao(nota);
 		eventosEsperados(1);
 		eventoEsperado(CancelamentoHomologado.class);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nao_cancelar_em_homologacao_nota_emitida(){
-		notaFiscalRepositorio.salvar(this.fixtureNotaEmitida("10"));
-		cancelarNotaService.cancelarEmHomologacao(new NotaFiscalId("10"));
+		NotaFiscal nota = notaEmitidaHomologacaoPersistidaParaTest("10");
+		cancelarNotaService.cancelarEmHomologacao(nota);
 	} 
 	
-	private NotaFiscal fixtureNotaEmitida(String numero){
-		NotaFiscal nf = new NotaFiscal(new NotaFiscalId(numero));
-		nf.emitidaHomologacao();
-		return nf;
-	}
-	
-	private NotaFiscal fixtureNotaAutorizadaEmHomologacao(String numero){
-		NotaFiscal nf = new NotaFiscal(new NotaFiscalId(numero));
-		nf.emitidaHomologacao();
-		nf.autorizadaHomologacao();
-		return nf;
-	}
-	private NotaFiscal fixtureNotaAutorizadaEmProducao(String numero){
-		NotaFiscal nf = new NotaFiscal(new NotaFiscalId(numero));
-		nf.emitidaProducao();
-		nf.autorizadaProducao();
-		return nf;
-	}
+	@Test(expected=IllegalArgumentException.class)
+	public void nao_cancelar_em_producao_nota_emitida(){
+		NotaFiscal nota = notaEmitidaProducaoPersistidaParaTest("10");
+		cancelarNotaService.cancelarEmProducao(nota);
+	} 
 	
 	
 }
