@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +15,6 @@ import org.junit.Test;
 import com.hadrion.comum.dominio.modelo.EventoDominioAssinante;
 import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
@@ -36,7 +33,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 	}
 	
 	@Test
-	public void lote_processado(){
+	public void lote_processado_em_homologacao(){
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
@@ -47,13 +44,15 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
 				});
-		Lote lote = fixtureLoteProcessandoEmHomologacao();
+
+		Lote lote = LoteProcessandoEmHomologacaoPersistidoParaTest(
+						notaEmitidaHomologacaoPersistidaParaTest("1234"));
 		processarRetorno.processar(lote);
 		assertTrue("Lote deve estar processado.",lote.estaProcessado());
 	}
 	
 	@Test
-	public void lote_processando(){
+	public void lote_processando_em_homologacao(){
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
@@ -64,13 +63,14 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
 				});
-		Lote lote = fixtureLoteProcessandoEmHomologacao();
+		Lote lote = LoteProcessandoEmHomologacaoPersistidoParaTest(
+						notaEmitidaHomologacaoPersistidaParaTest("1234"));
 		processarRetorno.processar(lote);
 		assertTrue("Lote deve estar processando.",lote.estaProcessando());
 	}
 	
 	@Test
-	public void lote_inconsistente(){
+	public void lote_inconsistente_em_homologacao(){
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
@@ -81,7 +81,8 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
 				});
-		Lote lote = fixtureLoteProcessandoEmHomologacao();
+		Lote lote = LoteProcessandoEmHomologacaoPersistidoParaTest(
+						notaEmitidaHomologacaoPersistidaParaTest("1234"));
 		processarRetorno.processar(lote);
 		assertTrue("Lote deve estar inconsistente.",lote.estaInconsistente());
 	}
@@ -129,69 +130,16 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 					}
 		});
 		
-		Lote lote = fixtureLoteProcessandoEmHomologacao();
+		Lote lote = LoteProcessandoEmHomologacaoPersistidoParaTest(
+						notaEmitidaHomologacaoPersistidaParaTest("1111"));
 		processarRetorno.processar(lote);
 		assertTrue("Lote processado.",lote.estaProcessado());
 		assertTrue("Nota está autorizada",lote.estaAutorizada(new NotaFiscalId("1111")));
-		assertTrue("Nota está autorizada",lote.estaAutorizada(new NotaFiscalId("1112")));
 		assertTrue("Evento disparado", listaNotaFiscalId.contains(new NotaFiscalId("1111")));
-		assertTrue("Evento disparado", listaNotaFiscalId.contains(new NotaFiscalId("1112")));
 	}
 	
 	@Test
-	public void notas_autorizadas_em_producao(){
-		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
-				new ConsultaProcessamentoLoteService() {
-					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
-						List<ProtocoloNotaProcessada> protocolos = Arrays.asList(
-								new ProtocoloNotaProcessada(
-										new Date(), 
-										new NumeroProtocolo("PROTO-1111"), 
-										new Mensagem(100, "Autorizado o Uso da NF-e"), 
-										new NotaFiscalId("1111")),
-										new ProtocoloNotaProcessada(
-												new Date(), 
-												new NumeroProtocolo("PROTO-1112"), 
-												new Mensagem(100, "Autorizado o Uso da NF-e"), 
-												new NotaFiscalId("1112"))
-								);
-						
-						return new RetornoConsultaProcessamentoLote(
-								new Mensagem(104, "Lote processado"), 
-								MensagemSefaz.vazia(), 
-								protocolos);
-					}
-				});
-		
-		listaNotaFiscalId = new ArrayList<NotaFiscalId>();
-		
-		EventoDominioPublicador.instancia().assinar(
-				new EventoDominioAssinante<NotaFiscalAutorizada>() {
-					
-					@Override
-					public void tratarEvento(NotaFiscalAutorizada eventoDominio) {
-						listaNotaFiscalId.add(eventoDominio.notaFiscalId());
-						assertEquals(Ambiente.PRODUCAO,eventoDominio.ambiente());
-					}
-					
-					@Override
-					public Class<NotaFiscalAutorizada> inscritoParaTipoEvento() {
-						return NotaFiscalAutorizada.class;
-					}
-				});
-		
-		Lote lote = fixtureLoteProcessandoEmProducao();
-		processarRetorno.processar(lote);
-		assertTrue("Lote processado.",lote.estaProcessado());
-		assertTrue("Nota está autorizada",lote.estaAutorizada(new NotaFiscalId("1111")));
-		assertTrue("Nota está autorizada",lote.estaAutorizada(new NotaFiscalId("1112")));
-		assertTrue("Evento disparado", listaNotaFiscalId.contains(new NotaFiscalId("1111")));
-		assertTrue("Evento disparado", listaNotaFiscalId.contains(new NotaFiscalId("1112")));
-	}
-	
-	@Test
-	public void notas_rejeitadas(){
+	public void notas_rejeitadas_em_homologacao(){
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
@@ -217,11 +165,10 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 				});
 		
 		
-		Lote lote = fixtureLoteProcessandoEmHomologacao();
+		Lote lote = LoteProcessandoEmHomologacaoPersistidoParaTest(notaEmitidaHomologacaoPersistidaParaTest("1111"));
 		processarRetorno.processar(lote);
 		assertTrue("Lote deve estar processado.",lote.estaProcessado());
 		assertTrue("Nota não está rejeitada",lote.estaRejeitada(new NotaFiscalId("1111")));
-		assertTrue("Nota não está rejeitada",lote.estaRejeitada(new NotaFiscalId("1112")));
 	}
 	
 	@Test
@@ -267,83 +214,11 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 					}
 		});
 		
-		Lote lote = fixtureLoteProcessandoEmHomologacao();
+		Lote lote = LoteProcessandoEmHomologacaoPersistidoParaTest(notaEmitidaHomologacaoPersistidaParaTest("1111"));
 		processarRetorno.processar(lote);
 		assertTrue("Lote deve estar processado.",lote.estaProcessado());
 		assertTrue("Nota não está denegada",lote.estaDenegada(new NotaFiscalId("1111")));
-		assertTrue("Nota não está denegada",lote.estaDenegada(new NotaFiscalId("1112")));
 		assertTrue("Evento disparado", listaNotaFiscalId.contains(new NotaFiscalId("1111")));
-		assertTrue("Evento disparado", listaNotaFiscalId.contains(new NotaFiscalId("1112")));
 	}
-	
-	@Test
-	public void notas_denegadas_em_producao(){
-		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
-				new ConsultaProcessamentoLoteService() {
-					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
-						List<ProtocoloNotaProcessada> protocolos = Arrays.asList(
-								new ProtocoloNotaProcessada(
-										new Date(), 
-										null,
-										new Mensagem(110, "Uso Denegado"), 
-										new NotaFiscalId("1111")),
-										new ProtocoloNotaProcessada(
-												new Date(), 
-												null, 
-												new Mensagem(110, "Uso Denegado"), 
-												new NotaFiscalId("1112"))
-								);
-						
-						return new RetornoConsultaProcessamentoLote(
-								new Mensagem(104, "Lote processado"), 
-								MensagemSefaz.vazia(), 
-								protocolos);
-					}
-				});
-		
-		listaNotaFiscalId = new ArrayList<NotaFiscalId>();
-		
-		EventoDominioPublicador.instancia().assinar(
-				new EventoDominioAssinante<NotaFiscalDenegada>() {
-					
-					@Override
-					public void tratarEvento(NotaFiscalDenegada eventoDominio) {
-						listaNotaFiscalId.add(eventoDominio.notaFiscalId());
-						assertEquals(Ambiente.PRODUCAO,eventoDominio.ambiente());
-					}
-					
-					@Override
-					public Class<NotaFiscalDenegada> inscritoParaTipoEvento() {
-						return NotaFiscalDenegada.class;
-					}
-				});
-		
-		Lote lote = fixtureLoteProcessandoEmProducao();
-		processarRetorno.processar(lote);
-		assertTrue("Lote deve estar processado.",lote.estaProcessado());
-		assertTrue("Nota não está denegada",lote.estaDenegada(new NotaFiscalId("1111")));
-		assertTrue("Nota não está denegada",lote.estaDenegada(new NotaFiscalId("1112")));
-		assertTrue("Evento disparado", listaNotaFiscalId.contains(new NotaFiscalId("1111")));
-		assertTrue("Evento disparado", listaNotaFiscalId.contains(new NotaFiscalId("1112")));
-	}
-	
-	protected Lote fixtureLoteProcessandoEmHomologacao() {
-		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
-		notas.add(notaEmitidaHomologacaoPersistidaParaTest("1111"));
-		notas.add(notaEmitidaHomologacaoPersistidaParaTest("1112"));
-		Lote lote = geracaoLoteService.gerarLoteEmHomologacao(notas);
-		lote.transmitido(new NumeroReciboLote("123456"));
-		return lote;
-	}
-	protected Lote fixtureLoteProcessandoEmProducao() {
-		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
-		notas.add(notaEmitidaProducaoPersistidaParaTest("1111"));
-		notas.add(notaEmitidaProducaoPersistidaParaTest("1112"));
-		Lote lote = geracaoLoteService.gerarLoteEmProducao(notas);
-		lote.transmitido(new NumeroReciboLote("654321"));
-		return lote;
-	}
-	
 	
 }

@@ -25,8 +25,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 		enviarLoteService.enviar(lote);
 		assertTrue("Lote tem que estar Processando",lote.estaProcessando());
 		assertEquals(new NumeroReciboLote("123456"),lote.numeroRecibo());
-		assertNull(lote.mensagemErro());
-		
+		assertNull(lote.mensagemErro());		
 	}
 
 	@Test
@@ -37,8 +36,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 		enviarLoteService.enviar(lote);
 		assertTrue("Lote tem que estar Processando",lote.estaProcessando());
 		assertEquals(new NumeroReciboLote("123456"),lote.numeroRecibo());
-		assertNull(lote.mensagemErro());
-		
+		assertNull(lote.mensagemErro());		
 	}
 	
 	@Test

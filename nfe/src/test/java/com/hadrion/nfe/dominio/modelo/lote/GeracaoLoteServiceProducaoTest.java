@@ -68,20 +68,7 @@ public class GeracaoLoteServiceProducaoTest extends AbstractLoteServiceTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void nota_ja_existe_em_lote_processando(){
 		NotaFiscal nf = notaEmitidaProducaoPersistidaParaTest("1112");
-		loteProcessadoPersistidoParaTest(nf);
+		loteProcessadoEmProducaoPersistidoParaTest(nf);
 		geracaoLoteService.gerarLoteEmProducao(nf);
-	}
-	
-	protected Lote loteGeradoEmProducaoPersistidoParaTest(NotaFiscal nf){
-		Lote lote = Lote.gerarEmProducao(nf);
-		loteRepositorio.salvar(lote);
-		return lote;
-	}
-	
-	protected Lote loteProcessadoPersistidoParaTest(NotaFiscal nf){
-		Lote lote = Lote.gerarEmProducao(nf);
-		lote.transmitido(new NumeroReciboLote(""));
-		loteRepositorio.salvar(lote);
-		return lote;
 	}
 }

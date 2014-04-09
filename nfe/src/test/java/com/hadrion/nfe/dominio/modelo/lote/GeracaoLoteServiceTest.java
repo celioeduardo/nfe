@@ -64,12 +64,4 @@ public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 		
 	}
 	
-	private NotaFiscal notaEmitidaProducao_e_HomologacaoPersistidaParaTest(String id){
-		NotaFiscal nf = new NotaFiscal(new NotaFiscalId(id));
-		nf.emitidaHomologacao();
-		nf.emitidaProducao();
-		notaFiscalRepositorio.salvar(nf);
-		return nf;
-	}
-	
 }

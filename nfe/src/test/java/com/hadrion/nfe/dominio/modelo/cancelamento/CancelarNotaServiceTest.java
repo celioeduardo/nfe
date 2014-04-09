@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.DominioTest;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 
 public class CancelarNotaServiceTest extends DominioTest {
 	
