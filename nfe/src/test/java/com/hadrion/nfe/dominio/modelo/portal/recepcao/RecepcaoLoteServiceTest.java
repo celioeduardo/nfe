@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo.recepcao;
+package com.hadrion.nfe.dominio.modelo.portal.recepcao;
 
 import static org.junit.Assert.*;
 
@@ -20,21 +20,21 @@ public class RecepcaoLoteServiceTest {
 	
 	@Test
 	public void recepcionarLoteComSucesso() throws Throwable{
-		Lote lote = fixtureLote();
+		Lote lote = loteParaTest();
 		RecepcaoLoteService recepcaoLoteService = new MockRecepcaoLoteService("123456");
 		RetornoRecepcaoLote retorno = recepcaoLoteService.recepcionar(lote);
 		assertEquals(new NumeroReciboLote("123456"), retorno.recibo().numero());
 	} 
 	@Test
 	public void recepcionarLoteComFracasso() throws Throwable{
-		Lote lote = fixtureLote();
+		Lote lote = loteParaTest();
 		RecepcaoLoteService recepcaoLoteService = new MockRecepcaoLoteService(
 				new Mensagem(123, "facasso"));
 		RetornoRecepcaoLote retorno = recepcaoLoteService.recepcionar(lote);
 		assertEquals(new Mensagem(123, "facasso"), retorno.erro());
 	} 
 	
-	private Lote fixtureLote(){
+	private Lote loteParaTest(){
 		return null;
 	}
 	

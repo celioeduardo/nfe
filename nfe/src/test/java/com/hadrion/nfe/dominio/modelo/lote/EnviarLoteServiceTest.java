@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
-import com.hadrion.nfe.dominio.modelo.recepcao.MockRecepcaoLoteService;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.MockRecepcaoLoteService;
 
 public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
