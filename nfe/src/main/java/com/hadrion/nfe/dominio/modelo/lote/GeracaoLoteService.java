@@ -58,8 +58,5 @@ public class GeracaoLoteService {
 				throw new IllegalArgumentException(
 						"Nota Fiscal "+nf.notaFiscalId()+
 						" já está no Lote "+lote.numero());
-	}
-	
-	
-	
+	}	
 }

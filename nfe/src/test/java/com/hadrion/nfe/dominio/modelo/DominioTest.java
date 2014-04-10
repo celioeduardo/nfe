@@ -1,5 +1,8 @@
 package com.hadrion.nfe.dominio.modelo;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -114,39 +117,51 @@ public abstract class DominioTest extends RastreadorEventoTest {
 				notaFiscalRepositorio.salvar(nf);
 				return nf;
 			}
-	protected Lote loteGeradoEmProducaoPersistidoParaTest(NotaFiscal nf) {
-		Lote lote = Lote.gerarEmProducao(nf);
+
+	protected Lote loteGeradoEmProducaoPersistidoParaTest(NotaFiscal... notas) {
+		Lote lote = Lote.gerarEmProducao(colecaoNotas(notas));
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
-	protected Lote loteProcessadoEmProducaoPersistidoParaTest(NotaFiscal nf) {
-		Lote lote = Lote.gerarEmProducao(nf);
+
+	protected Lote loteProcessadoEmProducaoPersistidoParaTest(NotaFiscal... notas) {
+		Lote lote = Lote.gerarEmProducao(colecaoNotas(notas));
 		lote.transmitido(new NumeroReciboLote(""));
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
-	protected Lote loteGeradoEmHomologacaoPersistidoParaTest(NotaFiscal nf) {
-		Lote lote = Lote.gerarEmHomologacao(nf);
+
+	protected Lote loteGeradoEmHomologacaoPersistidoParaTest(NotaFiscal... notas) {
+		Lote lote = Lote.gerarEmHomologacao(colecaoNotas(notas));
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
-	protected Lote loteProcessadoEmHomologacaoPersistidoParaTest(NotaFiscal nf) {
-		Lote lote = Lote.gerarEmHomologacao(nf);
+	
+	protected Lote loteProcessadoEmHomologacaoPersistidoParaTest(NotaFiscal... notas) {
+		Lote lote = Lote.gerarEmHomologacao(colecaoNotas(notas));
 		lote.transmitido(new NumeroReciboLote(""));
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
-	protected Lote LoteProcessandoEmHomologacaoPersistidoParaTest(NotaFiscal nf) {
-		Lote lote = geracaoLoteService.gerarLoteEmHomologacao(nf);
+	
+	protected Lote loteProcessandoEmHomologacaoPersistidoParaTest(NotaFiscal... notas) {
+		Lote lote = geracaoLoteService.gerarLoteEmHomologacao(colecaoNotas(notas));
 		lote.transmitido(new NumeroReciboLote("123456"));
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
-	protected Lote LoteProcessandoEmProducaoPersistidoParaTest(NotaFiscal nf) {
-		Lote lote = geracaoLoteService.gerarLoteEmProducao(nf);
+
+	protected Lote loteProcessandoEmProducaoPersistidoParaTest(NotaFiscal... notas) {
+		Lote lote = geracaoLoteService.gerarLoteEmProducao(colecaoNotas(notas));
 		lote.transmitido(new NumeroReciboLote("654321"));
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
 	
+	private Set<NotaFiscal> colecaoNotas(NotaFiscal... notas){
+		Set<NotaFiscal> result = new HashSet<NotaFiscal>();
+		for (NotaFiscal notaFiscal : notas)
+			result.add(notaFiscal);
+		return result;
+	}
 }
