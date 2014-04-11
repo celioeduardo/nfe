@@ -4,12 +4,13 @@ import org.springframework.stereotype.Service;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
+import com.hadrion.nfe.dominio.modelo.DominioTest;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.portal.cancelamento.CancelamentoNfeService;
 import com.hadrion.nfe.dominio.modelo.portal.cancelamento.RetornoCancelamento;
 
 @Service
-public class CancelarNotaService {
+public class CancelarNotaService extends DominioTest{
 	private CancelamentoNfeService cancelamentoNfeService;
 	
 	CancelarNotaService(){}

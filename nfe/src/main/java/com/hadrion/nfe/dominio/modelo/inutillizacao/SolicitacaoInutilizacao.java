@@ -10,7 +10,6 @@ import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 public class SolicitacaoInutilizacao {
 	
 	private Ambiente ambiente;
-	private boolean homologada;
 	private NumeroProtocolo numeroProtocolo;
 	private Mensagem retorno;
 	private Date dataHoraProcessamento;
@@ -19,10 +18,6 @@ public class SolicitacaoInutilizacao {
 	public SolicitacaoInutilizacao(int i, int j) {
 	}
 
-	public boolean estaHomologada() {
-		return homologada;
-	}
-	
 	public Ambiente ambiente(){
 		return this.ambiente;
 	}
@@ -34,7 +29,6 @@ public class SolicitacaoInutilizacao {
 		this.numeroProtocolo = numeroProtocolo;
 		this.retorno = mensagem;
 		this.dataHoraProcessamento = dataHoraProcessamento;
-		this.homologada=true;
 		EventoDominioPublicador.instancia().publicar(
 				new InutilizacaoHomologada(this.ambiente()));
 	}

@@ -1,7 +1,5 @@
 package com.hadrion.nfe.dominio.modelo.inutillizacao;
 
-import static org.junit.Assert.*;
-
 import java.util.Date;
 
 import org.junit.Before;
@@ -37,7 +35,6 @@ public class InutilizacaoNumeracaoTest extends DominioTest{
 		inutilizacaoService.inutilizar(solicitacaoInutilizacao);			
 		eventosEsperados(1);
 		eventoEsperado(InutilizacaoHomologada.class);
-		assertTrue("Solicitação de inutilização homologada.",solicitacaoInutilizacao.estaHomologada());
 	}	
 
 	@Test
@@ -55,6 +52,5 @@ public class InutilizacaoNumeracaoTest extends DominioTest{
 		SolicitacaoInutilizacao solicitacaoInutilizacao = new SolicitacaoInutilizacao(1,1);
 		inutilizacaoService.inutilizar(solicitacaoInutilizacao);			
 		eventosEsperados(0);		
-		assertFalse("Solicitação de inutilização não homologada.",solicitacaoInutilizacao.estaHomologada());
 	}	
 }
