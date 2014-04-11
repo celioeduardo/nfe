@@ -30,14 +30,14 @@ public class SolicitacaoCancelamento {
 	}
 
 	public SolicitacaoCancelamentoId solicitacaoCancelamentoId(){
-		return solicitacaoCancelamentoId;
+		return this.solicitacaoCancelamentoId;
 	}
 	
 	public Date dataHoraSolicitacao(){
-		return dataHoraSolicitacao;
+		return this.dataHoraSolicitacao;
 	}
 	public Date dataHoraProcessamento(){
-		return dataHoraProcessamento;
+		return this.dataHoraProcessamento;
 	}
 	
 	public Mensagem retorno(){

@@ -36,6 +36,9 @@ public class Mensagem {
 		return codigo() == 101;
 	}
 	
+	public boolean inutilizacaoHomologada(){
+		return codigo() == 102;
+	}
 	
 	@Override
 	public boolean equals(Object objeto) {
