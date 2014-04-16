@@ -18,7 +18,7 @@ import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.dominio.modelo.portal.cancelamento.CancelamentoNfeService;
 import com.hadrion.nfe.dominio.modelo.portal.cancelamento.RetornoCancelamento;
 
-public class CancelarNotaServiceMockTest extends DominioTest {
+public class CancelarNotaServiceTest extends DominioTest {
 	
 	@InjectMocks
 	CancelarNotaService cancelarNotaService;
