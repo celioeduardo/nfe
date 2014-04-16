@@ -3,25 +3,42 @@ package com.hadrion.nfe.dominio.modelo.lote;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
-import com.hadrion.nfe.dominio.modelo.portal.recepcao.MockRecepcaoLoteService;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.RecepcaoLoteService;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.ReciboLote;
+import com.hadrion.nfe.dominio.modelo.portal.recepcao.RetornoRecepcaoLote;
 
 public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
+	@InjectMocks
+	private EnviarLoteService enviarLoteService;
+	
+	@Mock
+	private RecepcaoLoteService recepcaoLoteService;
+		
 	@Before
 	public void setup() throws Exception{
 		super.setUp();
+		MockitoAnnotations.initMocks(this);
 	}
 	
 	@Test
-	public void enviar_com_sucesso_em_homologacao(){
+	public void enviar_com_sucesso_em_homologacao() throws Throwable{
+		
+		when(recepcaoLoteService.recepcionar(any(Lote.class))).thenReturn(
+				new RetornoRecepcaoLote(
+					new ReciboLote(new NumeroReciboLote("123456"))));
+		
 		Lote lote = loteEmHomologacaoNaoEnviadoParaTest();
-		EnviarLoteService enviarLoteService = new EnviarLoteService(
-				new MockRecepcaoLoteService("123456"));
 		enviarLoteService.enviar(lote);
 		assertTrue("Lote tem que estar Processando",lote.estaProcessando());
 		assertEquals(new NumeroReciboLote("123456"),lote.numeroRecibo());
@@ -29,10 +46,11 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	}
 
 	@Test
-	public void enviar_com_sucesso_em_producao(){
+	public void enviar_com_sucesso_em_producao() throws Throwable{
+		when(recepcaoLoteService.recepcionar(any(Lote.class))).thenReturn(
+				new RetornoRecepcaoLote(
+					new ReciboLote(new NumeroReciboLote("123456"))));
 		Lote lote = loteEmProducaoNaoEnviadoParaTest();
-		EnviarLoteService enviarLoteService = new EnviarLoteService(
-				new MockRecepcaoLoteService("123456"));
 		enviarLoteService.enviar(lote);
 		assertTrue("Lote tem que estar Processando",lote.estaProcessando());
 		assertEquals(new NumeroReciboLote("123456"),lote.numeroRecibo());
@@ -40,42 +58,46 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	}
 	
 	@Test
-	public void enviar_com_falha_consistencia_em_homologacao(){
-		Lote lote = loteEmHomologacaoNaoEnviadoParaTest();
-		EnviarLoteService enviarLoteService = new EnviarLoteService(
-				new MockRecepcaoLoteService(
+	public void enviar_com_falha_consistencia_em_homologacao() throws Throwable{
+		when(recepcaoLoteService.recepcionar(any(Lote.class))).thenReturn(
+				new RetornoRecepcaoLote(
 						new Mensagem(214, "Rejeição: Tamanho da mensagem excedeu o limite estabelecido")));
+		Lote lote = loteEmHomologacaoNaoEnviadoParaTest();
 		enviarLoteService.enviar(lote);
 		assertTrue("Lote tem que estar Inconsistente",lote.estaInconsistente());
 		assertNull("Número do Recibo tem que ser nulo",lote.numeroRecibo());
 		assertEquals(new Mensagem(214, "Rejeição: Tamanho da mensagem excedeu o limite estabelecido"),lote.mensagemErro());
 	}
+	
 	@Test
-	public void enviar_com_falha_consistencia_em_producao(){
+	public void enviar_com_falha_consistencia_em_producao() throws Throwable{
+		when(recepcaoLoteService.recepcionar(any(Lote.class))).thenReturn(
+				new RetornoRecepcaoLote(
+						new Mensagem(214, "Rejeição: Tamanho da mensagem excedeu o limite estabelecido")));
 		Lote lote = loteEmProducaoNaoEnviadoParaTest();
-		EnviarLoteService enviarLoteService = new EnviarLoteService(
-				new MockRecepcaoLoteService(
-						new Mensagem(214, "Rejeição: Tamanho da mensagem excedeu o limite estabelecido")));
 		enviarLoteService.enviar(lote);
 		assertTrue("Lote tem que estar Inconsistente",lote.estaInconsistente());
 		assertNull("Número do Recibo tem que ser nulo",lote.numeroRecibo());
 		assertEquals(new Mensagem(214, "Rejeição: Tamanho da mensagem excedeu o limite estabelecido"),lote.mensagemErro());
 	}
+	
 	@Test
-	public void enviar_com_erro_transmissao_em_homologacao(){
+	public void enviar_com_erro_transmissao_em_homologacao() throws Throwable{
+		when(recepcaoLoteService.recepcionar(any(Lote.class)))
+			.thenThrow(new Exception("Internet indisponível"));
+		
 		Lote lote = loteEmHomologacaoNaoEnviadoParaTest();
-		EnviarLoteService enviarLoteService = new EnviarLoteService(
-				new MockRecepcaoLoteService(new Exception("Internet indisponível")));
 		enviarLoteService.enviar(lote);
 		assertTrue("Lote tem que estar com erro de tramissão",lote.comErroTransmissao());
 		assertNull("Número do Recibo tem que ser nulo",lote.numeroRecibo());
 		assertEquals(new Mensagem(-1, "Internet indisponível"),lote.mensagemErro());
 	}
+	
 	@Test
-	public void enviar_com_erro_transmissao_em_producao(){
+	public void enviar_com_erro_transmissao_em_producao() throws Throwable{
+		when(recepcaoLoteService.recepcionar(any(Lote.class)))
+			.thenThrow(new Exception("Internet indisponível"));
 		Lote lote = loteEmProducaoNaoEnviadoParaTest();
-		EnviarLoteService enviarLoteService = new EnviarLoteService(
-				new MockRecepcaoLoteService(new Exception("Internet indisponível")));
 		enviarLoteService.enviar(lote);
 		assertTrue("Lote tem que estar com erro de tramissão",lote.comErroTransmissao());
 		assertNull("Número do Recibo tem que ser nulo",lote.numeroRecibo());
