@@ -37,9 +37,6 @@ public class CancelarNotaServiceMockTest extends DominioTest {
 					new NumeroProtocolo("CANC-1111"),
 					new Mensagem(101, "Cancelamento Homologado"),
 					new Date()));
-		
-		//cancelarNotaServiceFabrica = MockCancelarNotaServiceFabrica.cancelamentoHomologado();
-		//cancelarNotaService = cancelarNotaServiceFabrica.criarCancelarNotaService();
 	}
 	
 	@Test
