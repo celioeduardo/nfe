@@ -16,8 +16,7 @@ public class InutilizacaoHomologada implements EventoDominio{
 		this.ambiente = ambiente;
 		this.versaoEvento = 1;
 		this.ocorridoEm = new Date();
-	}
-	
+	}	
 	
 	public Ambiente ambiente(){
 		return ambiente;

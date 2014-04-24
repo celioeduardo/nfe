@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 
@@ -14,8 +15,22 @@ public class SolicitacaoInutilizacao {
 	private Mensagem retorno;
 	private Date dataHoraProcessamento;
 	private Date dataHoraSolicitacao;
+	private SolicitacaoInutilizacaoId solicitacaoInutilizacaoId;
+	private int numeracaoInicial;
+	private int numeracaoFinal;
 	
-	public SolicitacaoInutilizacao(int i, int j) {
+	public SolicitacaoInutilizacao(
+			SolicitacaoInutilizacaoId solicitacaoInutilizacaoId,
+			Ambiente ambiente,
+			int numeracaoInicial,
+			int numeracaoFinal) {
+		super();
+		this.solicitacaoInutilizacaoId = solicitacaoInutilizacaoId;
+		this.ambiente = ambiente;
+		this.dataHoraSolicitacao = new Date(); 
+		this.numeracaoInicial=numeracaoInicial;
+		this.numeracaoFinal = numeracaoFinal;
+	
 	}
 
 	public Ambiente ambiente(){
