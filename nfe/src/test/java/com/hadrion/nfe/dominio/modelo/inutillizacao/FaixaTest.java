@@ -13,34 +13,29 @@ public class FaixaTest{
 	}	
 	
 	@Test
-	public void intervalo(){
-		Faixa intervalo = new Faixa(0, 1);
-		assertNotNull(intervalo);
+	public void faixa(){
+		Faixa faixa = new Faixa(0, 1);
+		assertNotNull(faixa);
 	}		
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void intervalo_invalido(){
-		@SuppressWarnings("unused")
-		Faixa intervalo = new Faixa(1, 0);
+	public void faixa_invalida(){
+		new Faixa(1, 0);
 	}
 	@Test(expected=IllegalArgumentException.class)
-	public void intervalo_invalido_inicial_maior_que_final_e_nao_zerado(){
-		@SuppressWarnings("unused")
-		Faixa intervalo = new Faixa(1, 0);
+	public void faixa_invalida_inicial_maior_que_final_e_nao_zerado(){
+		new Faixa(1, 0);
 	}
 	@Test(expected=IllegalArgumentException.class)
-	public void intervalo_invalido_inicial_maior_que_final_e_zerado(){
-		@SuppressWarnings("unused")
-		Faixa intervalo = new Faixa(0, -1);
+	public void faixa_invalida_inicial_maior_que_final_e_zerado(){
+		new Faixa(0, -1);
 	}
 	@Test(expected=IllegalArgumentException.class)
-	public void intervalo_invalido_inicial_menor_que_final_zerado(){
-		@SuppressWarnings("unused")
-		Faixa intervalo = new Faixa(-1, 0);
+	public void faixa_invalida_inicial_menor_que_final_zerado(){
+		new Faixa(-1, 0);
 	}
 	@Test(expected=IllegalArgumentException.class)
-	public void intervalo_invalido_inicial_menor_que_final_menor_que_zero(){
-		@SuppressWarnings("unused")
-		Faixa intervalo = new Faixa(-2, -1);
+	public void faixa_invalida_inicial_menor_que_final_menor_que_zero(){
+		new Faixa(-2, -1);
 	}
 }
