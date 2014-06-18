@@ -48,8 +48,7 @@ public class InutilizacaoServiceTest extends DominioTest{
 		SolicitacaoInutilizacao solicitacaoInutilizacao = new SolicitacaoInutilizacao(
 				new SolicitacaoInutilizacaoId("1"), 
 				Ambiente.HOMOLOGACAO, 
-				1, 
-				1);
+				new Faixa(1,1));
 		inutilizacaoService.inutilizar(solicitacaoInutilizacao);			
 		eventosEsperados(1);
 		eventoEsperado(InutilizacaoHomologada.class);
@@ -67,8 +66,7 @@ public class InutilizacaoServiceTest extends DominioTest{
 		SolicitacaoInutilizacao solicitacaoInutilizacao = new SolicitacaoInutilizacao(
 				new SolicitacaoInutilizacaoId("1"), 
 				Ambiente.HOMOLOGACAO, 
-				1, 
-				1);
+				new Faixa(1,1));
 		inutilizacaoService.inutilizar(solicitacaoInutilizacao);		
 		assertNotNull(solicitacaoInutilizacao.ambiente());
 		eventosEsperados(0);		
@@ -86,8 +84,7 @@ public class InutilizacaoServiceTest extends DominioTest{
 		SolicitacaoInutilizacao solicitacaoInutilizacao = new SolicitacaoInutilizacao(
 				new SolicitacaoInutilizacaoId("1"), 
 				Ambiente.PRODUCAO, 
-				1, 
-				1);
+				new Faixa(1,1));
 		inutilizacaoService.inutilizar(solicitacaoInutilizacao);			
 		eventosEsperados(1);
 		eventoEsperado(InutilizacaoHomologada.class);
@@ -105,8 +102,7 @@ public class InutilizacaoServiceTest extends DominioTest{
 		SolicitacaoInutilizacao solicitacaoInutilizacao = new SolicitacaoInutilizacao(
 				new SolicitacaoInutilizacaoId("1"), 
 				Ambiente.PRODUCAO, 
-				1, 
-				1);
+				new Faixa(1,1));
 		inutilizacaoService.inutilizar(solicitacaoInutilizacao);		
 		assertNotNull(solicitacaoInutilizacao.ambiente());
 		eventosEsperados(0);		
