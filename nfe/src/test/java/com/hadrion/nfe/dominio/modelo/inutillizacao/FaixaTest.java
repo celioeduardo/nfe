@@ -14,8 +14,7 @@ public class FaixaTest{
 	
 	@Test
 	public void faixa(){
-		Faixa faixa = new Faixa(0, 1);
-		assertNotNull(faixa);
+		assertNotNull(new Faixa(0, 1));
 	}		
 	
 	@Test(expected=IllegalArgumentException.class)
