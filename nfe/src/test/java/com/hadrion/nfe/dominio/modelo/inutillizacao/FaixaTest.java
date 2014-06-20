@@ -1,16 +1,11 @@
 package com.hadrion.nfe.dominio.modelo.inutillizacao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class FaixaTest{
 	
-	@Before
-	public void setUp() throws Exception{
-		
-	}	
 	
 	@Test
 	public void faixa(){
