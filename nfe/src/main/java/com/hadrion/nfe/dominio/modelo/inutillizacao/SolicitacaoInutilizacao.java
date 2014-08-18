@@ -27,6 +27,14 @@ public class SolicitacaoInutilizacao {
 		this.dataHoraSolicitacao = new Date(); 
 		this.faixa = faixa;
 	}
+	
+	public SolicitacaoInutilizacaoId solicitacaoInutilizacaoId(){
+		return this.solicitacaoInutilizacaoId;
+	}
+	
+	public Faixa faixa(){
+		return faixa;
+	}
 
 	public Ambiente ambiente(){
 		return this.ambiente;
@@ -63,5 +71,9 @@ public class SolicitacaoInutilizacao {
 	
 	public NumeroProtocolo numeroProtocolo(){
 		return this.numeroProtocolo;
+	}
+
+	public boolean bemSucedida() {
+		return retorno != null && retorno.inutilizacaoHomologada();
 	}
 }

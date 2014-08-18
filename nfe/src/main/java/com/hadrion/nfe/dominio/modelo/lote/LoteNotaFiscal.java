@@ -10,7 +10,7 @@ import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.ProtocoloNotaProcessada;
 
-public class LoteNotaFiscal {
+class LoteNotaFiscal {
 	private NotaFiscalId notaFiscalId;
 	private Ambiente ambiente;
 	private SituacaoLoteNotaFiscal situacao;

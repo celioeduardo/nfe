@@ -1,16 +1,26 @@
 package com.hadrion.nfe.dominio.modelo.inutillizacao;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 public class FaixaTest{
 	
-	
 	@Test
 	public void faixa(){
-		assertNotNull(new Faixa(0, 1));
-	}		
+		Faixa faixa = new Faixa(0,1);
+		assertEquals(faixa,new Faixa(0, 1));
+	}
+	
+	@Test
+	public void faixa_inicio_igual_a_fim_eh_valida(){
+		new Faixa(1,1);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void faixa_negativa_invalida(){
+		new Faixa(-2, -2);
+	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void faixa_invalida(){

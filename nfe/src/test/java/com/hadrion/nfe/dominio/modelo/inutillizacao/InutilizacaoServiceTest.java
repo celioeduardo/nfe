@@ -38,73 +38,100 @@ public class InutilizacaoServiceTest extends DominioTest{
 	
 	@Test
 	public void inutilizacao_homologada_em_homologacao(){
+		Date dataHomologacao = new Date();
 		
 		when(inutilizacaoPortalService.inutilizar(any(SolicitacaoInutilizacao.class)))
 			.thenReturn(new RetornoInutilizacao(
 					new NumeroProtocolo("1111"), 
 					new Mensagem(102, "Inutilização Homologada"), 
-					new Date()));
+					dataHomologacao));
 		
-		SolicitacaoInutilizacao solicitacaoInutilizacao = new SolicitacaoInutilizacao(
+		SolicitacaoInutilizacao solicitacao = new SolicitacaoInutilizacao(
 				new SolicitacaoInutilizacaoId("1"), 
 				Ambiente.HOMOLOGACAO, 
 				new Faixa(1,1));
-		inutilizacaoService.inutilizar(solicitacaoInutilizacao);			
+		
+		inutilizacaoService.inutilizar(solicitacao);			
 		eventosEsperados(1);
 		eventoEsperado(InutilizacaoHomologada.class);
+		assertEquals(Ambiente.HOMOLOGACAO, solicitacao.ambiente());
+		assertEquals(new NumeroProtocolo("1111"), solicitacao.numeroProtocolo());
+		assertEquals(new Mensagem(102, "Inutilização Homologada"), solicitacao.retorno());
+		assertEquals(dataHomologacao, solicitacao.dataHoraProcessamento());
+		assertTrue(solicitacao.bemSucedida());
 	}	
 
 	@Test
 	public void inutilizacao_nao_homologada_em_homologacao(){
+		Date dataProcessamento = new Date();
 		
 		when(inutilizacaoPortalService.inutilizar(any(SolicitacaoInutilizacao.class)))
 		.thenReturn(new RetornoInutilizacao(
 				null, 
 				new Mensagem(453, "Rejeição: Ano de inutilização não pode ser superior ao Ano atual"), 
-				new Date()));
+				dataProcessamento));
 		
-		SolicitacaoInutilizacao solicitacaoInutilizacao = new SolicitacaoInutilizacao(
+		SolicitacaoInutilizacao solicitacao = new SolicitacaoInutilizacao(
 				new SolicitacaoInutilizacaoId("1"), 
 				Ambiente.HOMOLOGACAO, 
 				new Faixa(1,1));
-		inutilizacaoService.inutilizar(solicitacaoInutilizacao);		
-		assertNotNull(solicitacaoInutilizacao.ambiente());
-		eventosEsperados(0);		
+		
+		inutilizacaoService.inutilizar(solicitacao);		
+		eventosEsperados(0);	
+		assertEquals(Ambiente.HOMOLOGACAO, solicitacao.ambiente());
+		assertNull(solicitacao.numeroProtocolo());
+		assertEquals(new Mensagem(453, "Rejeição: Ano de inutilização não pode ser superior ao Ano atual"), 
+				solicitacao.retorno());
+		assertEquals(dataProcessamento, solicitacao.dataHoraProcessamento());
+		assertFalse(solicitacao.bemSucedida());
 	}	
 
 	@Test
 	public void inutilizacao_homologada_em_producao(){
-		
+		Date dataHomologacao = new Date();
 		when(inutilizacaoPortalService.inutilizar(any(SolicitacaoInutilizacao.class)))
 			.thenReturn(new RetornoInutilizacao(
 					new NumeroProtocolo("1111"), 
 					new Mensagem(102, "Inutilização Homologada"), 
-					new Date()));
+					dataHomologacao));
 		
-		SolicitacaoInutilizacao solicitacaoInutilizacao = new SolicitacaoInutilizacao(
+		SolicitacaoInutilizacao solicitacao = new SolicitacaoInutilizacao(
 				new SolicitacaoInutilizacaoId("1"), 
 				Ambiente.PRODUCAO, 
 				new Faixa(1,1));
-		inutilizacaoService.inutilizar(solicitacaoInutilizacao);			
+		inutilizacaoService.inutilizar(solicitacao);			
 		eventosEsperados(1);
 		eventoEsperado(InutilizacaoHomologada.class);
+		assertEquals(Ambiente.PRODUCAO, solicitacao.ambiente());
+		assertEquals(new NumeroProtocolo("1111"), solicitacao.numeroProtocolo());
+		assertEquals(new Mensagem(102, "Inutilização Homologada"), solicitacao.retorno());
+		assertEquals(dataHomologacao, solicitacao.dataHoraProcessamento());
+		assertTrue(solicitacao.bemSucedida());
 	}	
 
 	@Test
 	public void inutilizacao_nao_homologada_em_producao(){
+		Date dataProcessamento = new Date();
 		
 		when(inutilizacaoPortalService.inutilizar(any(SolicitacaoInutilizacao.class)))
 		.thenReturn(new RetornoInutilizacao(
 				null, 
 				new Mensagem(453, "Rejeição: Ano de inutilização não pode ser superior ao Ano atual"), 
-				new Date()));
+				dataProcessamento));
 		
-		SolicitacaoInutilizacao solicitacaoInutilizacao = new SolicitacaoInutilizacao(
+		SolicitacaoInutilizacao solicitacao = new SolicitacaoInutilizacao(
 				new SolicitacaoInutilizacaoId("1"), 
 				Ambiente.PRODUCAO, 
 				new Faixa(1,1));
-		inutilizacaoService.inutilizar(solicitacaoInutilizacao);		
-		assertNotNull(solicitacaoInutilizacao.ambiente());
-		eventosEsperados(0);		
+		
+		inutilizacaoService.inutilizar(solicitacao);
+		
+		eventosEsperados(0);	
+		assertEquals(Ambiente.PRODUCAO, solicitacao.ambiente());
+		assertNull(solicitacao.numeroProtocolo());
+		assertEquals(new Mensagem(453, "Rejeição: Ano de inutilização não pode ser superior ao Ano atual"), 
+				solicitacao.retorno());
+		assertEquals(dataProcessamento, solicitacao.dataHoraProcessamento());
+		assertFalse(solicitacao.bemSucedida());
 	}	
 }
