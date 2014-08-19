@@ -1,7 +1,8 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
-import java.sql.Timestamp;
 import java.util.Date;
+
+import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 
 public class NotaFiscal {
 	private NotaFiscalId notaFiscalId;
@@ -13,15 +14,27 @@ public class NotaFiscal {
 	private Serie serie;
 	private Long numero;
 	private Date emissao;
-	private Timestamp dataHora;
+	private Date dataHora;
 	private TipoOperacao tipoOperacao;
+	private LocalDestino localDestino;
+	private Uf municipioFatoGerador;
+	private FormatoDanfe formatoDanfe;
+	private boolean consumidorFinal;
+	private Finalidade finalidade;
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId,
 			String naturezaOperacao,
 			FormaPagamento formaPagamento,
 			Modelo modelo,
 			Serie serie,
-			Long numero, Date emissao, Timestamp dataHora, TipoOperacao tipoOperacao) {
+			Long numero, 
+			Date emissao, 
+			Date dataHora, 
+			TipoOperacao tipoOperacao,
+			LocalDestino localDestino, 
+			Uf municipioFatoGerador,
+			boolean consumidorFinal,
+			Finalidade finalidade) {
 		this.notaFiscalId = notaFiscalId;
 		this.situacaoHomologacao=Situacao.INDEFINIDA;
 		this.situacaoProducao=Situacao.INDEFINIDA;
@@ -33,6 +46,11 @@ public class NotaFiscal {
 		this.emissao=emissao;
 		this.dataHora=dataHora;
 		this.tipoOperacao=tipoOperacao;
+		this.localDestino=localDestino;
+		this.municipioFatoGerador=municipioFatoGerador;
+		//this.formatoDanfe=formatoDanfe;
+		this.consumidorFinal=consumidorFinal;
+		this.finalidade=finalidade;
 	}
 	public NotaFiscal(NotaFiscalId notaFiscalId) {
 		this.notaFiscalId = notaFiscalId;
@@ -68,15 +86,6 @@ public class NotaFiscal {
 		this.situacaoHomologacao=Situacao.DENEGADA;
 	}
 	
-	private void assertSituacaoIgualHomologacao(String mensagem,Situacao... esperadas){
-		for (Situacao esperada : esperadas) {
-			if (esperada == this.situacaoHomologacao)
-				return;
-		}
-		throw new UnsupportedOperationException(mensagem);
-	}
-	
-
 	public boolean pendenteDeTransmissaoProducao(){
 		return this.situacaoProducao == Situacao.EMITIDA;
 	}
@@ -99,14 +108,6 @@ public class NotaFiscal {
 	public void denegadaProducao() {
 		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,Situacao.EMITIDA);
 		this.situacaoProducao=Situacao.DENEGADA;
-	}
-	
-	private void assertSituacaoIgualProducao(String mensagem,Situacao... esperadas){
-		for (Situacao esperada : esperadas) {
-			if (esperada == this.situacaoProducao)
-				return;
-		}
-		throw new UnsupportedOperationException(mensagem);
 	}
 	
 	public boolean estaEmitidaEmHomologacao() {
@@ -145,10 +146,39 @@ public class NotaFiscal {
 	public Date emissao() {
 		return emissao;
 	}
-	public Timestamp dataHora() {
+	public Date dataHora() {
 		return dataHora;
 	}
 	public TipoOperacao tipoOperacao() {
 		return tipoOperacao;
+	}
+	public LocalDestino localDestino() {
+		return localDestino;
+	}
+	public Uf municipioFatoGerador() {
+		return municipioFatoGerador;
+	}
+	private void assertSituacaoIgualHomologacao(String mensagem,Situacao... esperadas){
+		for (Situacao esperada : esperadas) {
+			if (esperada == this.situacaoHomologacao)
+				return;
+		}
+		throw new UnsupportedOperationException(mensagem);
+	}
+	private void assertSituacaoIgualProducao(String mensagem,Situacao... esperadas){
+		for (Situacao esperada : esperadas) {
+			if (esperada == this.situacaoProducao)
+				return;
+		}
+		throw new UnsupportedOperationException(mensagem);
+	}
+	public FormatoDanfe formatoDanfe() {
+		return formatoDanfe;
+	}
+	public boolean consumidorFinal() {
+		return consumidorFinal;
+	}
+	public Finalidade finalidade() {
+		return finalidade;
 	}
 }
