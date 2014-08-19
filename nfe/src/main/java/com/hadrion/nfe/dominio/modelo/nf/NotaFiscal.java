@@ -1,14 +1,44 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class NotaFiscal {
 	private NotaFiscalId notaFiscalId;
 	private Situacao situacaoHomologacao;
 	private Situacao situacaoProducao;	
+	private String naturezaOperacao;
+	private FormaPagamento formaPagamento;
+	private Modelo modelo;
+	private Serie serie;
+	private Long numero;
+	private Date emissao;
+	private Timestamp dataHora;
+	private TipoOperacao tipoOperacao;
 	
+	public NotaFiscal(NotaFiscalId notaFiscalId,
+			String naturezaOperacao,
+			FormaPagamento formaPagamento,
+			Modelo modelo,
+			Serie serie,
+			Long numero, Date emissao, Timestamp dataHora, TipoOperacao tipoOperacao) {
+		this.notaFiscalId = notaFiscalId;
+		this.situacaoHomologacao=Situacao.INDEFINIDA;
+		this.situacaoProducao=Situacao.INDEFINIDA;
+		this.naturezaOperacao=naturezaOperacao;
+		this.formaPagamento=formaPagamento;
+		this.modelo=modelo;
+		this.serie=serie;
+		this.numero=numero;
+		this.emissao=emissao;
+		this.dataHora=dataHora;
+		this.tipoOperacao=tipoOperacao;
+	}
 	public NotaFiscal(NotaFiscalId notaFiscalId) {
 		this.notaFiscalId = notaFiscalId;
 		this.situacaoHomologacao=Situacao.INDEFINIDA;
 		this.situacaoProducao=Situacao.INDEFINIDA;
+		
 	}
 	public NotaFiscalId notaFiscalId(){
 		return this.notaFiscalId;
@@ -96,5 +126,29 @@ public class NotaFiscal {
 	}
 	public boolean estaCanceladaEmProducao() {
 		return this.situacaoProducao==Situacao.CANCELADA;
+	}
+	public String naturezaOperacao() {
+		return naturezaOperacao;
+	}
+	public FormaPagamento formaPagamento() {
+		return formaPagamento;
+	}
+	public Modelo modelo() {
+		return modelo;
+	}
+	public Serie serie() {
+		return serie;
+	}
+	public Long numero() {
+		return numero;
+	}
+	public Date emissao() {
+		return emissao;
+	}
+	public Timestamp dataHora() {
+		return dataHora;
+	}
+	public TipoOperacao tipoOperacao() {
+		return tipoOperacao;
 	}
 }

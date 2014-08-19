@@ -8,5 +8,12 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" /> </bean -->
 
 	<context:component-scan base-package="com.hadrion.nfe" />
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin@192.168.151.3:1521:orcl" />
+		<property name="username" value="coopadap" />
+		<property name="password" value="sucesso" />
+	</bean>
 
 </beans>
