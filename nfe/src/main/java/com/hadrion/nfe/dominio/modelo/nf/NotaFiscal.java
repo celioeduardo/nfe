@@ -21,6 +21,8 @@ public class NotaFiscal {
 	private FormatoDanfe formatoDanfe;
 	private boolean consumidorFinal;
 	private Finalidade finalidade;
+	private Presenca presenca;
+	private Processo processo;
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId,
 			String naturezaOperacao,
@@ -34,7 +36,9 @@ public class NotaFiscal {
 			LocalDestino localDestino, 
 			Uf municipioFatoGerador,
 			boolean consumidorFinal,
-			Finalidade finalidade) {
+			Finalidade finalidade,
+			Presenca presenca,
+			Processo processo) {
 		this.notaFiscalId = notaFiscalId;
 		this.situacaoHomologacao=Situacao.INDEFINIDA;
 		this.situacaoProducao=Situacao.INDEFINIDA;
@@ -51,6 +55,8 @@ public class NotaFiscal {
 		//this.formatoDanfe=formatoDanfe;
 		this.consumidorFinal=consumidorFinal;
 		this.finalidade=finalidade;
+		this.presenca=presenca;
+		this.processo=processo;
 	}
 	public NotaFiscal(NotaFiscalId notaFiscalId) {
 		this.notaFiscalId = notaFiscalId;
@@ -180,5 +186,11 @@ public class NotaFiscal {
 	}
 	public Finalidade finalidade() {
 		return finalidade;
+	}
+	public Presenca presenca() {
+		return presenca;
+	}
+	public Processo processo() {
+		return processo;
 	}
 }

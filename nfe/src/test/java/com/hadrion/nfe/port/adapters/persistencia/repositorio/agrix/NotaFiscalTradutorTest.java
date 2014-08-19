@@ -18,6 +18,8 @@ import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
 import com.hadrion.nfe.dominio.modelo.nf.Modelo;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.Presenca;
+import com.hadrion.nfe.dominio.modelo.nf.Processo;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 
@@ -41,6 +43,8 @@ public class NotaFiscalTradutorTest {
 		when(rs.getString("UF_FATO_GERADOR")).thenReturn("SP");
 		when(rs.getBoolean("CONSUMIDOR_FINAL")).thenReturn(false);
 		when(rs.getString("FINALIDADE")).thenReturn("NORMAL");
+		when(rs.getString("PRESENCA")).thenReturn("NAO_PRESENCIAL");
+		when(rs.getString("PROCESSO")).thenReturn("APLICATIVO_CONTRIBUINTE");
 		
 		when(rs.next()).thenReturn(true).thenReturn(false);		
 	}
@@ -63,5 +67,7 @@ public class NotaFiscalTradutorTest {
 		//assertEquals(FormatoDanfe.NORMAL_RETRATO,nf.formatoDanfe());
 		assertEquals(Finalidade.NORMAL,nf.finalidade());		
 		assertEquals(false,nf.consumidorFinal());
+		assertEquals(Presenca.NAO_PRESENCIAL,nf.presenca());
+		assertEquals(Processo.APLICATIVO_CONTRIBUINTE,nf.processo());
 	}
 }

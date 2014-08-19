@@ -10,6 +10,8 @@ import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
 import com.hadrion.nfe.dominio.modelo.nf.Modelo;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.Presenca;
+import com.hadrion.nfe.dominio.modelo.nf.Processo;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 
@@ -30,7 +32,9 @@ public class NotaFiscalTradutor {
 				LocalDestino.valueOf(rs.getString("LOCAL_DESTINO")),
 				Uf.valueOf(rs.getString("UF_FATO_GERADOR")),
 				rs.getBoolean("CONSUMIDOR_FINAL"),
-				Finalidade.valueOf(rs.getString("FINALIDADE")));
+				Finalidade.valueOf(rs.getString("FINALIDADE")),
+				Presenca.valueOf(rs.getString("PRESENCA")),
+				Processo.valueOf(rs.getString("PROCESSO")));
 			
 		} catch (SQLException e) {
 			throw new RuntimeException(e.getMessage());
