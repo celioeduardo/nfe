@@ -1,8 +1,14 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
 import java.util.Date;
+import java.util.Set;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
+import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
+import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
+import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
+import com.hadrion.nfe.dominio.modelo.nf.referencia.NotaFiscalReferencia;
 
 public class NotaFiscal {
 	private NotaFiscalId notaFiscalId;
@@ -23,6 +29,12 @@ public class NotaFiscal {
 	private Finalidade finalidade;
 	private Presenca presenca;
 	private Processo processo;
+	private NotaFiscalReferencia referencia;
+	private Set<NotaFiscalId> referencias;
+	private Emitente emitente;
+	private Destinatario destinatario;
+	private LocalRetirada localRetirada;
+	private LocalEntrega localEntrega;
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId,
 			String naturezaOperacao,
@@ -38,7 +50,12 @@ public class NotaFiscal {
 			boolean consumidorFinal,
 			Finalidade finalidade,
 			Presenca presenca,
-			Processo processo) {
+			Processo processo,
+			Set<NotaFiscalId> referencias,
+			Emitente emitente,
+			Destinatario destinatario,
+			LocalRetirada localRetirada,
+			LocalEntrega localEntrega) {
 		this.notaFiscalId = notaFiscalId;
 		this.situacaoHomologacao=Situacao.INDEFINIDA;
 		this.situacaoProducao=Situacao.INDEFINIDA;
@@ -57,12 +74,25 @@ public class NotaFiscal {
 		this.finalidade=finalidade;
 		this.presenca=presenca;
 		this.processo=processo;
+		this.referencias = referencias;
+		consistirNotasReferencia();
+		this.emitente = emitente;
+		this.destinatario = destinatario;
+		this.localRetirada = localRetirada;
+		this.localEntrega = localEntrega;
 	}
+	
 	public NotaFiscal(NotaFiscalId notaFiscalId) {
 		this.notaFiscalId = notaFiscalId;
 		this.situacaoHomologacao=Situacao.INDEFINIDA;
 		this.situacaoProducao=Situacao.INDEFINIDA;
 		
+	}
+	private void consistirNotasReferencia(){
+		if (referencias != null && referencias.size() > 500)
+			throw new IllegalArgumentException(
+					"Quantidade máxima de 500 Notas de Referência excedida. "
+					+"Informadas: "+referencias.size());
 	}
 	public NotaFiscalId notaFiscalId(){
 		return this.notaFiscalId;
@@ -192,5 +222,11 @@ public class NotaFiscal {
 	}
 	public Processo processo() {
 		return processo;
+	}
+	public NotaFiscalReferencia referencia() {
+		return referencia;
+	}
+	public void referencia(NotaFiscalReferencia referencia) {
+		this.referencia = referencia;
 	}
 }
