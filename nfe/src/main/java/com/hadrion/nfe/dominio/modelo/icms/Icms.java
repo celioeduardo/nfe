@@ -6,6 +6,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 public class Icms {
+	
+	public static final Icms NULO = 
+			new Icms(null, null, null, 0.0, Dinheiro.ZERO, 0.0, Dinheiro.ZERO, 
+					null, 0.0, Dinheiro.ZERO);
+	
 	private Origem origem;
 	private Cst cst;
 	private DeterminacaoBaseCalculo determinacaoBaseCalculo;
@@ -36,6 +41,20 @@ public class Icms {
 		this.valorIcmsDiferio = valorIcmsDiferio;
 	}
 	
+	public Dinheiro baseCalculo(){
+		return baseCalculo;
+	}
+	
+	public Dinheiro valor(){
+		return valor;
+	}
+	
+	public SubstituicaoTributaria st(){
+		if (substituicaoTributaria == null)
+			return SubstituicaoTributaria.NULA;
+		return substituicaoTributaria;
+	}
+
 	public static Icms tributacaoIntegral_00(
 			Origem origem, Dinheiro baseCalculo, Double aliquota, 
 			DeterminacaoBaseCalculo determinacaoBaseCalculo){
@@ -54,11 +73,6 @@ public class Icms {
 			DeterminacaoBaseCalculo determinacaoBaseCalculo){
 		return tributacaoIntegral_00(origem, baseCalculo, aliquota, determinacaoBaseCalculo);
 	}
-	
-	public Dinheiro valor(){
-		return valor;
-	}
-	
 	
 	@Override
 	public boolean equals(Object objeto) {

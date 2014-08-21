@@ -6,6 +6,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 public class SubstituicaoTributaria {
+	
+	public static final SubstituicaoTributaria NULA = new SubstituicaoTributaria(
+			0.0,Dinheiro.ZERO,0.0,Dinheiro.ZERO, null, 0.0);
+	
 	private Double percentualReducaoBaseCalculo;
 	private Dinheiro baseCalculo;
 	private Double aliquota;

@@ -23,6 +23,12 @@ public class Dinheiro {
 		return new Dinheiro(valor * aliquota);
 	}
 	
+	public Dinheiro subtrair(Dinheiro valor) {
+		return new Dinheiro(valor() - valor.valor);
+	}
+	public Dinheiro soma(Dinheiro valor) {
+		return new Dinheiro(valor() + valor.valor());
+	}
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;

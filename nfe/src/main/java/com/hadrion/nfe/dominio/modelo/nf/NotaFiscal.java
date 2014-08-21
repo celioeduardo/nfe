@@ -1,14 +1,18 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.referencia.NotaFiscalReferencia;
+import com.hadrion.nfe.tipos.Dinheiro;
 
 public class NotaFiscal {
 	private NotaFiscalId notaFiscalId;
@@ -31,10 +35,12 @@ public class NotaFiscal {
 	private Processo processo;
 	private NotaFiscalReferencia referencia;
 	private Set<NotaFiscalId> referencias;
+
 	private Emitente emitente;
 	private Destinatario destinatario;
 	private LocalRetirada localRetirada;
 	private LocalEntrega localEntrega;
+	private List<Item> itens;
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId,
 			String naturezaOperacao,
@@ -228,5 +234,111 @@ public class NotaFiscal {
 	}
 	public void referencia(NotaFiscalReferencia referencia) {
 		this.referencia = referencia;
+	}
+	public Dinheiro totalBaseCalculoIcms(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.imposto().icms().baseCalculo());
+		return result;
+	}
+	public Dinheiro totalIcms(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.imposto().icms().valor());
+		return result;
+	}
+	public Dinheiro totalBaseCalculoImcsSt(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.imposto().icms().st().baseCalculo());
+		return result;
+	}
+	public Dinheiro totalImcsSt(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.imposto().icms().st().valor());
+		return result;
+	}
+	public Dinheiro totalProdutos(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.produto().totalBruto());
+		return result;
+	}
+	public Dinheiro totalFrete(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.produto().totalFrete());
+		return result;
+	}
+	public Dinheiro totalSeguro(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.produto().totalSeguro());
+		return result;
+	}
+	public Dinheiro totalDesconto(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.produto().valorDesconto());
+		return result;
+	}
+	public Dinheiro totalPis(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.imposto().pis().valor());
+		return result;
+	}
+	public Dinheiro totalCofins(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.imposto().cofins().valor());
+		return result;
+	}
+	public Dinheiro valorIcmsDesonerado(){
+		return Dinheiro.ZERO;
+	}
+	public Dinheiro outrasDespesasAcessorias(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.produto().outrasDespesasAcessorias());
+		return result;
+	}
+	public Dinheiro total(){
+		return totalProdutos()
+				.subtrair(totalDesconto())
+				.subtrair(valorIcmsDesonerado())
+				.soma(totalImcsSt())
+				.soma(totalFrete())
+				.soma(totalSeguro())
+				.soma(outrasDespesasAcessorias());
+	}	
+	
+	public Dinheiro totalValorAproximadoTributos(){
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.imposto().valorTotalAproximado());
+		return result;
+	}
+	
+	public Emitente getEmitente() {
+		return emitente;
+	}
+
+	public Destinatario getDestinatario() {
+		return destinatario;
+	}
+
+	public LocalRetirada getLocalRetirada() {
+		return localRetirada;
+	}
+
+	public LocalEntrega getLocalEntrega() {
+		return localEntrega;
+	}
+	private List<Item> getItens(){
+		if (itens == null)
+			itens = new ArrayList<Item>();
+		return itens;
 	}
 }

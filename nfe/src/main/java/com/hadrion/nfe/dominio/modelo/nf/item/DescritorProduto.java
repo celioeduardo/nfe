@@ -91,7 +91,7 @@ public class DescritorProduto {
 	public Double valorUnitarioComercializacao() {
 		return valorUnitarioComercializacao;
 	}
-	public Dinheiro valorTotalBruto() {
+	public Dinheiro totalBruto() {
 		return valorTotalBruto;
 	}
 	public Gtin gtinTributavel() {
