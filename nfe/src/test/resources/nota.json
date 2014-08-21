@@ -1,0 +1,11 @@
+{
+  "numero" : 204802,
+  "serie" : "2",
+  "modelo" : "55",
+  "emissao" : "19/08/14",
+  "dataHora" : "19/08/14",
+  "tipoOperacao" : "SAIDA",
+  "localDestino" : "INTERNA",
+  "consumidorFinal" : false,
+  "finalidade" : "NORMAL"
+}

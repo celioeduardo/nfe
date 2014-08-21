@@ -16,7 +16,7 @@ public class Cobranca {
 		return fatura;
 	}
 
-	public List<Duplicata> duplicata() {
+	public List<Duplicata> duplicatas() {
 		return duplicatas;
 	}
 	

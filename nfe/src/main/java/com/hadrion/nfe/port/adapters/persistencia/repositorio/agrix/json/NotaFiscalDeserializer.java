@@ -1,0 +1,67 @@
+package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json;
+
+import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
+import com.hadrion.nfe.dominio.modelo.nf.Modelo;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
+import com.hadrion.nfe.dominio.modelo.nf.Serie;
+import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
+
+public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
+
+	@Override
+	public NotaFiscal deserialize(JsonElement jsonSource, Type type,
+			JsonDeserializationContext arg2) throws JsonParseException {
+		
+		final JsonObject j = jsonSource.getAsJsonObject();
+		
+		final NotaFiscal nf = new NotaFiscal(
+				null,
+				null,
+				null,
+				new Modelo(j.get("modelo").getAsString()),
+				new Serie(j.get("serie").getAsLong()),
+				j.get("numero").getAsLong(), 
+				converterData(j.get("emissao").getAsString()), 
+				new Date(), 
+				TipoOperacao.valueOf(j.get("tipoOperacao").getAsString()),
+				LocalDestino.valueOf(j.get("localDestino").getAsString()), 
+				null,
+				j.get("consumidorFinal").getAsBoolean(),
+				null,
+				null,
+				null,
+				null, //Set<NotaFiscalId> referencias,
+				null, //Emitente emitente,
+				null, //Destinatario destinatario,
+				null, //LocalRetirada localRetirada,
+				null, //LocalEntrega localEntrega,
+				null, //List<Item> itens,
+				null, //Cobranca cobranca,
+				null, //Informacao informacaoFisco,
+				null, //Informacao informacaoContribuinte,
+				null); //Exportacao exportacao
+		
+		return nf;
+	}
+
+	private Date converterData(String data){
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+		try {
+			return formatter.parse(data);
+		} catch (ParseException e) {
+			return null;
+		}	
+		
+	}
+}

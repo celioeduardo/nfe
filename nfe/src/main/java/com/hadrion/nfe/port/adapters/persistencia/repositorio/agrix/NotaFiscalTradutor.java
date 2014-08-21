@@ -1,19 +1,8 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import com.hadrion.nfe.dominio.modelo.ibge.Uf;
-import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
-import com.hadrion.nfe.dominio.modelo.nf.FormaPagamento;
-import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
-import com.hadrion.nfe.dominio.modelo.nf.Modelo;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
-import com.hadrion.nfe.dominio.modelo.nf.Presenca;
-import com.hadrion.nfe.dominio.modelo.nf.Processo;
-import com.hadrion.nfe.dominio.modelo.nf.Serie;
-import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 
 public class NotaFiscalTradutor {
 	

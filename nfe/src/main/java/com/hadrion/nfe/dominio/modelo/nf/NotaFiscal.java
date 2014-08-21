@@ -6,12 +6,13 @@ import java.util.List;
 import java.util.Set;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
+import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
-import com.hadrion.nfe.dominio.modelo.nf.referencia.NotaFiscalReferencia;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 public class NotaFiscal {
@@ -27,20 +28,29 @@ public class NotaFiscal {
 	private Date dataHora;
 	private TipoOperacao tipoOperacao;
 	private LocalDestino localDestino;
-	private Uf municipioFatoGerador;
+	private Uf municipioFatoGerador; //TODO trocar para buscar o código do IBGE da cidade da Filial?
 	private FormatoDanfe formatoDanfe;
 	private boolean consumidorFinal;
 	private Finalidade finalidade;
 	private Presenca presenca;
 	private Processo processo;
-	private NotaFiscalReferencia referencia;
 	private Set<NotaFiscalId> referencias;
-
+	
 	private Emitente emitente;
 	private Destinatario destinatario;
 	private LocalRetirada localRetirada;
 	private LocalEntrega localEntrega;
+	
+	@SuppressWarnings("unused")
+	private NotaFiscal() {
+		super();
+	}
+
 	private List<Item> itens;
+	private Cobranca cobranca;
+	private Informacao informacaoFisco;
+	private Informacao informacaoContribuinte;
+	private Exportacao exportacao;
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId,
 			String naturezaOperacao,
@@ -61,7 +71,12 @@ public class NotaFiscal {
 			Emitente emitente,
 			Destinatario destinatario,
 			LocalRetirada localRetirada,
-			LocalEntrega localEntrega) {
+			LocalEntrega localEntrega,
+			List<Item> itens,
+			Cobranca cobranca,
+			Informacao informacaoFisco,
+			Informacao informacaoContribuinte,
+			Exportacao exportacao) {
 		this.notaFiscalId = notaFiscalId;
 		this.situacaoHomologacao=Situacao.INDEFINIDA;
 		this.situacaoProducao=Situacao.INDEFINIDA;
@@ -86,6 +101,11 @@ public class NotaFiscal {
 		this.destinatario = destinatario;
 		this.localRetirada = localRetirada;
 		this.localEntrega = localEntrega;
+		this.itens = itens;
+		this.cobranca = cobranca;
+		this.informacaoFisco = informacaoFisco;
+		this.informacaoContribuinte = informacaoContribuinte;
+		this.exportacao = exportacao;
 	}
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId) {
@@ -229,12 +249,6 @@ public class NotaFiscal {
 	public Processo processo() {
 		return processo;
 	}
-	public NotaFiscalReferencia referencia() {
-		return referencia;
-	}
-	public void referencia(NotaFiscalReferencia referencia) {
-		this.referencia = referencia;
-	}
 	public Dinheiro totalBaseCalculoIcms(){
 		Dinheiro result = Dinheiro.ZERO;
 		for (Item item : getItens())
@@ -321,21 +335,26 @@ public class NotaFiscal {
 		return result;
 	}
 	
-	public Emitente getEmitente() {
+	public Emitente emitente() {
 		return emitente;
 	}
 
-	public Destinatario getDestinatario() {
+	public Destinatario destinatario() {
 		return destinatario;
 	}
 
-	public LocalRetirada getLocalRetirada() {
+	public LocalRetirada localRetirada() {
 		return localRetirada;
 	}
 
-	public LocalEntrega getLocalEntrega() {
+	public LocalEntrega localEntrega() {
 		return localEntrega;
 	}
+	
+	public Exportacao exportacao(){
+		return exportacao;
+	}
+	
 	private List<Item> getItens(){
 		if (itens == null)
 			itens = new ArrayList<Item>();
