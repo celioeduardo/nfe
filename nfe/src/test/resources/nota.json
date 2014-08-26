@@ -1,4 +1,5 @@
 {
+  "NotaFiscalId" : "013924F586684CC4E050007F010060FB",
   "numero" : 204802,
   "serie" : "2",
   "modelo" : "55",
@@ -6,6 +7,15 @@
   "dataHora" : "19/08/14",
   "tipoOperacao" : "SAIDA",
   "localDestino" : "INTERNA",
+  "finalidade" : "NORMAL",
   "consumidorFinal" : false,
-  "finalidade" : "NORMAL"
+  "itens" : [{
+    "produtoId" : "013924F586684CC4E050007F010060FB",
+    "codigo" : "1012",
+    "descricao" : "ALHO COOPADAP ESPECIAL 04 (NOBILISSIMO)"
+  },{
+    "produtoId" : "013924F586684CC4E050007F010060FA",
+    "codigo" : "1013",
+    "descricao" : "ALHO PORO"
+  }]
 }

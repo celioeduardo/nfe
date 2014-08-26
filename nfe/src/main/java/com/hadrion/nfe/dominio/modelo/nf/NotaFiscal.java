@@ -1,6 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -359,5 +360,13 @@ public class NotaFiscal {
 		if (itens == null)
 			itens = new ArrayList<Item>();
 		return itens;
+	}
+
+	public List<Item> itens() {
+		return Collections.unmodifiableList(itens);
+	}
+
+	public Item item(int i) {
+		return getItens().get(0);
 	}
 }

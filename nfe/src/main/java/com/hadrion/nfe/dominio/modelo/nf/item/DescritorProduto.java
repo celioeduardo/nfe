@@ -1,5 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.nf.item;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;
 
@@ -60,7 +62,11 @@ public class DescritorProduto {
 		this.exportacao = exportacao;
 		this.combustivel = combustivel;
 	}
-	
+	public DescritorProduto(String codigo, String descricao) {
+		super();
+		this.codigo = codigo;
+		this.descricao = descricao;
+	}	
 	public String codigo() {
 		return codigo;
 	}
@@ -124,4 +130,94 @@ public class DescritorProduto {
 	public Combustivel combustivel(){
 		return this.combustivel;
 	}
+	@Override
+	public boolean equals(Object objeto) {
+		boolean objetosIguais = false;
+
+		if (objeto != null && this.getClass() == objeto.getClass()) {
+			DescritorProduto objetoTipado = (DescritorProduto) objeto;
+			
+			objetosIguais = new EqualsBuilder()
+			.append(codigo, objetoTipado.codigo)
+			.append(gtin, objetoTipado.gtin)
+			.append(descricao, objetoTipado.descricao)
+			.append(ncm,objetoTipado.ncm)
+			.append(nve,objetoTipado.nve)
+			.append(extipi,objetoTipado.extipi)
+			.append(cfop,objetoTipado.cfop)
+			.append(unidadeComercial,objetoTipado.unidadeComercial)
+			.append(quantidadeComercial,objetoTipado.quantidadeComercial)
+			.append(valorUnitarioComercializacao,objetoTipado.valorUnitarioComercializacao)
+			.append(valorTotalBruto,objetoTipado.valorTotalBruto)
+			.append(gtinTributavel,objetoTipado.gtinTributavel)
+			.append(unidadeTributavel,objetoTipado.unidadeTributavel)
+			.append(quantidadeTributavel,objetoTipado.quantidadeTributavel)
+			.append(valorUnitarioTributacao,objetoTipado.valorUnitarioTributacao)
+			.append(totalFrete,objetoTipado.totalFrete)
+			.append(totalSeguro,objetoTipado.totalSeguro)
+			.append(valorDesconto,objetoTipado.valorDesconto)
+			.append(outrasDespesasAcessorias,objetoTipado.outrasDespesasAcessorias)
+			.append(exportacao,objetoTipado.exportacao)
+			.append(combustivel,objetoTipado.combustivel)
+			.isEquals();
+		}
+
+		return objetosIguais;
+	}
+
+	@Override
+	public int hashCode() {
+		int hashCodeValue = 
+				+ (1234579 * 3473) 
+				+ this.codigo.hashCode()
+				+ this.gtin.hashCode()
+				+ this.descricao.hashCode()
+				+ this.ncm.hashCode()
+				+ this.nve.hashCode()
+				+ this.extipi.hashCode()
+				+ this.cfop.hashCode()
+				+ this.unidadeComercial.hashCode()
+				+ this.quantidadeComercial.hashCode()
+				+ this.valorUnitarioComercializacao.hashCode()
+				+ this.valorTotalBruto.hashCode()
+				+ this.gtinTributavel.hashCode()
+				+ this.unidadeTributavel.hashCode()
+				+ this.quantidadeTributavel.hashCode()
+				+ this.valorUnitarioTributacao.hashCode()
+				+ this.totalFrete.hashCode()
+				+ this.totalSeguro.hashCode()
+				+ this.valorDesconto.hashCode()
+				+ this.outrasDespesasAcessorias.hashCode()
+				+ this.exportacao.hashCode()
+				+ this.combustivel.hashCode();
+		
+		return hashCodeValue;
+	}
+	
+	@Override
+	public String toString() {
+		return "DescritorProduto [codigo=" + codigo
+				+ ",gtin=" + gtin
+				+ ",descricao=" + descricao
+				+ ",nvm=" + ncm
+				+ ",nve=" + nve
+				+ ",extipin=" + extipi
+				+ ",cfop=" + cfop
+				+ ",unidadeComercial=" + unidadeComercial
+				+ ",quantidadeComercial=" + quantidadeComercial
+				+ ",valorUnitarioComercializacao=" + valorUnitarioComercializacao
+				+ ",valorTotalBruto=" + valorTotalBruto
+				+ ",gtinTributavel=" + gtinTributavel
+				+ ",unidadeTributavel=" + unidadeTributavel
+				+ ",quantidadeTributavel=" + quantidadeTributavel
+				+ ",valorUnitarioTributacao=" + valorUnitarioTributacao
+				+ ",totalFrete=" + totalFrete
+				+ ",totalSeguro=" + totalSeguro
+				+ ",valorDesconto=" + valorDesconto
+				+ ",outrasDespesasAcessorias=" + outrasDespesasAcessorias
+				+ ",exportacao=" + exportacao
+				+ ",combustivel =" + combustivel + "]";
+	
+	}
+
 }
