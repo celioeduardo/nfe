@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -17,6 +18,7 @@ import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
 import com.hadrion.nfe.dominio.modelo.nf.Modelo;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
@@ -45,7 +47,7 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 				Finalidade.valueOf(j.get("finalidade").getAsString()),
 				null,
 				null,
-				null, //Set<NotaFiscalId> referencias,
+				referencias(j), //Set<NotaFiscalId> referencias,
 				null, //Emitente emitente,
 				null, //Destinatario destinatario,
 				null, //LocalRetirada localRetirada,
@@ -61,6 +63,9 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 	
 	private List<Item> itens(JsonObject j){
 		return new NotaFiscalTradutorJson(j.get("itens").toString()).converterItens();
+	}
+	private Set<Referencia> referencias(JsonObject j){
+		return new NotaFiscalTradutorJson(j.get("referencias").toString()).converterReferencias();
 	}
 
 	private Date converterData(String data){

@@ -1,5 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.portal;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 public class ChaveAcesso {
 	private String chave;
 
@@ -23,15 +25,13 @@ public class ChaveAcesso {
 
 		return objetosIguais;
 	}
-
 	@Override
 	public int hashCode() {
-		int hashCodeValue = 
-				+ (1722 * 5) 
-				+ chave().hashCode();
-		return hashCodeValue;
+		return new HashCodeBuilder(1723,5155)
+		.append(chave)
+		.toHashCode();
 	}
-	
+
 	@Override
 	public String toString() {
 		return "ChaveAcesso [chave=" + chave() +"]";

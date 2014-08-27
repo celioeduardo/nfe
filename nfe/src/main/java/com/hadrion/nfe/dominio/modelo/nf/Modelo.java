@@ -1,5 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 public class Modelo {
 
 	private String modelo;
@@ -25,10 +27,9 @@ public class Modelo {
 
 	@Override
 	public int hashCode() {
-		int hashCodeValue = 
-				+ (27851 * 57) 
-				+ this.modelo().hashCode();
-		return hashCodeValue;
+		return new HashCodeBuilder(27851,57) 
+				.append(modelo)
+				.toHashCode();
 	}
 	
 	@Override

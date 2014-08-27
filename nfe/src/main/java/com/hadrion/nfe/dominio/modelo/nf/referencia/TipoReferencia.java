@@ -1,6 +1,6 @@
 package com.hadrion.nfe.dominio.modelo.nf.referencia;
 
-public enum Referencia {
+public enum TipoReferencia {
 	DEVOLUCAO(0,"Devolução de Mercadorias"),
 	SUBSTITUICAO_CANCELADA(1,"Substituição de NF cancelada"),
 	COMPLEMENTO(2,"Complementação de NF");
@@ -13,7 +13,7 @@ public enum Referencia {
 	
 	private int codigo;
 	private String descricao;
-	Referencia(int codigo,String descricao){
+	TipoReferencia(int codigo,String descricao){
 		this.codigo = codigo;
 		this.descricao=descricao;
 	}

@@ -25,7 +25,7 @@ public class Serie {
 	@Override
 	public int hashCode() {
 		int hashCodeValue = 
-				+ (123457 * 347) 
+				+ (33 * 947) 
 				+ this.numero.hashCode();
 		return hashCodeValue;
 	}

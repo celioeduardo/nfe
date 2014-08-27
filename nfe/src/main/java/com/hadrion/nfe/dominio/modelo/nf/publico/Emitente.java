@@ -3,7 +3,7 @@ package com.hadrion.nfe.dominio.modelo.nf.publico;
 import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Cpf;
-import com.hadrion.nfe.tipos.InscricaoEtadual;
+import com.hadrion.nfe.tipos.InscricaoEstadual;
 import com.hadrion.nfe.tipos.Telefone;
 
 public class Emitente {
@@ -14,12 +14,12 @@ public class Emitente {
 	private String nomeFantasia;
 	private Endereco endereco;
 	private Telefone telefone;
-	private InscricaoEtadual ie;
-	private InscricaoEtadual ieSubstituto;
+	private InscricaoEstadual ie;
+	private InscricaoEstadual ieSubstituto;
 	
 	public Emitente(Cnpj cnpj, Cpf cpf, String razaoSocial,
 			String nomeFantasia, Endereco endereco, Telefone telefone,
-			InscricaoEtadual ie, InscricaoEtadual ieSubstituto) {
+			InscricaoEstadual ie, InscricaoEstadual ieSubstituto) {
 		super();
 		this.cnpj = cnpj;
 		this.cpf = cpf;
@@ -55,11 +55,11 @@ public class Emitente {
 		return telefone;
 	}
 
-	public InscricaoEtadual ie() {
+	public InscricaoEstadual ie() {
 		return ie;
 	}
 
-	public InscricaoEtadual ieSubstituto() {
+	public InscricaoEstadual ieSubstituto() {
 		return ieSubstituto;
 	}
 }

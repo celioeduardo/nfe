@@ -5,12 +5,12 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 
 public abstract class NotaFiscalReferencia {
-	private Referencia tipo;
-	protected NotaFiscalReferencia(Referencia tipo) {
+	private TipoReferencia tipo;
+	protected NotaFiscalReferencia(TipoReferencia tipo) {
 		this.tipo = tipo;
 	}
 	
-	public static NotaFiscalReferencia referenciar(Referencia tipo){
+	public static NotaFiscalReferencia referenciar(TipoReferencia tipo){
 		switch (tipo){
 			case COMPLEMENTO:
 				return new Complemento();
@@ -50,7 +50,7 @@ public abstract class NotaFiscalReferencia {
 				+ "]";
 	}
 	
-	public Referencia tipo(){
+	public TipoReferencia tipo(){
 		return tipo;
 	}
 }

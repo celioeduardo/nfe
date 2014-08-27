@@ -4,7 +4,7 @@ import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Cpf;
 import com.hadrion.nfe.tipos.Email;
-import com.hadrion.nfe.tipos.InscricaoEtadual;
+import com.hadrion.nfe.tipos.InscricaoEstadual;
 import com.hadrion.nfe.tipos.Telefone;
 
 public class Destinatario {
@@ -17,13 +17,13 @@ public class Destinatario {
 	private Endereco endereco;
 	private Telefone telefone;
 	private IndicadorIe indicadorIe;
-	private InscricaoEtadual ie;
+	private InscricaoEstadual ie;
 	private Long inscricaoSuframa;
 	private Email email;
 	
 	public Destinatario(Cnpj cnpj, Cpf cpf, String idEstrangeiro,
 			String razaoSocial, String nomeFantasia, Endereco endereco,
-			Telefone telefone, IndicadorIe indicadorIe, InscricaoEtadual ie,
+			Telefone telefone, IndicadorIe indicadorIe, InscricaoEstadual ie,
 			Long inscricaoSuframa, Email email) {
 		super();
 		this.cnpj = cnpj;
@@ -63,7 +63,7 @@ public class Destinatario {
 		return telefone;
 	}
 
-	public InscricaoEtadual ie() {
+	public InscricaoEstadual ie() {
 		return ie;
 	}
 

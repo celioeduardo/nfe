@@ -1,16 +1,16 @@
 package com.hadrion.nfe.tipos;
 
+import com.hadrion.nfe.dominio.modelo.nf.Serie;
 
-public class Cpf {
-	
-	private Long numero;
+public class InscricaoEstadual {
+	private String numero;
 
-	public Cpf(Long numero) {
+	public InscricaoEstadual(String numero) {
 		super();
 		this.numero = numero;
 	}
 	
-	public Long numero(){
+	public String numero(){
 		return numero;
 	}
 	@Override
@@ -18,7 +18,7 @@ public class Cpf {
 		boolean objetosIguais = false;
 
 		if (objeto != null && this.getClass() == objeto.getClass()) {
-			Cpf objetoTipado = (Cpf) objeto;
+			InscricaoEstadual objetoTipado = (InscricaoEstadual) objeto;
 			objetosIguais = this.numero.equals(objetoTipado.numero);
 		}
 
@@ -28,13 +28,13 @@ public class Cpf {
 	@Override
 	public int hashCode() {
 		int hashCodeValue = 
-				+ (123457 * 347) 
+				+ (1234579 * 3473) 
 				+ this.numero.hashCode();
 		return hashCodeValue;
 	}
 	
 	@Override
 	public String toString() {
-		return "Cpf [numero=" + numero + "]";
-	}
+		return "InscricaoEstadual [numero=" + numero + "]";
+	}	
 }

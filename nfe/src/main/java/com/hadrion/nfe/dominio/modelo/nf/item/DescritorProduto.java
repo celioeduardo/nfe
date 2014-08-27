@@ -1,6 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.nf.item;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;
@@ -167,31 +168,29 @@ public class DescritorProduto {
 
 	@Override
 	public int hashCode() {
-		int hashCodeValue = 
-				+ (1234579 * 3473) 
-				+ this.codigo.hashCode()
-				+ this.gtin.hashCode()
-				+ this.descricao.hashCode()
-				+ this.ncm.hashCode()
-				+ this.nve.hashCode()
-				+ this.extipi.hashCode()
-				+ this.cfop.hashCode()
-				+ this.unidadeComercial.hashCode()
-				+ this.quantidadeComercial.hashCode()
-				+ this.valorUnitarioComercializacao.hashCode()
-				+ this.valorTotalBruto.hashCode()
-				+ this.gtinTributavel.hashCode()
-				+ this.unidadeTributavel.hashCode()
-				+ this.quantidadeTributavel.hashCode()
-				+ this.valorUnitarioTributacao.hashCode()
-				+ this.totalFrete.hashCode()
-				+ this.totalSeguro.hashCode()
-				+ this.valorDesconto.hashCode()
-				+ this.outrasDespesasAcessorias.hashCode()
-				+ this.exportacao.hashCode()
-				+ this.combustivel.hashCode();
-		
-		return hashCodeValue;
+		return new HashCodeBuilder(1234579,3473) 
+				.append(codigo)
+				.append(gtin)
+				.append(descricao)
+				.append(ncm)
+				.append(nve)
+				.append(extipi)
+				.append(cfop)
+				.append(unidadeComercial)
+				.append(quantidadeComercial)
+				.append(valorUnitarioComercializacao)
+				.append(valorTotalBruto)
+				.append(gtinTributavel)
+				.append(unidadeTributavel)
+				.append(quantidadeTributavel)
+				.append(valorUnitarioTributacao)
+				.append(totalFrete)
+				.append(totalSeguro)
+				.append(valorDesconto)
+				.append(outrasDespesasAcessorias)
+				.append(exportacao)
+				.append(combustivel)
+				.toHashCode();		
 	}
 	
 	@Override

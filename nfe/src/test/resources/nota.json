@@ -1,21 +1,26 @@
 {
-  "NotaFiscalId" : "013924F586684CC4E050007F010060FB",
-  "numero" : 204802,
+  "NotaFiscalId" : "013924F5867C4CC4E050007F010060FB",
+  "numero" : 204755,
   "serie" : "2",
   "modelo" : "55",
-  "emissao" : "19/08/14",
-  "dataHora" : "19/08/14",
+  "emissao" : "10/06/14",
+  "dataHora" : "10/06/14",
   "tipoOperacao" : "SAIDA",
-  "localDestino" : "INTERNA",
+  "localDestino" : "INTERESTADUAL",
   "finalidade" : "NORMAL",
   "consumidorFinal" : false,
   "itens" : [{
-    "produtoId" : "013924F586684CC4E050007F010060FB",
-    "codigo" : "1012",
-    "descricao" : "ALHO COOPADAP ESPECIAL 04 (NOBILISSIMO)"
-  },{
-    "produtoId" : "013924F586684CC4E050007F010060FA",
-    "codigo" : "1013",
-    "descricao" : "ALHO PORO"
-  }]
+    "produtoId" : "013924F59BEA4CC4E050007F010060FB",
+    "codigo" : "938",
+    "descricao" : "CENOURA 3A"
+  }, {
+    "produtoId" : "013924F59BEC4CC4E050007F010060FB",
+    "codigo" : "940",
+    "descricao" : "CENOURA 2A"
+  }, {
+    "produtoId" : "013924F59BEE4CC4E050007F010060FB",
+    "codigo" : "942",
+    "descricao" : "CENOURA 1A"
+  }],
+  "referencias" : []
 }

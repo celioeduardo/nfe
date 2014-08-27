@@ -3,17 +3,17 @@ package com.hadrion.nfe.dominio.modelo.nf.transporte;
 import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Cpf;
-import com.hadrion.nfe.tipos.InscricaoEtadual;
+import com.hadrion.nfe.tipos.InscricaoEstadual;
 
 public class Transportador {
 	private Cnpj cnpj;
 	private Cpf cpf;
 	private String razaoSocial;
-	private InscricaoEtadual ie;
+	private InscricaoEstadual ie;
 	private Endereco endereco;
 	
 	public Transportador(Cnpj cnpj, Cpf cpf, String razaoSocial,
-			InscricaoEtadual ie, Endereco endereco) {
+			InscricaoEstadual ie, Endereco endereco) {
 		super();
 		this.cnpj = cnpj;
 		this.cpf = cpf;
@@ -34,7 +34,7 @@ public class Transportador {
 		return razaoSocial;
 	}
 
-	public InscricaoEtadual ie() {
+	public InscricaoEstadual ie() {
 		return ie;
 	}
 

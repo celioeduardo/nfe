@@ -3,6 +3,7 @@ package com.hadrion.nfe.dominio.modelo.nf;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ public class NotaFiscal {
 	private Finalidade finalidade;
 	private Presenca presenca;
 	private Processo processo;
-	private Set<NotaFiscalId> referencias;
+	private Set<Referencia> referencias;
 	
 	private Emitente emitente;
 	private Destinatario destinatario;
@@ -68,7 +69,7 @@ public class NotaFiscal {
 			Finalidade finalidade,
 			Presenca presenca,
 			Processo processo,
-			Set<NotaFiscalId> referencias,
+			Set<Referencia> referencias,
 			Emitente emitente,
 			Destinatario destinatario,
 			LocalRetirada localRetirada,
@@ -361,12 +362,20 @@ public class NotaFiscal {
 			itens = new ArrayList<Item>();
 		return itens;
 	}
-
 	public List<Item> itens() {
-		return Collections.unmodifiableList(itens);
+		return Collections.unmodifiableList(getItens());
 	}
-
 	public Item item(int i) {
-		return getItens().get(0);
+		return getItens().get(i);
+	}
+	
+	
+	public Set<Referencia> getReferencias(){
+		if (referencias == null)
+			referencias = new HashSet<Referencia>();
+		return referencias;
+	}
+	public boolean estaReferenciando(Referencia referencia){
+		return getReferencias().contains(referencia);
 	}
 }
