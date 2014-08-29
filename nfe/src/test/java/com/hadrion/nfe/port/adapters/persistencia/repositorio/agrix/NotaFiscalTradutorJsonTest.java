@@ -26,6 +26,14 @@ import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.NotaFis
 public class NotaFiscalTradutorJsonTest {
 
 	@Test
+	public void equalsHascodeReferencia(){
+		assertEquals(Referencia.nfe(new ChaveAcesso("1")),Referencia.nfe(new ChaveAcesso("1")));
+	}
+	@Test
+	public void equalsHascodeModelo(){
+		assertEquals(new Modelo("55"),new Modelo("55"));
+	}
+	@Test
 	public void traduzirNota() throws IOException{
 		
 		final File json =FileUtils.getFile("src","test", "resources", "nota.json");
@@ -33,23 +41,23 @@ public class NotaFiscalTradutorJsonTest {
 		NotaFiscalTradutorJson tradutor = new NotaFiscalTradutorJson(FileUtils.readFileToString(json));
 		NotaFiscal nf = tradutor.converterNotaFiscal();
 		
-		assertEquals("013924F5867C4CC4E050007F010060FB",nf.notaFiscalId().id());
-		assertEquals(new Long(204755),nf.numero());
+		assertEquals("013924F30E424CC4E050007F010060FB",nf.notaFiscalId().id());
+		assertEquals(new Long(618),nf.numero());
 		assertEquals(new Serie(2L),nf.serie());
 		assertEquals(new Modelo("55"),nf.modelo());
-		assertEquals(data("10/06/2014"),nf.emissao());
-		assertEquals(data("10/06/2014"),nf.dataHora());
+		assertEquals(data("28/09/2009"),nf.emissao());
+		assertEquals(data("28/09/2009"),nf.dataHora());
 		assertEquals(TipoOperacao.SAIDA,nf.tipoOperacao());
-		assertEquals(LocalDestino.INTERESTADUAL,nf.localDestino());
+		assertEquals(LocalDestino.INTERNA,nf.localDestino());
 		assertEquals(Finalidade.NORMAL, nf.finalidade());
-		assertEquals(0,nf.getReferencias().size());
-		assertFalse(nf.estaReferenciando(
-				Referencia.nfe(new ChaveAcesso("29140600891206000310550010000110017000481161"))));
+		assertEquals(1,nf.getReferencias().size());
+		assertTrue(nf.estaReferenciando(
+				Referencia.nfe(new ChaveAcesso("013924F307774CC4E050007F010060FB"))));
 		
 		assertFalse(nf.consumidorFinal());
 		
-		assertEquals(3, nf.itens().size());
-		assertEquals(new DescritorProduto("938","CENOURA 3A"),				
+		assertEquals(4, nf.itens().size());
+		assertEquals(new DescritorProduto("9001","MILHO"),				
 				nf.item(0).produto());
 		
 		System.out.println(FileUtils.readFileToString(json));

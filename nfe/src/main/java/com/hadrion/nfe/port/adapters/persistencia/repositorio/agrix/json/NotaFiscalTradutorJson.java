@@ -1,6 +1,5 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json;
 
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
@@ -51,10 +49,10 @@ public class NotaFiscalTradutorJson {
 		final GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Referencia.class, new ReferenciaDeserializer());
 		final Gson gson = gsonBuilder.create();
-		//Set<Referencia> result =  new HashSet<Referencia>(Arrays.asList(gson.fromJson(json, Referencia[].class)));
+		Set<Referencia> result =  new HashSet<Referencia>(Arrays.asList(gson.fromJson(json, Referencia[].class)));
 		
-		Type listType = new TypeToken<Set<Referencia>>() {}.getType();		
-		Set<Referencia> result =  gson.fromJson(json, listType);
+		//Type listType = new TypeToken<Set<Referencia>>() {}.getType();		
+		//Set<Referencia> result =  gson.fromJson(json, listType);
 		return result; 
 	}	
 }

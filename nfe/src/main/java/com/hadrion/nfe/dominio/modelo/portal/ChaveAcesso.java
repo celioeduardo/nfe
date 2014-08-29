@@ -34,7 +34,7 @@ public class ChaveAcesso {
 
 	@Override
 	public String toString() {
-		return "ChaveAcesso [chave=" + chave() +"]";
+		return "ChaveAcesso [chave=" + chave +"]";
 	}
 	
 }
