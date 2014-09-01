@@ -5,11 +5,13 @@ import java.util.Set;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationContextLoader;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.hadrion.comum.domain.model.RastreadorEventoTest;
+import com.hadrion.nfe.dominio.config.Application;
 import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamentoRepositorio;
 import com.hadrion.nfe.dominio.modelo.lote.GeracaoLoteService;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
@@ -20,7 +22,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-nfe.xml" })
+@ContextConfiguration(classes={Application.class}, loader = SpringApplicationContextLoader.class)
 @ActiveProfiles("teste")
 public abstract class DominioTest extends RastreadorEventoTest {
 	

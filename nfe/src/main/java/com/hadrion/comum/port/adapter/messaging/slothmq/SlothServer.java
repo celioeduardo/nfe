@@ -29,9 +29,9 @@ public class SlothServer extends SlothWorker {
 		slothServer.execute();
 	}
 
-	public static void main(String anArguments[]) throws Exception {
-		SlothServer.executeNewServer();
-	}
+//	public static void main(String anArguments[]) throws Exception {
+//		SlothServer.executeNewServer();
+//	}
 
 	public SlothServer() {
 		super();

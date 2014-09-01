@@ -11,8 +11,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
-@Profile("teste")
-@Repository("notaFiscalRepositorio")
+@Repository
 public class MockNotaFiscalRepositorio implements NotaFiscalRepositorio {
 
 	private Map<String,NotaFiscal> store=new HashMap<String, NotaFiscal>();

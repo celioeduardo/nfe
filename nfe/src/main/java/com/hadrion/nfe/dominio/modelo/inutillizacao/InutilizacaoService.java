@@ -1,10 +1,9 @@
 package com.hadrion.nfe.dominio.modelo.inutillizacao;
 
-import com.hadrion.nfe.dominio.modelo.DominioTest;
 import com.hadrion.nfe.dominio.modelo.portal.inutilizacao.InutilizacaoPortalService;
 import com.hadrion.nfe.dominio.modelo.portal.inutilizacao.RetornoInutilizacao;
 
-public class InutilizacaoService extends DominioTest{
+public class InutilizacaoService{
 	
 	private InutilizacaoPortalService inutilizacaoPortalService;
 	
