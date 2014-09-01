@@ -29,5 +29,21 @@
   "referencias" : [{
     "modelo" : "55",
     "chave" : "013924F307774CC4E050007F010060FB"
-  }]
+  }],
+  "emitente" : {
+    "cnpj" : "7233848000100",
+    "cpf" : "7233848000100",
+    "razaoSocial" : "OSPER AGROINDUSTRIAL S/A",
+    "nomeFantasia" : "",
+    "logradouro" : "ROD. BR 262 KM 443 S/N ",
+    "numero" : "S/N",
+    "complemento" : "",
+    "bairro" : "ZONA RURAL",
+    "municipio" : "NOVA SERRANA - MG",
+    "pais" : "BRASIL",
+    "cep" : 35519000,
+    "telefone" : "3732322434",
+    "ie" : "452332065.00-50",
+    "ieSubstituto" : "452332065.00-50"
+  }
 }

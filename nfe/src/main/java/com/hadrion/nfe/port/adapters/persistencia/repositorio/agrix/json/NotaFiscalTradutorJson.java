@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
+import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 
 
 public class NotaFiscalTradutorJson {
@@ -53,6 +54,14 @@ public class NotaFiscalTradutorJson {
 		
 		//Type listType = new TypeToken<Set<Referencia>>() {}.getType();		
 		//Set<Referencia> result =  gson.fromJson(json, listType);
+		return result; 
+	}	
+	public Emitente converterEmitente() {
+		final GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(Emitente.class, new EmitenteDeserializer());
+		final Gson gson = gsonBuilder.create();
+		Emitente result = gson.fromJson(json, Emitente.class);
+		
 		return result; 
 	}	
 }
