@@ -1,5 +1,8 @@
 package com.hadrion.nfe.dominio.modelo.endereco;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 public class Endereco {
 	
 	private String logradouro;
@@ -51,5 +54,49 @@ public class Endereco {
 	}
 	
 	
+	@Override
+	public boolean equals(Object objeto) {
+		boolean objetosIguais = false;
+
+		if (objeto != null && this.getClass() == objeto.getClass()) {
+			Endereco objetoTipado = (Endereco) objeto;
+			objetosIguais = new EqualsBuilder()
+				.append(logradouro, objetoTipado.logradouro)
+				.append(numero, objetoTipado.numero)
+				.append(complemento, objetoTipado.complemento)
+				.append(bairro, objetoTipado.bairro)
+				.append(municipio, objetoTipado.municipio)
+				.append(pais, objetoTipado.pais)
+				.append(cep, objetoTipado.cep)				
+				.isEquals();
+		}
+
+		return objetosIguais;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(131,193)
+			.append(logradouro)
+			.append(numero)
+			.append(complemento)
+			.append(bairro)
+			.append(municipio)
+			.append(pais)
+			.append(cep)
+			.toHashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Endereco [logradouro=" + logradouro
+				+ ",numero="+ numero
+				+ ",complemento="+ complemento
+				+ ",bairro=" + bairro
+				+ ",municipio="+ municipio
+				+ ",pais="+pais
+				+ ",cep="+cep
+				+ "]";
+	} 
 	
 }

@@ -1,6 +1,8 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,20 +31,11 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.NotaFiscalTradutorJson;
 import com.hadrion.nfe.tipos.Cnpj;
-import com.hadrion.nfe.tipos.Cpf;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
 import com.hadrion.nfe.tipos.Telefone;
 
 public class NotaFiscalTradutorJsonTest {
 
-	@Test
-	public void equalsHascodeReferencia(){
-		assertEquals(Referencia.nfe(new ChaveAcesso("1")),Referencia.nfe(new ChaveAcesso("1")));
-	}
-	@Test
-	public void equalsHascodeModelo(){
-		assertEquals(new Modelo("55"),new Modelo("55"));
-	}
 	@Test
 	public void traduzirNota() throws IOException{
 		
@@ -70,21 +63,21 @@ public class NotaFiscalTradutorJsonTest {
 		assertEquals(new DescritorProduto("8452","LENHA"),				
 				nf.item(3).produto());
 		
-//		assertEquals(new Emitente(
-//						new Cnpj(7233848000100L), 
-//						new Cpf(7233848000100L), 
-//						"OSPER AGROINDUSTRIAL S/A", 
-//						"", 
-//						new Endereco("ROD. BR 262 KM 443 S/N ", 
-//								"S/N",
-//								"",
-//								"ZONA RURAL",
-//							    new Municipio("NOVA SERRANA - MG",Uf.MG),
-//							    new Pais(1L,"BRASIL"),
-//							    new Cep(35519000L)),
-//						new Telefone("3732322434"), 
-//						new InscricaoEstadual("452332065.00-50"), 
-//						new InscricaoEstadual("452332065.00-50")), nf.emitente());
+		assertEquals(new Emitente(
+						new Cnpj(7233848000100L), 
+						null, 
+						"OSPER AGROINDUSTRIAL S/A", 
+						"", 
+						new Endereco("ROD. BR 262 KM 443 S/N ", 
+								"S/N",
+								"",
+								"ZONA RURAL",
+							    new Municipio("NOVA SERRANA - MG",Uf.MG),
+							    new Pais(1L,"BRASIL"),
+							    new Cep(35519000L)),
+						new Telefone("3732322434"), 
+						new InscricaoEstadual("452332065.00-50"), 
+						new InscricaoEstadual("452332065.00-50")), nf.emitente());
 		
 		System.out.println(FileUtils.readFileToString(json));
 	}

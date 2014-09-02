@@ -51,7 +51,6 @@ public class NotaFiscalTradutorJson {
 		gsonBuilder.registerTypeAdapter(Referencia.class, new ReferenciaDeserializer());
 		final Gson gson = gsonBuilder.create();
 		Set<Referencia> result =  new HashSet<Referencia>(Arrays.asList(gson.fromJson(json, Referencia[].class)));
-		
 		//Type listType = new TypeToken<Set<Referencia>>() {}.getType();		
 		//Set<Referencia> result =  gson.fromJson(json, listType);
 		return result; 

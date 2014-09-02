@@ -1,5 +1,8 @@
 package com.hadrion.nfe.tipos;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 
 public class Cpf {
 	
@@ -13,13 +16,16 @@ public class Cpf {
 	public Long numero(){
 		return numero;
 	}
+
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;
 
 		if (objeto != null && this.getClass() == objeto.getClass()) {
 			Cpf objetoTipado = (Cpf) objeto;
-			objetosIguais = this.numero.equals(objetoTipado.numero);
+			objetosIguais = new EqualsBuilder()
+				.append(numero, objetoTipado.numero)
+				.isEquals();
 		}
 
 		return objetosIguais;
@@ -27,14 +33,14 @@ public class Cpf {
 
 	@Override
 	public int hashCode() {
-		int hashCodeValue = 
-				+ (123457 * 347) 
-				+ this.numero.hashCode();
-		return hashCodeValue;
+		return new HashCodeBuilder(6331,3697)
+			.append(numero)
+			.toHashCode();
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Cpf [numero=" + numero + "]";
-	}
+		return "Cpf [numero="+ numero
+				+ "]";
+	} 
 }

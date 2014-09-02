@@ -1,5 +1,8 @@
 package com.hadrion.nfe.dominio.modelo.nf.publico;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Cpf;
@@ -62,4 +65,51 @@ public class Emitente {
 	public InscricaoEstadual ieSubstituto() {
 		return ieSubstituto;
 	}
+	@Override
+	public boolean equals(Object objeto) {
+		boolean objetosIguais = false;
+
+		if (objeto != null && this.getClass() == objeto.getClass()) {
+			Emitente objetoTipado = (Emitente) objeto;
+			objetosIguais = new EqualsBuilder()
+				.append(cnpj,objetoTipado.cnpj)
+				.append(cpf,objetoTipado.cpf)
+				.append(razaoSocial,objetoTipado.razaoSocial)
+				.append(nomeFantasia,objetoTipado.nomeFantasia)
+				.append(endereco,objetoTipado.endereco)
+				.append(telefone,objetoTipado.telefone)
+				.append(ie,objetoTipado.ie)
+				.append(ieSubstituto,objetoTipado.ieSubstituto)
+				.isEquals();
+		}
+
+		return objetosIguais;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(13157,19317)
+			.append(cnpj)
+			.append(cpf)
+			.append(razaoSocial)
+			.append(nomeFantasia)
+			.append(endereco)
+			.append(telefone)
+			.append(ie)
+			.append(ieSubstituto)
+			.toHashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Emitente [cnpj=" + cnpj
+				+ ",cpf="+ cpf
+				+ ",razaoSocial="+ razaoSocial
+				+ ",nomeFantasia="+ nomeFantasia
+				+ ",endereco="+ endereco
+				+ ",telefone="+ telefone
+				+ ",ie="+ ie
+				+ ",ieSubstituto="+ ieSubstituto
+				+ "]";
+	} 
 }

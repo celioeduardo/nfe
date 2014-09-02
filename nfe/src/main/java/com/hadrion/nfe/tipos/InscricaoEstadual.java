@@ -1,6 +1,8 @@
 package com.hadrion.nfe.tipos;
 
-import com.hadrion.nfe.dominio.modelo.nf.Serie;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 
 public class InscricaoEstadual {
 	private String numero;
@@ -19,7 +21,9 @@ public class InscricaoEstadual {
 
 		if (objeto != null && this.getClass() == objeto.getClass()) {
 			InscricaoEstadual objetoTipado = (InscricaoEstadual) objeto;
-			objetosIguais = this.numero.equals(objetoTipado.numero);
+			objetosIguais = new EqualsBuilder()
+				.append(numero, objetoTipado.numero)
+				.isEquals();
 		}
 
 		return objetosIguais;
@@ -27,14 +31,13 @@ public class InscricaoEstadual {
 
 	@Override
 	public int hashCode() {
-		int hashCodeValue = 
-				+ (1234579 * 3473) 
-				+ this.numero.hashCode();
-		return hashCodeValue;
+		return new HashCodeBuilder(133,197)
+			.append(numero)
+			.toHashCode();
 	}
-	
+
 	@Override
 	public String toString() {
-		return "InscricaoEstadual [numero=" + numero + "]";
-	}	
+		return "InscricaoEstadual[numero="+ numero + "]";
+	} 
 }
