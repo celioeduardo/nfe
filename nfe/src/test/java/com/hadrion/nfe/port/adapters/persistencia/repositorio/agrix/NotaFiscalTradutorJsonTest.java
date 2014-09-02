@@ -27,10 +27,14 @@ import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
+import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
+import com.hadrion.nfe.dominio.modelo.nf.publico.IndicadorIe;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.NotaFiscalTradutorJson;
 import com.hadrion.nfe.tipos.Cnpj;
+import com.hadrion.nfe.tipos.Cpf;
+import com.hadrion.nfe.tipos.Email;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
 import com.hadrion.nfe.tipos.Telefone;
 
@@ -64,8 +68,25 @@ public class NotaFiscalTradutorJsonTest {
 				nf.item(3).produto());
 		
 		assertEquals(new Emitente(
+						new Cnpj(86675642000106L), 
+						null, 
+						"COOPERATIVA AGROPECUARIA ALTO PARANAIBA", 
+						"", 
+						new Endereco("ROD. MG 235 KM 89", 
+								"443",
+								"CX P 37",
+								"GUARDA DOS FERREIROS",
+							    new Municipio("SAO GOTARDO - MG",Uf.MG),
+							    new Pais(1L,"BRASIL"),
+							    new Cep(38800000L)),
+						new Telefone("3436161200"), 
+						new InscricaoEstadual("6219059370082"), 
+						new InscricaoEstadual("6219059370082")), nf.emitente());
+		
+		assertEquals(new Destinatario(
 						new Cnpj(7233848000100L), 
 						null, 
+						"",
 						"OSPER AGROINDUSTRIAL S/A", 
 						"", 
 						new Endereco("ROD. BR 262 KM 443 S/N ", 
@@ -76,8 +97,10 @@ public class NotaFiscalTradutorJsonTest {
 							    new Pais(1L,"BRASIL"),
 							    new Cep(35519000L)),
 						new Telefone("3732322434"), 
-						new InscricaoEstadual("452332065.00-50"), 
-						new InscricaoEstadual("452332065.00-50")), nf.emitente());
+						IndicadorIe.CONTRIBUINTE,
+						new InscricaoEstadual("452332065.00-50"),
+						0L, //suframa
+						new Email("JEANPETER@osper.ind.br")), nf.destinatario());
 		
 		System.out.println(FileUtils.readFileToString(json));
 	}

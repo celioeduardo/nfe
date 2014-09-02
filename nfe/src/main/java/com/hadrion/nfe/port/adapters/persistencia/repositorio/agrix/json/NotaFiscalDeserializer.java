@@ -22,6 +22,7 @@ import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
+import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 
 public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
@@ -50,7 +51,7 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 				null,
 				referencias(j), //Set<NotaFiscalId> referencias,
 				emitente(j), //Emitente emitente,
-				null, //Destinatario destinatario,
+				destinatario(j), //Destinatario destinatario,
 				null, //LocalRetirada localRetirada,
 				null, //LocalEntrega localEntrega,
 				itens(j), //j.get("itens").getAsJsonArray(), //List<Item> itens,
@@ -70,6 +71,9 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 	}
 	private Emitente emitente(JsonObject j){
 		return new NotaFiscalTradutorJson(j.get("emitente").toString()).converterEmitente();
+	}
+	private Destinatario destinatario(JsonObject j){
+		return new NotaFiscalTradutorJson(j.get("destinatario").toString()).converterDestinatario();
 	}
 
 	private Date converterData(String data){

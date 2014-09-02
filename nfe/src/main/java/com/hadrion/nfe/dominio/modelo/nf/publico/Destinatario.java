@@ -1,5 +1,8 @@
 package com.hadrion.nfe.dominio.modelo.nf.publico;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Cpf;
@@ -8,7 +11,6 @@ import com.hadrion.nfe.tipos.InscricaoEstadual;
 import com.hadrion.nfe.tipos.Telefone;
 
 public class Destinatario {
-	//TODO - equals
 	private Cnpj cnpj;
 	private Cpf cpf;
 	private String idEstrangeiro;
@@ -26,8 +28,13 @@ public class Destinatario {
 			Telefone telefone, IndicadorIe indicadorIe, InscricaoEstadual ie,
 			Long inscricaoSuframa, Email email) {
 		super();
-		this.cnpj = cnpj;
-		this.cpf = cpf;
+		if (cnpj!=null){
+			this.cnpj = cnpj;
+			this.cpf = null;
+		} else {
+			this.cnpj = null;
+			this.cpf = cpf;			
+		}
 		this.idEstrangeiro = idEstrangeiro;
 		this.razaoSocial = razaoSocial;
 		this.nomeFantasia = nomeFantasia;
@@ -79,4 +86,60 @@ public class Destinatario {
 	public Email email(){
 		return email;
 	}
+	@Override
+	public boolean equals(Object objeto) {
+		boolean objetosIguais = false;
+
+		if (objeto != null && this.getClass() == objeto.getClass()) {
+			Destinatario objetoTipado = (Destinatario) objeto;
+			objetosIguais = new EqualsBuilder()
+				.append(cnpj,objetoTipado.cnpj)
+				.append(cpf,objetoTipado.cpf)
+				.append(idEstrangeiro,objetoTipado.idEstrangeiro)
+				.append(razaoSocial,objetoTipado.razaoSocial)
+				.append(nomeFantasia,objetoTipado.nomeFantasia)
+				.append(endereco,objetoTipado.endereco)
+				.append(telefone,objetoTipado.telefone)
+				.append(indicadorIe,objetoTipado.indicadorIe)
+				.append(ie,objetoTipado.ie)
+				.append(inscricaoSuframa,objetoTipado.inscricaoSuframa)
+				.append(email,objetoTipado.email)
+				.isEquals();
+		}
+
+		return objetosIguais;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(169,7723)
+			.append(cnpj)
+			.append(cpf)
+			.append(idEstrangeiro)
+			.append(razaoSocial)
+			.append(nomeFantasia)
+			.append(endereco)
+			.append(telefone)
+			.append(indicadorIe)
+			.append(ie)
+			.append(inscricaoSuframa)
+			.append(email)
+			.toHashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Destinatario [cnpj=" + cnpj
+				+ ",cpf="+ cpf
+				+ ",idEstrangeiro="+ idEstrangeiro
+				+ ",razaoSocial="+ razaoSocial
+				+ ",nomeFantasia="+ nomeFantasia
+				+ ",endereco="+ endereco
+				+ ",telefone="+ telefone
+				+ ",IndicadorIe="+ indicadorIe
+				+ ",ie="+ ie
+				+ ",inscricaoSuframa="+ inscricaoSuframa
+				+ ",email="+ email
+				+ "]";
+	} 
 }

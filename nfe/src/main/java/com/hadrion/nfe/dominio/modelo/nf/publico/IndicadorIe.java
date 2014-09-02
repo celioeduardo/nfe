@@ -31,5 +31,15 @@ public enum IndicadorIe {
 	public int codigo(){
 		return codigo;
 	}
+	
+	public static IndicadorIe valueOf(int valor){
+		if (valor==1)
+			return CONTRIBUINTE;
+		else if (valor==2)
+			return ISENTO;
+		else if (valor==9)
+			return NAO_CONTRIBUINTE;
+		return null;
+	}
 
 }

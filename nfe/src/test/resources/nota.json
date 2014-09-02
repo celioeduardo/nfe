@@ -31,8 +31,26 @@
     "chave" : "013924F307774CC4E050007F010060FB"
   }],
   "emitente" : {
+    "cnpj" : "86675642000106",
+    "cpf" : "",
+    "razaoSocial" : "COOPERATIVA AGROPECUARIA ALTO PARANAIBA",
+    "nomeFantasia" : "",
+    "logradouro" : "ROD. MG 235 KM 89",
+    "numero" : "443",
+    "complemento" : "CX P 37",
+    "bairro" : "GUARDA DOS FERREIROS",
+    "municipio" : "SAO GOTARDO - MG",
+    "pais" : "BRASIL",
+    "cep" : 38800000,
+    "telefone" : "3436161200",
+    "ie" : "6219059370082",
+    "ieSubstituto" : "6219059370082",
+    "uf" : "MG"
+  },
+  "destinatario" : {
     "cnpj" : "7233848000100",
-    "cpf" : "7233848000100",
+    "cpf" : "",
+    "idEstrangeiro" : "",
     "razaoSocial" : "OSPER AGROINDUSTRIAL S/A",
     "nomeFantasia" : "",
     "logradouro" : "ROD. BR 262 KM 443 S/N ",
@@ -43,8 +61,10 @@
     "pais" : "BRASIL",
     "cep" : 35519000,
     "telefone" : "3732322434",
+    "indicadorIe" : 1,
     "ie" : "452332065.00-50",
-    "ieSubstituto" : "452332065.00-50",
-    "uf" : "MG"
+    "inscricaoSuframa" : 0,
+    "uf" : "MG",
+    "email" : "JEANPETER@osper.ind.br"
   }
 }
