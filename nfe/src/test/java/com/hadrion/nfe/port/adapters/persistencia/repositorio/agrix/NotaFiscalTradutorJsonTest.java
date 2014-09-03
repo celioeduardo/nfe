@@ -27,6 +27,8 @@ import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
+import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
+import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.publico.IndicadorIe;
@@ -102,7 +104,31 @@ public class NotaFiscalTradutorJsonTest {
 						0L, //suframa
 						new Email("JEANPETER@osper.ind.br")), nf.destinatario());
 		
-		System.out.println(FileUtils.readFileToString(json));
+		assertEquals(new LocalEntrega(
+						new Cnpj(7233848000100L), 
+						null, 
+						new Endereco("ROD. BR 262 KM 443 S/N ",
+							    "S/N",
+							    "",
+							    "ZONA RURAL",
+							    new Municipio("NOVA SERRANA - MG",Uf.MG),
+							    new Pais(1L,"BRASIL"),
+							    new Cep(35519000L)))	
+						,nf.localEntrega());
+
+		assertEquals(new LocalRetirada(
+				new Cnpj(86675642000106L), 
+				null, 
+				new Endereco("ROD. MG 235 KM 89",
+						"443",
+						"CX P 37",
+						"GUARDA DOS FERREIROS",
+						new Municipio("SAO GOTARDO - MG",Uf.MG),
+						new Pais(1L,"BRASIL"),
+						new Cep(38800000L)))	
+		,nf.localRetirada());
+		
+		
 	}
 
 	private Date data(String data){

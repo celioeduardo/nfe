@@ -17,13 +17,13 @@
     <setting name="current-tab" value="Task Tree"/> 
   </setting>  
   <setting name="Application_window-id"> 
-    <setting name="window_x" value="-9"/>  
-    <setting name="window_y" value="-9"/>  
-    <setting name="window_width" value="1938"/>  
-    <setting name="window_height" value="1050"/>  
-    <setting name="extended-state" value="6"/> 
+    <setting name="window_x" value="337"/>  
+    <setting name="window_y" value="66"/>  
+    <setting name="window_width" value="1485"/>  
+    <setting name="window_height" value="902"/>  
+    <setting name="extended-state" value="0"/> 
   </setting>  
-  <setting name="SinglePaneUIInstance_splitter-id">
-    <setting name="divider_location" value="517"/>
-  </setting>
+  <setting name="SinglePaneUIInstance_splitter-id"> 
+    <setting name="divider_location" value="375"/> 
+  </setting> 
 </root>

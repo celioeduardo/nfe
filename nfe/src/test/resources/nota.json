@@ -32,7 +32,7 @@
   }],
   "emitente" : {
     "cnpj" : "86675642000106",
-    "cpf" : "",
+    "cpf" : "86675642000106",
     "razaoSocial" : "COOPERATIVA AGROPECUARIA ALTO PARANAIBA",
     "nomeFantasia" : "",
     "logradouro" : "ROD. MG 235 KM 89",
@@ -49,7 +49,7 @@
   },
   "destinatario" : {
     "cnpj" : "7233848000100",
-    "cpf" : "",
+    "cpf" : "7233848000100",
     "idEstrangeiro" : "",
     "razaoSocial" : "OSPER AGROINDUSTRIAL S/A",
     "nomeFantasia" : "",
@@ -66,5 +66,29 @@
     "inscricaoSuframa" : 0,
     "uf" : "MG",
     "email" : "JEANPETER@osper.ind.br"
+  },
+  "localEntrega" : {
+    "cnpj" : "7233848000100",
+    "cpf" : "7233848000100",
+    "logradouro" : "ROD. BR 262 KM 443 S/N ",
+    "numero" : "S/N",
+    "complemento" : "",
+    "bairro" : "ZONA RURAL",
+    "municipio" : "NOVA SERRANA - MG",
+    "pais" : "BRASIL",
+    "cep" : 35519000,
+    "uf" : "MG"
+  },
+  "localRetirada" : {
+    "cnpj" : "86675642000106",
+    "cpf" : "86675642000106",
+    "logradouro" : "ROD. MG 235 KM 89",
+    "numero" : "443",
+    "complemento" : "CX P 37",
+    "bairro" : "GUARDA DOS FERREIROS",
+    "municipio" : "SAO GOTARDO - MG",
+    "pais" : "BRASIL",
+    "cep" : 38800000,
+    "uf" : "MG"
   }
 }
