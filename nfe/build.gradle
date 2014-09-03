@@ -10,6 +10,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
+apply plugin: 'maven'
 
 group = 'com.hadrion'
 version = '0.0.1-SNAPSHOT'
@@ -48,10 +49,16 @@ test {
 }
 
 uploadArchives {
-    repositories {
-       flatDir {
-           dirs 'repos'
-       }
-    }
+	repositories {
+	   mavenDeployer {
+			repository(url: "http://repo.hadrion.com.br:8081/nexus/content/repositories/snapshots") {
+				authentication(userName: "jenkins", password: "qu4l1s")
+			}
+			pom.version = "0.0.1-SNAPSHOT"
+			pom.artifactId = "nfe"
+			pom.groupId = "com.hadrion"
+			pom.packaging 'jar'
+	   }
+	}
 }
 
