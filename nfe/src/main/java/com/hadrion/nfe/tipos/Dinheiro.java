@@ -29,6 +29,9 @@ public class Dinheiro {
 	public Dinheiro soma(Dinheiro valor) {
 		return new Dinheiro(valor() + valor.valor());
 	}
+	public boolean igualAZero(){
+		return valor.equals(0.0);
+	}
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;

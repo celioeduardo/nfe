@@ -90,5 +90,27 @@
     "pais" : "BRASIL",
     "cep" : 38800000,
     "uf" : "MG"
+  },
+ "cobranca" : [{
+    "tipoDoc" : "DM",
+    "numero" : 183898,
+    "sequencia" : "01",
+    "vencimento" : "05/08/04",
+    "valor" : 2856,
+    "desconto" : 0
+  }, {
+    "tipoDoc" : "DM",
+    "numero" : 183898,
+    "sequencia" : "02",
+    "vencimento" : "29/09/04",
+    "valor" : 785.4,
+    "desconto" : 0
+  }],
+  "observacaoFisco" : "Observação do Fisco",
+  "observacao" : "Observação do Contribuinte",
+  "exportacao":{
+     "uf": "MG",
+     "localEmbarque": "Local do Embarque",
+     "localDespacho": "Despacho"
   }
 }

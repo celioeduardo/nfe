@@ -54,9 +54,6 @@ public class LocalEntregaDeserializer implements JsonDeserializer<LocalEntrega>{
 	private String s(JsonObject j, String propriedade){
 		return j.get(propriedade).getAsString();
 	}
-	private int I(JsonObject j, String propriedade){
-		return j.get(propriedade).getAsInt();
-	}
 	
 	boolean tem(JsonObject j, String propriedade){
 		return j.has(propriedade);

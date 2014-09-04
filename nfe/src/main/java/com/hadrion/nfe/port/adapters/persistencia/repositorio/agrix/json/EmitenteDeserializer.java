@@ -58,6 +58,7 @@ public class EmitenteDeserializer implements JsonDeserializer<Emitente>{
 	private Cpf cpf(JsonObject j){
 		return tem(j,"cpj")?new Cpf(l(j,"cpf")):null;
 	}
+	
 	private Long l(JsonObject j, String propriedade){
 		return j.get(propriedade).getAsLong();
 	}

@@ -13,6 +13,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
 import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
 import com.hadrion.nfe.dominio.modelo.nf.Modelo;
@@ -21,6 +22,8 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
+import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
+import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
@@ -57,10 +60,10 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 				localRetirada(j), //LocalRetirada localRetirada,
 				localEntrega(j), //LocalEntrega localEntrega,
 				itens(j), //j.get("itens").getAsJsonArray(), //List<Item> itens,
-				null, //Cobranca cobranca,
-				null, //Informacao informacaoFisco,
-				null, //Informacao informacaoContribuinte,
-				null); //Exportacao exportacao
+				cobranca(j), //Cobranca cobranca,
+				informacaoFisco(j), //Informacao informacaoFisco,
+				informacaoContribuinte(j), //Informacao informacaoContribuinte,
+				exportacao(j)); //Exportacao exportacao
 		
 		return nf;
 	}
@@ -83,7 +86,18 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 	private LocalRetirada localRetirada(JsonObject j){
 		return new NotaFiscalTradutorJson(j.get("localRetirada").toString()).converterLocalRetirada();
 	}
-
+	private Cobranca cobranca(JsonObject j){
+		return new NotaFiscalTradutorJson(j.get("cobranca").toString()).converterCobranca();
+	}
+	private Informacao informacaoFisco(JsonObject j){
+		return new NotaFiscalTradutorJson(j.get("observacaoFisco").toString()).converterObservacao();
+	}
+	private Informacao informacaoContribuinte(JsonObject j){
+		return new NotaFiscalTradutorJson(j.get("observacao").toString()).converterObservacao();
+	}
+	private Exportacao exportacao(JsonObject j){
+		return new NotaFiscalTradutorJson(j.get("exportacao").toString()).converterExportacao();
+	}
 	private Date converterData(String data){
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
 		try {

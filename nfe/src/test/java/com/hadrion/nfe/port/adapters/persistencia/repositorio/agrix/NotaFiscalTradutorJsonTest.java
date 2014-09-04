@@ -19,6 +19,7 @@ import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.endereco.Pais;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
 import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
 import com.hadrion.nfe.dominio.modelo.nf.Modelo;
@@ -26,6 +27,9 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
+import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
+import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
+import com.hadrion.nfe.dominio.modelo.nf.cobranca.Fatura;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
@@ -35,7 +39,7 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.IndicadorIe;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.NotaFiscalTradutorJson;
 import com.hadrion.nfe.tipos.Cnpj;
-import com.hadrion.nfe.tipos.Cpf;
+import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Email;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
 import com.hadrion.nfe.tipos.Telefone;
@@ -128,7 +132,19 @@ public class NotaFiscalTradutorJsonTest {
 						new Cep(38800000L)))	
 		,nf.localRetirada());
 		
+		assertEquals(
+			new Cobranca(
+					new Fatura("DM-183898", new Dinheiro(3641.4), Dinheiro.ZERO),
+					new Duplicata("DM-183898/01", data("05/08/04"), new Dinheiro(2856)),
+					new Duplicata("DM-183898/02", data("29/09/04"), new Dinheiro(785.4))),
+			nf.cobranca());
 		
+		assertEquals("Observação do Contribuinte",nf.informacaoContribuinte().texto());
+		assertEquals("Observação do Fisco",nf.informacaoFisco().texto());
+		
+		assertEquals(
+				new Exportacao(Uf.MG, "Local do Embarque", "Despacho"),
+				nf.exportacao());
 	}
 
 	private Date data(String data){

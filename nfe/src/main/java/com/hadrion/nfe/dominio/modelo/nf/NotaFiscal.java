@@ -378,4 +378,17 @@ public class NotaFiscal {
 	public boolean estaReferenciando(Referencia referencia){
 		return getReferencias().contains(referencia);
 	}
+
+	public Cobranca cobranca() {
+		return cobranca;
+	}
+
+	public Informacao informacaoContribuinte() {
+		return informacaoContribuinte;
+	}
+	
+	public Informacao informacaoFisco() {
+		return informacaoFisco;
+	}
+
 }
