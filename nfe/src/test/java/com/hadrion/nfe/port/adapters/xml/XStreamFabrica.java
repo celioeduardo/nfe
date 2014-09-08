@@ -28,6 +28,14 @@ public class XStreamFabrica {
 		xstream.registerConverter(new EmailConverter());
 		xstream.registerConverter(new DestinatarioConverter());
 		xstream.registerConverter(new IndicadorIeConverter());
+		xstream.registerConverter(new LocalRetiradaConverter());
+		xstream.registerConverter(new LocalEntregaConverter());
+		xstream.registerConverter(new GtinConverter());
+		xstream.registerConverter(new NcmConverter());
+		xstream.registerConverter(new CfopConverter());
+		xstream.registerConverter(new QuantidadeConverter());
+		xstream.registerConverter(new DinheiroConverter());
+		xstream.registerConverter(new ChaveAcessoConverter());
 		return xstream;
 	}
 }
