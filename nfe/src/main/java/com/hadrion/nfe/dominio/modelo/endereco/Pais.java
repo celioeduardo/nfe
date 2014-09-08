@@ -5,6 +5,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 
 public class Pais {
+	
+	public static final Pais BRASIL = new Pais(1058L,"BRASIL");
+	
 	private Long codigo;
 	private String nome;
 	

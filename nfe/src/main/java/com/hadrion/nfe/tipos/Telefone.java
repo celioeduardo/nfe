@@ -15,6 +15,10 @@ public class Telefone {
 		return numero;
 	}
 	
+	public String obterDigitos() {
+		return numero.replaceAll("[^0-9]", "");
+	}
+
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;

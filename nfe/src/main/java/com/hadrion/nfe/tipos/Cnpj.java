@@ -11,6 +11,10 @@ public class Cnpj {
 		super();
 		this.numero = numero;
 	}
+	public Cnpj(long numero) {
+		super();
+		this.numero = numero;
+	}
 	
 	public Long numero(){
 		return numero;

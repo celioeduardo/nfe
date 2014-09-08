@@ -32,4 +32,14 @@ public enum FormatoDanfe {
 	public String descricao(){
 		return descricao;
 	}
+
+	public static FormatoDanfe obterPeloCodigo(int codigo) {
+		if (codigo == 0) return SEM_GERACAO;
+		else if (codigo == 1) return NORMAL_RETRATO;
+		else if (codigo == 2) return NORMAL_PAISAGEM;
+		else if (codigo == 3) return SIMPLIFICADO;
+		else if (codigo == 4) return CONSUMIDOR;
+		else if (codigo == 5) return CONSUMIDOR_SMS;
+		return null;
+	}
 }

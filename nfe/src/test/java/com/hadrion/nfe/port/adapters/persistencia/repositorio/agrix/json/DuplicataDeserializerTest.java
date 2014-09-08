@@ -32,7 +32,7 @@ public class DuplicataDeserializerTest {
 	@Before
 	public void setUp(){
 		gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(Date.class, new CpfDeserializer());
+		gsonBuilder.registerTypeAdapter(Date.class, new DateDeserializer());
 		gsonBuilder.registerTypeAdapter(Dinheiro.class, new DinheiroDeserializer());
 		gson = gsonBuilder.create();
 	}

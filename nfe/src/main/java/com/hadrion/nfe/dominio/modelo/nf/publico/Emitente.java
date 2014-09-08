@@ -19,10 +19,11 @@ public class Emitente {
 	private Telefone telefone;
 	private InscricaoEstadual ie;
 	private InscricaoEstadual ieSubstituto;
+	private Crt crt;
 	
 	public Emitente(Cnpj cnpj, Cpf cpf, String razaoSocial,
 			String nomeFantasia, Endereco endereco, Telefone telefone,
-			InscricaoEstadual ie, InscricaoEstadual ieSubstituto) {
+			InscricaoEstadual ie, InscricaoEstadual ieSubstituto,Crt crt) {
 		super();
 		this.cnpj = cnpj;
 		this.cpf = cpf;
@@ -32,6 +33,7 @@ public class Emitente {
 		this.telefone = telefone;
 		this.ie = ie;
 		this.ieSubstituto = ieSubstituto;
+		this.crt = crt;
 	}
 
 	public Cnpj cnpj() {
@@ -65,6 +67,11 @@ public class Emitente {
 	public InscricaoEstadual ieSubstituto() {
 		return ieSubstituto;
 	}
+	
+	public Crt crt(){
+		return crt;
+	}
+	
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;

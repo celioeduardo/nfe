@@ -39,7 +39,10 @@ dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version:'2.1'
     compile group: 'commons-io', name: 'commons-io', version:'2.3'
     compile group: 'commons-lang', name: 'commons-lang', version:'2.3'
-
+	compile("com.thoughtworks.xstream:xstream:1.4.7")
+	
+	testCompile('xmlunit:xmlunit:1.4')
+	
     testCompile("org.springframework.boot:spring-boot-starter-test")
 
 }
@@ -57,7 +60,6 @@ uploadArchives {
 			pom.version = "0.0.1-SNAPSHOT"
 			pom.artifactId = "nfe"
 			pom.groupId = "com.hadrion"
-			pom.packaging 'jar'
 	   }
 	}
 }

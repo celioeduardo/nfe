@@ -6,13 +6,19 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 
 public class Municipio {
+	private int codigo;
 	private String nome;
 	private Uf uf;
 	
-	public Municipio(String nome, Uf uf) {
+	public Municipio(int codigo, String nome, Uf uf) {
 		super();
+		this.codigo = codigo;
 		this.nome = nome;
 		this.uf = uf;
+	}
+	
+	public int codigo(){
+		return codigo;
 	}
 	
 	public String nome(){

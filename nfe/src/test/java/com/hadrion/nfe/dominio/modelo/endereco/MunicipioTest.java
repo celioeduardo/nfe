@@ -9,6 +9,8 @@ import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 public class MunicipioTest {
     @Test
     public void equalsMunicipio(){
-    	assertEquals(new Municipio("NOVA SERRANA - MG",Uf.MG), new Municipio("NOVA SERRANA - MG",Uf.MG));
+    	assertEquals(
+    			new Municipio(0,"NOVA SERRANA - MG",Uf.MG), 
+    			new Municipio(0,"NOVA SERRANA - MG",Uf.MG));
     }
 }

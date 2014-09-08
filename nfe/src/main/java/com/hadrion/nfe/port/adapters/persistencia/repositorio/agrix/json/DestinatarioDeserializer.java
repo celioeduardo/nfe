@@ -27,16 +27,17 @@ public class DestinatarioDeserializer implements JsonDeserializer<Destinatario>{
 			JsonDeserializationContext arg2) throws JsonParseException {
 		
 		final JsonObject j = jsonSource.getAsJsonObject();
+		Telefone telefone = new Telefone(s(j,"telefone"));		
 
 		Endereco endereco = new Endereco(s(j,"logradouro"), 
 				s(j,"numero"),
 				s(j,"complemento"),
 				s(j,"bairro"),
-			    new Municipio(s(j,"municipio"),Uf.valueOf(s(j,"uf"))),
+			    new Municipio(i(j,"codigoMunicipio"),s(j,"municipio"),Uf.valueOf(s(j,"uf"))),
 			    new Pais(1L,s(j,"pais")),
-			    new Cep(l(j,"cep")));
+			    new Cep(l(j,"cep")),
+			    telefone);
 		
-		Telefone telefone = new Telefone(s(j,"telefone"));		
 		InscricaoEstadual ie = new InscricaoEstadual(s(j,"ie")); 
 		Email email = new Email(s(j,"email"));
 		Destinatario destinatario = new Destinatario(
@@ -46,8 +47,8 @@ public class DestinatarioDeserializer implements JsonDeserializer<Destinatario>{
 				s(j,"razaoSocial"), 
 				s(j,"nomeFantasia"), 
 				endereco, 
-				telefone, 
-				IndicadorIe.valueOf(I(j,"indicadorIe")),
+				telefone,
+				IndicadorIe.obterPeloCodigo(i(j,"indicadorIe")),
 				ie, 
 				l(j,"inscricaoSuframa"),
 				email);
@@ -69,7 +70,7 @@ public class DestinatarioDeserializer implements JsonDeserializer<Destinatario>{
 	private String s(JsonObject j, String propriedade){
 		return j.get(propriedade).getAsString();
 	}
-	private int I(JsonObject j, String propriedade){
+	private int i(JsonObject j, String propriedade){
 		return j.get(propriedade).getAsInt();
 	}
 	

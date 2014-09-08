@@ -21,5 +21,15 @@ public enum FormaPagamento {
 	public String descricao(){
 		return descricao;
 	}
+
+	public static Object obterPeloCodigo(int codigo) {
+		if (codigo == 0)
+			return A_VISTA;
+		else if (codigo == 1)
+			return A_PRAZO;
+		else if (codigo == 2)
+			return OUTROS;
+		return null;
+	}
 	
 }

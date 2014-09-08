@@ -1,0 +1,39 @@
+package com.hadrion.nfe.port.adapters.xml;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.hadrion.nfe.dominio.modelo.nf.FormatoDanfe;
+
+public class FormatoDanfeTradutorXmlTest extends AbstractXmlTest{
+	
+	@Before
+	public void setUp() {
+		super.setUp();
+		xstream.alias("tpImp", FormatoDanfe.class);
+	}
+	
+	@Test
+	public void serializar(){
+		assertXMLEquals("<tpImp>0</tpImp>",xstream.toXML(FormatoDanfe.SEM_GERACAO));
+		assertXMLEquals("<tpImp>1</tpImp>",xstream.toXML(FormatoDanfe.NORMAL_RETRATO));
+		assertXMLEquals("<tpImp>2</tpImp>",xstream.toXML(FormatoDanfe.NORMAL_PAISAGEM));
+		assertXMLEquals("<tpImp>3</tpImp>",xstream.toXML(FormatoDanfe.SIMPLIFICADO));
+		assertXMLEquals("<tpImp>4</tpImp>",xstream.toXML(FormatoDanfe.CONSUMIDOR));
+		assertXMLEquals("<tpImp>5</tpImp>",xstream.toXML(FormatoDanfe.CONSUMIDOR_SMS));
+	}
+	
+	@Test
+	public void deserializar(){
+		assertEquals(FormatoDanfe.SEM_GERACAO,xstream.fromXML("<tpImp>0</tpImp>"));
+		assertEquals(FormatoDanfe.NORMAL_RETRATO,xstream.fromXML("<tpImp>1</tpImp>"));
+		assertEquals(FormatoDanfe.NORMAL_PAISAGEM,xstream.fromXML("<tpImp>2</tpImp>"));
+		assertEquals(FormatoDanfe.SIMPLIFICADO,xstream.fromXML("<tpImp>3</tpImp>"));
+		assertEquals(FormatoDanfe.CONSUMIDOR,xstream.fromXML("<tpImp>4</tpImp>"));
+		assertEquals(FormatoDanfe.CONSUMIDOR_SMS,xstream.fromXML("<tpImp>5</tpImp>"));
+		
+	}
+	
+}

@@ -82,12 +82,15 @@ public class NotaFiscalTradutorJsonTest {
 								"443",
 								"CX P 37",
 								"GUARDA DOS FERREIROS",
-							    new Municipio("SAO GOTARDO - MG",Uf.MG),
+							    new Municipio(0,"SAO GOTARDO - MG",Uf.MG),
 							    new Pais(1L,"BRASIL"),
-							    new Cep(38800000L)),
+							    new Cep(38800000L),
+							    new Telefone("3436161200")),
 						new Telefone("3436161200"), 
 						new InscricaoEstadual("6219059370082"), 
-						new InscricaoEstadual("6219059370082")), nf.emitente());
+						new InscricaoEstadual("6219059370082"),
+						null), 
+					nf.emitente());
 		
 		assertEquals(new Destinatario(
 						new Cnpj(7233848000100L), 
@@ -99,14 +102,16 @@ public class NotaFiscalTradutorJsonTest {
 								"S/N",
 								"",
 								"ZONA RURAL",
-							    new Municipio("NOVA SERRANA - MG",Uf.MG),
+							    new Municipio(0,"NOVA SERRANA - MG",Uf.MG),
 							    new Pais(1L,"BRASIL"),
-							    new Cep(35519000L)),
+							    new Cep(35519000L),
+							    new Telefone("3732322434")),
 						new Telefone("3732322434"), 
 						IndicadorIe.CONTRIBUINTE,
 						new InscricaoEstadual("452332065.00-50"),
 						0L, //suframa
-						new Email("JEANPETER@osper.ind.br")), nf.destinatario());
+						new Email("JEANPETER@osper.ind.br")), 
+					nf.destinatario());
 		
 		assertEquals(new LocalEntrega(
 						new Cnpj(7233848000100L), 
@@ -115,9 +120,10 @@ public class NotaFiscalTradutorJsonTest {
 							    "S/N",
 							    "",
 							    "ZONA RURAL",
-							    new Municipio("NOVA SERRANA - MG",Uf.MG),
+							    new Municipio(0,"NOVA SERRANA - MG",Uf.MG),
 							    new Pais(1L,"BRASIL"),
-							    new Cep(35519000L)))	
+							    new Cep(35519000L),
+							    null))	
 						,nf.localEntrega());
 
 		assertEquals(new LocalRetirada(
@@ -127,9 +133,10 @@ public class NotaFiscalTradutorJsonTest {
 						"443",
 						"CX P 37",
 						"GUARDA DOS FERREIROS",
-						new Municipio("SAO GOTARDO - MG",Uf.MG),
+						new Municipio(0,"SAO GOTARDO - MG",Uf.MG),
 						new Pais(1L,"BRASIL"),
-						new Cep(38800000L)))	
+						new Cep(38800000L),
+					    null))	
 		,nf.localRetirada());
 		
 		assertEquals(

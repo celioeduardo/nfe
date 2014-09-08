@@ -10,6 +10,9 @@ public class Serie {
 		else
 			this.numero=numero;
 	}
+	public Long numero(){
+		return numero;
+	}
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;
@@ -21,7 +24,7 @@ public class Serie {
 
 		return objetosIguais;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		int hashCodeValue = 

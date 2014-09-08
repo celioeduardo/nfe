@@ -26,12 +26,15 @@ public class EmitenteTest {
 								"S/N",
 								"",
 								"ZONA RURAL",
-							    new Municipio("NOVA SERRANA - MG",Uf.MG),
+							    new Municipio(0,"NOVA SERRANA - MG",Uf.MG),
 							    new Pais(1L,"BRASIL"),
-							    new Cep(35519000L)),
+							    new Cep(35519000L),
+							    new Telefone("3732322434")),
 						new Telefone("3732322434"), 
 						new InscricaoEstadual("452332065.00-50"), 
-						new InscricaoEstadual("452332065.00-50")), new Emitente(
+						new InscricaoEstadual("452332065.00-50"),
+						null), 
+					new Emitente(
 						new Cnpj(7233848000100L), 
 						new Cpf(7233848000100L), 
 						"OSPER AGROINDUSTRIAL S/A", 
@@ -40,11 +43,13 @@ public class EmitenteTest {
 								"S/N",
 								"",
 								"ZONA RURAL",
-							    new Municipio("NOVA SERRANA - MG",Uf.MG),
+							    new Municipio(0,"NOVA SERRANA - MG",Uf.MG),
 							    new Pais(1L,"BRASIL"),
-							    new Cep(35519000L)),
+							    new Cep(35519000L),
+							    new Telefone("3732322434")),
 						new Telefone("3732322434"), 
 						new InscricaoEstadual("452332065.00-50"), 
-						new InscricaoEstadual("452332065.00-50")));
+						new InscricaoEstadual("452332065.00-50"),
+						null));
 	}
 }

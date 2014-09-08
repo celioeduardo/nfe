@@ -12,6 +12,7 @@ import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.endereco.Pais;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+import com.hadrion.nfe.dominio.modelo.nf.publico.Crt;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Cpf;
@@ -26,15 +27,16 @@ public class EmitenteDeserializer implements JsonDeserializer<Emitente>{
 		
 		final JsonObject j = jsonSource.getAsJsonObject();
 
+		Telefone telefone = new Telefone(s(j,"telefone"));		
 		Endereco endereco = new Endereco(s(j,"logradouro"), 
 				s(j,"numero"),
 				s(j,"complemento"),
 				s(j,"bairro"),
-			    new Municipio(s(j,"municipio"),Uf.valueOf(s(j,"uf"))),
+			    new Municipio(i(j,"codigoMunicipio"),s(j,"municipio"),Uf.valueOf(s(j,"uf"))),
 			    new Pais(1L,s(j,"pais")),
-			    new Cep(l(j,"cep")));
+			    new Cep(l(j,"cep")),
+			    telefone);
 		
-		Telefone telefone = new Telefone(s(j,"telefone"));		
 		InscricaoEstadual ie = new InscricaoEstadual(s(j,"ie")); 
 		InscricaoEstadual ieSubstituto = new InscricaoEstadual(s(j,"ieSubstituto"));
 		
@@ -46,7 +48,8 @@ public class EmitenteDeserializer implements JsonDeserializer<Emitente>{
 				endereco, 
 				telefone, 
 				ie, 
-				ieSubstituto);
+				ieSubstituto,
+				crt(j));
 		
 		return emitente;
 	}
@@ -59,8 +62,15 @@ public class EmitenteDeserializer implements JsonDeserializer<Emitente>{
 		return tem(j,"cpj")?new Cpf(l(j,"cpf")):null;
 	}
 	
+	private Crt crt(JsonObject j){
+		return tem(j,"crt")?Crt.valueOf(s(j,"crt")):null;
+	}
+	
 	private Long l(JsonObject j, String propriedade){
 		return j.get(propriedade).getAsLong();
+	}
+	private int i(JsonObject j, String propriedade){
+		return j.get(propriedade).getAsInt();
 	}
 
 	private String s(JsonObject j, String propriedade){

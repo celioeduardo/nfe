@@ -15,6 +15,10 @@ public class InscricaoEstadual {
 	public String numero(){
 		return numero;
 	}
+	public String obterSomenteDigitos() {
+		return numero.replaceAll("[^0-9]", "");
+	}
+
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;

@@ -4,7 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class Email {
-	public String email;
+	private String email;
 
 	public Email(String email) {
 		super();

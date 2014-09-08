@@ -10,10 +10,14 @@ public class Cep {
 		super();
 		this.numero = numero;
 	}
-	
+	public Cep(int numero) {
+		super();
+		this.numero = (long)numero;
+	}
 	public Long numero(){
 		return numero;
 	}
+	
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;

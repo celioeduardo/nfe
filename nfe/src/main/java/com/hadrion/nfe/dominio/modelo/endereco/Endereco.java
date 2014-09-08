@@ -3,6 +3,8 @@ package com.hadrion.nfe.dominio.modelo.endereco;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.hadrion.nfe.tipos.Telefone;
+
 public class Endereco {
 	
 	private String logradouro;
@@ -12,9 +14,11 @@ public class Endereco {
 	private Municipio municipio;
 	private Pais pais;
 	private Cep cep;
+	private Telefone telefone;
 	
 	public Endereco(String logradouro, String numero, String complemento,
-			String bairro, Municipio municipio, Pais pais, Cep cep) {
+			String bairro, Municipio municipio, Pais pais, Cep cep,
+			Telefone telefone) {
 		super();
 		this.logradouro = logradouro;
 		this.numero = numero;
@@ -23,6 +27,7 @@ public class Endereco {
 		this.municipio = municipio;
 		this.pais = pais;
 		this.cep = cep;
+		this.telefone = telefone;
 	}
 
 	public String logradouro() {
@@ -53,6 +58,9 @@ public class Endereco {
 		return cep;
 	}
 	
+	public Telefone telefone(){
+		return telefone;
+	}
 	
 	@Override
 	public boolean equals(Object objeto) {
@@ -68,6 +76,7 @@ public class Endereco {
 				.append(municipio, objetoTipado.municipio)
 				.append(pais, objetoTipado.pais)
 				.append(cep, objetoTipado.cep)				
+				.append(telefone, objetoTipado.telefone)				
 				.isEquals();
 		}
 
@@ -84,6 +93,7 @@ public class Endereco {
 			.append(municipio)
 			.append(pais)
 			.append(cep)
+			.append(telefone)
 			.toHashCode();
 	}
 
@@ -96,6 +106,7 @@ public class Endereco {
 				+ ",municipio="+ municipio
 				+ ",pais="+pais
 				+ ",cep="+cep
+				+ ",telefone="+telefone
 				+ "]";
 	} 
 	

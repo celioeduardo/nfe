@@ -12,8 +12,10 @@ public enum Finalidade {
 	COMPLEMENTAR(2,"NF-e complementar"),
 	AJUSTE(3,"NF-e de ajuste"),
 	DEVOLUCAO_RETORNO(4,"Devolução/Retorno");
+	
 	private int codigo;
 	private String descricao;
+	
 	Finalidade(int codigo,String descricao){
 		this.codigo = codigo;
 		this.descricao=descricao;
@@ -25,5 +27,13 @@ public enum Finalidade {
 	
 	public String descricao(){
 		return descricao;
+	}
+	
+	public static Finalidade obterPeloCodigo(int codigo){
+		if (codigo == 1) return NORMAL;
+		else if (codigo == 2) return COMPLEMENTAR;
+		else if (codigo == 3) return AJUSTE;
+		else if (codigo == 4) return DEVOLUCAO_RETORNO;
+		return null;
 	}
 }

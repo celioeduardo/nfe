@@ -26,4 +26,12 @@ public enum Processo {
 		return descricao;
 	}
 	
+	public static Processo obterPeloCodigo(int codigo){
+		if (codigo == 0) return APLICATIVO_CONTRIBUINTE;
+		else if (codigo == 1) return AVULSA_FISCO;
+		else if (codigo == 2) return AVULSA_CONTRIBUINTE;
+		else if (codigo == 3) return APLICATIVO_FISCO;
+		return null;
+	}
+	
 }

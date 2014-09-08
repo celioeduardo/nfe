@@ -32,7 +32,7 @@ public enum IndicadorIe {
 		return codigo;
 	}
 	
-	public static IndicadorIe valueOf(int valor){
+	public static IndicadorIe obterPeloCodigo(int valor){
 		if (valor==1)
 			return CONTRIBUINTE;
 		else if (valor==2)
