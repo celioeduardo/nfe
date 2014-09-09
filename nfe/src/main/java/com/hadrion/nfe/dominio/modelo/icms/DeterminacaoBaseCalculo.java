@@ -20,4 +20,12 @@ public enum DeterminacaoBaseCalculo {
 	public String nome(){
 		return nome;
 	}
+
+	public static DeterminacaoBaseCalculo obterPeloCodigo(int codigo) {
+		if (codigo == 0) return MARGEM_VALOR_AGREGADO;
+		if (codigo == 1) return PAUTA;
+		if (codigo == 2) return PRECO_TABELADO;
+		if (codigo == 3) return VALOR_OPERACAO;
+		return null;
+	}
 }

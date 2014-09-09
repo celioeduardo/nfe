@@ -42,6 +42,11 @@ public class XStreamFabrica {
 		xstream.registerConverter(new ExportacaoIndiretaConverter());
 		xstream.registerConverter(new CombustivelConverter());
 		xstream.registerConverter(new CideConverter());
+		xstream.registerConverter(new IcmsConverter());
+		xstream.registerConverter(new OrigemConverter());
+		xstream.registerConverter(new CstConverter());
+		xstream.registerConverter(new DeterminacaoBaseCalculoConverter());
+		xstream.registerConverter(new PercentualConverter());
 		return xstream;
 	}
 }

@@ -1,17 +1,20 @@
 package com.hadrion.nfe.tipos;
 
+import java.math.BigDecimal;
 
-public class Aliquota {
-	public final static Aliquota ZERO = new Aliquota(0.0);
+public class Percentual {
+	
+	public final static Percentual ZERO = new Percentual(0.0);
+	public final static Percentual CEM = new Percentual(100);
 	
 	private Double valor;
 
-	public Aliquota(Double valor) {
+	public Percentual(Double valor) {
 		super();
 		this.valor = valor;
 	}
 	
-	public Aliquota(int valor) {
+	public Percentual(int valor) {
 		super();
 		this.valor = (double)valor;
 	}
@@ -39,7 +42,7 @@ public class Aliquota {
 	@Override
 	public int hashCode() {
 		int hashCodeValue = 
-				+ (47 * 39) 
+				+ (31 * 319) 
 				+ this.valor().hashCode();
 		return hashCodeValue;
 	}
@@ -50,6 +53,17 @@ public class Aliquota {
 	}
 
 	public Double valorDecimal() {
-		return valor / 100;
+		return valorDecimalComoBigDecimal().doubleValue();
+	}
+	/**
+	 * 1 - valorDecimal()
+	 * @return
+	 */
+	public Double valorComplementarDecimal() {
+		return BigDecimal.ONE.subtract(valorDecimalComoBigDecimal()).doubleValue();
+	}
+	
+	private BigDecimal valorDecimalComoBigDecimal() {
+		return new BigDecimal(valor).divide(new BigDecimal(100));
 	}
 }

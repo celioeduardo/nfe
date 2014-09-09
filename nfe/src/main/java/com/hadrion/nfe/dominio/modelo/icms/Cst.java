@@ -27,4 +27,19 @@ public enum Cst {
 	public String nome(){
 		return nome;
 	}
+
+	public static Cst obterPeloCodigo(int codigo) {
+		if (codigo == 0) return CST_00;
+		if (codigo == 10) return CST_10;
+		if (codigo == 20) return CST_20;
+		if (codigo == 30) return CST_30;
+		if (codigo == 40) return CST_40;
+		if (codigo == 41) return CST_41;
+		if (codigo == 50) return CST_50;
+		if (codigo == 51) return CST_51;
+		if (codigo == 60) return CST_60;
+		if (codigo == 70) return CST_70;
+		if (codigo == 90) return CST_90;
+		return null;
+	}
 }

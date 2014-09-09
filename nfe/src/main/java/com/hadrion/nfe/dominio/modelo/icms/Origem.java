@@ -36,4 +36,16 @@ public enum Origem {
 	public int codigo(){
 		return codigo;
 	}
+
+	public static Origem obterPeloCodigo(int codigo) {
+		if (codigo == 0) return NACIONAL;
+		else if (codigo == 1) return EXTRANGEIRA_IMP_DIRETA;
+		else if (codigo == 2) return EXTRANGEIRA_MERC_INTERNO;
+		else if (codigo == 3) return Origem.NACIONAL_SUPERIOR_40;
+		else if (codigo == 4) return Origem.NACIONAL_PROC_PRODUTIVO;
+		else if (codigo == 5) return Origem.NACIONAL_INFERIOR_40;
+		else if (codigo == 6) return Origem.EXTRANGEIRA_IMPORTACAO_CAMEX;
+		else if (codigo == 7) return Origem.EXTRANGEIRA_MERC_INTERNO_CAMEX;
+		return null;
+	}
 }

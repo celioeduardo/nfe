@@ -1,37 +1,66 @@
 package com.hadrion.nfe.tipos;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 
 public class Dinheiro {
 	public final static Dinheiro ZERO = new Dinheiro(0.0);
-	
-	private Double valor;
+	public final static Dinheiro UM = new Dinheiro(1);
+	private final static int digitosFracionarios = 2;
+	private final static int fatorCentavos = (int) Math.pow(10,digitosFracionarios);
+	private Long quantia;
 
 	public Dinheiro(Double valor) {
 		super();
-		this.valor = valor;
+		this.quantia = Math.round(valor * fatorCentavos);
+	}
+	public Dinheiro(BigDecimal valor) {
+		super();
+		this.quantia = valor.multiply(new BigDecimal(fatorCentavos)).longValue();
 	}
 	public Dinheiro(int valor) {
 		super();
-		this.valor = (double)valor;
+		this.quantia = (long) Math.round(valor * fatorCentavos);
+	}
+	
+	private Dinheiro(){}	
+	
+	private Dinheiro novoDinheiro(Long quantia){
+		Dinheiro dinheiro = new Dinheiro();
+		dinheiro.quantia = quantia;
+		return dinheiro;
+	}
+	
+	private BigDecimal quantia(){
+		return BigDecimal.valueOf(quantia,digitosFracionarios);
 	}
 	
 	public Double valor(){
-		return valor;
+		return (double) (quantia / fatorCentavos);
 	}
-
-	public Dinheiro multiplicar(Double aliquota) {
-		return new Dinheiro(valor * aliquota);
+	public Dinheiro soma(Dinheiro valor) {
+		return novoDinheiro(quantia + valor.quantia);
+	}
+	public Dinheiro multiplicar(Double fator) {
+		return multiplicar(new BigDecimal(fator));
+	}
+	public Dinheiro multiplicar(BigDecimal quantia){
+		return new Dinheiro(quantia().multiply(quantia,MathContext.DECIMAL64));
+	}
+	
+	public Dinheiro multiplicar(BigDecimal quantia, MathContext mathContext){
+		return new Dinheiro(quantia().multiply(quantia,mathContext));
 	}
 	
 	public Dinheiro subtrair(Dinheiro valor) {
-		return new Dinheiro(valor() - valor.valor);
+		return novoDinheiro(quantia - valor.quantia);
 	}
-	public Dinheiro soma(Dinheiro valor) {
-		return new Dinheiro(valor() + valor.valor());
-	}
+	
 	public boolean igualAZero(){
-		return valor.equals(0.0);
+		return quantia.equals(0.0);
 	}
+	
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;
@@ -54,6 +83,7 @@ public class Dinheiro {
 	
 	@Override
 	public String toString() {
-		return "Dinheiro [valor=" + valor() + "]";
+		return new BigDecimal(quantia).divide(new BigDecimal(fatorCentavos)).toString();
+		
 	}
 }
