@@ -3,26 +3,26 @@ package com.hadrion.nfe.dominio.modelo.nf.item;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
-import com.hadrion.nfe.tipos.Quantidade;
 
 public class Cide {
-	private Double baseCalculo;
-	private Double aliquota;
+	private Dinheiro baseCalculo;
+	private Aliquota aliquota;
 	private Dinheiro valor;
 	
-	public Cide(Double baseCalculo, Double aliquota, Dinheiro valor) {
+	public Cide(Dinheiro baseCalculo, Aliquota aliquota, Dinheiro valor) {
 		super();
 		this.baseCalculo = baseCalculo;
 		this.aliquota = aliquota;
 		this.valor = valor;
 	}
 	
-	public Double baseCalculo(){
+	public Dinheiro baseCalculo(){
 		return baseCalculo;
 	}
 	
-	public Double aliquota(){
+	public Aliquota aliquota(){
 		return aliquota;
 	}
 	

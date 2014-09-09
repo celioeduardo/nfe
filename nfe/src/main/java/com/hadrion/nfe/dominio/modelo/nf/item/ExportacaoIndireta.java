@@ -4,14 +4,15 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
+import com.hadrion.nfe.tipos.Quantidade;
 
 public class ExportacaoIndireta {
 	
 	private Long numeroRegistro;
 	private ChaveAcesso chaveAcesso;
-	private Double quantidadeExportada;
+	private Quantidade quantidadeExportada;
 	
-	public ExportacaoIndireta(Long numeroRegistro, ChaveAcesso chaveAcesso, Double quantidadeExportada) {
+	public ExportacaoIndireta(Long numeroRegistro, ChaveAcesso chaveAcesso, Quantidade quantidadeExportada) {
 		super();
 		this.numeroRegistro = numeroRegistro;
 		this.chaveAcesso = chaveAcesso;
@@ -26,7 +27,7 @@ public class ExportacaoIndireta {
 		return chaveAcesso;
 	}
 	
-	public Double quantidadeExportada(){
+	public Quantidade quantidadeExportada(){
 		return quantidadeExportada;
 	}
 	

@@ -8,9 +8,9 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public abstract class AbstractConverter implements Converter{
 
-	public void novoNo(String nome, String valor, HierarchicalStreamWriter writer) {
+	public void novoNo(String nome, Object valor, HierarchicalStreamWriter writer) {
 		writer.startNode(nome);
-		writer.setValue(valor);
+		writer.setValue(String.valueOf(valor));
 		writer.endNode();
 	}
 	public void novoNoIf(String nome, String valor, HierarchicalStreamWriter writer) {

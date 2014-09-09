@@ -3,7 +3,6 @@ package com.hadrion.nfe.port.adapters.xml;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
@@ -16,6 +15,7 @@ import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
+import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;
 
@@ -28,40 +28,40 @@ public class DescritorProdutoTradutorXmlTest extends AbstractXmlTest{
 			"	<xProd>SOJA EM GRAOS DEPOSITO</xProd>\r\n" + 
 			"	<NCM>12010010</NCM>\r\n" +
 			"	<NVE>ABCDEF</NVE>\r\n" +
+			"	<EXTIPI>123</EXTIPI>\r\n" +
 			"	<CFOP>5906</CFOP>\r\n" + 
 			"	<uCom>KG</uCom>\r\n" + 
 			"	<qCom>36620.0000</qCom>\r\n" + 
-			"	<vUnCom>1.0000000000</vUnCom>\r\n" + 
+			"	<vUnCom>1.0</vUnCom>\r\n" + 
 			"	<vProd>36620.00</vProd>\r\n" + 
 			"	<cEANTrib>12345678</cEANTrib>\r\n" + 
 			"	<uTrib>KG</uTrib>\r\n" + 
 			"	<qTrib>36620.0000</qTrib>\r\n" + 
-			"	<vUnTrib>1.0000000000</vUnTrib>\r\n" +
+			"	<vUnTrib>1.0</vUnTrib>\r\n" +
 			"	<vFrete>100.00</vFrete>\r\n" +
 			"	<vSeg>99.00</vSeg>\r\n" +
 			"	<vDesc>88.00</vDesc>\r\n" +
 			"	<vOutro>77.00</vOutro>\r\n" +
 			"	<indTot>1</indTot>\r\n" +
-			"	<detExpot>\r\n" + 
+			"	<detExport>\r\n" + 
 			"		<nDraw>12345678901</nDraw>\r\n" + 
 			"		<exportInd>\r\n" + 
 			"			<nRE>123456789012</nRE>\r\n" + 
 			"			<chNFe>29140600891206000310550010000110017000481161</chNFe>\r\n" + 
 			"			<qExport>50.1234</qExport>\r\n" + 
 			"		</exportInd>\r\n" + 
-			"	</detExpot>" +
+			"	</detExport>" +
 			"	<comb>\r\n" + 
 			"		<cProdANP>123456789</cProdANP>\r\n" + 
 			"		<qTemp>568.1234</qTemp>\r\n" + 
 			"		<UFCons>SP</UFCons>\r\n" + 
 			"		<CIDE>\r\n" + 
 			"			<qBCProd>500.78</qBCProd>\r\n" + 
-			"			<vAliqProd>18.0</vAliqProd>\r\n" + 
-			"			<vCIDE>90.1404</vCIDE>\r\n" + 
+			"			<vAliqProd>18.00</vAliqProd>\r\n" + 
+			"			<vCIDE>90.14</vCIDE>\r\n" + 
 			"		</CIDE>\r\n" + 
 			"	</comb>" +
-			"</prod>\r\n" + 
-			"";
+			"</prod>\r\n";
 	
 	private DescritorProduto produto;
 	
@@ -93,18 +93,16 @@ public class DescritorProdutoTradutorXmlTest extends AbstractXmlTest{
 					new ExportacaoIndireta(
 							123456789012L, 
 							new ChaveAcesso("29140600891206000310550010000110017000481161"),
-							50.1234)),
+							new Quantidade(50.1234))),
 			new Combustivel(123456789L, new Quantidade(568.1234), Uf.SP, 
-					new Cide(500.78, 18.0, new Dinheiro(90.1404))));
+					new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14))));
 	}
-	@Ignore
+	
 	@Test
 	public void serializar(){
-		System.out.println(toXML(produto));
 		assertXMLEquals(XML,toXML(produto));
 	}
 	
-	@Ignore
 	@Test
 	public void deserializar(){
 		assertEquals(produto,fromXML(XML));
