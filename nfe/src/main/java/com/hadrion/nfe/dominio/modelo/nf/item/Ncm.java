@@ -8,6 +8,9 @@ public class Ncm {
 
 	public Ncm(Long numero) {
 		super();
+		if (numero.equals(0L))
+			throw new IllegalArgumentException("N.C.M. não pode ser zero.");
+		
 		this.numero = numero;
 	}
 	

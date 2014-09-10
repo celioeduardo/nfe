@@ -58,7 +58,10 @@ public class Dinheiro {
 	}
 	
 	public boolean igualAZero(){
-		return quantia.equals(0.0);
+		return quantia.equals(0L);
+	}
+	public boolean menorQueZero(){
+		return quantia < 0L;
 	}
 	
 	@Override

@@ -8,6 +8,8 @@ public class Gtin {
 
 	public Gtin(Long numero) {
 		super();
+		if (numero.equals(0L))
+			throw new IllegalArgumentException("Getin não pode ser zero.");		
 		this.numero = numero;
 	}
 	

@@ -13,6 +13,10 @@ public class Cide {
 	
 	public Cide(Dinheiro baseCalculo, Aliquota aliquota, Dinheiro valor) {
 		super();
+		if (baseCalculo.igualAZero())
+			throw new IllegalArgumentException("Base de cálculo não pode ser zero.");
+		if (baseCalculo.menorQueZero())
+			throw new IllegalArgumentException("Base de cálculo não pode ser negativa.");
 		this.baseCalculo = baseCalculo;
 		this.aliquota = aliquota;
 		this.valor = valor;

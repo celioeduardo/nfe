@@ -8,6 +8,8 @@ public class Cfop {
 
 	public Cfop(Long numero) {
 		super();
+		if (numero.equals(0L))
+			throw new IllegalArgumentException("C.F.O.P. não pode ser zero.");
 		this.numero = numero;
 	}
 
