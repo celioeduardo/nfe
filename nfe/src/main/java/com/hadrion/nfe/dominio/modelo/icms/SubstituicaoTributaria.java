@@ -1,55 +1,68 @@
 package com.hadrion.nfe.dominio.modelo.icms;
 
+import java.math.BigDecimal;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
+import com.hadrion.nfe.tipos.Percentual;
 
 public class SubstituicaoTributaria {
 	
 	public static final SubstituicaoTributaria NULA = new SubstituicaoTributaria(
-			0.0,Dinheiro.ZERO,0.0,Dinheiro.ZERO, null, 0.0);
+			Percentual.ZERO,Dinheiro.ZERO,Aliquota.ZERO,null, Percentual.ZERO);
 	
-	private Double percentualReducaoBaseCalculo;
-	private Dinheiro baseCalculo;
-	private Double aliquota;
-	private Dinheiro valor;
+	private Percentual percentualReducaoBaseCalculo;
+	private Dinheiro valorOperacao;
+	private Aliquota aliquota;
 	private DeterminacaoBaseCalculoSt determinacaoBaseCalculo;
-	private Double percentualMargemValorAdicionado;
+	private Percentual percentualMargemValorAdicionado;
 	
-	public SubstituicaoTributaria(Double percentualReducaoBaseCalculo,
-			Dinheiro baseCalculo, Double aliquota, Dinheiro valor,
+	public SubstituicaoTributaria(Percentual percentualReducaoBaseCalculo,
+			Dinheiro valorOperacao, Aliquota aliquota, 
 			DeterminacaoBaseCalculoSt determinacaoBaseCalculo,
-			Double percentualMargemValorAdicionado) {
+			Percentual percentualMargemValorAdicionado) {
 		this.percentualReducaoBaseCalculo = percentualReducaoBaseCalculo;
-		this.baseCalculo = baseCalculo;
+		this.valorOperacao = valorOperacao;
 		this.aliquota = aliquota;
-		this.valor = valor;
 		this.determinacaoBaseCalculo = determinacaoBaseCalculo;
 		this.percentualMargemValorAdicionado = percentualMargemValorAdicionado;
 	}
 	
-	public Double percentualReducaoBaseCalculo() {
+	public Percentual percentualReducaoBaseCalculo() {
 		return percentualReducaoBaseCalculo;
 	}
 	
-	public Dinheiro baseCalculo() {
-		return baseCalculo;
-	}
-
-	public Double aliquota() {
+	public Aliquota aliquota() {
 		return aliquota;
 	}
 
 	public Dinheiro valor() {
-		return valor;
+		return calcularImpostoBase();
+	}
+	
+	public Dinheiro calcularImpostoBase(){
+		return baseCalculo()
+		.multiplicar(aliquota().valorDecimal());
+	}
+	
+	public Dinheiro baseCalculo(){
+		return valorOperacao
+				.multiplicar(BigDecimal.ONE.add(percentualMargemValorAdicionado().valorDecimalComoBigDecimal()))
+				.multiplicar(percentualReducaoBaseCalculo().valorComplementarDecimal());
+	}
+	
+	public Dinheiro valorOperacao(){
+		return valorOperacao;
 	}
 	
 	public DeterminacaoBaseCalculoSt determinacaoBaseCalculo() {
 		return determinacaoBaseCalculo;
 	}
 
-	public Double percentualMargemValorAdicionado() {
+	public Percentual percentualMargemValorAdicionado() {
 		return percentualMargemValorAdicionado;
 	}
 
@@ -61,9 +74,8 @@ public class SubstituicaoTributaria {
 			SubstituicaoTributaria objetoTipado = (SubstituicaoTributaria) objeto;
 			objetosIguais = new EqualsBuilder()
 				.append(percentualReducaoBaseCalculo, objetoTipado.percentualReducaoBaseCalculo)
-				.append(baseCalculo, objetoTipado.baseCalculo)
+				.append(valorOperacao, objetoTipado.valorOperacao)
 				.append(aliquota, objetoTipado.aliquota)
-				.append(valor, objetoTipado.valor)
 				.append(determinacaoBaseCalculo, objetoTipado.determinacaoBaseCalculo)
 				.append(percentualMargemValorAdicionado, objetoTipado.percentualMargemValorAdicionado)
 				.isEquals();
@@ -71,24 +83,26 @@ public class SubstituicaoTributaria {
 
 		return objetosIguais;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder(6645,71)
-		.append(percentualReducaoBaseCalculo)
-		.append(baseCalculo)
-		.append(aliquota)
-		.append(valor)
-		.append(determinacaoBaseCalculo)
-		.append(percentualMargemValorAdicionado)			
+		.append(percentualReducaoBaseCalculo())
+		.append(valorOperacao())
+		.append(aliquota())
+		.append(determinacaoBaseCalculo())
+		.append(percentualMargemValorAdicionado())			
 		.toHashCode();
 	}
 	
 	@Override
 	public String toString() {
-		//TODO - complementar toString
 		return "SubstituicaoTributaria [" 
-				+"numero=" + percentualReducaoBaseCalculo 
+				+"percentualReducaoBaseCalculo=" + percentualReducaoBaseCalculo() 
+				+",valorOperacao=" + valorOperacao() 
+				+",aliquota=" + aliquota() 
+				+",determinacaoBaseCalculo=" + determinacaoBaseCalculo() 
+				+",percentualMargemValorAdicionado=" + percentualMargemValorAdicionado() 
 				+ "]";
 	}
 	

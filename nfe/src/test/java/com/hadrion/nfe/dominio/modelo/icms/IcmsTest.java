@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo;
+package com.hadrion.nfe.dominio.modelo.icms;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,7 +18,7 @@ public class IcmsTest {
 		
 		Icms icms = Icms.tributacaoIntegral_00(
 				Origem.NACIONAL, 
-				new Dinheiro(1000), 
+				new Dinheiro(1000),
 				new Aliquota(18.0), 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO);
 		

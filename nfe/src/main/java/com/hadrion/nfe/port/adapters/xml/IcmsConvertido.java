@@ -15,23 +15,31 @@ import com.hadrion.nfe.tipos.Percentual;
 class IcmsConvertido extends Icms {
 	
 	private Dinheiro baseCalculo;
+	private Dinheiro valor;
 	
 	public IcmsConvertido(Origem origem, Cst cst,
 			DeterminacaoBaseCalculo determinacaoBaseCalculo,
 			Percentual percentualReducaoBaseCalculo, Dinheiro valorOperacao,
-			Aliquota aliquota, Dinheiro valor,
+			Aliquota aliquota,
+			Dinheiro valor,
 			SubstituicaoTributaria substituicaoTributaria,
 			Percentual percentualDiferimento,
 			Dinheiro baseCalculo) {
 		super(origem, cst, determinacaoBaseCalculo, percentualReducaoBaseCalculo,
-				valorOperacao, aliquota, valor, substituicaoTributaria,
+				valorOperacao, aliquota, substituicaoTributaria,
 				percentualDiferimento);
 		this.baseCalculo = baseCalculo;
+		this.valor = valor;
 	}
 	
 	@Override
 	public Dinheiro baseCalculo() {
 		return this.baseCalculo;
+	}
+
+	@Override
+	public Dinheiro valor() {
+		return this.valor;
 	}
 	
 	@Override
@@ -47,7 +55,7 @@ class IcmsConvertido extends Icms {
 				.append(percentualReducaoBaseCalculo(), objetoTipado.percentualReducaoBaseCalculo())
 				.append(valorOperacao(), objetoTipado.valorOperacao())
 				.append(aliquota(), objetoTipado.aliquota())
-				.append(valor, objetoTipado.valor)
+				.append(valor(), objetoTipado.valor())
 				.append(st(), objetoTipado.st())
 				.append(percentualDiferimento(), objetoTipado.percentualDiferimento())
 				.append(baseCalculo(), objetoTipado.baseCalculo())
@@ -81,7 +89,7 @@ class IcmsConvertido extends Icms {
 			+ ",percentualReducaoBaseCalculo=" + percentualReducaoBaseCalculo() 
 			+ ",valorOperacao=" + valorOperacao()
 			+ ",aliquota=" + aliquota()
-			+ ",valor=" + valor
+			+ ",valor=" + valor()
 			+ ",substituicaoTributaria=" + st()
 			+ ",percentualDiferimento=" + percentualDiferimento()
 			+ ",baseCalculo=" + baseCalculo()

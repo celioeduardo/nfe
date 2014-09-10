@@ -22,4 +22,14 @@ public enum DeterminacaoBaseCalculoSt {
 	public String nome(){
 		return nome;
 	}
+
+	public static DeterminacaoBaseCalculoSt obterPeloCodigo(int codigo) {
+		if (codigo == 0) return PRECO_TABELADO;
+		if (codigo == 1) return LISTA_NEGATIVA;
+		if (codigo == 2) return LISTA_POSITIVA;
+		if (codigo == 3) return LISTA_NEUTRA;
+		if (codigo == 4) return MVA;
+		if (codigo == 5) return PAUTA;
+		return null;
+	}
 }

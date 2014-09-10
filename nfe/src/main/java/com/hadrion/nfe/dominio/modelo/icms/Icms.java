@@ -11,7 +11,7 @@ public class Icms {
 	
 	public static final Icms NULO = 
 			new Icms(null, null, null,Percentual.ZERO, Dinheiro.ZERO, 
-					Aliquota.ZERO, Dinheiro.ZERO, null, Percentual.ZERO);
+					Aliquota.ZERO,null, Percentual.ZERO);
 	
 	private Origem origem;
 	private Cst cst;
@@ -19,7 +19,6 @@ public class Icms {
 	private Percentual percentualReducaoBaseCalculo;
 	private Dinheiro valorOperacao;
 	private Aliquota aliquota;
-	protected Dinheiro valor;
 	private SubstituicaoTributaria substituicaoTributaria;
 	private Percentual percentualDiferimento; //CST 51
 	//private Dinheiro valorDiferido; //CST51
@@ -27,7 +26,7 @@ public class Icms {
 	public Icms(Origem origem, Cst cst,
 			DeterminacaoBaseCalculo determinacaoBaseCalculo,
 			Percentual percentualReducaoBaseCalculo, Dinheiro valorOperacao,
-			Aliquota aliquota, Dinheiro valor,
+			Aliquota aliquota,
 			SubstituicaoTributaria substituicaoTributaria,
 			Percentual percentualDiferimento) {
 		super();
@@ -37,7 +36,6 @@ public class Icms {
 		this.percentualReducaoBaseCalculo = percentualReducaoBaseCalculo;
 		this.valorOperacao = valorOperacao;
 		this.aliquota = aliquota;
-		this.valor = valor;
 		this.substituicaoTributaria = substituicaoTributaria;
 		this.percentualDiferimento = percentualDiferimento;
 	}
@@ -49,10 +47,8 @@ public class Icms {
 		return valorOperacao;
 	}
 	public Dinheiro valor(){
-		if (valor != null)
-			return valor;
 		return calcularImpostoBase()
-			.multiplicar(percentualDiferimento().valorComplementarDecimal());
+			.multiplicar(percentualDiferimento().valorComplementarDecimalComoBigDecimal());
 	}
 	
 	public Dinheiro calcularImpostoBase(){
@@ -108,8 +104,7 @@ public class Icms {
 			determinacaoBaseCalculo,
 			Percentual.ZERO,
 			baseCalculo,
-			new Aliquota(100.0),
-			baseCalculo.multiplicar(aliquota.valorDecimal()),
+			aliquota,
 			null,
 			Percentual.ZERO);
 	}
@@ -130,7 +125,6 @@ public class Icms {
 				valorOperacao, 
 				aliquota, 
 				null, 
-				null, 
 				percentualDiferimento);
 	}
 
@@ -147,7 +141,6 @@ public class Icms {
 				.append(percentualReducaoBaseCalculo, objetoTipado.percentualReducaoBaseCalculo)
 				.append(valorOperacao, objetoTipado.valorOperacao)
 				.append(aliquota, objetoTipado.aliquota)
-				.append(valor, objetoTipado.valor)
 				.append(substituicaoTributaria, objetoTipado.substituicaoTributaria)
 				.append(percentualDiferimento, objetoTipado.percentualDiferimento)
 				.isEquals();
@@ -165,8 +158,7 @@ public class Icms {
 		.append(percentualReducaoBaseCalculo())
 		.append(valorOperacao())
 		.append(aliquota())
-		.append(valor())
-		.append(substituicaoTributaria)
+		.append(st())
 		.append(percentualDiferimento())
 		.toHashCode();
 	}
@@ -179,8 +171,8 @@ public class Icms {
 			+ ",percentualReducaoBaseCalculo=" + percentualReducaoBaseCalculo() 
 			+ ",valorOperacao=" + valorOperacao()
 			+ ",aliquota=" + aliquota()
-			+ ",valor=" + valor
-			+ ",substituicaoTributaria=" + substituicaoTributaria
+			+ ",valor=" + valor()
+			+ ",substituicaoTributaria=" + st()
 			+ ",percentualDiferimento=" + percentualDiferimento()
 			+ "]";
 	}

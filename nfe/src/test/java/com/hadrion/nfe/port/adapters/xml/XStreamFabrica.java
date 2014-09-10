@@ -46,7 +46,9 @@ public class XStreamFabrica {
 		xstream.registerConverter(new OrigemConverter());
 		xstream.registerConverter(new CstConverter());
 		xstream.registerConverter(new DeterminacaoBaseCalculoConverter());
+		xstream.registerConverter(new DeterminacaoBaseCalculoStConverter());
 		xstream.registerConverter(new PercentualConverter());
+		xstream.registerConverter(new SubstituicaoTributariaConverter());
 		return xstream;
 	}
 }

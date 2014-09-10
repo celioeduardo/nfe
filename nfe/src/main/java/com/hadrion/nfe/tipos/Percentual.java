@@ -66,7 +66,7 @@ public class Percentual {
 	public BigDecimal valorComplementarDecimalComoBigDecimal() {
 		return BigDecimal.ONE.subtract(valorDecimalComoBigDecimal());
 	}
-	private BigDecimal valorDecimalComoBigDecimal() {
+	public BigDecimal valorDecimalComoBigDecimal() {
 		return new BigDecimal(valor).divide(new BigDecimal(100));
 	}
 }

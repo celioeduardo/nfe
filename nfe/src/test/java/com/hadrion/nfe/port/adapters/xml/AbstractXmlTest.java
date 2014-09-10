@@ -22,8 +22,13 @@ public abstract class AbstractXmlTest {
 	protected Object fromXML(String xml){
 		return xstream.fromXML(xml);
 	}
+	
 	protected String toXML(Object object){
 		return xstream.toXML(object);
+	}
+	
+	protected void printXML(Object object){
+		System.out.println(toXML(object));
 	}
 	
 	public static void assertXMLEquals(String expectedXML, String actualXML) {
