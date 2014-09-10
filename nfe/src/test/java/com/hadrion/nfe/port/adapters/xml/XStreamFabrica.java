@@ -49,6 +49,10 @@ public class XStreamFabrica {
 		xstream.registerConverter(new DeterminacaoBaseCalculoStConverter());
 		xstream.registerConverter(new PercentualConverter());
 		xstream.registerConverter(new SubstituicaoTributariaConverter());
+		xstream.registerConverter(new PisConverter());
+		xstream.registerConverter(new CstPisConverter());
+		xstream.registerConverter(new CofinsConverter());
+		xstream.registerConverter(new CstCofinsConverter());
 		return xstream;
 	}
 }

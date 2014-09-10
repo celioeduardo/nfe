@@ -1,5 +1,7 @@
 package com.hadrion.nfe.tipos;
 
+import java.math.BigDecimal;
+
 
 public class Aliquota {
 	public final static Aliquota ZERO = new Aliquota(0.0);
@@ -50,6 +52,6 @@ public class Aliquota {
 	}
 
 	public Double valorDecimal() {
-		return valor / 100;
+		return new BigDecimal(valor).divide(new BigDecimal(100)).doubleValue();
 	}
 }
