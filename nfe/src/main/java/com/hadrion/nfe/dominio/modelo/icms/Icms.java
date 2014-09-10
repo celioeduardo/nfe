@@ -19,7 +19,7 @@ public class Icms {
 	private Percentual percentualReducaoBaseCalculo;
 	private Dinheiro valorOperacao;
 	private Aliquota aliquota;
-	private Dinheiro valor;
+	protected Dinheiro valor;
 	private SubstituicaoTributaria substituicaoTributaria;
 	private Percentual percentualDiferimento; //CST 51
 	//private Dinheiro valorDiferido; //CST51
@@ -43,7 +43,7 @@ public class Icms {
 	}
 	
 	public Dinheiro baseCalculo(){
-		return valorOperacao.multiplicar(percentualReducaoBaseCalculo.valorComplementarDecimal());
+		return valorOperacao.multiplicar(percentualReducaoBaseCalculo().valorComplementarDecimal());
 	}
 	public Dinheiro valorOperacao(){
 		return valorOperacao;
@@ -77,6 +77,8 @@ public class Icms {
 	}
 	
 	public Percentual percentualReducaoBaseCalculo(){
+		if (percentualReducaoBaseCalculo == null)
+			return Percentual.ZERO;
 		return percentualReducaoBaseCalculo;
 	}
 	
@@ -156,22 +158,35 @@ public class Icms {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(4325,19)
-		.append(origem)
-		.append(cst)
-		.append(determinacaoBaseCalculo)
-		.append(percentualReducaoBaseCalculo)
-		.append(valorOperacao)
-		.append(aliquota)
-		.append(valor)
+		return new HashCodeBuilder(4325,193)
+		.append(origem())
+		.append(cst())
+		.append(determinacaoBaseCalculo())
+		.append(percentualReducaoBaseCalculo())
+		.append(valorOperacao())
+		.append(aliquota())
+		.append(valor())
 		.append(substituicaoTributaria)
-		.append(percentualDiferimento)
+		.append(percentualDiferimento())
 		.toHashCode();
 	}
 	
 	@Override
 	public String toString() {
-		//TODO complementar toString
-		return "Icms [origem=" + origem + "]";
+		return "Icms [origem=" + origem() 
+			+ ",cst=" + cst()
+			+ ",determinacaoBaseCalculo=" + determinacaoBaseCalculo()
+			+ ",percentualReducaoBaseCalculo=" + percentualReducaoBaseCalculo() 
+			+ ",valorOperacao=" + valorOperacao()
+			+ ",aliquota=" + aliquota()
+			+ ",valor=" + valor
+			+ ",substituicaoTributaria=" + substituicaoTributaria
+			+ ",percentualDiferimento=" + percentualDiferimento()
+			+ "]";
+	}
+
+	public static Dinheiro calcularValorOperacao(Dinheiro baseCalculo,
+			Percentual percentualReducaoBaseCalculo) {
+		return baseCalculo.dividir(percentualReducaoBaseCalculo.valorComplementarDecimalComoBigDecimal());
 	}
 }

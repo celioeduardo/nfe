@@ -100,6 +100,7 @@ public class DescritorProdutoTradutorXmlTest extends AbstractXmlTest{
 	
 	@Test
 	public void serializar(){
+		System.out.println(toXML(produto));
 		assertXMLEquals(XML,toXML(produto));
 	}
 	

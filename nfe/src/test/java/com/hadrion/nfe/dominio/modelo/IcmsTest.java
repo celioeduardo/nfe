@@ -113,4 +113,5 @@ public class IcmsTest {
 		assertEquals(new Dinheiro(120.6),icms.valor());
 		assertEquals(Dinheiro.ZERO,icms.valorDiferido());
 	}
+	
 }

@@ -37,7 +37,7 @@ public class Dinheiro {
 	}
 	
 	public Double valor(){
-		return (double) (quantia / fatorCentavos);
+		return quantia().doubleValue();
 	}
 	public Dinheiro soma(Dinheiro valor) {
 		return novoDinheiro(quantia + valor.quantia);
@@ -46,13 +46,20 @@ public class Dinheiro {
 		return multiplicar(new BigDecimal(fator));
 	}
 	public Dinheiro multiplicar(BigDecimal quantia){
-		return new Dinheiro(quantia().multiply(quantia,MathContext.DECIMAL64));
+		return multiplicar(quantia,MathContext.DECIMAL64);
 	}
-	
 	public Dinheiro multiplicar(BigDecimal quantia, MathContext mathContext){
 		return new Dinheiro(quantia().multiply(quantia,mathContext));
 	}
-	
+	public Dinheiro dividir(Double fator) {
+		return dividir(new BigDecimal(fator));
+	}
+	public Dinheiro dividir(BigDecimal quantia){
+		return dividir(quantia,MathContext.DECIMAL64);
+	}
+	public Dinheiro dividir(BigDecimal quantia, MathContext mathContext){
+		return new Dinheiro(quantia().divide(quantia,mathContext));
+	}
 	public Dinheiro subtrair(Dinheiro valor) {
 		return novoDinheiro(quantia - valor.quantia);
 	}

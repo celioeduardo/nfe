@@ -1,13 +1,12 @@
 package com.hadrion.nfe.port.adapters.xml;
 
-import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
+import com.hadrion.nfe.dominio.modelo.icms.Cst;
+import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
 import com.hadrion.nfe.dominio.modelo.icms.Icms;
-import com.hadrion.nfe.dominio.modelo.nf.publico.Crt;
-import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
-import com.hadrion.nfe.tipos.Cnpj;
-import com.hadrion.nfe.tipos.Cpf;
+import com.hadrion.nfe.dominio.modelo.icms.Origem;
+import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
-import com.hadrion.nfe.tipos.InscricaoEstadual;
+import com.hadrion.nfe.tipos.Percentual;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -25,7 +24,6 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 	@Override
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
-		
 		
 		Icms icms = (Icms) source;
 		
@@ -51,43 +49,49 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 		writer.endNode();
 	}
 	
-	private Dinheiro valorIcmsDaOperacao(Icms icms){
-		return icms.baseCalculo().multiplicar(icms.aliquota().valor());
-	}
-	
 	@Override
 	public Object unmarshal(HierarchicalStreamReader reader,
 			UnmarshallingContext context) {
-		Cnpj cnpj = null;
-		Cpf cpf = null;
-		String razaoSocial = "", nomeFantasia = "";
-		Endereco endereco = null;
-		InscricaoEstadual ie = null;
-		InscricaoEstadual ieSt = null;
-		Crt crt = null;
+		Origem origem = null;
+		Cst cst = null; 
+		DeterminacaoBaseCalculo determinacaoBaseCalculo= null; 
+		Percentual percentualReducaoBaseCalculo = null; 
+		Dinheiro baseCalculo = null,valor = null; 
+		Aliquota aliquota = null; 
+		Percentual percentualDiferimento = null;
 		
 		while (reader.hasMoreChildren()) {
 			reader.moveDown();
-			if ("CNPJ".equals(reader.getNodeName())) {
-				cnpj = (Cnpj) context.convertAnother(reader.getValue(), Cnpj.class);
-			} else if ("CPF".equals(reader.getNodeName())) {
-				cpf = (Cpf) context.convertAnother(reader.getValue(), Cpf.class);
-			} else if ("xNome".equals(reader.getNodeName())) {
-				razaoSocial = reader.getValue();
-			} else if ("xFant".equals(reader.getNodeName())) {
-				nomeFantasia = reader.getValue();
-			} else if ("enderEmit".equals(reader.getNodeName())) {
-				endereco = (Endereco) context.convertAnother(reader.getValue(), Endereco.class);
-			} else if ("IE".equals(reader.getNodeName())) {
-				ie = (InscricaoEstadual) context.convertAnother(reader.getValue(), InscricaoEstadual.class);
-			} else if ("IEST".equals(reader.getNodeName())) {
-				ieSt = (InscricaoEstadual) context.convertAnother(reader.getValue(), InscricaoEstadual.class);
-			} else if ("CRT".equals(reader.getNodeName())) {
-				crt = (Crt) context.convertAnother(reader.getValue(), Crt.class);
+			while (reader.hasMoreChildren()) {
+				reader.moveDown();
+				if ("orig".equals(reader.getNodeName())) {
+					origem = (Origem) context.convertAnother(reader.getValue(), Origem.class);
+				} else if ("CST".equals(reader.getNodeName())) {
+					cst = (Cst) context.convertAnother(reader.getValue(), Cst.class);
+				} else if ("modBC".equals(reader.getNodeName())) {
+					 determinacaoBaseCalculo = (DeterminacaoBaseCalculo) context.convertAnother(reader.getValue(), DeterminacaoBaseCalculo.class);
+				} else if ("pRedBC".equals(reader.getNodeName())) {
+					percentualReducaoBaseCalculo = (Percentual) context.convertAnother(reader.getValue(), Percentual.class);
+				} else if ("vBC".equals(reader.getNodeName())) {
+					baseCalculo = (Dinheiro) context.convertAnother(reader.getValue(), Dinheiro.class);
+				} else if ("pICMS".equals(reader.getNodeName())) {
+					aliquota = (Aliquota) context.convertAnother(reader.getValue(), Aliquota.class);
+				} else if ("vICMSOp".equals(reader.getNodeName())) {
+					valor = (Dinheiro) context.convertAnother(reader.getValue(), Dinheiro.class);
+				} else if ("pDif".equals(reader.getNodeName())) {
+					percentualDiferimento = (Percentual) context.convertAnother(reader.getValue(), Percentual.class);
+				}
+				reader.moveUp();
 			}
 			reader.moveUp();
 		}
-		return new Emitente(cnpj, cpf, razaoSocial, nomeFantasia, endereco, null, ie, ieSt, crt);
+		return new IcmsConvertido(origem, 
+				cst, determinacaoBaseCalculo, 
+				percentualReducaoBaseCalculo, 
+				null, aliquota, valor, 
+				null, 
+				percentualDiferimento,
+				baseCalculo);
 	}
 
 }

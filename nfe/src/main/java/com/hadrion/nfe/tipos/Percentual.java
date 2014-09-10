@@ -32,7 +32,7 @@ public class Percentual {
 		boolean objetosIguais = false;
 
 		if (objeto != null && this.getClass() == objeto.getClass()) {
-			Aliquota objetoTipado = (Aliquota) objeto;
+			Percentual objetoTipado = (Percentual) objeto;
 			objetosIguais = this.valor().equals(objetoTipado.valor());
 		}
 
@@ -63,6 +63,9 @@ public class Percentual {
 		return BigDecimal.ONE.subtract(valorDecimalComoBigDecimal()).doubleValue();
 	}
 	
+	public BigDecimal valorComplementarDecimalComoBigDecimal() {
+		return BigDecimal.ONE.subtract(valorDecimalComoBigDecimal());
+	}
 	private BigDecimal valorDecimalComoBigDecimal() {
 		return new BigDecimal(valor).divide(new BigDecimal(100));
 	}

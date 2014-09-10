@@ -5,7 +5,6 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Percentual;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -36,7 +35,7 @@ public class PercentualConverter extends AbstractConverter{
 	@Override
 	public Object unmarshal(HierarchicalStreamReader reader,
 			UnmarshallingContext context) {
-		return new Aliquota(Double.parseDouble(reader.getValue()));
+		return new Percentual(Double.parseDouble(reader.getValue()));
 	}
 
 }
