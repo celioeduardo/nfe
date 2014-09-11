@@ -66,7 +66,7 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 			"	  <comb>\r\n" + 
 			"		<cProdANP>123456789</cProdANP>\r\n" + 
 			"		<qTemp>568.1234</qTemp>\r\n" + 
-			"		<UFCons>SP</UFCons>\r\n" + 
+			"		<UFCons>35</UFCons>\r\n" + 
 			"		<CIDE>\r\n" + 
 			"		  <qBCProd>500.78</qBCProd>\r\n" + 
 			"		  <vAliqProd>18.00</vAliqProd>\r\n" + 

@@ -238,7 +238,7 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 	}
 	
 	private Informacao informacaoFisco(){
-		return new Informacao("ICMS DIFERIDO CONFORME ITEM 25 , PARTE 1 DO ANEXO II, ARTIGO 8 DO DECR ETO 43.080/2002.", null);
+		return new Informacao("ICMS DIFERIDO CONFORME ITEM 25 , PARTE 1 DO ANEXO II, ARTIGO 8 DO DECRETO 43.080/2002.", null);
 	}
 	
 	private Informacao informacaoContribuinte(){

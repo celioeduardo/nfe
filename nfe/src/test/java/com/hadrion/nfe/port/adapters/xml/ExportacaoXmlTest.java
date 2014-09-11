@@ -12,7 +12,7 @@ public class ExportacaoXmlTest extends AbstractXmlTest{
 	
 	private static final String XML = 
 			"<exporta>\r\n" + 
-			"	<UFSaidaPais>SP</UFSaidaPais>\r\n" + 
+			"	<UFSaidaPais>35</UFSaidaPais>\r\n" + 
 			"	<xLocExporta>LOCAL DE EXPORTACAO</xLocExporta>\r\n" + 
 			"	<xLocDespacho>LOCAL DE DESPACHO</xLocDespacho>\r\n" + 
 			"</exporta>\r\n";

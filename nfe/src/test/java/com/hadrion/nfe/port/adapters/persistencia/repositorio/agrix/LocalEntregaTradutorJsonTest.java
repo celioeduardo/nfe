@@ -27,8 +27,6 @@ public class LocalEntregaTradutorJsonTest {
 		LocalEntrega local = gsonBuilder.create().fromJson(json, LocalEntrega.class);		
 		
 		assertEquals(new Cnpj(7233848000100L),local.cnpj());
-		
-		System.out.println(FileUtils.readFileToString(file));
 	}
 	
 	/*private class gsonEstrategia implements FieldNamingStrategy

@@ -11,7 +11,6 @@ public class NumeroTest {
 		double val = 0.0;
 		for (int i =0; i < 10; i++)
 			val += 0.1;
-		System.out.println(val);
 		assertFalse(val == 1.0);
 	}
 

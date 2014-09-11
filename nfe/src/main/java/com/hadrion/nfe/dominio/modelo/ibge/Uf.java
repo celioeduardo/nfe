@@ -53,4 +53,11 @@ public enum Uf {
 	public String descricao(){
 		return descricao;
 	}
+	
+	public static Uf obterPeloCodigo(String codigo){
+		for (Uf uf : Uf.values()) 
+			if (codigo.equals(uf.codigo))
+				return uf;
+		return null;
+	}
 }

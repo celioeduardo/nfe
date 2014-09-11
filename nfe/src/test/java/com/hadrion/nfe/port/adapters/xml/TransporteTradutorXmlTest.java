@@ -29,11 +29,11 @@ public class TransporteTradutorXmlTest extends AbstractXmlTest{
 			"		<xNome>JAIR FRIZON</xNome>\r\n" + 
 			"		<xEnder>RUA CASEMIRO DE ABREU 256</xEnder>\r\n" + 
 			"		<xMun>RIBEIRAO PRETO</xMun>\r\n" + 
-			"		<UF>SP</UF>\r\n" + 
+			"		<UF>35</UF>\r\n" + 
 			"	</transporta>\r\n" + 
 			"	<veicTransp>\r\n" + 
 			"		<placa>KEP2310</placa>\r\n" + 
-			"		<UF>GO</UF>\r\n" + 
+			"		<UF>52</UF>\r\n" + 
 			"	</veicTransp>\r\n" + 
 			"	<vol>\r\n" + 
 			"		<qVol>37220</qVol>\r\n" + 

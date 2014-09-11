@@ -18,7 +18,7 @@ public class UfTradutorXmlTest extends AbstractXmlTest{
 	@Test
 	public void serializar(){
 		assertXMLEquals(
-				"<cUF>SP</cUF>",
+				"<cUF>35</cUF>",
 				xstream.toXML(Uf.SP));
 	}
 	
@@ -26,7 +26,7 @@ public class UfTradutorXmlTest extends AbstractXmlTest{
 	public void deserializar(){
 		assertEquals(
 				Uf.MG,
-				xstream.fromXML("<cUF>MG</cUF>"));
+				xstream.fromXML("<cUF>31</cUF>"));
 	}
 	
 }

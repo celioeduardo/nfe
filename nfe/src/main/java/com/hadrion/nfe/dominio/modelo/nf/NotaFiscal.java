@@ -263,13 +263,13 @@ public class NotaFiscal {
 			result = result.soma(item.imposto().icms().valor());
 		return result;
 	}
-	public Dinheiro totalBaseCalculoImcsSt(){
+	public Dinheiro totalBaseCalculoIcmsSt(){
 		Dinheiro result = Dinheiro.ZERO;
 		for (Item item : getItens())
 			result = result.soma(item.imposto().icms().st().baseCalculo());
 		return result;
 	}
-	public Dinheiro totalImcsSt(){
+	public Dinheiro totalIcmsSt(){
 		Dinheiro result = Dinheiro.ZERO;
 		for (Item item : getItens())
 			result = result.soma(item.imposto().icms().st().valor());
@@ -324,7 +324,7 @@ public class NotaFiscal {
 		return totalProdutos()
 				.subtrair(totalDesconto())
 				.subtrair(valorIcmsDesonerado())
-				.soma(totalImcsSt())
+				.soma(totalIcmsSt())
 				.soma(totalFrete())
 				.soma(totalSeguro())
 				.soma(outrasDespesasAcessorias());

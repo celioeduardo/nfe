@@ -15,7 +15,7 @@
 		<tpImp>1</tpImp>
 		<tpEmis>1</tpEmis>
 		<cDV>0</cDV>
-		<tpAmb>1</tpAmb>
+		<tpAmb>2</tpAmb>
 		<finNFe>1</finNFe>
 		<indFinal>0</indFinal>
 		<indPres>9</indPres>
@@ -56,6 +56,7 @@
 			<xPais>BRASIL</xPais>
 			<fone>3599716587</fone>
 		</enderDest>
+		<indIEDest>1</indIEDest>
 		<IE>0012134380047</IE>
 		<ISUF>123456</ISUF>
 		<email>hadrion@hadrion.com.br</email>
@@ -97,8 +98,6 @@
 			<uTrib>SC</uTrib>
 			<qTrib>30.0000</qTrib>
 			<vUnTrib>59.7716666667</vUnTrib>
-			<vDesc>60.65</vDesc>
-			<indTot>1</indTot>
 			<vFrete>100.00</vFrete>
 			<vSeg>99.00</vSeg>
 			<vDesc>88.00</vDesc>
@@ -115,7 +114,7 @@
 			<comb>
 				<cProdANP>123456789</cProdANP>
 				<qTemp>568.1234</qTemp>
-				<UFCons>SP</UFCons>
+				<UFCons>35</UFCons>
 				<CIDE>
 					<qBCProd>500.78</qBCProd>
 					<vAliqProd>18.00</vAliqProd>
@@ -160,20 +159,22 @@
 	</det>
 	<total>
 		<ICMSTot>
-			<vBC>0.00</vBC>
+			<vBC>1000.00</vBC>
 			<vICMS>0.00</vICMS>
+			<vICMSDeson>0.00</vICMSDeson>
 			<vBCST>0.00</vBCST>
 			<vST>0.00</vST>
 			<vProd>1793.15</vProd>
-			<vFrete>0.00</vFrete>
-			<vSeg>0.00</vSeg>
-			<vDesc>60.65</vDesc>
+			<vFrete>100.00</vFrete>
+			<vSeg>99.00</vSeg>
+			<vDesc>88.00</vDesc>
 			<vII>0.00</vII>
 			<vIPI>0.00</vIPI>
 			<vPIS>0.00</vPIS>
 			<vCOFINS>0.00</vCOFINS>
-			<vOutro>0.00</vOutro>
-			<vNF>1732.50</vNF>
+			<vOutro>77.00</vOutro>
+			<vNF>1981.15</vNF>
+			<vTotTrib>0.00</vTotTrib>
 		</ICMSTot>
 	</total>
 	<transp>
@@ -183,20 +184,21 @@
 		<fat>
 			<nFat>DCO-19936</nFat>
 			<vOrig>1732.50</vOrig>
-			<vLiq>1732.50</vLiq>
+			<vDesc>0.50</vDesc>
+			<vLiq>1732.00</vLiq>
 		</fat>
 		<dup>
 			<nDup>DCO-19936/1</nDup>
 			<dVenc>2013-10-28</dVenc>
-			<vDup>1732.50</vDup>
+			<vDup>1732.00</vDup>
 		</dup>
 	</cobr>
 	<infAdic>
-		<infAdFisco>ICMS DIFERIDO CONFORME ITEM 25 , PARTE 1 DO ANEXO II, ARTIGO 8 DO DECR ETO 43.080/2002.</infAdFisco>
+		<infAdFisco>ICMS DIFERIDO CONFORME ITEM 25 , PARTE 1 DO ANEXO II, ARTIGO 8 DO DECRETO 43.080/2002.</infAdFisco>
 		<infCpl>FAVOR EFETUAR A RETIRADA NO PRAZO MÁXIMO DE 24 HORAS</infCpl>
 	</infAdic>
 	<exporta>
-		<UFSaidaPais>SP</UFSaidaPais>
+		<UFSaidaPais>35</UFSaidaPais>
 		<xLocExporta>LOCAL DE EXPORTACAO</xLocExporta>
 		<xLocDespacho>LOCAL DE DESPACHO</xLocDespacho>
 	</exporta>
