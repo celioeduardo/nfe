@@ -1,5 +1,8 @@
 package com.hadrion.nfe.dominio.modelo.nf.transporte;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.tipos.Dinheiro;
 
@@ -40,6 +43,43 @@ public class RetencaoIcms {
 		return cfop;
 	}
 	
-	
+	@Override
+	public boolean equals(Object objeto) {
+		boolean objetosIguais = false;
+
+		if (objeto != null && this.getClass() == objeto.getClass()) {
+			RetencaoIcms objetoTipado = (RetencaoIcms) objeto;
+			objetosIguais = new EqualsBuilder()
+				.append(valorServico(),objetoTipado.valorServico())
+				.append(baseCalculo(),objetoTipado.baseCalculo())
+				.append(aliquota(),objetoTipado.aliquota())
+				.append(valor(),objetoTipado.valor())
+				.append(cfop(),objetoTipado.cfop())
+				.isEquals();
+		}
+
+		return objetosIguais;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(8899,731)
+			.append(valorServico())
+			.append(baseCalculo())
+			.append(aliquota())
+			.append(valor())
+			.append(cfop())
+			.toHashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "RetencaoIcms [valorServico=" + valorServico()
+				+ ",baseCalculo="+ baseCalculo()
+				+ ",aliquota="+ aliquota()
+				+ ",valor="+ valor()
+				+ ",cfop="+ cfop()
+				+ "]";
+	}	
 	
 }

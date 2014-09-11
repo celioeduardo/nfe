@@ -66,6 +66,10 @@ public class Cobranca {
 
 	public Duplicata obterDuplicata(int i) {
 		return getDuplicatas().get(i-1);
+	}
+
+	public Iterable<Duplicata> duplicatas() {
+		return getDuplicatas();
 	} 
 	
 }

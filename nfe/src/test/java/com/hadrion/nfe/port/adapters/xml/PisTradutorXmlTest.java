@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hadrion.nfe.dominio.modelo.pis.Cst;
+import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
@@ -30,7 +30,7 @@ public class PisTradutorXmlTest extends AbstractXmlTest{
 			"		<vPIS>16.50</vPIS>\r\n" + 
 			"	</PISAliq>\r\n" + 
 			"</PIS>";
-		pis = new Pis(Cst.CST_01,new Dinheiro(1000),new Aliquota(1.65),null,null);
+		pis = new Pis(CstPis.CST_01,new Dinheiro(1000),new Aliquota(1.65),null,null);
 		assertXMLEquals(XML,toXML(pis));
 	}
 	
@@ -46,7 +46,7 @@ public class PisTradutorXmlTest extends AbstractXmlTest{
 						"	</PISAliq>\r\n" + 
 						"</PIS>";
 		pis = new PisConvertido(
-				Cst.CST_01,new Dinheiro(1000),new Aliquota(1.65),null,null,new Dinheiro(16.5));
+				CstPis.CST_01,new Dinheiro(1000),new Aliquota(1.65),null,null,new Dinheiro(16.5));
 		assertEquals(pis,fromXML(XML));
 	}
 	
@@ -61,7 +61,7 @@ public class PisTradutorXmlTest extends AbstractXmlTest{
 			"		<vPIS>16.50</vPIS>\r\n" + 
 			"	</PISAliq>\r\n" + 
 			"</PIS>";
-		pis = new Pis(Cst.CST_02,new Dinheiro(1000),new Aliquota(1.65),null,null);
+		pis = new Pis(CstPis.CST_02,new Dinheiro(1000),new Aliquota(1.65),null,null);
 		assertXMLEquals(XML,toXML(pis));
 	}
 	
@@ -77,7 +77,7 @@ public class PisTradutorXmlTest extends AbstractXmlTest{
 				"	</PISAliq>\r\n" + 
 				"</PIS>";
 		pis = new PisConvertido(
-				Cst.CST_02,new Dinheiro(1000),new Aliquota(1.65),null,null,new Dinheiro(16.5));
+				CstPis.CST_02,new Dinheiro(1000),new Aliquota(1.65),null,null,new Dinheiro(16.5));
 		assertEquals(pis,fromXML(XML));
 	}
 	
@@ -92,7 +92,7 @@ public class PisTradutorXmlTest extends AbstractXmlTest{
 			"		<vPIS>560.00</vPIS>\r\n" + 
 			"	</PISQtde>\r\n" + 
 			"</PIS>";
-		pis = new Pis(Cst.CST_03,null,null,56.0,10.0);
+		pis = new Pis(CstPis.CST_03,null,null,56.0,10.0);
 		assertXMLEquals(XML,toXML(pis));
 	}
 	
@@ -107,74 +107,74 @@ public class PisTradutorXmlTest extends AbstractXmlTest{
 				"		<vPIS>560.00</vPIS>\r\n" + 
 				"	</PISQtde>\r\n" + 
 				"</PIS>";
-		pis = new PisConvertido(Cst.CST_03,null,null,56.0,10.0,new Dinheiro(560.0));
+		pis = new PisConvertido(CstPis.CST_03,null,null,56.0,10.0,new Dinheiro(560.0));
 		assertEquals(pis,fromXML(XML));
 	}
 	
 	@Test
 	public void serializarPis04(){
 		String XML = "<PIS><PISNT><CST>04</CST></PISNT></PIS>";
-		assertXMLEquals(XML,toXML(new Pis(Cst.CST_04,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Pis(CstPis.CST_04,null,null,null,null)));
 	}
 	@Test
 	public void deserializarPis04(){
 		String XML = "<PIS><PISNT><CST>04</CST></PISNT></PIS>";
-		pis = new PisConvertido(Cst.CST_04,null,null,null,null,null);
+		pis = new PisConvertido(CstPis.CST_04,null,null,null,null,null);
 		assertEquals(pis,fromXML(XML));
 	}
 	@Test
 	public void serializarPis05(){
 		String XML = "<PIS><PISNT><CST>05</CST></PISNT></PIS>";
-		assertXMLEquals(XML,toXML(new Pis(Cst.CST_05,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Pis(CstPis.CST_05,null,null,null,null)));
 	}
 	@Test
 	public void deserializarPis05(){
 		String XML = "<PIS><PISNT><CST>05</CST></PISNT></PIS>";
-		pis = new PisConvertido(Cst.CST_05,null,null,null,null,null);
+		pis = new PisConvertido(CstPis.CST_05,null,null,null,null,null);
 		assertEquals(pis,fromXML(XML));
 	}
 	@Test
 	public void serializarPis06(){
 		String XML = "<PIS><PISNT><CST>06</CST></PISNT></PIS>";
-		assertXMLEquals(XML,toXML(new Pis(Cst.CST_06,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Pis(CstPis.CST_06,null,null,null,null)));
 	}
 	@Test
 	public void deserializarPis06(){
 		String XML = "<PIS><PISNT><CST>06</CST></PISNT></PIS>";
-		pis = new PisConvertido(Cst.CST_06,null,null,null,null,null);
+		pis = new PisConvertido(CstPis.CST_06,null,null,null,null,null);
 		assertEquals(pis,fromXML(XML));
 	}
 	@Test
 	public void serializarPis07(){
 		String XML = "<PIS><PISNT><CST>07</CST></PISNT></PIS>";
-		assertXMLEquals(XML,toXML(new Pis(Cst.CST_07,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Pis(CstPis.CST_07,null,null,null,null)));
 	}
 	@Test
 	public void deserializarPis07(){
 		String XML = "<PIS><PISNT><CST>07</CST></PISNT></PIS>";
-		pis = new PisConvertido(Cst.CST_07,null,null,null,null,null);
+		pis = new PisConvertido(CstPis.CST_07,null,null,null,null,null);
 		assertEquals(pis,fromXML(XML));
 	}
 	@Test
 	public void serializarPis08(){
 		String XML = "<PIS><PISNT><CST>08</CST></PISNT></PIS>";
-		assertXMLEquals(XML,toXML(new Pis(Cst.CST_08,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Pis(CstPis.CST_08,null,null,null,null)));
 	}
 	@Test
 	public void deserializarPis08(){
 		String XML = "<PIS><PISNT><CST>08</CST></PISNT></PIS>";
-		pis = new PisConvertido(Cst.CST_08,null,null,null,null,null);
+		pis = new PisConvertido(CstPis.CST_08,null,null,null,null,null);
 		assertEquals(pis,fromXML(XML));
 	}
 	@Test
 	public void serializarPis09(){
 		String XML = "<PIS><PISNT><CST>09</CST></PISNT></PIS>";
-		assertXMLEquals(XML,toXML(new Pis(Cst.CST_09,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Pis(CstPis.CST_09,null,null,null,null)));
 	}
 	@Test
 	public void deserializarPis09(){
 		String XML = "<PIS><PISNT><CST>09</CST></PISNT></PIS>";
-		pis = new PisConvertido(Cst.CST_09,null,null,null,null,null);
+		pis = new PisConvertido(CstPis.CST_09,null,null,null,null,null);
 		assertEquals(pis,fromXML(XML));
 	}
 	@Test
@@ -188,7 +188,7 @@ public class PisTradutorXmlTest extends AbstractXmlTest{
 				"		<vPIS>0.00</vPIS>\r\n" + 
 				"	</PISOutr>\r\n" + 
 				"</PIS>";
-		pis = new Pis(Cst.CST_99,Dinheiro.ZERO,Aliquota.ZERO,0.0,0.0);
+		pis = new Pis(CstPis.CST_99,Dinheiro.ZERO,Aliquota.ZERO,0.0,0.0);
 		assertXMLEquals(XML,toXML(pis));
 	}
 	
@@ -203,7 +203,7 @@ public class PisTradutorXmlTest extends AbstractXmlTest{
 				"		<vPIS>0.00</vPIS>\r\n" + 
 				"	</PISOutr>\r\n" + 
 				"</PIS>";
-		pis = new PisConvertido(Cst.CST_99,Dinheiro.ZERO,Aliquota.ZERO,null,null,Dinheiro.ZERO);
+		pis = new PisConvertido(CstPis.CST_99,Dinheiro.ZERO,Aliquota.ZERO,null,null,Dinheiro.ZERO);
 		assertEquals(pis,fromXML(XML));
 	}
 }

@@ -15,4 +15,12 @@ public enum ModalidadeFrete {
 	public int codigo(){
 		return codigo;
 	}
+
+	public static ModalidadeFrete obterPeloCodigo(int codigo) {
+		if (codigo == 0) return EMITENTE;
+		if (codigo == 1) return DESTINATARIO_REMETENTE;
+		if (codigo == 2) return TERCEIROS;
+		if (codigo == 9) return SEM_FRETE;
+		return null;
+	}
 }

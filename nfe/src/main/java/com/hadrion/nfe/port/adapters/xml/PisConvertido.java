@@ -3,7 +3,7 @@ package com.hadrion.nfe.port.adapters.xml;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.hadrion.nfe.dominio.modelo.pis.Cst;
+import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
@@ -11,7 +11,7 @@ import com.hadrion.nfe.tipos.Dinheiro;
 public class PisConvertido extends Pis{
 	private Dinheiro valor;
 	
-	public PisConvertido(Cst cst, Dinheiro baseCalculo, Aliquota aliquota,
+	public PisConvertido(CstPis cst, Dinheiro baseCalculo, Aliquota aliquota,
 			Double quantidade, Double aliquotaEmReais, Dinheiro valor) {
 		super(cst, baseCalculo, aliquota, quantidade, aliquotaEmReais);
 		this.valor = valor;

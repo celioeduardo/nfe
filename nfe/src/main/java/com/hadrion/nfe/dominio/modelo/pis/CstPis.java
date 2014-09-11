@@ -70,7 +70,7 @@ Contribuição;
 <br>98=Outras Operações de Entrada;
 <br>99=Outras Operações;
  */
-public enum Cst {
+public enum CstPis {
 	//TODO - Completar Cst PIS
 	CST_01(1),
 	CST_02(2),
@@ -85,7 +85,7 @@ public enum Cst {
 	
 	private int codigo;
 	
-	Cst(int codigo){
+	CstPis(int codigo){
 		this.codigo = codigo;
 	}
 	
@@ -93,7 +93,7 @@ public enum Cst {
 		return codigo;
 	}
 
-	public static Cst obterPeloCodigo(int codigo) {
+	public static CstPis obterPeloCodigo(int codigo) {
 		if (codigo == 1) return CST_01;
 		if (codigo == 2) return CST_02;
 		if (codigo == 3) return CST_03;

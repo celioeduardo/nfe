@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hadrion.nfe.dominio.modelo.cofins.Cst;
+import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
@@ -30,7 +30,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 			"		<vCOFINS>16.50</vCOFINS>\r\n" + 
 			"	</COFINSAliq>\r\n" + 
 			"</COFINS>";
-		cofins = new Cofins(Cst.CST_01,new Dinheiro(1000),new Aliquota(1.65),null,null);
+		cofins = new Cofins(CstCofins.CST_01,new Dinheiro(1000),new Aliquota(1.65),null,null);
 		assertXMLEquals(XML,toXML(cofins));
 	}
 	
@@ -46,7 +46,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 						"	</COFINSAliq>\r\n" + 
 						"</COFINS>";
 		cofins = new CofinsConvertido(
-				Cst.CST_01,new Dinheiro(1000),new Aliquota(1.65),null,null,new Dinheiro(16.5));
+				CstCofins.CST_01,new Dinheiro(1000),new Aliquota(1.65),null,null,new Dinheiro(16.5));
 		assertEquals(cofins,fromXML(XML));
 	}
 	
@@ -61,7 +61,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 			"		<vCOFINS>16.50</vCOFINS>\r\n" + 
 			"	</COFINSAliq>\r\n" + 
 			"</COFINS>";
-		cofins = new Cofins(Cst.CST_02,new Dinheiro(1000),new Aliquota(1.65),null,null);
+		cofins = new Cofins(CstCofins.CST_02,new Dinheiro(1000),new Aliquota(1.65),null,null);
 		assertXMLEquals(XML,toXML(cofins));
 	}
 	
@@ -77,7 +77,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 				"	</COFINSAliq>\r\n" + 
 				"</COFINS>";
 		cofins = new CofinsConvertido(
-				Cst.CST_02,new Dinheiro(1000),new Aliquota(1.65),null,null,new Dinheiro(16.5));
+				CstCofins.CST_02,new Dinheiro(1000),new Aliquota(1.65),null,null,new Dinheiro(16.5));
 		assertEquals(cofins,fromXML(XML));
 	}
 	
@@ -92,7 +92,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 			"		<vCOFINS>560.00</vCOFINS>\r\n" + 
 			"	</COFINSQtde>\r\n" + 
 			"</COFINS>";
-		cofins = new Cofins(Cst.CST_03,null,null,56.0,10.0);
+		cofins = new Cofins(CstCofins.CST_03,null,null,56.0,10.0);
 		assertXMLEquals(XML,toXML(cofins));
 	}
 	
@@ -107,74 +107,74 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 				"		<vCOFINS>560.00</vCOFINS>\r\n" + 
 				"	</COFINSQtde>\r\n" + 
 				"</COFINS>";
-		cofins = new CofinsConvertido(Cst.CST_03,null,null,56.0,10.0,new Dinheiro(560.0));
+		cofins = new CofinsConvertido(CstCofins.CST_03,null,null,56.0,10.0,new Dinheiro(560.0));
 		assertEquals(cofins,fromXML(XML));
 	}
 	
 	@Test
 	public void serializarCofins04(){
 		String XML = "<COFINS><COFINSNT><CST>04</CST></COFINSNT></COFINS>";
-		assertXMLEquals(XML,toXML(new Cofins(Cst.CST_04,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Cofins(CstCofins.CST_04,null,null,null,null)));
 	}
 	@Test
 	public void deserializarCofins04(){
 		String XML = "<COFINS><COFINSNT><CST>04</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(Cst.CST_04,null,null,null,null,null);
+		cofins = new CofinsConvertido(CstCofins.CST_04,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
 	public void serializarCofins05(){
 		String XML = "<COFINS><COFINSNT><CST>05</CST></COFINSNT></COFINS>";
-		assertXMLEquals(XML,toXML(new Cofins(Cst.CST_05,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Cofins(CstCofins.CST_05,null,null,null,null)));
 	}
 	@Test
 	public void deserializarCofins05(){
 		String XML = "<COFINS><COFINSNT><CST>05</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(Cst.CST_05,null,null,null,null,null);
+		cofins = new CofinsConvertido(CstCofins.CST_05,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
 	public void serializarCofins06(){
 		String XML = "<COFINS><COFINSNT><CST>06</CST></COFINSNT></COFINS>";
-		assertXMLEquals(XML,toXML(new Cofins(Cst.CST_06,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Cofins(CstCofins.CST_06,null,null,null,null)));
 	}
 	@Test
 	public void deserializarCofins06(){
 		String XML = "<COFINS><COFINSNT><CST>06</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(Cst.CST_06,null,null,null,null,null);
+		cofins = new CofinsConvertido(CstCofins.CST_06,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
 	public void serializarCofins07(){
 		String XML = "<COFINS><COFINSNT><CST>07</CST></COFINSNT></COFINS>";
-		assertXMLEquals(XML,toXML(new Cofins(Cst.CST_07,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Cofins(CstCofins.CST_07,null,null,null,null)));
 	}
 	@Test
 	public void deserializarCofins07(){
 		String XML = "<COFINS><COFINSNT><CST>07</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(Cst.CST_07,null,null,null,null,null);
+		cofins = new CofinsConvertido(CstCofins.CST_07,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
 	public void serializarCofins08(){
 		String XML = "<COFINS><COFINSNT><CST>08</CST></COFINSNT></COFINS>";
-		assertXMLEquals(XML,toXML(new Cofins(Cst.CST_08,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Cofins(CstCofins.CST_08,null,null,null,null)));
 	}
 	@Test
 	public void deserializarCofins08(){
 		String XML = "<COFINS><COFINSNT><CST>08</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(Cst.CST_08,null,null,null,null,null);
+		cofins = new CofinsConvertido(CstCofins.CST_08,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
 	public void serializarCofins09(){
 		String XML = "<COFINS><COFINSNT><CST>09</CST></COFINSNT></COFINS>";
-		assertXMLEquals(XML,toXML(new Cofins(Cst.CST_09,null,null,null,null)));
+		assertXMLEquals(XML,toXML(new Cofins(CstCofins.CST_09,null,null,null,null)));
 	}
 	@Test
 	public void deserializarCofins09(){
 		String XML = "<COFINS><COFINSNT><CST>09</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(Cst.CST_09,null,null,null,null,null);
+		cofins = new CofinsConvertido(CstCofins.CST_09,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
@@ -188,7 +188,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 				"		<vCOFINS>0.00</vCOFINS>\r\n" + 
 				"	</COFINSOutr>\r\n" + 
 				"</COFINS>";
-		cofins = new Cofins(Cst.CST_99,Dinheiro.ZERO,Aliquota.ZERO,0.0,0.0);
+		cofins = new Cofins(CstCofins.CST_99,Dinheiro.ZERO,Aliquota.ZERO,0.0,0.0);
 		assertXMLEquals(XML,toXML(cofins));
 	}
 	
@@ -203,7 +203,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 				"		<vCOFINS>0.00</vCOFINS>\r\n" + 
 				"	</COFINSOutr>\r\n" + 
 				"</COFINS>";
-		cofins = new CofinsConvertido(Cst.CST_99,Dinheiro.ZERO,Aliquota.ZERO,null,null,Dinheiro.ZERO);
+		cofins = new CofinsConvertido(CstCofins.CST_99,Dinheiro.ZERO,Aliquota.ZERO,null,null,Dinheiro.ZERO);
 		assertEquals(cofins,fromXML(XML));
 	}
 }

@@ -6,7 +6,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
-import com.hadrion.nfe.dominio.modelo.cofins.Cst;
+import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.thoughtworks.xstream.converters.Converter;
@@ -75,7 +75,7 @@ public class CofinsConverter extends AbstractConverter implements Converter {
 	public Object unmarshal(HierarchicalStreamReader reader,
 			UnmarshallingContext context) {
 
-		Cst cst = null; 
+		CstCofins cst = null; 
 		Aliquota aliquota = null; 
 		Double quantidade = null, aliquotaEmReais = null;
 		Dinheiro baseCalculo = null, valor = null; 
@@ -85,7 +85,7 @@ public class CofinsConverter extends AbstractConverter implements Converter {
 			while (reader.hasMoreChildren()) {
 				reader.moveDown();
 				if ("CST".equals(reader.getNodeName())) {
-					cst = (Cst) context.convertAnother(reader.getValue(), Cst.class);
+					cst = (CstCofins) context.convertAnother(reader.getValue(), CstCofins.class);
 				} else if ("vBC".equals(reader.getNodeName())) {
 					baseCalculo = (Dinheiro) context.convertAnother(reader.getValue(), Dinheiro.class);
 				} else if ("pCOFINS".equals(reader.getNodeName())) {

@@ -10,13 +10,13 @@ import com.hadrion.nfe.tipos.Dinheiro;
 
 public class Cofins {
 	public static final Cofins NULO = new Cofins(null, Dinheiro.ZERO, Aliquota.ZERO, 0.0, 0.0);
-	private Cst cst;
+	private CstCofins cst;
 	private Dinheiro baseCalculo;
 	private Aliquota aliquota;
 	private Double quantidade;
 	private Double aliquotaEmReais;
 	
-	public Cofins(Cst cst, Dinheiro baseCalculo, Aliquota aliquota, 
+	public Cofins(CstCofins cst, Dinheiro baseCalculo, Aliquota aliquota, 
 			Double quantidade, Double aliquotaEmReais) {
 		super();
 		this.cst = cst;
@@ -26,7 +26,7 @@ public class Cofins {
 		this.aliquotaEmReais = aliquotaEmReais;
 	}
 
-	public Cst cst() {
+	public CstCofins cst() {
 		return cst;
 	}
 

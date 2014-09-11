@@ -10,13 +10,13 @@ import com.hadrion.nfe.tipos.Dinheiro;
 
 public class Pis {
 	public static final Pis NULO = new Pis(null, Dinheiro.ZERO, Aliquota.ZERO, 0.0, 0.0);
-	private Cst cst;
+	private CstPis cst;
 	private Dinheiro baseCalculo;
 	private Aliquota aliquota;
 	private Double quantidade;
 	private Double aliquotaEmReais;
 	
-	public Pis(Cst cst, Dinheiro baseCalculo, Aliquota aliquota, 
+	public Pis(CstPis cst, Dinheiro baseCalculo, Aliquota aliquota, 
 			Double quantidade, Double aliquotaEmReais) {
 		super();
 		this.cst = cst;
@@ -26,7 +26,7 @@ public class Pis {
 		this.aliquotaEmReais = aliquotaEmReais;
 	}
 
-	public Cst cst() {
+	public CstPis cst() {
 		return cst;
 	}
 

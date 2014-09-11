@@ -1,11 +1,21 @@
 package com.hadrion.nfe.port.adapters.xml;
 
+import com.hadrion.nfe.port.adapters.xml.cobranca.CobrancaConverter;
+import com.hadrion.nfe.port.adapters.xml.cobranca.DuplicataConverter;
+import com.hadrion.nfe.port.adapters.xml.cobranca.FaturaConverter;
+import com.hadrion.nfe.port.adapters.xml.exportacao.ExportacaoNotaConverter;
+import com.hadrion.nfe.port.adapters.xml.transporte.ModalidadeFreteConverter;
+import com.hadrion.nfe.port.adapters.xml.transporte.TransportadorConverter;
+import com.hadrion.nfe.port.adapters.xml.transporte.TransporteConverter;
+import com.hadrion.nfe.port.adapters.xml.transporte.VeiculoConverter;
+import com.hadrion.nfe.port.adapters.xml.transporte.VolumeConverter;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class XStreamFabrica {
 	public static XStream criar(){
 		XStream xstream = new XStream(new DomDriver());
+		xstream.setMode(XStream.NO_REFERENCES);
 		xstream.registerConverter(new CpfConverter());
 		xstream.registerConverter(new CnpjConverter());
 		xstream.registerConverter(new DateConverter());
@@ -53,6 +63,17 @@ public class XStreamFabrica {
 		xstream.registerConverter(new CstPisConverter());
 		xstream.registerConverter(new CofinsConverter());
 		xstream.registerConverter(new CstCofinsConverter());
+		xstream.registerConverter(new ImpostoConverter());
+		xstream.registerConverter(new ItemConverter());
+		xstream.registerConverter(new TransporteConverter());
+		xstream.registerConverter(new TransportadorConverter());
+		xstream.registerConverter(new VolumeConverter());
+		xstream.registerConverter(new ModalidadeFreteConverter());
+		xstream.registerConverter(new VeiculoConverter());
+		xstream.registerConverter(new CobrancaConverter());
+		xstream.registerConverter(new FaturaConverter());
+		xstream.registerConverter(new DuplicataConverter());
+		xstream.registerConverter(new ExportacaoNotaConverter());
 		return xstream;
 	}
 }

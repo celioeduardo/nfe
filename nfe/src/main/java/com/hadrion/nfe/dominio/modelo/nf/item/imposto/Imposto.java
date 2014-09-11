@@ -1,5 +1,8 @@
 package com.hadrion.nfe.dominio.modelo.nf.item.imposto;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.dominio.modelo.icms.Icms;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
@@ -45,4 +48,38 @@ public class Imposto {
 			return Cofins.NULO;
 		return cofins;
 	}
+	
+	@Override
+	public boolean equals(Object objeto) {
+		boolean objetosIguais = false;
+
+		if (objeto != null && this.getClass() == objeto.getClass()) {
+			Imposto objetoTipado = (Imposto) objeto;
+			objetosIguais = new EqualsBuilder()
+				.append(valorTotalAproximado(), objetoTipado.valorTotalAproximado())
+				.append(pis(), objetoTipado.pis())
+				.append(cofins(), objetoTipado.cofins())
+				.isEquals();
+		}
+
+		return objetosIguais;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(9811,11)
+		.append(valorTotalAproximado())
+		.append(pis())
+		.append(cofins())
+		.toHashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return "Imposto [valorTotalAproximado=" + valorTotalAproximado() 
+			+ ",pis=" + pis()
+			+ ",cofins=" + cofins()
+			+ "]";
+	}
+	
 }
