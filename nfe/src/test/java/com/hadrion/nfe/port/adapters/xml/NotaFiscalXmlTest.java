@@ -54,6 +54,13 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.Crt;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.publico.IndicadorIe;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.ModalidadeFrete;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.Placa;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.TipoVeiculo;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.Transportador;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.Veiculo;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.Volume;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
@@ -113,7 +120,7 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 			localRetirada(), 
 			localEntrega(), 
 			itens() , 
-			null, //TODO incluir transporte
+			transporte(),
 			cobranca(), 
 			informacaoFisco(), 
 			informacaoContribuinte(), 
@@ -140,6 +147,20 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 			new InscricaoEstadual("1163598340341"),
 			null,
 			Crt.REGIME_NORMAL);
+	}
+	private Transporte transporte(){
+		return new Transporte(
+				ModalidadeFrete.DESTINATARIO_REMETENTE, 
+				new Transportador(
+						null, new Cpf(57133239191L), "JAIR FRIZON", null, 
+						new Endereco(
+								"RUA CASEMIRO DE ABREU", 
+								"256", null, null, 
+								new Municipio(3543402,"RIBEIRAO PRETO", Uf.SP), 
+								Pais.BRASIL, null, null)), 
+						null, 
+				new Veiculo(TipoVeiculo.VEICULO,new Placa(Uf.GO,"KEP2310"),null, null), 
+				new Volume(37220, "KG", null, null, 37220.0, 37220.0, null));
 	}
 	private Destinatario destinatario(){
 		return new Destinatario(

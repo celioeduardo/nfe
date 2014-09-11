@@ -27,8 +27,7 @@ public class NotaFiscalConverter extends AbstractConverter{
 		NotaFiscal nf = (NotaFiscal) source;
 		writer.startNode("ide");
 		convert("cUF",nf.emitente().endereco().municipio().uf(),writer,context);
-		//TODO Incluir Chave Acesso na Nota Fiscal
-		convert("cNF","00269918",writer,context);
+		convert("cNF",nf.chaveAcesso().codigo(),writer,context);
 		convert("natOp",nf.naturezaOperacao(),writer,context);
 		convert("indPag",nf.formaPagamento(),writer,context);
 		convert("mod",nf.modelo(),writer,context);
@@ -95,11 +94,8 @@ public class NotaFiscalConverter extends AbstractConverter{
 		writer.endNode();
 		writer.endNode();
 		
-		//TODO transp - Incluir transporte na Nota Fiscal 
 		writer.startNode("transp");
-		writer.startNode("modFrete");
-		writer.setValue("9");
-		writer.endNode();
+		context.convertAnother(nf.transporte());
 		writer.endNode();
 		
 		//Cobrança

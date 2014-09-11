@@ -21,6 +21,7 @@ import com.hadrion.nfe.tipos.Dinheiro;
 
 public class NotaFiscal {
 	private NotaFiscalId notaFiscalId;
+	private ChaveAcesso chaveAcesso;
 	private Situacao situacaoHomologacao;
 	private Situacao situacaoProducao;	
 	private String naturezaOperacao;
@@ -51,6 +52,7 @@ public class NotaFiscal {
 	}
 
 	private List<Item> itens;
+	private Transporte transporte;
 	private Cobranca cobranca;
 	private Informacao informacaoFisco;
 	private Informacao informacaoContribuinte;
@@ -112,6 +114,8 @@ public class NotaFiscal {
 		this.informacaoFisco = informacaoFisco;
 		this.informacaoContribuinte = informacaoContribuinte;
 		this.exportacao = exportacao;
+		this.chaveAcesso=chaveAcesso;
+		this.transporte=transporte;
 	}
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId) {
@@ -393,6 +397,13 @@ public class NotaFiscal {
 	
 	public Informacao informacaoFisco() {
 		return informacaoFisco;
+	}
+	
+	public Transporte transporte(){
+		return transporte;
+	}
+	public ChaveAcesso chaveAcesso(){
+		return chaveAcesso;
 	}
 
 }

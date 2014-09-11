@@ -178,7 +178,24 @@
 		</ICMSTot>
 	</total>
 	<transp>
-		<modFrete>9</modFrete>
+	  <modFrete>1</modFrete>
+	  <transporta>
+	    <CPF>57133239191</CPF>
+	    <xNome>JAIR FRIZON</xNome>
+	    <xEnder>RUA CASEMIRO DE ABREU 256</xEnder>
+	    <xMun>RIBEIRAO PRETO</xMun>
+	    <UF>35</UF>
+	  </transporta>
+	  <veicTransp>
+	    <placa>KEP2310</placa>
+	    <UF>52</UF>
+	  </veicTransp>
+	  <vol>
+	    <qVol>37220</qVol>
+	    <esp>KG</esp>
+	    <pesoL>37220.000</pesoL>
+	    <pesoB>37220.000</pesoB>
+	  </vol>
 	</transp>
 	<cobr>
 		<fat>

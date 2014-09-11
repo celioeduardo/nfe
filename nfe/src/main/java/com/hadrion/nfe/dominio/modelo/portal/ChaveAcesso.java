@@ -36,5 +36,9 @@ public class ChaveAcesso {
 	public String toString() {
 		return chave; 	
 	}
+
+	public int codigo() {
+		return Integer.parseInt(chave.substring(0, 8));
+	}
 	
 }
