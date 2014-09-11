@@ -55,6 +55,7 @@ public class NotaFiscalTradutorJsonTest {
 		NotaFiscal nf = tradutor.converterNotaFiscal();
 		
 		assertEquals("013924F30E424CC4E050007F010060FB",nf.notaFiscalId().id());
+		
 		assertEquals(new Long(618),nf.numero());
 		assertEquals(new Serie(2L),nf.serie());
 		assertEquals(new Modelo("55"),nf.modelo());

@@ -91,7 +91,8 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 	@Test
 	public void serializar(){
 		nf = new NotaFiscal(
-			new NotaFiscalId("12346"), 
+			new NotaFiscalId("12346"),
+			new ChaveAcesso("31131016832651000420550010000199361002699180"),
 			"VENDA DE PRODUTOS ADQ. TERCEIROS", 
 			FormaPagamento.A_PRAZO, 
 			new Modelo("55"), 
@@ -112,6 +113,7 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 			localRetirada(), 
 			localEntrega(), 
 			itens() , 
+			null, //TODO incluir transporte
 			cobranca(), 
 			informacaoFisco(), 
 			informacaoContribuinte(), 

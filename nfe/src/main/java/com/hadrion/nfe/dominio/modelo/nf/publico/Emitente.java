@@ -10,7 +10,6 @@ import com.hadrion.nfe.tipos.InscricaoEstadual;
 import com.hadrion.nfe.tipos.Telefone;
 
 public class Emitente {
-	//TODO - equals
 	private Cnpj cnpj;
 	private Cpf cpf;
 	private String razaoSocial;

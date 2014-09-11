@@ -15,6 +15,8 @@ import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
+import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 public class NotaFiscal {
@@ -55,6 +57,7 @@ public class NotaFiscal {
 	private Exportacao exportacao;
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId,
+			ChaveAcesso chaveAcesso,
 			String naturezaOperacao,
 			FormaPagamento formaPagamento,
 			Modelo modelo,
@@ -75,6 +78,7 @@ public class NotaFiscal {
 			LocalRetirada localRetirada,
 			LocalEntrega localEntrega,
 			List<Item> itens,
+			Transporte transporte,
 			Cobranca cobranca,
 			Informacao informacaoFisco,
 			Informacao informacaoContribuinte,
