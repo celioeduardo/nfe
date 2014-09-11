@@ -29,7 +29,7 @@ public class DestinatarioConverter extends AbstractConverter implements Converte
 			convert("CNPJ", dest.cnpj(), writer, context);
 		
 		if (dest.cpf() != null)
-			convert("CPF", dest.cnpj(), writer, context);
+			convert("CPF", dest.cpf(), writer, context);
 		
 		novoNo("xNome", dest.razaoSocial(), writer);
 		convert("enderDest", dest.endereco(), writer, context);

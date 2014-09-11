@@ -34,7 +34,7 @@ public class NotaFiscalId {
 	
 	@Override
 	public String toString() {
-		return "NotaFiscalId [id=" + id + "]";
+		return id;
 	}
 
 }

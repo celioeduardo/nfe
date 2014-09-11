@@ -15,7 +15,7 @@ import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Fatura;
 import com.hadrion.nfe.tipos.Dinheiro;
 
-public class CobrancaXmlTest extends AbstractXmlTest{
+public class CobrancaTradutorXmlTest extends AbstractXmlTest{
 	
 	private static final String XML = 
 			"<cobr>\r\n" + 

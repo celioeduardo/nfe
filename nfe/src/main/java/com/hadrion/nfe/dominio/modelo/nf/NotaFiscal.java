@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
@@ -30,7 +30,7 @@ public class NotaFiscal {
 	private Date dataHora;
 	private TipoOperacao tipoOperacao;
 	private LocalDestino localDestino;
-	private Uf municipioFatoGerador; //TODO trocar para buscar o código do IBGE da cidade da Filial?
+	private Municipio municipioFatoGerador; 
 	private FormatoDanfe formatoDanfe;
 	private boolean consumidorFinal;
 	private Finalidade finalidade;
@@ -64,7 +64,7 @@ public class NotaFiscal {
 			Date dataHora, 
 			TipoOperacao tipoOperacao,
 			LocalDestino localDestino, 
-			Uf municipioFatoGerador,
+			Municipio municipioFatoGerador,
 			boolean consumidorFinal,
 			Finalidade finalidade,
 			Presenca presenca,
@@ -219,7 +219,7 @@ public class NotaFiscal {
 	public LocalDestino localDestino() {
 		return localDestino;
 	}
-	public Uf municipioFatoGerador() {
+	public Municipio municipioFatoGerador() {
 		return municipioFatoGerador;
 	}
 	private void assertSituacaoIgualHomologacao(String mensagem,Situacao... esperadas){

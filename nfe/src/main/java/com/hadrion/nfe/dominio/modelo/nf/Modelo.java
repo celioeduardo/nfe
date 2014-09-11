@@ -34,7 +34,7 @@ public class Modelo {
 	
 	@Override
 	public String toString() {
-		return "Modelo [modelo=" + modelo + "]";
+		return modelo;
 	}
 
 }

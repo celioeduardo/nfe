@@ -67,7 +67,7 @@ public class NotaFiscalTradutorTest {
 		//assertEquals(FormatoDanfe.NORMAL_RETRATO,nf.formatoDanfe());
 		assertEquals(Finalidade.NORMAL,nf.finalidade());		
 		assertEquals(false,nf.consumidorFinal());
-		assertEquals(Presenca.NAO_PRESENCIAL,nf.presenca());
+		assertEquals(Presenca.NAO_APLICA,nf.presenca());
 		assertEquals(Processo.APLICATIVO_CONTRIBUINTE,nf.processo());
 		//assertEquals(Referencia.DEVOLUCAO,nf.referencia());
 		//assertEquals(new NotaFiscalId("00FBCC5B1F25E835E050007F01003F33"),nf.documentoReferenciado().notaFiscalId());
