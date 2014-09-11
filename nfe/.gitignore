@@ -6,3 +6,25 @@
 /bin
 /build/
 /mem.h2.db
+.gradle
+
+## generic files to ignore
+/*~
+/*.lock
+/*.DS_Store
+/*.log
+temp
+
+/.idea
+/*.iml
+/*.ipr
+/*.iws
+/out/
+
+nfe/.gradle
+/build
+
+.temp/
+/gradlew.bat
+/gradle/
+/.gradle/
