@@ -1,5 +1,7 @@
 package com.hadrion.nfe.port.adapters.xml;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -11,7 +13,6 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
@@ -78,8 +79,6 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 	
 	private String XML;
 	
-	private NotaFiscal nf;
-	
 	@Before
 	public void setUp() {
 		super.setUp();
@@ -97,36 +96,41 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 	
 	@Test
 	public void serializar(){
-		nf = new NotaFiscal(
-			new NotaFiscalId("12346"),
-			new ChaveAcesso("31131016832651000420550010000199361002699180"),
-			"VENDA DE PRODUTOS ADQ. TERCEIROS", 
-			FormaPagamento.A_PRAZO, 
-			new Modelo("55"), 
-			new Serie(1L), 
-			19936L, 
-			data("25/10/2013"), 
-			data("25/10/2013"), 
-			TipoOperacao.SAIDA, 
-			LocalDestino.INTERNA, 
-			new Municipio(3111606, "CAMPOS GERAIS", Uf.MG), 
-			false, 
-			Finalidade.NORMAL, 
-			Presenca.OUTROS, 
-			Processo.APLICATIVO_CONTRIBUINTE, 
-			null, //Referencias
-			emitente(), 
-			destinatario(), 
-			localRetirada(), 
-			localEntrega(), 
-			itens() , 
-			transporte(),
-			cobranca(), 
-			informacaoFisco(), 
-			informacaoContribuinte(), 
-			exportacao());
-		printXML(nf);
-		assertXMLEquals(XML,toXML(nf));
+		assertXMLEquals(XML,toXML(nf()));
+	}
+	@Test
+	public void deserializar(){
+		assertEquals(nf(),fromXML(XML));
+	}
+	private NotaFiscal nf(){
+		return new NotaFiscal(
+				new NotaFiscalId("12346"),
+				new ChaveAcesso("31131016832651000420550010000199361002699180"),
+				"VENDA DE PRODUTOS ADQ. TERCEIROS", 
+				FormaPagamento.A_PRAZO, 
+				new Modelo("55"), 
+				new Serie(1L), 
+				19936L, 
+				data("25/10/2013"), 
+				data("25/10/2013"), 
+				TipoOperacao.SAIDA, 
+				LocalDestino.INTERNA, 
+				new Municipio(3111606, "CAMPOS GERAIS", Uf.MG), 
+				false, 
+				Finalidade.NORMAL, 
+				Presenca.OUTROS, 
+				Processo.APLICATIVO_CONTRIBUINTE, 
+				null, //Referencias
+				emitente(), 
+				destinatario(), 
+				localRetirada(), 
+				localEntrega(), 
+				itens() , 
+				transporte(),
+				cobranca(), 
+				informacaoFisco(), 
+				informacaoContribuinte(), 
+				exportacao());
 	}
 	private Emitente emitente(){
 		return new Emitente(
@@ -271,14 +275,6 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 	private com.hadrion.nfe.dominio.modelo.nf.Exportacao exportacao(){
 		return new com.hadrion.nfe.dominio.modelo.nf.Exportacao(
 				Uf.SP,"LOCAL DE EXPORTACAO","LOCAL DE DESPACHO");
-	}
-	
-	@Ignore @Test
-	public void deserializar(){
-//		nf = new Cobranca(
-//				new Fatura("DCO-19936", new Dinheiro(1732.5), new Dinheiro(0.5)), 
-//				new Duplicata("DCO-19936/1", data("28/10/2013") , new Dinheiro(1732)));
-//		assertEquals(nf,fromXML(XML));
 	}
 	
 	private Date data(String data){
