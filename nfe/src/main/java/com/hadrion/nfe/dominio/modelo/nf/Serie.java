@@ -10,6 +10,9 @@ public class Serie {
 		else
 			this.numero=numero;
 	}
+	public Serie(int numero){
+		this(new Long(numero));
+	}
 	public Long numero(){
 		return numero;
 	}
@@ -35,7 +38,7 @@ public class Serie {
 	
 	@Override
 	public String toString() {
-		return "Serie [numero=" + numero + "]";
+		return String.valueOf(numero);
 	}
 
 	

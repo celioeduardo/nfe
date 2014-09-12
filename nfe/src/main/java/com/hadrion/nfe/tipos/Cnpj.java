@@ -19,7 +19,16 @@ public class Cnpj {
 	public Long numero(){
 		return numero;
 	}
-
+	
+	/**
+	 * Tamanho fixado em 14 posições
+	 * preenchido com zeros à esquerda
+	 * @return
+	 */
+	public String fixo(){
+		return String.format("%014d", numero);
+	}
+	
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;
