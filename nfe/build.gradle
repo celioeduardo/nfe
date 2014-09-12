@@ -40,6 +40,7 @@ dependencies {
     compile group: 'commons-io', name: 'commons-io', version:'2.3'
     compile group: 'commons-lang', name: 'commons-lang', version:'2.3'
 	compile("com.thoughtworks.xstream:xstream:1.4.7")
+	compile("joda-time:joda-time:2.4")
 	
 	testCompile('xmlunit:xmlunit:1.4')
 	

@@ -1,5 +1,8 @@
 package com.hadrion.nfe.port.adapters.xml.cobranca;
 
+import static com.hadrion.util.DataUtil.formatarData;
+import static com.hadrion.util.DataUtil.parseData;
+
 import java.util.Date;
 
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
@@ -23,7 +26,7 @@ public class DuplicataConverter extends AbstractConverter{
 			MarshallingContext context) {
 		Duplicata dup = (Duplicata) source;
 		convert("nDup", dup.numero(), writer, context);
-		convert("dVenc", dup.vencimento(), writer, context);
+		convert("dVenc", formatarData(dup.vencimento()), writer, context);
 		convert("vDup", dup.valor(), writer, context);
 	}
 
@@ -38,7 +41,7 @@ public class DuplicataConverter extends AbstractConverter{
 			if ("nDup".equals(reader.getNodeName())) {
 				numero = (String) context.convertAnother(reader.getValue(), String.class);
 			} else if ("dVenc".equals(reader.getNodeName())) {
-				vencimento = (Date) context.convertAnother(reader.getValue(), Date.class);
+				vencimento = parseData(reader.getValue());
 			} else if ("vDup".equals(reader.getNodeName())) {
 				valor = (Dinheiro) context.convertAnother(reader.getValue(), Dinheiro.class);
 			}

@@ -1,5 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
+import static com.hadrion.util.NumeroUtil.randInt;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -21,7 +23,6 @@ import com.hadrion.nfe.tipos.Dinheiro;
 
 public class NotaFiscal {
 	private NotaFiscalId notaFiscalId;
-	private ChaveAcesso chaveAcesso;
 	private Situacao situacaoHomologacao;
 	private Situacao situacaoProducao;	
 	private String naturezaOperacao;
@@ -31,10 +32,12 @@ public class NotaFiscal {
 	private Long numero;
 	private Date emissao;
 	private Date dataHora;
+	private int codigoNumerico;
+	private FormatoDanfe formatoDanfe;
+	private TipoEmissao tipoEmissao;
 	private TipoOperacao tipoOperacao;
 	private LocalDestino localDestino;
 	private Municipio municipioFatoGerador; 
-	private FormatoDanfe formatoDanfe;
 	private boolean consumidorFinal;
 	private Finalidade finalidade;
 	private Presenca presenca;
@@ -59,7 +62,6 @@ public class NotaFiscal {
 	private Exportacao exportacao;
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId,
-			ChaveAcesso chaveAcesso,
 			String naturezaOperacao,
 			FormaPagamento formaPagamento,
 			Modelo modelo,
@@ -67,6 +69,9 @@ public class NotaFiscal {
 			Long numero, 
 			Date emissao, 
 			Date dataHora, 
+			Integer codigoNumerico,
+			FormatoDanfe formatoDanfe,
+			TipoEmissao tipoEmissao,
 			TipoOperacao tipoOperacao,
 			LocalDestino localDestino, 
 			Municipio municipioFatoGerador,
@@ -98,7 +103,7 @@ public class NotaFiscal {
 		this.tipoOperacao=tipoOperacao;
 		this.localDestino=localDestino;
 		this.municipioFatoGerador=municipioFatoGerador;
-		//this.formatoDanfe=formatoDanfe;
+		this.formatoDanfe=formatoDanfe;
 		this.consumidorFinal=consumidorFinal;
 		this.finalidade=finalidade;
 		this.presenca=presenca;
@@ -114,8 +119,9 @@ public class NotaFiscal {
 		this.informacaoFisco = informacaoFisco;
 		this.informacaoContribuinte = informacaoContribuinte;
 		this.exportacao = exportacao;
-		this.chaveAcesso=chaveAcesso;
 		this.transporte=transporte;
+		this.tipoEmissao = tipoEmissao;
+		this.codigoNumerico = codigoNumerico == null ? randInt(1, 99999999) : codigoNumerico;
 	}
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId) {
@@ -402,8 +408,23 @@ public class NotaFiscal {
 	public Transporte transporte(){
 		return transporte;
 	}
-	public ChaveAcesso chaveAcesso(){
-		return chaveAcesso;
+	
+	public int codigoNumerico(){
+		return codigoNumerico;
 	}
-
+	
+	public TipoEmissao tipoEmissao(){
+		return tipoEmissao;
+	}
+	
+	public ChaveAcesso chaveAcesso(){
+		return new ChaveAcesso(
+				emitente().endereco().municipio().uf() , 
+				emissao(), 
+				emitente().cnpj(), 
+				serie(), numero(), 
+				tipoEmissao(), 
+				codigoNumerico());
+	}
+	
 }

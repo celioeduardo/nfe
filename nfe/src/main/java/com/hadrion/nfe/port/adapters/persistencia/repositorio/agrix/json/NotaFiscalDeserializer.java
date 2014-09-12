@@ -29,7 +29,6 @@ import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
-import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 
 public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 
@@ -41,14 +40,16 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 		
 		final NotaFiscal nf = new NotaFiscal(
 				new NotaFiscalId(j.get("NotaFiscalId").getAsString()),
-				new ChaveAcesso(j.get("chaveAcesso").getAsString()),
 				null,
 				null,
 				new Modelo(j.get("modelo").getAsString()),
 				new Serie(j.get("serie").getAsLong()),
 				j.get("numero").getAsLong(), 
 				converterData(j.get("emissao").getAsString()), 
-				converterData(j.get("dataHora").getAsString()), 
+				converterData(j.get("dataHora").getAsString()),
+				null,
+				null,//Formato DANFE
+				null,//TipoEmissao.valueOf(j.get("tipoEmissao").getAsString()),
 				TipoOperacao.valueOf(j.get("tipoOperacao").getAsString()),
 				LocalDestino.valueOf(j.get("localDestino").getAsString()), 
 				null,

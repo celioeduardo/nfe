@@ -6,6 +6,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 public class DataUtil {
 	
@@ -71,9 +78,57 @@ public class DataUtil {
 		}	
 		
 	}
-
-
+	/**
+	 * Cria uma data com timezone
+	 * @param dataHora Data no formato dd/MM/yy HH:mm:ss
+	 * @param timezone Exemplo: GMT-03:00
+	 * @return Data com Timezone
+	 */
+	public static Date dataHora(String dataHora, String timezone){
+		TimeZone tz = TimeZone.getTimeZone(timezone);
+		return dataHora(dataHora,tz);	
+	}
+	public static Date dataHora(String dataHora, TimeZone timezone){
+		return dataHora(dataHora,DateTimeZone.forTimeZone(timezone));
+	}
+	public static Date dataHora(String dataHora, DateTimeZone timezone){
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yy HH:mm:ss");
+		DateTime dateTime = dtf.withZone(timezone).parseDateTime(dataHora);
+		return dateTime.toDate();
+	}
 	
+	public static String formatarData(Date date){
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		return formatter.format(date);
+	}
 	
+	public static Date parseData(String data){
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			return formatter.parse(data);
+		} catch (ParseException e) {
+			return null;
+		}
+	}
 	
+	public static String formatarComTimezone(Date date){
+		DateTimeFormatter dtf = ISODateTimeFormat.dateTimeNoMillis();	
+		DateTime d = new DateTime(date);
+		return d.toString(dtf);
+	}
+	
+	public static String formatarComTimezone(Date date,TimeZone timezone){
+		return formatarComTimezone(date, DateTimeZone.forTimeZone(timezone));
+	}
+	public static String formatarComTimezone(Date date,DateTimeZone timezone){
+		DateTimeFormatter dtf = ISODateTimeFormat.dateTimeNoMillis();	
+		DateTime d = new DateTime(date);
+		return d.toString(dtf.withZone(timezone));
+	}
+	
+	public static Date parseComTimezone(String data){
+		DateTimeFormatter dtf = ISODateTimeFormat.dateTimeNoMillis();	
+		DateTime dateTime = dtf.parseDateTime(data);
+		return dateTime.toDate();
+	}	
 }

@@ -4,7 +4,7 @@ import com.hadrion.nfe.port.adapters.xml.cobranca.CobrancaConverter;
 import com.hadrion.nfe.port.adapters.xml.cobranca.DuplicataConverter;
 import com.hadrion.nfe.port.adapters.xml.cobranca.FaturaConverter;
 import com.hadrion.nfe.port.adapters.xml.exportacao.ExportacaoNotaConverter;
-import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalConverter;
+import com.hadrion.nfe.port.adapters.xml.nf.ContingenciaConverter;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalIdConverter;
 import com.hadrion.nfe.port.adapters.xml.nf.PresencaConverter;
 import com.hadrion.nfe.port.adapters.xml.transporte.ModalidadeFreteConverter;
@@ -86,8 +86,10 @@ public class XStreamFabrica {
 		xstream.registerConverter(new PresencaConverter());
 		xstream.registerConverter(new ProcessoConverter());
 		xstream.registerConverter(new NotaFiscalIdConverter());
-		xstream.registerConverter(new NotaFiscalConverter());
 		xstream.registerConverter(new UfConverter());
+		xstream.registerConverter(new AmbienteConverter());
+		xstream.registerConverter(new ContingenciaConverter());
+		
 		return xstream;
 	}
 }

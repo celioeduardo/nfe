@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
-import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
 import com.hadrion.nfe.dominio.modelo.nf.FormaPagamento;
@@ -35,33 +35,15 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class NotaFiscalConverter extends AbstractConverter {
-
-	NotaFiscalId notaFiscalId = null;
-	ChaveAcesso chaveAcesso = null;
-	String naturezaOperacao = null;
-	FormaPagamento formaPagamento = null;
-	Modelo modelo = null;
-	Serie serie = null;
-	Long numero = null;
-	Date emissao = null, dataHora = null;
-	TipoOperacao tipoOperacao = null;
-	LocalDestino localDestino = null;
-	Municipio municipioFatoGerador = null;
-	boolean consumidorFinal = false;
-	Finalidade finalidade = null;
-	Presenca presenca = null;
-	Processo processo = null;
-	Set<Referencia> referencias = null;
-	Emitente emitente = null;
-	Destinatario destinatario = null;
-	LocalRetirada localRetirada = null;
-	LocalEntrega localEntrega = null;
-	List<Item> itens = null;
-	Transporte transporte = null;
-	Cobranca cobranca = null;
-	Informacao informacaoFisco = null, informacaoContribuinte = null;
-	Exportacao exportacao = null;
-
+	
+	private Ambiente ambiente;
+	private String versaoAplicativo;
+	
+	public NotaFiscalConverter(Ambiente ambiente, String versaoAplicativo){
+		this.ambiente = ambiente;
+		this.versaoAplicativo = versaoAplicativo;
+	}
+	
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean canConvert(Class type) {
@@ -73,9 +55,8 @@ public class NotaFiscalConverter extends AbstractConverter {
 			MarshallingContext context) {
 		NotaFiscal nf = (NotaFiscal) source;
 		writer.startNode("ide");
-		convert("cUF", nf.emitente().endereco().municipio().uf(), writer,
-				context);
-		convert("cNF", nf.chaveAcesso().codigo(), writer, context);
+		convert("cUF", nf.emitente().endereco().municipio().uf(), writer,context);
+		convert("cNF", nf.codigoNumerico(), writer, context);
 		convert("natOp", nf.naturezaOperacao(), writer, context);
 		convert("indPag", nf.formaPagamento(), writer, context);
 		convert("mod", nf.modelo(), writer, context);
@@ -86,20 +67,15 @@ public class NotaFiscalConverter extends AbstractConverter {
 		convert("tpNF", nf.tipoOperacao(), writer, context);
 		convert("idDest", nf.localDestino(), writer, context);
 		convert("cMunFG", nf.municipioFatoGerador().codigo(), writer, context);
-		// TODO Definir Tipo de Impressão do DANFE
-		convert("tpImp", 1, writer, context);
-		// TODO Definir Tipo de Emissão do DANFE
-		convert("tpEmis", 1, writer, context);
-		// TODO Digito Verificador da Chave de Acesso
-		convert("cDV", 0, writer, context);
-		// TODO Ambiente
-		convert("tpAmb", 2, writer, context);
+		convert("tpImp", nf.formatoDanfe(), writer, context);
+		convert("tpEmis",nf.tipoEmissao().codigo(), writer, context);
+		convert("cDV",nf.chaveAcesso().digitoVerificador(), writer, context);
+		convert("tpAmb", ambiente(), writer, context);
 		convert("finNFe", nf.finalidade(), writer, context);
 		convert("indFinal", nf.consumidorFinal() ? 1 : 0, writer, context);
 		convert("indPres", nf.presenca(), writer, context);
 		convert("procEmi", nf.processo(), writer, context);
-		// TODO verProc - Informar a versão do aplicativo emissor
-		convert("verProc", "1.0", writer, context);
+		convert("verProc", versaoAplicativo(), writer, context);
 		// TODO dhCont - Data e Hora de entrada em contingência
 		// TODO xJust - Justificativa de entrada em contingência
 		// TODO referencias - Referências
@@ -158,10 +134,25 @@ public class NotaFiscalConverter extends AbstractConverter {
 		convertIf("exporta", nf.exportacao(), writer, context);
 	}
 
+	private String versaoAplicativo() {
+		return versaoAplicativo;
+	}
+
+	private Ambiente ambiente() {
+		return this.ambiente;
+	}
+
 	@Override
 	public Object unmarshal(HierarchicalStreamReader reader,
 			UnmarshallingContext context) {
-
+		
+		
+		List<Item> itens = null;
+		Transporte transporte = null;
+		Cobranca cobranca = null;
+		Informacao informacaoFisco = null, informacaoContribuinte = null;
+		Exportacao exportacao = null;
+		
 		while (reader.hasMoreChildren()) {
 			reader.moveDown();
 			while (reader.hasMoreChildren()) {
@@ -175,17 +166,38 @@ public class NotaFiscalConverter extends AbstractConverter {
 			}
 			reader.moveUp();
 		}
-		return new NotaFiscal(notaFiscalId, chaveAcesso, naturezaOperacao,
-				formaPagamento, modelo, serie, numero, emissao, dataHora,
-				tipoOperacao, localDestino, municipioFatoGerador,
-				consumidorFinal, finalidade, presenca, processo, referencias,
-				emitente, destinatario, localRetirada, localEntrega, itens,
-				transporte, cobranca, informacaoFisco, informacaoContribuinte,
-				exportacao);
+		return null;
+//		return new NotaFiscal(notaFiscalId, chaveAcesso, naturezaOperacao,
+//				formaPagamento, modelo, serie, numero, emissao, dataHora,
+//				tipoOperacao, localDestino, municipioFatoGerador,
+//				consumidorFinal, finalidade, presenca, processo, referencias,
+//				emitente, destinatario, localRetirada, localEntrega, itens,
+//				transporte, cobranca, informacaoFisco, informacaoContribuinte,
+//				exportacao);
 	}
 
 	private void ide(HierarchicalStreamReader reader,
 			UnmarshallingContext context) {
+		NotaFiscalId notaFiscalId = null;
+		ChaveAcesso chaveAcesso = null;
+		String naturezaOperacao = null;
+		FormaPagamento formaPagamento = null;
+		Modelo modelo = null;
+		Serie serie = null;
+		Long numero = null;
+		Date emissao = null, dataHora = null;
+		TipoOperacao tipoOperacao = null;
+		LocalDestino localDestino = null;
+		Municipio municipioFatoGerador = null;
+		boolean consumidorFinal = false;
+		Finalidade finalidade = null;
+		Presenca presenca = null;
+		Processo processo = null;
+		Set<Referencia> referencias = null;
+		Emitente emitente = null;
+		Destinatario destinatario = null;
+		LocalRetirada localRetirada = null;
+		LocalEntrega localEntrega = null;
 		//if ("cUF".equals(reader.getNodeName()))
 			//uf = (Uf) context.convertAnother(reader.getValue(), Uf.class);
 		if ("cNF".equals(reader.getNodeName()))

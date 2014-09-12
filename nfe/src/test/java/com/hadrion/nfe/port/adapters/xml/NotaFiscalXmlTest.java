@@ -1,5 +1,6 @@
 package com.hadrion.nfe.port.adapters.xml;
 
+import static com.hadrion.util.DataUtil.dataHora;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
 import com.hadrion.nfe.dominio.modelo.endereco.Cep;
@@ -28,6 +30,7 @@ import com.hadrion.nfe.dominio.modelo.icms.Icms;
 import com.hadrion.nfe.dominio.modelo.icms.Origem;
 import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
 import com.hadrion.nfe.dominio.modelo.nf.FormaPagamento;
+import com.hadrion.nfe.dominio.modelo.nf.FormatoDanfe;
 import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
 import com.hadrion.nfe.dominio.modelo.nf.Modelo;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
@@ -35,6 +38,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.Presenca;
 import com.hadrion.nfe.dominio.modelo.nf.Processo;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
+import com.hadrion.nfe.dominio.modelo.nf.TipoEmissao;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
@@ -66,6 +70,7 @@ import com.hadrion.nfe.dominio.modelo.nf.transporte.Volume;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
+import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalConverter;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Cpf;
@@ -97,25 +102,30 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 	
 	@Test
 	public void serializar(){
+		xstream.registerConverter(
+				new NotaFiscalConverter(
+						Ambiente.HOMOLOGACAO,"1.0"));
+		printXML(nf());
 		assertXMLEquals(XML,toXML(nf()));
 	}
 	
 	@Ignore @Test
 	public void deserializar(){
-		printXML(fromXML(XML));
 		assertEquals(nf(),fromXML(XML));
 	}
 	private NotaFiscal nf(){
 		return new NotaFiscal(
 				new NotaFiscalId("12346"),
-				new ChaveAcesso("31131016832651000420550010000199361002699180"),
 				"VENDA DE PRODUTOS ADQ. TERCEIROS", 
 				FormaPagamento.A_PRAZO, 
 				new Modelo("55"), 
 				new Serie(1L), 
 				19936L, 
-				data("25/10/2013"), 
-				data("25/10/2013"), 
+				dataHora("25/10/2013 00:00:00","GMT-02:00"), 
+				dataHora("25/10/2013 00:00:00","GMT-02:00"), 
+				269918,
+				FormatoDanfe.RETRATO,
+				TipoEmissao.NORMAL,
 				TipoOperacao.SAIDA, 
 				LocalDestino.INTERNA, 
 				new Municipio(3111606, "CAMPOS GERAIS", Uf.MG), 

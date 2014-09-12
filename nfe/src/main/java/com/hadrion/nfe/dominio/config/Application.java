@@ -1,6 +1,7 @@
 package com.hadrion.nfe.dominio.config;
 
 import java.util.Arrays;
+import java.util.TimeZone;
 
 import javax.sql.DataSource;
 
@@ -33,10 +34,13 @@ public class Application {
 
 	public static void main(String[] args) {
 		
+//		String idTimeZone = "America/Sao_Paulo";
+//		TimeZone tz = TimeZone.getTimeZone(idTimeZone);  
+//		TimeZone.setDefault(tz);
+		
 		ApplicationContext ctx = SpringApplication.run(Application.class, args);
 
-        System.out.println("Let's inspect the beans provided by Spring Boot:");
-
+        
         String[] beanNames = ctx.getBeanDefinitionNames();
         Arrays.sort(beanNames);
         for (String beanName : beanNames) {

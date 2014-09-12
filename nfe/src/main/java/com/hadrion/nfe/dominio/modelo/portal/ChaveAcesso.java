@@ -1,11 +1,10 @@
 package com.hadrion.nfe.dominio.modelo.portal;
 
-import static com.hadrion.util.NumeroUtil.randInt;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
@@ -38,11 +37,6 @@ public class ChaveAcesso {
 		
 	}
 	
-	public ChaveAcesso(Uf uf, Date data, Cnpj cnpj, Serie serie, 
-			long numero, TipoEmissao normal) {
-		this(uf, data, cnpj, serie, numero, normal, gerarCodigoNumerico());
-	}
-	
 	public String chave(){
 		return chave;
 	}
@@ -57,10 +51,6 @@ public class ChaveAcesso {
 
 	public Uf uf() {
 		return Uf.obterPeloCodigo(StringUtils.substring(chave,0, 2));
-	}
-
-	private static int gerarCodigoNumerico(){
-		return randInt(1, 99999999);
 	}
 	
 	private String chaveComDigitoVerificador(String chaveParcial){
@@ -132,6 +122,15 @@ public class ChaveAcesso {
 	public TipoEmissao tipoEmissao() {
 		return TipoEmissao.obterPeloCodigo(
 				Integer.parseInt(StringUtils.substring(chave,34, 35)));
+	}
+
+	public boolean igualChaveDocumento(ChaveAcesso chave) {
+		return new EqualsBuilder()
+			.append(cnpj(),chave.cnpj())
+			.append(numero(),chave.numero())
+			.append(serie(),chave.serie())
+			.append(modelo(),chave.modelo())
+			.isEquals(); 
 	}
 	
 }
