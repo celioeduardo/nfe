@@ -85,7 +85,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 	public void setUp() {
 		super.setUp();
 		
-		final File json =FileUtils.getFile("src","test", "resources", "nota.xml");
+		final File json =FileUtils.getFile("src","test", "resources", "infNFe.xml");
 		
 		try {
 			XML = FileUtils.readFileToString(json);

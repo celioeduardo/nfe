@@ -154,7 +154,6 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 				new Pis(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null), 
 				new Cofins(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null)),
 			"Informação Adicional");
-		printXML(item);
 		assertXMLEquals(XML,toXML(item));
 	}
 	

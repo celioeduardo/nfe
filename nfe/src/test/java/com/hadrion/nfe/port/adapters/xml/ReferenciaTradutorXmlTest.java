@@ -81,7 +81,6 @@ public class ReferenciaTradutorXmlTest extends AbstractXmlTest{
 	@Test
 	public void serializarNfProdutorRural(){
 		ref = notaProdutorRural();
-		printXML(ref);
 		assertXMLEquals(XML_PRODUTOR,toXML(ref));
 	}
 	

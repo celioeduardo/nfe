@@ -47,7 +47,6 @@ public class LocalEntregaTradutorXmlTest extends AbstractXmlTest{
 	
 	@Test
 	public void serializar(){
-		printXML(local);
 		assertXMLEquals(XML,toXML(local));
 	}
 	
