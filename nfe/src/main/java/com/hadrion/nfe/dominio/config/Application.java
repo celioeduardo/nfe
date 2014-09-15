@@ -1,7 +1,6 @@
 package com.hadrion.nfe.dominio.config;
 
 import java.util.Arrays;
-import java.util.TimeZone;
 
 import javax.sql.DataSource;
 

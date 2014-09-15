@@ -21,6 +21,32 @@
 		<indPres>9</indPres>
 		<procEmi>0</procEmi>
 		<verProc>1.0</verProc>
+		<dhCont>2013-10-24T15:35:00-02:00</dhCont>
+		<xJust>Teste de entrada em contingência</xJust>
+		<NFref>
+			<refNFe>31131016832651000420550010000199361002699180</refNFe>
+		</NFref>
+		<NFref>
+			<refNF>
+				<cUF>31</cUF>
+				<AAMM>1305</AAMM>
+				<CNPJ>32750618000165</CNPJ>
+				<mod>1</mod>
+				<serie>3</serie>
+				<nNF>123456</nNF>
+			</refNF>
+		</NFref>
+		<NFref>
+			<refNFP>
+				<cUF>31</cUF>
+				<AAMM>1305</AAMM>
+				<CPF>56115316600</CPF>
+				<IE>ISENTO</IE>
+				<mod>4</mod>
+				<serie>2</serie>
+				<nNF>654321</nNF>
+			</refNFP>
+		</NFref>
 	</ide>
 	<emit>
 		<CNPJ>16832651000420</CNPJ>

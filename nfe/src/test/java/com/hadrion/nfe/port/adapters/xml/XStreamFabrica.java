@@ -7,6 +7,7 @@ import com.hadrion.nfe.port.adapters.xml.exportacao.ExportacaoNotaConverter;
 import com.hadrion.nfe.port.adapters.xml.nf.ContingenciaConverter;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalIdConverter;
 import com.hadrion.nfe.port.adapters.xml.nf.PresencaConverter;
+import com.hadrion.nfe.port.adapters.xml.nf.ReferenciaConverter;
 import com.hadrion.nfe.port.adapters.xml.transporte.ModalidadeFreteConverter;
 import com.hadrion.nfe.port.adapters.xml.transporte.TransportadorConverter;
 import com.hadrion.nfe.port.adapters.xml.transporte.TransporteConverter;
@@ -89,6 +90,7 @@ public class XStreamFabrica {
 		xstream.registerConverter(new UfConverter());
 		xstream.registerConverter(new AmbienteConverter());
 		xstream.registerConverter(new ContingenciaConverter());
+		xstream.registerConverter(new ReferenciaConverter());
 		
 		return xstream;
 	}

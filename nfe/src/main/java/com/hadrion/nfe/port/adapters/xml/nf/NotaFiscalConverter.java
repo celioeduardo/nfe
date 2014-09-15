@@ -2,7 +2,6 @@ package com.hadrion.nfe.port.adapters.xml.nf;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
@@ -76,9 +75,13 @@ public class NotaFiscalConverter extends AbstractConverter {
 		convert("indPres", nf.presenca(), writer, context);
 		convert("procEmi", nf.processo(), writer, context);
 		convert("verProc", versaoAplicativo(), writer, context);
-		// TODO dhCont - Data e Hora de entrada em contingência
-		// TODO xJust - Justificativa de entrada em contingência
-		// TODO referencias - Referências
+		
+		if (nf.notaEmContingencia())
+			context.convertAnother(nf.contingencia());
+		
+		for (Referencia referencia : nf.referencias())
+			context.convertAnother(referencia);
+		
 		writer.endNode();
 
 		convert("emit", nf.emitente(), writer, context);
@@ -193,7 +196,7 @@ public class NotaFiscalConverter extends AbstractConverter {
 		Finalidade finalidade = null;
 		Presenca presenca = null;
 		Processo processo = null;
-		Set<Referencia> referencias = null;
+		List<Referencia> referencias = null;
 		Emitente emitente = null;
 		Destinatario destinatario = null;
 		LocalRetirada localRetirada = null;

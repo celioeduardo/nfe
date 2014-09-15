@@ -1,12 +1,9 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json;
 
+import static com.hadrion.util.DataUtil.data;
+
 import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -45,8 +42,8 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 				new Modelo(j.get("modelo").getAsString()),
 				new Serie(j.get("serie").getAsLong()),
 				j.get("numero").getAsLong(), 
-				converterData(j.get("emissao").getAsString()), 
-				converterData(j.get("dataHora").getAsString()),
+				data(j.get("emissao").getAsString()), 
+				data(j.get("dataHora").getAsString()),
 				null,
 				null,//Formato DANFE
 				null,//TipoEmissao.valueOf(j.get("tipoEmissao").getAsString()),
@@ -67,7 +64,8 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 				cobranca(j), //Cobranca cobranca,
 				informacaoFisco(j), //Informacao informacaoFisco,
 				informacaoContribuinte(j), //Informacao informacaoContribuinte,
-				exportacao(j)); //Exportacao exportacao
+				exportacao(j),
+				null); //Contingência
 		
 		return nf;
 	}
@@ -75,7 +73,7 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 	private List<Item> itens(JsonObject j){
 		return new NotaFiscalTradutorJson(j.get("itens").toString()).converterItens();
 	}
-	private Set<Referencia> referencias(JsonObject j){
+	private List<Referencia> referencias(JsonObject j){
 		return new NotaFiscalTradutorJson(j.get("referencias").toString()).converterReferencias();
 	}
 	private Emitente emitente(JsonObject j){
@@ -102,13 +100,5 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 	private Exportacao exportacao(JsonObject j){
 		return new NotaFiscalTradutorJson(j.get("exportacao").toString()).converterExportacao();
 	}
-	private Date converterData(String data){
-		DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-		try {
-			return formatter.parse(data);
-		} catch (ParseException e) {
-			return null;
-		}	
-		
-	}
+	
 }

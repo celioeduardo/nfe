@@ -1,5 +1,6 @@
 package com.hadrion.nfe.dominio.modelo.pis;
 
+
 /**
  * <p>Código da Situação Tributária para PIS <a href="http://www.nfe.fazenda.gov.br/portal/">Detalhes</a></p>
 <ul>
@@ -94,16 +95,11 @@ public enum CstPis {
 	}
 
 	public static CstPis obterPeloCodigo(int codigo) {
-		if (codigo == 1) return CST_01;
-		if (codigo == 2) return CST_02;
-		if (codigo == 3) return CST_03;
-		if (codigo == 4) return CST_04;
-		if (codigo == 5) return CST_05;
-		if (codigo == 6) return CST_06;
-		if (codigo == 7) return CST_07;
-		if (codigo == 8) return CST_08;
-		if (codigo == 9) return CST_09;
-		if (codigo == 99) return CST_99;
+		for (CstPis e : CstPis.values()) {
+			if (e.codigo() == codigo)
+				return e;
+		}
 		return null;
+
 	}
 }

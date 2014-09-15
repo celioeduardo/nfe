@@ -11,5 +11,6 @@ public class ReferenciaTest {
 	public void equalsReferencia(){
 		assertEquals(Referencia.nfe(new ChaveAcesso("1")),Referencia.nfe(new ChaveAcesso("1")));
 	}
+	
 
 }

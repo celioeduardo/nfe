@@ -19,8 +19,10 @@ public class InscricaoEstadualConverter implements Converter{
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
 		InscricaoEstadual ie = (InscricaoEstadual) source;
-		String valor = ie.obterSomenteDigitos();
-		writer.setValue(valor);
+		if (ie.isento())
+			writer.setValue("ISENTO");
+		else
+			writer.setValue(ie.obterSomenteDigitos());
 	}
 
 	@Override

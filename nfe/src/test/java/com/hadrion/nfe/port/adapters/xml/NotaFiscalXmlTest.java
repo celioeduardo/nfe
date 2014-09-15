@@ -1,16 +1,14 @@
 package com.hadrion.nfe.port.adapters.xml;
 
+import static com.hadrion.util.DataUtil.data;
 import static com.hadrion.util.DataUtil.dataHora;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -28,6 +26,7 @@ import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
 import com.hadrion.nfe.dominio.modelo.icms.Icms;
 import com.hadrion.nfe.dominio.modelo.icms.Origem;
+import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
 import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
 import com.hadrion.nfe.dominio.modelo.nf.FormaPagamento;
 import com.hadrion.nfe.dominio.modelo.nf.FormatoDanfe;
@@ -37,6 +36,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.Presenca;
 import com.hadrion.nfe.dominio.modelo.nf.Processo;
+import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoEmissao;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
@@ -133,7 +133,7 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 				Finalidade.NORMAL, 
 				Presenca.OUTROS, 
 				Processo.APLICATIVO_CONTRIBUINTE, 
-				null, //Referencias
+				referencias(),
 				emitente(), 
 				destinatario(), 
 				localRetirada(), 
@@ -143,7 +143,9 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 				cobranca(), 
 				informacaoFisco(), 
 				informacaoContribuinte(), 
-				exportacao());
+				exportacao(),
+				contingencia());
+		
 	}
 	private Emitente emitente(){
 		return new Emitente(
@@ -290,13 +292,18 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 				Uf.SP,"LOCAL DE EXPORTACAO","LOCAL DE DESPACHO");
 	}
 	
-	private Date data(String data){
-		DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-		try {
-			return formatter.parse(data);
-		} catch (ParseException e) {
-			return null;
-		}	
-		
-	}	
+	private Contingencia contingencia(){
+		return new Contingencia(dataHora("24/10/13 15:35:00", TimeZone.getTimeZone("GMT-02:00")), 
+				"Teste de entrada em contingência");
+	}
+	
+	private List<Referencia> referencias(){
+		List<Referencia> result = new ArrayList<Referencia>();
+		result.add(Referencia.nfe(new ChaveAcesso("31131016832651000420550010000199361002699180")));
+		result.add(Referencia.modelo_1_1A(
+				new Modelo("1"), Uf.MG, data("24/05/13"),new Cnpj(32750618000165L), new Serie(3), 123456L));
+		result.add(Referencia.produtorRural(
+				Uf.MG,data("24/05/13"),new Cpf(56115316600L), new Serie(2), 654321L, InscricaoEstadual.ISENTO));
+		return result;
+	}
 }

@@ -56,9 +56,6 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 	}
 
 	@Override
-	public void limpar() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void limpar() {}
 
 }

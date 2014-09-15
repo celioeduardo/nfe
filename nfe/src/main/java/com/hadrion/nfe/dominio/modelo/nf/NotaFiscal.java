@@ -5,9 +5,7 @@ import static com.hadrion.util.NumeroUtil.randInt;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
@@ -42,7 +40,7 @@ public class NotaFiscal {
 	private Finalidade finalidade;
 	private Presenca presenca;
 	private Processo processo;
-	private Set<Referencia> referencias;
+	private List<Referencia> referencias;
 	
 	private Emitente emitente;
 	private Destinatario destinatario;
@@ -60,6 +58,7 @@ public class NotaFiscal {
 	private Informacao informacaoFisco;
 	private Informacao informacaoContribuinte;
 	private Exportacao exportacao;
+	private Contingencia contingencia;
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId,
 			String naturezaOperacao,
@@ -79,7 +78,7 @@ public class NotaFiscal {
 			Finalidade finalidade,
 			Presenca presenca,
 			Processo processo,
-			Set<Referencia> referencias,
+			List<Referencia> referencias,
 			Emitente emitente,
 			Destinatario destinatario,
 			LocalRetirada localRetirada,
@@ -89,7 +88,8 @@ public class NotaFiscal {
 			Cobranca cobranca,
 			Informacao informacaoFisco,
 			Informacao informacaoContribuinte,
-			Exportacao exportacao) {
+			Exportacao exportacao,
+			Contingencia contingencia) {
 		this.notaFiscalId = notaFiscalId;
 		this.situacaoHomologacao=Situacao.INDEFINIDA;
 		this.situacaoProducao=Situacao.INDEFINIDA;
@@ -108,7 +108,6 @@ public class NotaFiscal {
 		this.finalidade=finalidade;
 		this.presenca=presenca;
 		this.processo=processo;
-		this.referencias = referencias;
 		consistirNotasReferencia();
 		this.emitente = emitente;
 		this.destinatario = destinatario;
@@ -122,6 +121,10 @@ public class NotaFiscal {
 		this.transporte=transporte;
 		this.tipoEmissao = tipoEmissao;
 		this.codigoNumerico = codigoNumerico == null ? randInt(1, 99999999) : codigoNumerico;
+		this.contingencia = contingencia;
+
+		for (Referencia referencia : referencias) 
+			referenciar(referencia);
 	}
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId) {
@@ -384,9 +387,9 @@ public class NotaFiscal {
 	}
 	
 	
-	public Set<Referencia> getReferencias(){
+	private List<Referencia> getReferencias(){
 		if (referencias == null)
-			referencias = new HashSet<Referencia>();
+			referencias = new ArrayList<Referencia>();
 		return referencias;
 	}
 	public boolean estaReferenciando(Referencia referencia){
@@ -425,6 +428,26 @@ public class NotaFiscal {
 				serie(), numero(), 
 				tipoEmissao(), 
 				codigoNumerico());
+	}
+	
+	public Contingencia contingencia(){
+		return contingencia;
+	}
+
+	public boolean notaEmContingencia() {
+		return contingencia() != null;
+	}
+
+	public boolean temReferencias() {
+		return getReferencias().size() > 0;
+	}
+	
+	public Iterable<Referencia> referencias(){
+		return getReferencias();
+	}
+
+	public void referenciar(Referencia ref) {
+		getReferencias().add(ref);
 	}
 	
 }

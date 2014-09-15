@@ -53,14 +53,12 @@ public class DataUtil {
 		return data(dia,Calendar.DECEMBER,ano); 
 	}
 	
-	private static Date data(int dia, int mes, int ano){
-		Calendar calendar = new GregorianCalendar(ano,mes,dia,0,0,0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		return calendar.getTime();
+	public static Date data(String data){
+		return data(data,"dd/MM/yy");
 	}
 	
-	public static Date data(String data){
-		DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+	public static Date data(String data, String formato){
+		DateFormat formatter = new SimpleDateFormat(formato);
 		try {
 			return formatter.parse(data);
 		} catch (ParseException e) {
@@ -102,6 +100,11 @@ public class DataUtil {
 		return formatter.format(date);
 	}
 	
+	public static String formatarData(Date date, String formato){
+		DateFormat formatter = new SimpleDateFormat(formato);
+		return formatter.format(date);
+	}
+	
 	public static Date parseData(String data){
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		try {
@@ -130,5 +133,10 @@ public class DataUtil {
 		DateTimeFormatter dtf = ISODateTimeFormat.dateTimeNoMillis();	
 		DateTime dateTime = dtf.parseDateTime(data);
 		return dateTime.toDate();
+	}
+	private static Date data(int dia, int mes, int ano){
+		Calendar calendar = new GregorianCalendar(ano,mes,dia,0,0,0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar.getTime();
 	}	
 }

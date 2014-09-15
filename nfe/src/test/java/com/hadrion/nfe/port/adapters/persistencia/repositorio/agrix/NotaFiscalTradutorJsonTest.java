@@ -64,7 +64,7 @@ public class NotaFiscalTradutorJsonTest {
 		assertEquals(TipoOperacao.SAIDA,nf.tipoOperacao());
 		assertEquals(LocalDestino.INTERNA,nf.localDestino());
 		assertEquals(Finalidade.NORMAL, nf.finalidade());
-		assertEquals(1,nf.getReferencias().size());
+		assertTrue(nf.temReferencias());
 		assertTrue(nf.estaReferenciando(
 				Referencia.nfe(new ChaveAcesso("013924F307774CC4E050007F010060FB"))));		
 		assertFalse(nf.consumidorFinal());		

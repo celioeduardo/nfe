@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 
 public class InscricaoEstadual {
+	public static final InscricaoEstadual ISENTO = new InscricaoEstadual("ISENTO");
 	private String numero;
 
 	public InscricaoEstadual(String numero) {
@@ -43,5 +44,9 @@ public class InscricaoEstadual {
 	@Override
 	public String toString() {
 		return "InscricaoEstadual[numero="+ numero + "]";
+	}
+
+	public boolean isento() {
+		return ISENTO.equals(this);
 	} 
 }

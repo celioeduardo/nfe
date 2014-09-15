@@ -14,7 +14,7 @@ import com.hadrion.nfe.tipos.InscricaoEstadual;
 public class Referencia {
 	private Modelo modelo;
 	//modelo 55
-	private ChaveAcesso chave;
+	private ChaveAcesso chaveAcesso;
 	//modelo 1/1A	
 	private Uf ufEmitente;
 	private Date emissao;
@@ -30,7 +30,7 @@ public class Referencia {
 			InscricaoEstadual ie) {
 		super();
 		this.modelo = modelo;
-		this.chave = chave;
+		this.chaveAcesso = chave;
 		this.ufEmitente = ufEmitente;
 		this.emissao = emissao;
 		this.cnpjEmitente = cnpjEmitente;
@@ -41,30 +41,25 @@ public class Referencia {
 	}
 	
 
-	public static Referencia produtorRural(Modelo modelo, 
-			Uf ufEmitente,Date emissao,Cnpj cnpjEmitente, 
+	public static Referencia produtorRural(Uf ufEmitente,Date emissao,Cnpj cnpjEmitente, 
 			Serie serie, Long numero, InscricaoEstadual ie){
 		
-		return new Referencia(modelo, null , ufEmitente,
-				emissao, cnpjEmitente, serie, numero, null,
-				ie);
+		return new Referencia(new Modelo("4"), null, ufEmitente,
+				emissao, cnpjEmitente, serie, numero, null,ie);
 	}
-	public static Referencia produtorRural(Modelo modelo, 
-			Uf ufEmitente,Date emissao,Cpf cpf, 
+	public static Referencia produtorRural(Uf ufEmitente,Date emissao,Cpf cpf, 
 			Serie serie, Long numero, InscricaoEstadual ie){
 		
-		return new Referencia(modelo, null , ufEmitente,
-				emissao, null, serie, numero, cpf,
-				ie);
+		return new Referencia(new Modelo("4"), null, ufEmitente,
+				emissao, null, serie, numero, cpf,ie);
 	}
 	public static Referencia nfe(ChaveAcesso chave){
 		return new Referencia(new Modelo("55"), chave, null,
 		null, null, null, null, null,null);
 	}
 	
-	public static Referencia modelo_1_1A(Modelo modelo, ChaveAcesso chave, Uf ufEmitente,
-			Date emissao, Cnpj cnpjEmitente, Serie serie, Long numero, Cpf cpf,
-			InscricaoEstadual ie) {
+	public static Referencia modelo_1_1A(Modelo modelo, Uf ufEmitente,
+			Date emissao, Cnpj cnpjEmitente, Serie serie, Long numero) {
 		return new Referencia(modelo, null , ufEmitente,
 				emissao, cnpjEmitente, serie, numero, null, null);
 		
@@ -78,7 +73,7 @@ public class Referencia {
 			Referencia objetoTipado = (Referencia) objeto;
 			objetosIguais = new EqualsBuilder()
 				.append(modelo, objetoTipado.modelo)
-				.append(chave, objetoTipado.chave)
+				.append(chaveAcesso, objetoTipado.chaveAcesso)
 				.append(ufEmitente, objetoTipado.ufEmitente)
 				.append(emissao, objetoTipado.emissao)
 				.append(cnpjEmitente, objetoTipado.cnpjEmitente)
@@ -96,7 +91,7 @@ public class Referencia {
 	public int hashCode() {
 		return new HashCodeBuilder(664531,27)
 		.append(modelo)
-		.append(chave)
+		.append(chaveAcesso)
 		.append(ufEmitente)
 		.append(emissao)
 		.append(cnpjEmitente)
@@ -110,7 +105,7 @@ public class Referencia {
 	@Override
 	public String toString() {
 		return "Referencia [modelo=" + modelo
-				+ ",chave=" + chave
+				+ ",chaveAcesso=" + chaveAcesso
 				+ ",ufEmitente=" + ufEmitente
 				+ ",emissao=" + emissao
 				+ ",cnpjEmitente=" + cnpjEmitente
@@ -120,4 +115,55 @@ public class Referencia {
 				+ ",ie=" + ie + "]";	
 	}
 
+
+	public boolean referenciaNfe() {
+		return new Modelo("55").equals(modelo);
+	}
+
+	public boolean referenciaNotaProdutorRural() {
+		return new Modelo("4").equals(modelo);
+	}
+	
+	public boolean referenciaNota1_1A() {
+		return new Modelo("1").equals(modelo) ||
+				new Modelo("1A").equals(modelo);
+	}
+
+
+	public ChaveAcesso chaveAcesso() {
+		return chaveAcesso;
+	}
+
+	public Uf ufEmitente() {
+		return ufEmitente;
+	}
+	
+	public Date emissao(){
+		return emissao;
+	}
+	
+	public Cnpj cnpjEmitente(){
+		return cnpjEmitente;
+	}
+	
+	public Modelo modelo(){
+		return modelo;
+	}
+	
+	public Serie serie(){
+		return serie;
+	}
+	
+	public Long numero(){
+		return numero;
+	}
+	
+	public Cpf cpfEmitente(){
+		return cpf;
+	}
+	
+	public InscricaoEstadual ie(){
+		return ie;
+	}
+	
 }

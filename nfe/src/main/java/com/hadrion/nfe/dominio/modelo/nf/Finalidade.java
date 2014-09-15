@@ -30,10 +30,10 @@ public enum Finalidade {
 	}
 	
 	public static Finalidade obterPeloCodigo(int codigo){
-		if (codigo == 1) return NORMAL;
-		else if (codigo == 2) return COMPLEMENTAR;
-		else if (codigo == 3) return AJUSTE;
-		else if (codigo == 4) return DEVOLUCAO_RETORNO;
+		for (Finalidade e : Finalidade.values()) {
+			if (e.codigo() == codigo)
+				return e;
+		}
 		return null;
 	}
 }
