@@ -103,7 +103,6 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 						Ambiente.HOMOLOGACAO,"1.0"));
 		NotaFiscal nfDeserializada = (NotaFiscal) fromXML(XML);
 		NotaFiscal nf = nf();
-		
 		assertEquals(nf.chaveAcesso(),nfDeserializada.chaveAcesso());
 		assertEquals(nf.naturezaOperacao(),nfDeserializada.naturezaOperacao());
 		assertEquals(nf.formaPagamento(),nfDeserializada.formaPagamento());
