@@ -18,47 +18,41 @@ import com.hadrion.nfe.tipos.InscricaoEstadual;
 public class ReferenciaTradutorXmlTest extends AbstractXmlTest{
 	
 	private static final String XML_NFE =
-			"<referencia>\r\n" +
-			"	<NFref>\r\n" + 
-			"		<refNFe>31131016832651000420550010000199361002699180</refNFe>\r\n" + 
-			"	</NFref>\r\n"+
-			"</referencia>\r\n";
-	
+			"<NFref>\r\n" + 
+			"	<refNFe>31131016832651000420550010000199361002699180</refNFe>\r\n" + 
+			"</NFref>\r\n";
+			
 	private static final String XML_1_1A =
-			"<referencia>\r\n" +
-			"	<NFref>\r\n" + 
-			"		<refNF>\r\n" + 
-			"			<cUF>31</cUF>\r\n" + 
-			"			<AAMM>1305</AAMM>\r\n" + 
-			"			<CNPJ>32750618000165</CNPJ>\r\n" + 
-			"			<mod>1</mod>\r\n" + 
-			"			<serie>3</serie>\r\n" + 
-			"			<nNF>123456</nNF>\r\n" + 
-			"		</refNF>\r\n" + 
-			"	</NFref>\r\n" +
-			"</referencia>\r\n";
+			"<NFref>\r\n" + 
+			"	<refNF>\r\n" + 
+			"		<cUF>31</cUF>\r\n" + 
+			"		<AAMM>1305</AAMM>\r\n" + 
+			"		<CNPJ>32750618000165</CNPJ>\r\n" + 
+			"		<mod>1</mod>\r\n" + 
+			"		<serie>3</serie>\r\n" + 
+			"		<nNF>123456</nNF>\r\n" + 
+			"	</refNF>\r\n" + 
+			"</NFref>\r\n";
 	
 	private static final String XML_PRODUTOR = 
-			"<referencia>\r\n" +
-			"	<NFref>\r\n" + 
-			"		<refNFP>\r\n" + 
-			"			<cUF>31</cUF>\r\n" + 
-			"			<AAMM>1305</AAMM>\r\n" + 
-			"			<CPF>56115316600</CPF>\r\n" + 
-			"			<IE>ISENTO</IE>\r\n" + 
-			"			<mod>4</mod>\r\n" + 
-			"			<serie>2</serie>\r\n" + 
-			"			<nNF>654321</nNF>\r\n" + 
-			"		</refNFP>\r\n" + 
-			"	</NFref>" +
-			"</referencia>\r\n";
+			"<NFref>\r\n" + 
+			"	<refNFP>\r\n" + 
+			"		<cUF>31</cUF>\r\n" + 
+			"		<AAMM>1305</AAMM>\r\n" + 
+			"		<CPF>56115316600</CPF>\r\n" + 
+			"		<IE>ISENTO</IE>\r\n" + 
+			"		<mod>4</mod>\r\n" + 
+			"		<serie>2</serie>\r\n" + 
+			"		<nNF>654321</nNF>\r\n" + 
+			"	</refNFP>\r\n" + 
+			"</NFref>";
 	
 	private Referencia ref;
 	
 	@Before
 	public void setUp() {
 		super.setUp();
-		xstream.alias("referencia", Referencia.class);
+		xstream.alias("NFref", Referencia.class);
 	}
 	
 	@Test

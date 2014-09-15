@@ -47,11 +47,7 @@ public class NotaFiscal {
 	private LocalRetirada localRetirada;
 	private LocalEntrega localEntrega;
 	
-	@SuppressWarnings("unused")
-	private NotaFiscal() {
-		super();
-	}
-
+	
 	private List<Item> itens;
 	private Transporte transporte;
 	private Cobranca cobranca;
@@ -59,7 +55,12 @@ public class NotaFiscal {
 	private Informacao informacaoContribuinte;
 	private Exportacao exportacao;
 	private Contingencia contingencia;
-	
+
+	@SuppressWarnings("unused")
+	private NotaFiscal() {
+		super();
+	}
+
 	public NotaFiscal(NotaFiscalId notaFiscalId,
 			String naturezaOperacao,
 			FormaPagamento formaPagamento,
@@ -449,5 +450,5 @@ public class NotaFiscal {
 	public void referenciar(Referencia ref) {
 		getReferencias().add(ref);
 	}
-	
+
 }

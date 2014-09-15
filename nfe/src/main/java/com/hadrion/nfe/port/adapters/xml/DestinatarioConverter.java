@@ -44,7 +44,7 @@ public class DestinatarioConverter extends AbstractConverter implements Converte
 			UnmarshallingContext context) {
 		Cnpj cnpj = null;
 		Cpf cpf = null;
-		String idEstrangeiro = "",razaoSocial = "";
+		String idEstrangeiro = null,razaoSocial = null;
 		Endereco endereco = null;
 		IndicadorIe indIe = null;
 		InscricaoEstadual ie = null;

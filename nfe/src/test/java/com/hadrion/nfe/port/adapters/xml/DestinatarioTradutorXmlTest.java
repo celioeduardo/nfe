@@ -50,7 +50,7 @@ public class DestinatarioTradutorXmlTest extends AbstractXmlTest{
 		destinatario = new Destinatario(
 			new Cnpj(99999999000191L),
 			null,
-			"",
+			null,
 			"HADRION SISTEMAS INTEGRADOS LTDA",
 			null,
 			new Endereco(

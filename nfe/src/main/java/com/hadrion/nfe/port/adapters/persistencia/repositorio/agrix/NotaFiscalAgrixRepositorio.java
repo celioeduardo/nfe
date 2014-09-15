@@ -36,8 +36,6 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 
 	@Override
 	public void salvar(NotaFiscal notaFiscal) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

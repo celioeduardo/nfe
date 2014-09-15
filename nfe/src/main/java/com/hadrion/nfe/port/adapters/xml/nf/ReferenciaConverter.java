@@ -31,7 +31,6 @@ public class ReferenciaConverter extends AbstractConverter{
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
 		Referencia ref = (Referencia) source;
-		writer.startNode("NFref");
 		
 		if (ref.referenciaNfe()){
 			convert("refNFe",ref.chaveAcesso(),writer,context);
@@ -56,7 +55,6 @@ public class ReferenciaConverter extends AbstractConverter{
 			convert("nNF",ref.numero(),writer,context);
 			writer.endNode();
 		}
-		writer.endNode();
 	}
 	
 	private String formatarEmissao(Date emissao){
@@ -78,36 +76,33 @@ public class ReferenciaConverter extends AbstractConverter{
 		
 		while (reader.hasMoreChildren()) {
 			reader.moveDown();
-			while (reader.hasMoreChildren()) {
-				reader.moveDown();
-				if ("refNFe".equals(reader.getNodeName())) 
-					chave = (ChaveAcesso) context.convertAnother(reader.getValue(), ChaveAcesso.class);
-				else if ("refNF".equals(reader.getNodeName()) || "refNFP".equals(reader.getNodeName())){
-					while (reader.hasMoreChildren()) {
-						reader.moveDown();
-						if ("cUF".equals(reader.getNodeName()))
-							ufEmitente = (Uf) context.convertAnother(reader.getValue(), Uf.class);
-						else if ("AAMM".equals(reader.getNodeName()))
-							emissao = criarDataPeloAnoMes(reader.getValue());
-						else if ("CNPJ".equals(reader.getNodeName()))
-							cnpj = (Cnpj) context.convertAnother(reader.getValue(), Cnpj.class);
-						else if ("CPF".equals(reader.getNodeName()))
-							cpf = (Cpf) context.convertAnother(reader.getValue(), Cpf.class);
-						else if ("mod".equals(reader.getNodeName()))
-							modelo = (Modelo) context.convertAnother(reader.getValue(), Modelo.class);
-						else if ("serie".equals(reader.getNodeName()))
-							serie = (Serie) context.convertAnother(reader.getValue(), Serie.class);
-						else if ("IE".equals(reader.getNodeName()))
-							ie = (InscricaoEstadual) context.convertAnother(reader.getValue(), InscricaoEstadual.class);
-						else if ("nNF".equals(reader.getNodeName()))
-							numero = (Long) context.convertAnother(reader.getValue(), Long.class);
-						reader.moveUp();
-					}
+			if ("refNFe".equals(reader.getNodeName())) 
+				chave = (ChaveAcesso) context.convertAnother(reader.getValue(), ChaveAcesso.class);
+			else if ("refNF".equals(reader.getNodeName()) || "refNFP".equals(reader.getNodeName())){
+				while (reader.hasMoreChildren()) {
+					reader.moveDown();
+					if ("cUF".equals(reader.getNodeName()))
+						ufEmitente = (Uf) context.convertAnother(reader.getValue(), Uf.class);
+					else if ("AAMM".equals(reader.getNodeName()))
+						emissao = criarDataPeloAnoMes(reader.getValue());
+					else if ("CNPJ".equals(reader.getNodeName()))
+						cnpj = (Cnpj) context.convertAnother(reader.getValue(), Cnpj.class);
+					else if ("CPF".equals(reader.getNodeName()))
+						cpf = (Cpf) context.convertAnother(reader.getValue(), Cpf.class);
+					else if ("mod".equals(reader.getNodeName()))
+						modelo = (Modelo) context.convertAnother(reader.getValue(), Modelo.class);
+					else if ("serie".equals(reader.getNodeName()))
+						serie = (Serie) context.convertAnother(reader.getValue(), Serie.class);
+					else if ("IE".equals(reader.getNodeName()))
+						ie = (InscricaoEstadual) context.convertAnother(reader.getValue(), InscricaoEstadual.class);
+					else if ("nNF".equals(reader.getNodeName()))
+						numero = (Long) context.convertAnother(reader.getValue(), Long.class);
+					reader.moveUp();
 				}
-				reader.moveUp();
 			}
 			reader.moveUp();
 		}
+		
 		if (chave != null)
 			return Referencia.nfe(chave);
 		else if(Modelo.produtorRural(modelo))

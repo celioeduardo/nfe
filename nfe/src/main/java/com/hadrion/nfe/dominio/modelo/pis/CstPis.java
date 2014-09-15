@@ -72,7 +72,6 @@ Contribuição;
 <br>99=Outras Operações;
  */
 public enum CstPis {
-	//TODO - Completar Cst PIS
 	CST_01(1),
 	CST_02(2),
 	CST_03(3),
@@ -82,6 +81,29 @@ public enum CstPis {
 	CST_07(7),
 	CST_08(8),
 	CST_09(9),
+	CST_49(49),
+	CST_50(50),
+	CST_51(51),
+	CST_52(52),
+	CST_53(53),
+	CST_54(54),
+	CST_55(55),
+	CST_56(56),
+	CST_60(60),
+	CST_61(61),
+	CST_62(62),
+	CST_63(63),
+	CST_64(64),
+	CST_65(65),
+	CST_66(66),
+	CST_67(67),
+	CST_70(70),
+	CST_71(71),
+	CST_72(72),
+	CST_73(73),
+	CST_74(74),
+	CST_75(75),
+	CST_98(98),
 	CST_99(99);
 	
 	private int codigo;

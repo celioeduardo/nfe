@@ -1,22 +1,13 @@
 package com.hadrion.nfe.port.adapters.xml.nf;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
-import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
+import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
 import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
-import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
-import com.hadrion.nfe.dominio.modelo.nf.FormaPagamento;
-import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
-import com.hadrion.nfe.dominio.modelo.nf.Modelo;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
-import com.hadrion.nfe.dominio.modelo.nf.Presenca;
-import com.hadrion.nfe.dominio.modelo.nf.Processo;
 import com.hadrion.nfe.dominio.modelo.nf.Referencia;
-import com.hadrion.nfe.dominio.modelo.nf.Serie;
-import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
@@ -25,7 +16,6 @@ import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
-import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.xml.AbstractConverter;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -79,8 +69,11 @@ public class NotaFiscalConverter extends AbstractConverter {
 		if (nf.notaEmContingencia())
 			context.convertAnother(nf.contingencia());
 		
-		for (Referencia referencia : nf.referencias())
+		for (Referencia referencia : nf.referencias()){
+			writer.startNode("NFref");
 			context.convertAnother(referencia);
+			writer.endNode();
+		}
 		
 		writer.endNode();
 
@@ -149,106 +142,77 @@ public class NotaFiscalConverter extends AbstractConverter {
 	public Object unmarshal(HierarchicalStreamReader reader,
 			UnmarshallingContext context) {
 		
-		
-		List<Item> itens = null;
-		Transporte transporte = null;
-		Cobranca cobranca = null;
-		Informacao informacaoFisco = null, informacaoContribuinte = null;
-		Exportacao exportacao = null;
-		
-		while (reader.hasMoreChildren()) {
-			reader.moveDown();
-			while (reader.hasMoreChildren()) {
-				reader.moveDown();
-
-				ide(reader, context);
-
-				emit(reader, context);
-
-				reader.moveUp();
-			}
-			reader.moveUp();
-		}
-		return null;
-//		return new NotaFiscal(notaFiscalId, chaveAcesso, naturezaOperacao,
-//				formaPagamento, modelo, serie, numero, emissao, dataHora,
-//				tipoOperacao, localDestino, municipioFatoGerador,
-//				consumidorFinal, finalidade, presenca, processo, referencias,
-//				emitente, destinatario, localRetirada, localEntrega, itens,
-//				transporte, cobranca, informacaoFisco, informacaoContribuinte,
-//				exportacao);
-	}
-
-	private void ide(HierarchicalStreamReader reader,
-			UnmarshallingContext context) {
-		NotaFiscalId notaFiscalId = null;
-		ChaveAcesso chaveAcesso = null;
-		String naturezaOperacao = null;
-		FormaPagamento formaPagamento = null;
-		Modelo modelo = null;
-		Serie serie = null;
-		Long numero = null;
-		Date emissao = null, dataHora = null;
-		TipoOperacao tipoOperacao = null;
-		LocalDestino localDestino = null;
-		Municipio municipioFatoGerador = null;
-		boolean consumidorFinal = false;
-		Finalidade finalidade = null;
-		Presenca presenca = null;
-		Processo processo = null;
-		List<Referencia> referencias = null;
+		Ide ide = null;
 		Emitente emitente = null;
 		Destinatario destinatario = null;
 		LocalRetirada localRetirada = null;
 		LocalEntrega localEntrega = null;
-		//if ("cUF".equals(reader.getNodeName()))
-			//uf = (Uf) context.convertAnother(reader.getValue(), Uf.class);
-		if ("cNF".equals(reader.getNodeName()))
-			chaveAcesso = (ChaveAcesso) context.convertAnother(reader.getValue(), String.class);
-		if ("natOp".equals(reader.getNodeName()))
-			naturezaOperacao = (String) context.convertAnother(reader.getValue(), String.class);
-		if ("indPag".equals(reader.getNodeName()))
-			formaPagamento = (FormaPagamento) context.convertAnother(reader.getValue(), FormaPagamento.class);
-		if ("mod".equals(reader.getNodeName()))
-			naturezaOperacao = (String) context.convertAnother(reader.getValue(), String.class);
-		if ("serie".equals(reader.getNodeName()))
-			serie = (Serie) context.convertAnother(reader.getValue(),String.class);
-		if ("nNF".equals(reader.getNodeName()))
-			notaFiscalId = (NotaFiscalId) context.convertAnother(reader.getValue(), String.class);
-		if ("dEmi".equals(reader.getNodeName()))
-			emissao = (Date) context.convertAnother(reader.getValue(),String.class);
-		if ("dSaiEnt".equals(reader.getNodeName()))
-			dataHora = (Date) context.convertAnother(reader.getValue(),String.class);
-		if ("tpNF".equals(reader.getNodeName()))
-			tipoOperacao = (TipoOperacao) context.convertAnother(reader.getValue(), String.class);
-		if ("idDest".equals(reader.getNodeName()))
-			localDestino = (LocalDestino) context.convertAnother(reader.getValue(), String.class);
-		if ("cMunFG".equals(reader.getNodeName()))
-			municipioFatoGerador = (Municipio) context.convertAnother(reader.getValue(), String.class);
-		// if ("tpImp".equals(reader.getNodeName()))
-		// tpe = (String) context.convertAnother(reader.getValue(),
-		// String.class);
-		// if ("cDV".equals(reader.getNodeName()))
-		// naturezaOperacao = (String) context.convertAnother(reader.getValue(),
-		// String.class);
-		// if ("tpAmb".equals(reader.getNodeName()))
-		// naturezaOperacao = (String) context.convertAnother(reader.getValue(),
-		// String.class);
-		/*
-		 * if ("finNFe".equals(reader.getNodeName())) naturezaOperacao =
-		 * (String) context.convertAnother(reader.getValue(), String.class); if
-		 * ("indFinal".equals(reader.getNodeName())) naturezaOperacao = (String)
-		 * context.convertAnother(reader.getValue(), String.class); if
-		 * ("indPres".equals(reader.getNodeName())) naturezaOperacao = (String)
-		 * context.convertAnother(reader.getValue(), String.class); if
-		 * ("procEmi".equals(reader.getNodeName())) naturezaOperacao = (String)
-		 * context.convertAnother(reader.getValue(), String.class); if
-		 * ("verProc".equals(reader.getNodeName())) naturezaOperacao = (String)
-		 * context.convertAnother(reader.getValue(), String.class);
-		 */
-	}
-
-	private void emit(HierarchicalStreamReader reader,
-			UnmarshallingContext context) {
+		List<Item> itens = new ArrayList<Item>();
+//		Total total = null;
+		Transporte transporte = null;
+		Cobranca cobranca = null;
+		InformacaoAdicional informacao = null;
+		Exportacao exportacao = null;
+		Contingencia contingencia = null;
+		
+		while (reader.hasMoreChildren()) {
+			reader.moveDown();
+			if (reader.getNodeName().equals("ide"))
+				ide = new Ide(reader,context);
+			if (reader.getNodeName().equals("emit"))
+				emitente = (Emitente) context.convertAnother(reader.getValue(), Emitente.class);
+			if (reader.getNodeName().equals("dest"))
+				destinatario = (Destinatario) context.convertAnother(reader.getValue(), Destinatario.class);
+			if (reader.getNodeName().equals("retirada"))
+				localRetirada = (LocalRetirada) context.convertAnother(reader.getValue(), LocalRetirada.class);
+			if (reader.getNodeName().equals("entrega"))
+				localEntrega = (LocalEntrega) context.convertAnother(reader.getValue(), LocalEntrega.class);
+			if (reader.getNodeName().equals("det"))
+				itens.add((Item)context.convertAnother(reader.getValue(), Item.class));
+//			if (reader.getNodeName().equals("total")){
+//				reader.moveDown();
+//				total = new Total(reader,context);
+//				reader.moveUp();
+//			}
+			if (reader.getNodeName().equals("transp"))
+				transporte = (Transporte) context.convertAnother(reader.getValue(), Transporte.class);
+			if (reader.getNodeName().equals("cobr"))
+				cobranca = (Cobranca) context.convertAnother(reader.getValue(), Cobranca.class);
+			if (reader.getNodeName().equals("infAdic"))
+				informacao = new InformacaoAdicional(reader, context);
+			if (reader.getNodeName().equals("exporta"))
+				exportacao = (Exportacao) context.convertAnother(reader.getValue(), Exportacao.class);
+			reader.moveUp();
+		}
+		
+		if (ide.getDataHoraContingencia() != null)
+			contingencia = new Contingencia(
+					ide.getDataHoraContingencia(), ide.getJustificativaContingencia());
+		
+		return new NotaFiscal(
+				null, 
+				ide.getNaturezaOperacao(),
+				ide.getFormaPagamento(), 
+				ide.getModelo(), 
+				ide.getSerie(), 
+				ide.getNumero(), 
+				ide.getEmissao(), 
+				ide.getDataSaidaEntrada(),
+				ide.getCodigoNumerico(),
+				ide.getFormatoDante(),
+				ide.getTipoEmissao(),
+				ide.getTipoOperacao(), 
+				ide.getLocalDestino(), 
+				ide.getMunicipioFatoGerador(),
+				ide.getConsumidorFinal(), 
+				ide.getFinalidade(), 
+				ide.getPresenca(), 
+				ide.getProcesso(), 
+				ide.getReferencias(),
+				emitente, destinatario, localRetirada, localEntrega, itens,
+				transporte, cobranca, 
+				new Informacao(informacao.getFisco(), null),
+				new Informacao(informacao.getContribuinte(), null),
+				exportacao,contingencia);
 	}
 }

@@ -2,7 +2,6 @@ package com.hadrion.nfe.port.adapters.xml;
 
 import static com.hadrion.util.DataUtil.data;
 import static com.hadrion.util.DataUtil.dataHora;
-import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +11,6 @@ import java.util.TimeZone;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
@@ -81,7 +79,7 @@ import com.hadrion.nfe.tipos.Percentual;
 import com.hadrion.nfe.tipos.Quantidade;
 import com.hadrion.nfe.tipos.Telefone;
 
-public class NotaFiscalXmlTest extends AbstractXmlTest{
+public class NotaFiscalXmlSerializadorTest extends AbstractXmlTest{
 	
 	private String XML;
 	
@@ -105,14 +103,9 @@ public class NotaFiscalXmlTest extends AbstractXmlTest{
 		xstream.registerConverter(
 				new NotaFiscalConverter(
 						Ambiente.HOMOLOGACAO,"1.0"));
-		printXML(nf());
 		assertXMLEquals(XML,toXML(nf()));
 	}
 	
-	@Ignore @Test
-	public void deserializar(){
-		assertEquals(nf(),fromXML(XML));
-	}
 	private NotaFiscal nf(){
 		return new NotaFiscal(
 				new NotaFiscalId("12346"),
