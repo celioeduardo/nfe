@@ -8,10 +8,10 @@ import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
 
-public class CofinsConvertido extends Cofins{
+public class CofinsDeserializado extends Cofins{
 	private Dinheiro valor;
 	
-	public CofinsConvertido(CstCofins cst, Dinheiro baseCalculo, Aliquota aliquota,
+	public CofinsDeserializado(CstCofins cst, Dinheiro baseCalculo, Aliquota aliquota,
 			Double quantidade, Double aliquotaEmReais, Dinheiro valor) {
 		super(cst, baseCalculo, aliquota, quantidade, aliquotaEmReais);
 		this.valor = valor;

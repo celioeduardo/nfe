@@ -12,12 +12,12 @@ import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Percentual;
 
-class IcmsConvertido extends Icms {
+class IcmsDeserializado extends Icms {
 	
 	private Dinheiro baseCalculo;
 	private Dinheiro valor;
 	
-	public IcmsConvertido(Origem origem, Cst cst,
+	public IcmsDeserializado(Origem origem, Cst cst,
 			DeterminacaoBaseCalculo determinacaoBaseCalculo,
 			Percentual percentualReducaoBaseCalculo, Dinheiro valorOperacao,
 			Aliquota aliquota,
@@ -47,7 +47,7 @@ class IcmsConvertido extends Icms {
 		boolean objetosIguais = false;
 
 		if (objeto != null && this.getClass() == objeto.getClass()) {
-			IcmsConvertido objetoTipado = (IcmsConvertido) objeto;
+			IcmsDeserializado objetoTipado = (IcmsDeserializado) objeto;
 			objetosIguais = new EqualsBuilder()
 				.append(origem(), objetoTipado.origem())
 				.append(cst(), objetoTipado.cst())

@@ -189,11 +189,11 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 					new Combustivel(123456789L, new Quantidade(568.1234), Uf.SP, 
 							new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14)))),
 			new Imposto(Dinheiro.ZERO, 
-				new IcmsConvertido(Origem.NACIONAL,Cst.CST_51, DeterminacaoBaseCalculo.VALOR_OPERACAO,
+				new IcmsDeserializado(Origem.NACIONAL,Cst.CST_51, DeterminacaoBaseCalculo.VALOR_OPERACAO,
 						Percentual.ZERO, new Dinheiro(1000), Aliquota.ZERO, Dinheiro.ZERO, null, 
 						Percentual.ZERO, new Dinheiro(1000)), 
-				new PisConvertido(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO), 
-				new CofinsConvertido(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO)),
+				new PisDeserializado(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO), 
+				new CofinsDeserializado(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO)),
 				"Informação Adicional");
 		assertEquals(item,fromXML(XML));
 	}

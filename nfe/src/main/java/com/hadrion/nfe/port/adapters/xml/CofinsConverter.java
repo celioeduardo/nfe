@@ -102,7 +102,7 @@ public class CofinsConverter extends AbstractConverter implements Converter {
 			reader.moveUp();
 		}
 
-		return new CofinsConvertido(cst, baseCalculo, aliquota, quantidade, aliquotaEmReais,valor);
+		return new CofinsDeserializado(cst, baseCalculo, aliquota, quantidade, aliquotaEmReais,valor);
 				
 	}
 	

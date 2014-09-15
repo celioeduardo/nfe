@@ -182,7 +182,7 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 				baseCalculoSt, 
 				valorSt);
 		
-		return new IcmsConvertido(
+		return new IcmsDeserializado(
 				origem, 
 				cst, 
 				determinacaoBaseCalculo, 

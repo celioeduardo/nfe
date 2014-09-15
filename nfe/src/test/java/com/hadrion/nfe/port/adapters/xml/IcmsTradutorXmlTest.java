@@ -65,7 +65,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"	</ICMS00>\r\n" + 
 				"</ICMS>\r\n";
 		
-		icms = new IcmsConvertido(
+		icms = new IcmsDeserializado(
 				Origem.NACIONAL, 
 				Cst.CST_00, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
@@ -137,7 +137,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"	</ICMS10>\r\n" + 
 				"</ICMS>\r\n";
 		
-		icms = new IcmsConvertido(
+		icms = new IcmsDeserializado(
 				Origem.NACIONAL, 
 				Cst.CST_10, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
@@ -202,7 +202,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"	</ICMS20>\r\n" + 
 				"</ICMS>\r\n";		
 		
-		icms = new IcmsConvertido(
+		icms = new IcmsDeserializado(
 				Origem.NACIONAL, 
 				Cst.CST_20, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
@@ -268,7 +268,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"	</ICMS30>\r\n" + 
 				"</ICMS>\r\n";
 		
-		icms = new IcmsConvertido(
+		icms = new IcmsDeserializado(
 				Origem.NACIONAL, 
 				Cst.CST_30, 
 				null, 
@@ -311,7 +311,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<CST>40</CST>\r\n" + 
 				"	</ICMS40>\r\n" + 
 				"</ICMS>\r\n";
-		icms = new IcmsConvertido(Origem.NACIONAL,Cst.CST_40,null,null,null,null,null,null,null,null);
+		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_40,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
 	
@@ -336,7 +336,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 						"		<CST>41</CST>\r\n" + 
 						"	</ICMS41>\r\n" + 
 						"</ICMS>\r\n";
-		icms = new IcmsConvertido(Origem.NACIONAL,Cst.CST_41,null,null,null,null,null,null,null,null);
+		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_41,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
 	
@@ -361,7 +361,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 						"		<CST>50</CST>\r\n" + 
 						"	</ICMS50>\r\n" + 
 						"</ICMS>\r\n";
-		icms = new IcmsConvertido(Origem.NACIONAL,Cst.CST_50,null,null,null,null,null,null,null,null);
+		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_50,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
 	@Test
@@ -411,7 +411,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<vICMS>0.00</vICMS>\r\n" + 
 				"	</ICMS51>\r\n" + 
 				"</ICMS>\r\n";		
-		icms = new IcmsConvertido(
+		icms = new IcmsDeserializado(
 				Origem.NACIONAL, 
 				Cst.CST_51, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
@@ -447,7 +447,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 						"		<CST>60</CST>\r\n" + 
 						"	</ICMS60>\r\n" + 
 						"</ICMS>\r\n";
-		icms = new IcmsConvertido(Origem.NACIONAL,Cst.CST_60,null,null,null,null,null,null,null,null);
+		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_60,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
 
@@ -509,7 +509,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<vICMSST>435.60</vICMSST>\r\n" +
 				"	</ICMS70>\r\n" + 
 				"</ICMS>\r\n";		
-		icms = new IcmsConvertido(
+		icms = new IcmsDeserializado(
 				Origem.NACIONAL, 
 				Cst.CST_70, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
@@ -552,7 +552,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<CST>90</CST>\r\n" + 
 				"	</ICMS90>\r\n" + 
 				"</ICMS>\r\n";
-		icms = new IcmsConvertido(Origem.NACIONAL,Cst.CST_90,null,null,null,null,null,null,null,null);
+		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_90,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
 }

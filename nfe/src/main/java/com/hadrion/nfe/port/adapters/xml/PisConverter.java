@@ -102,7 +102,7 @@ public class PisConverter extends AbstractConverter implements Converter {
 			reader.moveUp();
 		}
 
-		return new PisConvertido(cst, baseCalculo, aliquota, quantidade, aliquotaEmReais,valor);
+		return new PisDeserializado(cst, baseCalculo, aliquota, quantidade, aliquotaEmReais,valor);
 				
 	}
 	

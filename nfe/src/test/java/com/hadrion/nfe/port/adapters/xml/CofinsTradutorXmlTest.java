@@ -45,7 +45,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 						"		<vCOFINS>16.50</vCOFINS>\r\n" + 
 						"	</COFINSAliq>\r\n" + 
 						"</COFINS>";
-		cofins = new CofinsConvertido(
+		cofins = new CofinsDeserializado(
 				CstCofins.CST_01,new Dinheiro(1000),new Aliquota(1.65),null,null,new Dinheiro(16.5));
 		assertEquals(cofins,fromXML(XML));
 	}
@@ -76,7 +76,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 				"		<vCOFINS>16.50</vCOFINS>\r\n" + 
 				"	</COFINSAliq>\r\n" + 
 				"</COFINS>";
-		cofins = new CofinsConvertido(
+		cofins = new CofinsDeserializado(
 				CstCofins.CST_02,new Dinheiro(1000),new Aliquota(1.65),null,null,new Dinheiro(16.5));
 		assertEquals(cofins,fromXML(XML));
 	}
@@ -107,7 +107,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 				"		<vCOFINS>560.00</vCOFINS>\r\n" + 
 				"	</COFINSQtde>\r\n" + 
 				"</COFINS>";
-		cofins = new CofinsConvertido(CstCofins.CST_03,null,null,56.0,10.0,new Dinheiro(560.0));
+		cofins = new CofinsDeserializado(CstCofins.CST_03,null,null,56.0,10.0,new Dinheiro(560.0));
 		assertEquals(cofins,fromXML(XML));
 	}
 	
@@ -119,7 +119,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 	@Test
 	public void deserializarCofins04(){
 		String XML = "<COFINS><COFINSNT><CST>04</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(CstCofins.CST_04,null,null,null,null,null);
+		cofins = new CofinsDeserializado(CstCofins.CST_04,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
@@ -130,7 +130,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 	@Test
 	public void deserializarCofins05(){
 		String XML = "<COFINS><COFINSNT><CST>05</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(CstCofins.CST_05,null,null,null,null,null);
+		cofins = new CofinsDeserializado(CstCofins.CST_05,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
@@ -141,7 +141,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 	@Test
 	public void deserializarCofins06(){
 		String XML = "<COFINS><COFINSNT><CST>06</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(CstCofins.CST_06,null,null,null,null,null);
+		cofins = new CofinsDeserializado(CstCofins.CST_06,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
@@ -152,7 +152,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 	@Test
 	public void deserializarCofins07(){
 		String XML = "<COFINS><COFINSNT><CST>07</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(CstCofins.CST_07,null,null,null,null,null);
+		cofins = new CofinsDeserializado(CstCofins.CST_07,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
@@ -163,7 +163,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 	@Test
 	public void deserializarCofins08(){
 		String XML = "<COFINS><COFINSNT><CST>08</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(CstCofins.CST_08,null,null,null,null,null);
+		cofins = new CofinsDeserializado(CstCofins.CST_08,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
@@ -174,7 +174,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 	@Test
 	public void deserializarCofins09(){
 		String XML = "<COFINS><COFINSNT><CST>09</CST></COFINSNT></COFINS>";
-		cofins = new CofinsConvertido(CstCofins.CST_09,null,null,null,null,null);
+		cofins = new CofinsDeserializado(CstCofins.CST_09,null,null,null,null,null);
 		assertEquals(cofins,fromXML(XML));
 	}
 	@Test
@@ -203,7 +203,7 @@ public class CofinsTradutorXmlTest extends AbstractXmlTest{
 				"		<vCOFINS>0.00</vCOFINS>\r\n" + 
 				"	</COFINSOutr>\r\n" + 
 				"</COFINS>";
-		cofins = new CofinsConvertido(CstCofins.CST_99,Dinheiro.ZERO,Aliquota.ZERO,null,null,Dinheiro.ZERO);
+		cofins = new CofinsDeserializado(CstCofins.CST_99,Dinheiro.ZERO,Aliquota.ZERO,null,null,Dinheiro.ZERO);
 		assertEquals(cofins,fromXML(XML));
 	}
 }

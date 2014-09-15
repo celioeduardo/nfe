@@ -8,10 +8,10 @@ import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
 
-public class PisConvertido extends Pis{
+public class PisDeserializado extends Pis{
 	private Dinheiro valor;
 	
-	public PisConvertido(CstPis cst, Dinheiro baseCalculo, Aliquota aliquota,
+	public PisDeserializado(CstPis cst, Dinheiro baseCalculo, Aliquota aliquota,
 			Double quantidade, Double aliquotaEmReais, Dinheiro valor) {
 		super(cst, baseCalculo, aliquota, quantidade, aliquotaEmReais);
 		this.valor = valor;
