@@ -7,4 +7,7 @@ enum Situacao {
 	DENEGADA,
 	CANCELADA,
 	INUTILIZADA;
+	Situacao(){
+		
+	}
 }

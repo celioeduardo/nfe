@@ -1,15 +1,9 @@
 package com.hadrion.nfe.port.adapters.xml;
 
-import java.io.StringWriter;
-import java.util.List;
-
-import org.custommonkey.xmlunit.DetailedDiff;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.junit.Assert;
 import org.junit.Before;
 
+import com.hadrion.util.xml.XmlTestUtil;
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.CompactWriter;
 
 public abstract class AbstractXmlTest {
 	protected XStream xstream;
@@ -32,23 +26,7 @@ public abstract class AbstractXmlTest {
 	}
 	
 	public static void assertXMLEquals(String expectedXML, String actualXML) {
-        XMLUnit.setIgnoreWhitespace(true);
-        XMLUnit.setIgnoreAttributeOrder(true);
-
-        DetailedDiff diff;
-		try {
-			diff = new DetailedDiff(XMLUnit.compareXML(expectedXML, actualXML));
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
-        List<?> allDifferences = diff.getAllDifferences();
-        Assert.assertEquals("Differences found: "+ diff.toString(), 0, allDifferences.size());
-    }
-
-	protected String xmlCompacto(XStream x, Object o) {
-		StringWriter sw = new StringWriter();
-		x.marshal(o,  new CompactWriter(sw));
-		return sw.toString();
+		XmlTestUtil.assertXMLEquals(expectedXML, actualXML);
 	}
+
 }

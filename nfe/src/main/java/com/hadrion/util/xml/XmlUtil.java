@@ -20,9 +20,12 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.CompactWriter;
+
 public class XmlUtil {
 	
-	public static String paraString(Node doc){
+	public static String xmlParaString(Node doc){
 		DOMSource xmlSource = new DOMSource(doc);
 		
 		StringWriter sw = new StringWriter();
@@ -45,8 +48,9 @@ public class XmlUtil {
 		return sw.toString();
 	}
 	
-	public static Document paraXml(String xml){
-		InputSource is =  new InputSource(new StringReader(xml));
+	public static Document parseXml(String xml){
+		InputSource is =  new InputSource();
+		is.setCharacterStream(new StringReader(xml));
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		
@@ -65,5 +69,12 @@ public class XmlUtil {
 
 		return doc;
 	} 
+	
+	
+	public static String xmlCompacto(XStream x, Object o) {
+		StringWriter sw = new StringWriter();
+		x.marshal(o,  new CompactWriter(sw));
+		return sw.toString();
+	}
 	
 }

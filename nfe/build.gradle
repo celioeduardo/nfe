@@ -8,6 +8,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 apply plugin: 'maven'
@@ -16,8 +17,6 @@ group = 'com.hadrion'
 version = '0.0.1-SNAPSHOT'
 
 description = "NF-e"
-
-compileJava.options.encoding = 'UTF-8'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -41,7 +40,7 @@ dependencies {
     compile group: 'commons-lang', name: 'commons-lang', version:'2.3'
 	compile("com.thoughtworks.xstream:xstream:1.4.7")
 	compile("joda-time:joda-time:2.4")
-	
+
 	testCompile('xmlunit:xmlunit:1.4')
 	
     testCompile("org.springframework.boot:spring-boot-starter-test")

@@ -27,5 +27,4 @@ class InformacaoAdicional {
 	public String getContribuinte() {
 		return contribuinte;
 	}
-	
 }

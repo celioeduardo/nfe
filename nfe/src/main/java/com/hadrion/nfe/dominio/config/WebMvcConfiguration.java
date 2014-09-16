@@ -1,12 +1,15 @@
 package com.hadrion.nfe.dominio.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 public class WebMvcConfiguration
 {
 	
-	/*private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
         "classpath:/META-INF/resources/", "classpath:/resources/",
         "classpath:/static/", "classpath:/public/" };
     @Bean
@@ -24,5 +27,5 @@ public class WebMvcConfiguration
     	        registry.addResourceHandler("/public/").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
     	    }
     	}
-    }*/
+    }
 }

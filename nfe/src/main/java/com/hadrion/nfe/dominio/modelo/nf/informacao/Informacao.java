@@ -7,8 +7,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class Informacao {
 	private String texto;
-	private List<Observacao> observacoes;
-	
+	private List<Observacao> observacoes=null;
+	public Informacao(){
+		
+	}
 	public Informacao(String texto, List<Observacao> observacoes) {
 		super();
 		this.texto = texto;
@@ -40,7 +42,7 @@ public class Informacao {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(477,37)
+		return new HashCodeBuilder(477,371)
 		.append(texto())
 		.append(observacoes())
 		.toHashCode();

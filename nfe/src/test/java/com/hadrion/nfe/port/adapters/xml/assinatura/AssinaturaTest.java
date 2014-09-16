@@ -1,7 +1,8 @@
 package com.hadrion.nfe.port.adapters.xml.assinatura;
 
-import static com.hadrion.util.xml.XmlUtil.paraString;
-import static com.hadrion.util.xml.XmlUtil.paraXml;
+import static com.hadrion.util.xml.XmlTestUtil.assertXMLEquals;
+import static com.hadrion.util.xml.XmlUtil.parseXml;
+import static com.hadrion.util.xml.XmlUtil.xmlParaString;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,7 +70,8 @@ public class AssinaturaTest {
 	    transformList.add(c14NTransform);  
 
 	    NodeList elements = xml.getElementsByTagName(tagParaAssinar);  
-	    Element el = (Element) elements.item(0);  
+	    Element el = (Element) elements.item(0);
+	    el.setIdAttribute("Id", true);
 	    String id = el.getAttribute("Id");
 	    
 	    Reference ref = fac.newReference
@@ -103,7 +105,7 @@ public class AssinaturaTest {
 		XMLSignature signature = fac.newXMLSignature(si, ki);
 		signature.sign(dsc);
 		
-		System.out.println(paraString(xml));
+		assertXMLEquals(xmlParaString(carregarXmlAssinado()), xmlParaString(xml));
 	}
 	
 	private InputStream carregarCertificado(){
@@ -126,7 +128,19 @@ public class AssinaturaTest {
 			throw new RuntimeException(e);
 		}
 		
-		return paraXml(xml);
+		return parseXml(xml);
 	}
 	
+	private Document carregarXmlAssinado(){
+		final File arquivoXml = FileUtils.getFile("src","test","resources","assinatura","nfe-assinada.xml");
+		
+		String xml; 
+		try {
+			xml = FileUtils.readFileToString(arquivoXml,Charset.forName("UTF-8")); 
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		
+		return parseXml(xml);
+	}
 }

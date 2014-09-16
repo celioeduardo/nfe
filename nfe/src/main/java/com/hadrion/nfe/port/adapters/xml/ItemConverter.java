@@ -42,7 +42,7 @@ public class ItemConverter extends AbstractConverter implements Converter {
 			} else if ("imposto".equals(reader.getNodeName())) {
 				imposto = (Imposto) context.convertAnother(reader.getValue(), Imposto.class);
 			} else if ("infAdProd".equals(reader.getNodeName())) {
-				informacaoAdicionalProduto = (String) context.convertAnother(reader.getValue(), String.class);
+				informacaoAdicionalProduto = reader.getValue();
 			}
 			reader.moveUp();
 		}
