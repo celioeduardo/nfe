@@ -6,9 +6,7 @@ import static com.hadrion.util.xml.XmlUtil.xmlParaString;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -38,18 +36,25 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
+
 public class AssinaturaTest {
-	
-	private InputStream certificado;
-	private String senhaCertificado;
+	private Certificado certificado;
 	
 	private Document xml;
 	
 	@Before
 	public void setUp(){
-		certificado = carregarCertificado();
-		senhaCertificado = "12345678";
+		certificado = new Certificado(
+				FileUtils.getFile("src","test","resources","assinatura","certificado.pfx"), 
+				"12345678");
 		xml = carregarXml();
+	}
+	
+	@Test
+	public void assinador() throws Exception{
+		Assinador.assinarNfe(xml,certificado);
+		assertXMLEquals(xmlParaString(carregarXmlAssinado()), xmlParaString(xml));
 	}
 	
 	@Test
@@ -62,41 +67,38 @@ public class AssinaturaTest {
 		
 		List<Transform> transformList = new ArrayList<Transform>();
 		
-	    TransformParameterSpec tps = null;  
-	    Transform envelopedTransform = fac.newTransform(Transform.ENVELOPED,tps);  
-	    Transform c14NTransform = fac.newTransform("http://www.w3.org/TR/2001/REC-xml-c14n-20010315", tps);  
-
-	    transformList.add(envelopedTransform);  
-	    transformList.add(c14NTransform);  
-
-	    NodeList elements = xml.getElementsByTagName(tagParaAssinar);  
-	    Element el = (Element) elements.item(0);
-	    el.setIdAttribute("Id", true);
-	    String id = el.getAttribute("Id");
-	    
-	    Reference ref = fac.newReference
-		("#"+id, fac.newDigestMethod(DigestMethod.SHA1, null),
-				transformList,
-				null,null);
-	    
-	    SignedInfo si = fac.newSignedInfo
-		(fac.newCanonicalizationMethod
-				(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null), 
-				 fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null), 
-				 Collections.singletonList(ref));
-
-	    KeyStore ks = KeyStore.getInstance("PKCS12");
-		ks.load(certificado,senhaCertificado.toCharArray());
-		String alias = (String)ks.aliases().nextElement();
-		PrivateKey key = (PrivateKey)ks.getKey(alias, senhaCertificado.toCharArray());
-		X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
+		TransformParameterSpec tps = null;  
+		Transform envelopedTransform = fac.newTransform(Transform.ENVELOPED,tps);  
+		Transform c14NTransform = fac.newTransform("http://www.w3.org/TR/2001/REC-xml-c14n-20010315", tps);  
+		
+		transformList.add(envelopedTransform);  
+		transformList.add(c14NTransform);  
+		
+		NodeList elements = xml.getElementsByTagName(tagParaAssinar);  
+		Element el = (Element) elements.item(0);
+		el.setIdAttribute("Id", true);
+		String id = el.getAttribute("Id");
+		
+		Reference ref = fac.newReference
+				("#"+id, fac.newDigestMethod(DigestMethod.SHA1, null),
+						transformList,
+						null,null);
+		
+		SignedInfo si = fac.newSignedInfo
+				(fac.newCanonicalizationMethod
+						(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null), 
+						fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null), 
+						Collections.singletonList(ref));
+		
+		PrivateKey key = certificado.privateKey();
+		X509Certificate cert = certificado.x509Certificate();
 		
 		KeyInfoFactory kif = fac.getKeyInfoFactory();
 		List<Object> x509Content = new ArrayList<Object>();
 		x509Content.add(cert);
 		X509Data xd = kif.newX509Data(x509Content);
 		KeyInfo ki = kif.newKeyInfo(Collections.singletonList(xd));
-	    
+		
 		DOMSignContext dsc = null;
 		if (noPaiAssinatura != null) 
 			dsc = new DOMSignContext(key,noPaiAssinatura);
@@ -106,16 +108,6 @@ public class AssinaturaTest {
 		signature.sign(dsc);
 		
 		assertXMLEquals(xmlParaString(carregarXmlAssinado()), xmlParaString(xml));
-	}
-	
-	private InputStream carregarCertificado(){
-		final File arquivoCertificado =FileUtils.getFile("src","test","resources","assinatura","certificado.pfx");
-		
-		try {
-			return FileUtils.openInputStream(arquivoCertificado); 
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 	}
 	
 	private Document carregarXml(){
