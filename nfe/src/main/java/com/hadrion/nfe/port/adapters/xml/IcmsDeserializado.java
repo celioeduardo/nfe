@@ -12,7 +12,7 @@ import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Percentual;
 
-class IcmsDeserializado extends Icms {
+public class IcmsDeserializado extends Icms {
 	
 	private Dinheiro baseCalculo;
 	private Dinheiro valor;
