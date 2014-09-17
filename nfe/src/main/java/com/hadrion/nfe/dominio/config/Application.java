@@ -14,11 +14,16 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.ws.client.core.WebServiceTemplate;
+import org.springframework.ws.soap.SoapMessageFactory;
+import org.springframework.ws.soap.SoapVersion;
+import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
+import org.springframework.ws.transport.WebServiceMessageSender;
+import org.springframework.ws.transport.http.CommonsHttpMessageSender;
 
 @Configuration
 @EnableTransactionManagement
 @EnableAutoConfiguration
-//@EnableWebMvc
 @ComponentScan(basePackages = "com.hadrion")
 public class Application extends SpringBootServletInitializer{
 		
@@ -33,6 +38,26 @@ public class Application extends SpringBootServletInitializer{
 			}
 		};
 	}
+	
+	@Bean
+	SoapMessageFactory messageFactory(){
+		SoapMessageFactory factory = new SaajSoapMessageFactory();
+		factory.setSoapVersion(SoapVersion.SOAP_12);
+		return factory;
+	}
+	
+	@Bean
+	WebServiceTemplate webServiceTemplate(){
+		WebServiceTemplate template = new WebServiceTemplate(messageFactory());
+		//template.setMessageSender(new CommonsHttpMessageSender(null));
+		return template;
+	}
+	
+	@Bean
+	WebServiceMessageSender webServiceMessageSender(){
+		return null;
+	}
+	
 
 	public static void main(String[] args) {
 		

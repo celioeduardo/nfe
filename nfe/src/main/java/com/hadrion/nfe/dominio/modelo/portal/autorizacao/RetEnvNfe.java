@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo.portal.recepcao;
+package com.hadrion.nfe.dominio.modelo.portal.autorizacao;
 
 public class RetEnvNfe {
 	protected String versao; //Versão do leiaute

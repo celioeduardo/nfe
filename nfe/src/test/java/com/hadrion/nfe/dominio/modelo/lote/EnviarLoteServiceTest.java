@@ -13,9 +13,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
-import com.hadrion.nfe.dominio.modelo.portal.recepcao.RecepcaoLoteService;
-import com.hadrion.nfe.dominio.modelo.portal.recepcao.ReciboLote;
-import com.hadrion.nfe.dominio.modelo.portal.recepcao.RetornoRecepcaoLote;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.AutorizacaoService;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.ReciboLote;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
 
 public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
@@ -23,7 +23,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	private EnviarLoteService enviarLoteService;
 	
 	@Mock
-	private RecepcaoLoteService recepcaoLoteService;
+	private AutorizacaoService recepcaoLoteService;
 		
 	@Before
 	public void setup() throws Exception{
@@ -34,8 +34,8 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	@Test
 	public void enviar_com_sucesso_em_homologacao() throws Throwable{
 		
-		when(recepcaoLoteService.recepcionar(any(Lote.class))).thenReturn(
-				new RetornoRecepcaoLote(
+		when(recepcaoLoteService.autorizar(any(Lote.class))).thenReturn(
+				new RetornoAutorizacao(
 					new ReciboLote(new NumeroReciboLote("123456"))));
 		
 		Lote lote = loteEmHomologacaoNaoEnviadoParaTest();
@@ -47,8 +47,8 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 
 	@Test
 	public void enviar_com_sucesso_em_producao() throws Throwable{
-		when(recepcaoLoteService.recepcionar(any(Lote.class))).thenReturn(
-				new RetornoRecepcaoLote(
+		when(recepcaoLoteService.autorizar(any(Lote.class))).thenReturn(
+				new RetornoAutorizacao(
 					new ReciboLote(new NumeroReciboLote("123456"))));
 		Lote lote = loteEmProducaoNaoEnviadoParaTest();
 		enviarLoteService.enviar(lote);
@@ -59,8 +59,8 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	@Test
 	public void enviar_com_falha_consistencia_em_homologacao() throws Throwable{
-		when(recepcaoLoteService.recepcionar(any(Lote.class))).thenReturn(
-				new RetornoRecepcaoLote(
+		when(recepcaoLoteService.autorizar(any(Lote.class))).thenReturn(
+				new RetornoAutorizacao(
 						new Mensagem(214, "Rejeição: Tamanho da mensagem excedeu o limite estabelecido")));
 		Lote lote = loteEmHomologacaoNaoEnviadoParaTest();
 		enviarLoteService.enviar(lote);
@@ -71,8 +71,8 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	@Test
 	public void enviar_com_falha_consistencia_em_producao() throws Throwable{
-		when(recepcaoLoteService.recepcionar(any(Lote.class))).thenReturn(
-				new RetornoRecepcaoLote(
+		when(recepcaoLoteService.autorizar(any(Lote.class))).thenReturn(
+				new RetornoAutorizacao(
 						new Mensagem(214, "Rejeição: Tamanho da mensagem excedeu o limite estabelecido")));
 		Lote lote = loteEmProducaoNaoEnviadoParaTest();
 		enviarLoteService.enviar(lote);
@@ -83,7 +83,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	@Test
 	public void enviar_com_erro_transmissao_em_homologacao() throws Throwable{
-		when(recepcaoLoteService.recepcionar(any(Lote.class)))
+		when(recepcaoLoteService.autorizar(any(Lote.class)))
 			.thenThrow(new Exception("Internet indisponível"));
 		
 		Lote lote = loteEmHomologacaoNaoEnviadoParaTest();
@@ -95,7 +95,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	@Test
 	public void enviar_com_erro_transmissao_em_producao() throws Throwable{
-		when(recepcaoLoteService.recepcionar(any(Lote.class)))
+		when(recepcaoLoteService.autorizar(any(Lote.class)))
 			.thenThrow(new Exception("Internet indisponível"));
 		Lote lote = loteEmProducaoNaoEnviadoParaTest();
 		enviarLoteService.enviar(lote);

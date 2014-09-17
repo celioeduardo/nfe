@@ -1,17 +1,17 @@
-package com.hadrion.nfe.dominio.modelo.portal.recepcao;
+package com.hadrion.nfe.dominio.modelo.portal.autorizacao;
 
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 
-public class RetornoRecepcaoLote {
+public class RetornoAutorizacao {
 	
 	private ReciboLote recibo;
 	private Mensagem erro;
 	
-	public RetornoRecepcaoLote(ReciboLote recibo){
+	public RetornoAutorizacao(ReciboLote recibo){
 		this.setRecibo(recibo);
 	}
 	
-	public RetornoRecepcaoLote(Mensagem erro){
+	public RetornoAutorizacao(Mensagem erro){
 		this.setErro(erro);
 	}
 	
