@@ -1,5 +1,8 @@
 package com.hadrion.nfe.port.adapters.xml.assinatura;
 
+import static com.hadrion.util.xml.XmlUtil.parseXml;
+import static com.hadrion.util.xml.XmlUtil.xmlParaString;
+
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -108,6 +111,13 @@ public class Assinador {
 
 	public static void assinarNfe(Document xml, Certificado certificado) {
 		new Assinador("infNFe","NFe",certificado).assinar(xml);
+	}
+	
+	public static String assinarNfe(String xml, Certificado certificado) {
+		Document doc = parseXml(xml);
+		assinarNfe(doc, certificado);
+		return xmlParaString(doc);
+		
 	}
 
 }

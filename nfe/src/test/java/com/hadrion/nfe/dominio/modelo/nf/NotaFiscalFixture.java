@@ -1,42 +1,22 @@
-package com.hadrion.nfe.port.adapters.xml;
+package com.hadrion.nfe.dominio.modelo.nf;
 
 import static com.hadrion.util.DataUtil.data;
 import static com.hadrion.util.DataUtil.dataHora;
-import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.Before;
-import org.junit.Test;
-
+import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
 import com.hadrion.nfe.dominio.modelo.endereco.Cep;
 import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.endereco.Pais;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
-import com.hadrion.nfe.dominio.modelo.icms.Cst;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
+import com.hadrion.nfe.dominio.modelo.icms.Icms;
 import com.hadrion.nfe.dominio.modelo.icms.Origem;
-import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
-import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
-import com.hadrion.nfe.dominio.modelo.nf.FormaPagamento;
-import com.hadrion.nfe.dominio.modelo.nf.FormatoDanfe;
-import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
-import com.hadrion.nfe.dominio.modelo.nf.Modelo;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
-import com.hadrion.nfe.dominio.modelo.nf.Presenca;
-import com.hadrion.nfe.dominio.modelo.nf.Processo;
-import com.hadrion.nfe.dominio.modelo.nf.Referencia;
-import com.hadrion.nfe.dominio.modelo.nf.Serie;
-import com.hadrion.nfe.dominio.modelo.nf.TipoEmissao;
-import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Fatura;
@@ -59,13 +39,14 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.publico.IndicadorIe;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.ModalidadeFrete;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Placa;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.TipoVeiculo;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transportador;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Veiculo;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Volume;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
+import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
-import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalDeserializador;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Cpf;
@@ -76,62 +57,9 @@ import com.hadrion.nfe.tipos.Percentual;
 import com.hadrion.nfe.tipos.Quantidade;
 import com.hadrion.nfe.tipos.Telefone;
 
-public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
+public class NotaFiscalFixture {
 	
-	private String XML;
-	
-	@Before
-	public void setUp() {
-		super.setUp();
-		
-		final File json =FileUtils.getFile("src","test","resources","nf","nfe.xml");
-		
-		try {
-			XML = FileUtils.readFileToString(json);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		
-		xstream.alias("infNFe", NotaFiscal.class);
-	}
-
-	@Test
-	public void deserializar(){
-		NotaFiscalDeserializador deserializador = new NotaFiscalDeserializador();
-		NotaFiscal nfDeserializada = deserializador.deserializar(XML);
-		NotaFiscal nf = nf();
-		assertEquals(nf.chaveAcesso(),nfDeserializada.chaveAcesso());
-		assertEquals(nf.naturezaOperacao(),nfDeserializada.naturezaOperacao());
-		assertEquals(nf.formaPagamento(),nfDeserializada.formaPagamento());
-		assertEquals(nf.modelo(),nfDeserializada.modelo());
-		assertEquals(nf.serie(),nfDeserializada.serie());
-		assertEquals(nf.serie(),nfDeserializada.serie());
-		assertEquals(nf.emissao(),nfDeserializada.emissao());
-		assertEquals(nf.dataHora(),nfDeserializada.dataHora());
-		assertEquals(nf.codigoNumerico(),nfDeserializada.codigoNumerico());
-		assertEquals(nf.formatoDanfe(),nfDeserializada.formatoDanfe());
-		assertEquals(nf.tipoEmissao(),nfDeserializada.tipoEmissao());
-		assertEquals(nf.localDestino(),nfDeserializada.localDestino());
-		assertEquals(nf.municipioFatoGerador(),nfDeserializada.municipioFatoGerador());
-		assertEquals(nf.consumidorFinal(),nfDeserializada.consumidorFinal());
-		assertEquals(nf.finalidade(),nfDeserializada.finalidade());
-		assertEquals(nf.presenca(),nfDeserializada.presenca());
-		assertEquals(nf.processo(),nfDeserializada.processo());
-		assertEquals(nf.referencias(),nfDeserializada.referencias());
-		assertEquals(nf.emitente(),nfDeserializada.emitente());
-		assertEquals(nf.destinatario(),nfDeserializada.destinatario());
-		assertEquals(nf.localRetirada(),nfDeserializada.localRetirada());
-		assertEquals(nf.localEntrega(),nfDeserializada.localEntrega());
-		assertEquals(nf.itens(),nfDeserializada.itens());
-		assertEquals(nf.transporte(),nfDeserializada.transporte());
-		assertEquals(nf.cobranca(),nfDeserializada.cobranca());
-		assertEquals(nf.informacaoFisco(),nfDeserializada.informacaoFisco());
-		assertEquals(nf.informacaoContribuinte(),nfDeserializada.informacaoContribuinte());
-		assertEquals(nf.exportacao(),nfDeserializada.exportacao());
-		assertEquals(nf.contingencia(),nfDeserializada.contingencia());
-	}
-	
-	private NotaFiscal nf(){
+	public static NotaFiscal nf(){
 		return new NotaFiscal(
 				new NotaFiscalId("12346"),
 				"VENDA DE PRODUTOS ADQ. TERCEIROS", 
@@ -146,7 +74,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 				TipoEmissao.NORMAL,
 				TipoOperacao.SAIDA, 
 				LocalDestino.INTERNA, 
-				new Municipio(3111606, null, null), 
+				new Municipio(3111606, "CAMPOS GERAIS", Uf.MG), 
 				false, 
 				Finalidade.NORMAL, 
 				Presenca.OUTROS, 
@@ -165,7 +93,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 				contingencia());
 		
 	}
-	private Emitente emitente(){
+	private static Emitente emitente(){
 		return new Emitente(
 			new Cnpj(16832651000420L),
 			null,
@@ -185,20 +113,21 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 			null,
 			Crt.REGIME_NORMAL);
 	}
-	private Transporte transporte(){
+	private static Transporte transporte(){
 		return new Transporte(
 				ModalidadeFrete.DESTINATARIO_REMETENTE, 
 				new Transportador(
 						null, new Cpf(57133239191L), "JAIR FRIZON", null, 
 						new Endereco(
-								"RUA CASEMIRO DE ABREU 256",null, null, null, 
+								"RUA CASEMIRO DE ABREU", 
+								"256", null, null, 
 								new Municipio(3543402,"RIBEIRAO PRETO", Uf.SP), 
-								null, null, null)), 
+								Pais.BRASIL, null, null)), 
 						null, 
-				new Veiculo(null,new Placa(Uf.GO,"KEP2310"),null, null), 
+				new Veiculo(TipoVeiculo.VEICULO,new Placa(Uf.GO,"KEP2310"),null, null), 
 				new Volume(37220, "KG", null, null, 37220.0, 37220.0, null));
 	}
-	private Destinatario destinatario(){
+	private static Destinatario destinatario(){
 		return new Destinatario(
 			null,
 			new Cpf(72014253668L),
@@ -221,7 +150,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 			new Email("hadrion@hadrion.com.br"));
 	}
 	
-	private LocalRetirada localRetirada(){
+	private static LocalRetirada localRetirada(){
 		return new LocalRetirada(
 				new Cnpj(86675642000106L),
 				null,
@@ -235,7 +164,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 				    null,
 				    null));
 	}
-	private LocalEntrega localEntrega(){
+	private static LocalEntrega localEntrega(){
 		return new LocalEntrega(
 				new Cnpj(86675642000106L),
 				null,
@@ -250,7 +179,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 					null));
 	}
 	
-	private List<Item> itens(){
+	private static List<Item> itens(){
 		List<Item> result = new ArrayList<Item>();
 		Item item = new Item( 
 			new DescritorProduto(
@@ -280,48 +209,47 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 							new Quantidade(50.1234))),
 					new Combustivel(123456789L, new Quantidade(568.1234), Uf.SP, 
 							new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14)))),
-			new Imposto(Dinheiro.ZERO,
-				new IcmsDeserializado(Origem.NACIONAL, Cst.CST_51, DeterminacaoBaseCalculo.VALOR_OPERACAO, 
-						Percentual.ZERO, Dinheiro.ZERO, Aliquota.ZERO, Dinheiro.ZERO, null, Percentual.ZERO, 
-						new Dinheiro(500.78)),
-				new PisDeserializado(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO), 
-				new CofinsDeserializado(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO)),
+			new Imposto(Dinheiro.ZERO, 
+				Icms.cst_51(Origem.NACIONAL,new Dinheiro(1000), Aliquota.ZERO,
+						Percentual.ZERO,Percentual.ZERO, DeterminacaoBaseCalculo.VALOR_OPERACAO), 
+				new Pis(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null), 
+				new Cofins(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null)),
 			"Informação Adicional");
 		result.add(item);
 		return result;
 	}
 	
-	private Cobranca cobranca(){
+	private static Cobranca cobranca(){
 		return new Cobranca(
 				new Fatura("DCO-19936", new Dinheiro(1732.5), new Dinheiro(0.5)), 
 				new Duplicata("DCO-19936/1", data("28/10/2013") , new Dinheiro(1732)));
 	}
 	
-	private Informacao informacaoFisco(){
+	private static Informacao informacaoFisco(){
 		return new Informacao("ICMS DIFERIDO CONFORME ITEM 25 , PARTE 1 DO ANEXO II, ARTIGO 8 DO DECRETO 43.080/2002.", null);
 	}
 	
-	private Informacao informacaoContribuinte(){
+	private static Informacao informacaoContribuinte(){
 		return new Informacao("FAVOR EFETUAR A RETIRADA NO PRAZO MÁXIMO DE 24 HORAS", null);
 	}
 	
-	private com.hadrion.nfe.dominio.modelo.nf.Exportacao exportacao(){
+	private static com.hadrion.nfe.dominio.modelo.nf.Exportacao exportacao(){
 		return new com.hadrion.nfe.dominio.modelo.nf.Exportacao(
 				Uf.SP,"LOCAL DE EXPORTACAO","LOCAL DE DESPACHO");
 	}
 	
-	private Contingencia contingencia(){
+	private static Contingencia contingencia(){
 		return new Contingencia(dataHora("24/10/13 15:35:00", TimeZone.getTimeZone("GMT-02:00")), 
 				"Teste de entrada em contingência");
 	}
 	
-	private List<Referencia> referencias(){
+	private static List<Referencia> referencias(){
 		List<Referencia> result = new ArrayList<Referencia>();
 		result.add(Referencia.nfe(new ChaveAcesso("31131016832651000420550010000199361002699180")));
 		result.add(Referencia.modelo_1_1A(
-				new Modelo("1"), Uf.MG, data("01/05/13"),new Cnpj(32750618000165L), new Serie(3), 123456L));
+				new Modelo("1"), Uf.MG, data("24/05/13"),new Cnpj(32750618000165L), new Serie(3), 123456L));
 		result.add(Referencia.produtorRural(
-				Uf.MG,data("01/05/13"),new Cpf(56115316600L), new Serie(2), 654321L, InscricaoEstadual.ISENTO));
+				Uf.MG,data("24/05/13"),new Cpf(56115316600L), new Serie(2), 654321L, InscricaoEstadual.ISENTO));
 		return result;
 	}
 }

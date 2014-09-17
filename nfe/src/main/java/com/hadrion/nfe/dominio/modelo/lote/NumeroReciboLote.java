@@ -1,7 +1,6 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 /**
  * 
- * @author celioeduardo
  * 5.5 Número do Recibo de Lote
  * O número do Recibo do Lote deve ser gerado pelo Portal da Secretaria 
  * de Fazenda Estadual, com a seguinte regra de formação:

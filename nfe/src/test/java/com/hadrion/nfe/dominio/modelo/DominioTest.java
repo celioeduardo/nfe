@@ -34,6 +34,7 @@ public abstract class DominioTest extends RastreadorEventoTest {
 	protected NotaFiscalRepositorio notaFiscalRepositorio;
 	@Autowired
 	protected SolicitacaoCancelamentoRepositorio solicitacaoCancelamentoRepositorio;
+	
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();

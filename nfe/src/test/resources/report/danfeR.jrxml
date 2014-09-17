@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="danfe" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="14" rightMargin="16" topMargin="14" bottomMargin="14" uuid="871378a6-6a0a-4746-8cdb-fddfa66d2749">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="72"/>
+	<property name="ireport.y" value="144"/>
 	<style name="campoPequeno" hAlign="Left" vAlign="Top" markup="styled" pattern="" fontName="Courier New" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier New" isPdfEmbedded="true"/>
 	<style name="borda" mode="Transparent" forecolor="#000000" fill="Solid" radius="3" scaleImage="Clip" hAlign="Left" vAlign="Top" markup="none" pattern="" fontName="Courier New" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="true" pdfFontName="Courier New" isPdfEmbedded="true">
 		<pen lineWidth="0.25"/>
@@ -57,252 +57,7 @@
 	<queryString language="xPath">
 		<![CDATA[/nfeProc/NFe/infNFe/det]]>
 	</queryString>
-	<field name="NaturezaOperacao" class="java.lang.String">
-		<fieldDescription><![CDATA[../ide/natOp]]></fieldDescription>
-	</field>
-	<field name="FormaPagamento" class="java.lang.String">
-		<fieldDescription><![CDATA[../ide/indPag]]></fieldDescription>
-	</field>
-	<field name="Serie" class="java.lang.String">
-		<fieldDescription><![CDATA[../ide/serie]]></fieldDescription>
-	</field>
-	<field name="NumeroNF" class="java.lang.String">
-		<fieldDescription><![CDATA[../ide/nNF]]></fieldDescription>
-	</field>
-	<field name="DataEmissao" class="java.lang.String">
-		<fieldDescription><![CDATA[../ide/dEmi]]></fieldDescription>
-	</field>
-	<field name="Data_Saida" class="java.lang.String">
-		<fieldDescription><![CDATA[../ide/dSaiEnt]]></fieldDescription>
-	</field>
-	<field name="Hora_Saida" class="java.lang.String">
-		<fieldDescription><![CDATA[../ide/hSaiEnt]]></fieldDescription>
-	</field>
-	<field name="TipoNF" class="java.lang.String">
-		<fieldDescription><![CDATA[../ide/tpNF]]></fieldDescription>
-	</field>
-	<field name="Ambiente" class="java.lang.String">
-		<fieldDescription><![CDATA[../ide/tpAmb]]></fieldDescription>
-	</field>
-	<field name="Chave" class="java.lang.String">
-		<fieldDescription><![CDATA[../../protNFe/infProt/chNFe]]></fieldDescription>
-	</field>
-	<field name="Protocolo" class="java.lang.String">
-		<fieldDescription><![CDATA[../nProt]]></fieldDescription>
-	</field>
-	<field name="Versao" class="java.lang.String">
-		<fieldDescription><![CDATA[../ide/verProc]]></fieldDescription>
-	</field>
-	<field name="Emi_CNPJ" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/CNPJ]]></fieldDescription>
-	</field>
-	<field name="Emi_Nome" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/xNome]]></fieldDescription>
-	</field>
-	<field name="Emi_Fantasia" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/xFant]]></fieldDescription>
-	</field>
-	<field name="Emi_IE" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/IE]]></fieldDescription>
-	</field>
-	<field name="Emi_IEST" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/IEST]]></fieldDescription>
-	</field>
-	<field name="Emi_IM" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/IM]]></fieldDescription>
-	</field>
-	<field name="Emi_Logradouro" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/enderEmit/xLgr]]></fieldDescription>
-	</field>
-	<field name="Emi_Numero" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/enderEmit/nro]]></fieldDescription>
-	</field>
-	<field name="Emi_Bairro" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/enderEmit/xBairro]]></fieldDescription>
-	</field>
-	<field name="Emi_Municipio" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/enderEmit/xMun]]></fieldDescription>
-	</field>
-	<field name="Emi_UF" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/enderEmit/UF]]></fieldDescription>
-	</field>
-	<field name="Emi_CEP" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/enderEmit/CEP]]></fieldDescription>
-	</field>
-	<field name="Emi_Telefone" class="java.lang.String">
-		<fieldDescription><![CDATA[../emit/enderEmit/fone]]></fieldDescription>
-	</field>
-	<field name="Dest_CNPJ" class="java.lang.String">
-		<fieldDescription><![CDATA[../dest/CNPJ]]></fieldDescription>
-	</field>
-	<field name="Dest_Nome" class="java.lang.String">
-		<fieldDescription><![CDATA[../dest/xNome]]></fieldDescription>
-	</field>
-	<field name="Dest_IE" class="java.lang.String">
-		<fieldDescription><![CDATA[../dest/IE]]></fieldDescription>
-	</field>
-	<field name="Dest_Logradouro" class="java.lang.String">
-		<fieldDescription><![CDATA[../dest/enderDest/xLgr]]></fieldDescription>
-	</field>
-	<field name="Dest_Numero" class="java.lang.String">
-		<fieldDescription><![CDATA[../dest/enderDest/nro]]></fieldDescription>
-	</field>
-	<field name="Dest_Complemento" class="java.lang.String">
-		<fieldDescription><![CDATA[../dest/enderDest/xCpl]]></fieldDescription>
-	</field>
-	<field name="Dest_Bairro" class="java.lang.String">
-		<fieldDescription><![CDATA[../dest/enderDest/xBairro]]></fieldDescription>
-	</field>
-	<field name="Dest_Municipio" class="java.lang.String">
-		<fieldDescription><![CDATA[../dest/enderDest/xMun]]></fieldDescription>
-	</field>
-	<field name="Dest_UF" class="java.lang.String">
-		<fieldDescription><![CDATA[../dest/enderDest/UF]]></fieldDescription>
-	</field>
-	<field name="Dest_CEP" class="java.lang.String">
-		<fieldDescription><![CDATA[../dest/enderDest/CEP]]></fieldDescription>
-	</field>
-	<field name="Dest_Telefone" class="java.lang.String">
-		<fieldDescription><![CDATA[../dest/enderDest/fone]]></fieldDescription>
-	</field>
-	<field name="ValorBase" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ICMSTot/vBC]]></fieldDescription>
-	</field>
-	<field name="ValorICMS" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ICMSTot/vICMS]]></fieldDescription>
-	</field>
-	<field name="ValorBaseST" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ICMSTot/vBCST]]></fieldDescription>
-	</field>
-	<field name="ValorST" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ICMSTot/vST]]></fieldDescription>
-	</field>
-	<field name="ValorProdutos" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ICMSTot/vProd]]></fieldDescription>
-	</field>
-	<field name="ValorFrete" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ICMSTot/vFrete]]></fieldDescription>
-	</field>
-	<field name="ValorSeguro" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ICMSTot/vSeg]]></fieldDescription>
-	</field>
-	<field name="ValorDesconto" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ICMSTot/vDesc]]></fieldDescription>
-	</field>
-	<field name="ValorOutro" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ICMSTot/vOutro]]></fieldDescription>
-	</field>
-	<field name="ValorIPI" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ICMSTot/vIPI]]></fieldDescription>
-	</field>
-	<field name="ValorNF" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ICMSTot/vNF]]></fieldDescription>
-	</field>
-	<field name="Frete" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/modFrete]]></fieldDescription>
-	</field>
-	<field name="Trans_CNPJ" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/transporta/CNPJ]]></fieldDescription>
-	</field>
-	<field name="Trans_Nome" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/transporta/xNome]]></fieldDescription>
-	</field>
-	<field name="Trans_IE" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/transporta/IE]]></fieldDescription>
-	</field>
-	<field name="Trans_Endereco" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/transporta/xEnder]]></fieldDescription>
-	</field>
-	<field name="Trans_Municipio" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/transporta/xMun]]></fieldDescription>
-	</field>
-	<field name="Trans_UF" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/transporta/UF]]></fieldDescription>
-	</field>
-	<field name="Trans_Volumes" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/vol/qVol]]></fieldDescription>
-	</field>
-	<field name="Trans_Especie" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/vol/esp]]></fieldDescription>
-	</field>
-	<field name="Trans_Marca" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/vol/marca]]></fieldDescription>
-	</field>
-	<field name="Trans_Numeracao" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/vol/nVol]]></fieldDescription>
-	</field>
-	<field name="Trans_PesoB" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/vol/pesoB]]></fieldDescription>
-	</field>
-	<field name="Trans_PesoL" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/vol/pesoL]]></fieldDescription>
-	</field>
-	<field name="Trans_ANTT" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/veicTransp/RNTC]]></fieldDescription>
-	</field>
-	<field name="Trans_Placa" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/veicTransp/placa]]></fieldDescription>
-	</field>
-	<field name="Trans_PlacaUF" class="java.lang.String">
-		<fieldDescription><![CDATA[../transp/veicTransp/UF]]></fieldDescription>
-	</field>
-	<field name="ISSQN_Total" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ISSQNTot/vServ]]></fieldDescription>
-	</field>
-	<field name="ISSQN_Base" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ISSQNTot/vBC]]></fieldDescription>
-	</field>
-	<field name="ISSQN_Valor" class="java.lang.String">
-		<fieldDescription><![CDATA[../total/ISSQNTot/vISS]]></fieldDescription>
-	</field>
-	<field name="Informacoes" class="java.lang.String">
-		<fieldDescription><![CDATA[../infCpl]]></fieldDescription>
-	</field>
-	<field name="Prod_Codigo" class="java.lang.String">
-		<fieldDescription><![CDATA[prod/cProd]]></fieldDescription>
-	</field>
-	<field name="Prod_Descricao" class="java.lang.String">
-		<fieldDescription><![CDATA[prod/xProd]]></fieldDescription>
-	</field>
-	<field name="Prod_NCM" class="java.lang.String">
-		<fieldDescription><![CDATA[prod/NCM]]></fieldDescription>
-	</field>
-	<field name="Prod_CFOP" class="java.lang.String">
-		<fieldDescription><![CDATA[prod/CFOP]]></fieldDescription>
-	</field>
-	<field name="Prod_Unidade" class="java.lang.String">
-		<fieldDescription><![CDATA[prod/uCom]]></fieldDescription>
-	</field>
-	<field name="Prod_Quantidade" class="java.lang.String">
-		<fieldDescription><![CDATA[prod/qCom]]></fieldDescription>
-	</field>
-	<field name="Prod_Valor" class="java.lang.String">
-		<fieldDescription><![CDATA[prod/vUnCom]]></fieldDescription>
-	</field>
-	<field name="Prod_Total" class="java.lang.String">
-		<fieldDescription><![CDATA[prod/vProd]]></fieldDescription>
-	</field>
-	<field name="Prod_CST" class="java.lang.String">
-		<fieldDescription><![CDATA[imposto/ICMS/descendant::CST]]></fieldDescription>
-	</field>
-	<field name="Prod_CSOSN" class="java.lang.String">
-		<fieldDescription><![CDATA[imposto/ICMS/descendant::CSOSN]]></fieldDescription>
-	</field>
-	<field name="Prod_BC" class="java.lang.String">
-		<fieldDescription><![CDATA[imposto/ICMS/descendant::vBC]]></fieldDescription>
-	</field>
-	<field name="Prod_AliqICMS" class="java.lang.String">
-		<fieldDescription><![CDATA[imposto/ICMS/descendant::pICMS]]></fieldDescription>
-	</field>
-	<field name="Prod_ValorICMS" class="java.lang.String">
-		<fieldDescription><![CDATA[imposto/ICMS/descendant::vICMS]]></fieldDescription>
-	</field>
-	<field name="Prod_AliqIPI" class="java.lang.String">
-		<fieldDescription><![CDATA[imposto/IPI/IPITrib/pIPI]]></fieldDescription>
-	</field>
-	<field name="Prod_ValorIPI" class="java.lang.String">
-		<fieldDescription><![CDATA[imposto/IPI/IPITrib/vIPI]]></fieldDescription>
-	</field>
+	<field name="Chave" class="java.lang.String"/>
 	<background>
 		<band height="814" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
@@ -410,11 +165,11 @@
 					<reportElement style="borda" x="345" y="0" width="220" height="96" uuid="5adc1628-92cf-466d-a01a-969703409fa0"/>
 				</rectangle>
 				<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank" evaluationTime="Report">
-					<reportElement x="4" y="4" width="60" height="59" uuid="f9a02fd8-1465-4c56-900b-53390cfd0a37"/>
+					<reportElement x="4" y="4" width="53" height="59" uuid="f9a02fd8-1465-4c56-900b-53390cfd0a37"/>
 					<imageExpression><![CDATA[$P{Logo}]]></imageExpression>
 				</image>
 				<componentElement>
-					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="371" y="10" width="194" height="30" uuid="d901b5b3-e754-4bdc-9222-d9c6b7f05890">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="347" y="10" width="218" height="30" uuid="d901b5b3-e754-4bdc-9222-d9c6b7f05890">
 						<printWhenExpression><![CDATA[$F{Chave}!=null]]></printWhenExpression>
 					</reportElement>
 					<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128C" drawText="false" checksumRequired="true" barWidth="0" barHeight="0">
