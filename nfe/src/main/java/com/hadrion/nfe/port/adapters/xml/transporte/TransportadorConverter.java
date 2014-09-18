@@ -34,7 +34,7 @@ public class TransportadorConverter extends AbstractConverter{
 		convertIf("xEnder", enderecoCompleto(transp.endereco()), writer, context);
 		if (transp.endereco() != null && transp.endereco().municipio() != null){
 			convertIf("xMun", transp.endereco().municipio().nome(), writer, context);
-			convertIf("UF", transp.endereco().municipio().uf(), writer, context);
+			convertIf("UF", String.valueOf(transp.endereco().municipio().uf()), writer, context);
 		}
 	}
 	
@@ -61,7 +61,7 @@ public class TransportadorConverter extends AbstractConverter{
 			} else if ("xMun".equals(reader.getNodeName())) {
 				nomeMunicipio = (String) context.convertAnother(reader.getValue(), String.class);
 			} else if ("UF".equals(reader.getNodeName())) {
-				ufMunicipio = (Uf) context.convertAnother(reader.getValue(), Uf.class);
+				ufMunicipio = Uf.valueOf(reader.getValue());
 			}
 			reader.moveUp();
 		}

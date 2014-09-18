@@ -2,6 +2,7 @@ package com.hadrion.nfe.port.adapters.xml.nf;
 
 import static com.hadrion.util.DataUtil.data;
 import static com.hadrion.util.DataUtil.formatarData;
+import static org.apache.commons.lang.StringUtils.leftPad;
 
 import java.util.Date;
 
@@ -39,7 +40,7 @@ public class ReferenciaConverter extends AbstractConverter{
 			convert("cUF",ref.ufEmitente(),writer,context);
 			convert("AAMM",formatarEmissao(ref.emissao()),writer,context);
 			convert("CNPJ",ref.cnpjEmitente(),writer,context);
-			convert("mod",ref.modelo(),writer,context);
+			convert("mod",formatarModelo(ref.modelo()),writer,context);
 			convert("serie",ref.serie(),writer,context);
 			convert("nNF",ref.numero(),writer,context);
 			writer.endNode();
@@ -50,11 +51,15 @@ public class ReferenciaConverter extends AbstractConverter{
 			convertIf("CNPJ",ref.cnpjEmitente(),writer,context);
 			convertIf("CPF",ref.cpfEmitente(),writer,context);
 			convert("IE",ref.ie(),writer,context);
-			convert("mod",ref.modelo(),writer,context);
+			convert("mod",formatarModelo(ref.modelo()),writer,context);
 			convert("serie",ref.serie(),writer,context);
 			convert("nNF",ref.numero(),writer,context);
 			writer.endNode();
 		}
+	}
+	
+	private String formatarModelo(Modelo modelo){
+		return leftPad(String.valueOf(modelo), 2, "0");
 	}
 	
 	private String formatarEmissao(Date emissao){

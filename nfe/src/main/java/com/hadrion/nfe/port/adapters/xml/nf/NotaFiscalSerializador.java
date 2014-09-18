@@ -76,7 +76,7 @@ public class NotaFiscalSerializador {
 		}
 
 		String versaoLayout() {
-			return "2.00";
+			return "3.10";
 		}
 
 		NotaFiscal notaFiscal() {

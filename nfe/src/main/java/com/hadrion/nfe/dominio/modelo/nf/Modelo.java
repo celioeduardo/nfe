@@ -5,8 +5,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class Modelo {
 
 	public static final Modelo NFE = new Modelo("55");
-	public static final Modelo PRODUTOR_RURAL = new Modelo("4");
-	public static final Modelo MODELO_1 = new Modelo("1");
+	public static final Modelo PRODUTOR_RURAL = new Modelo("04");
+	public static final Modelo MODELO_1 = new Modelo("01");
 	public static final Modelo MODELO_1A = new Modelo("1A");
 	
 	private String modelo;
@@ -24,11 +24,16 @@ public class Modelo {
 
 		if (objeto != null && this.getClass() == objeto.getClass()) {
 			Modelo objetoTipado = (Modelo) objeto;
+			try {
+				if (Integer.parseInt(modelo()) == Integer.parseInt(objetoTipado.modelo()))
+					return true;
+			} catch (Exception e) {}
 			objetosIguais = this.modelo().equals(objetoTipado.modelo());
 		}
 
 		return objetosIguais;
 	}
+	
 
 	@Override
 	public int hashCode() {

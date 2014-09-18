@@ -21,8 +21,6 @@ class NfeConverter implements Converter{
 			MarshallingContext context) {
 		Nfe nfe = (Nfe) source;
 		
-		writer.addAttribute("xmlns", nfe.uriPortal());
-		
 		writer.startNode("infNFe");
 		writer.addAttribute("Id", nfe.id());
 		writer.addAttribute("versao", nfe.versaoLayout());

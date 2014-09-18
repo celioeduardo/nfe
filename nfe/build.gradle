@@ -41,6 +41,8 @@ dependencies {
     compile group: 'commons-lang', name: 'commons-lang', version:'2.3'
 	compile("com.thoughtworks.xstream:xstream:1.4.7")
 	compile("joda-time:joda-time:2.4")
+	compile("org.apache.httpcomponents:httpclient:4.3.5")
+	
 
 	testCompile('xmlunit:xmlunit:1.4')
 	

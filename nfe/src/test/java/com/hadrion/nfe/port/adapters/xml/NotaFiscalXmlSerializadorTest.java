@@ -1,7 +1,5 @@
 package com.hadrion.nfe.port.adapters.xml;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -44,7 +42,6 @@ public class NotaFiscalXmlSerializadorTest extends AbstractXmlTest{
 	public void serializar() throws NoSuchAlgorithmException{
 		NotaFiscalSerializador serializador = 
 				new NotaFiscalSerializador(Ambiente.HOMOLOGACAO);
-		assertEquals(XML,serializador.serializar(NotaFiscalFixture.nf()));
 		assertXMLEquals(XML,serializador.serializar(NotaFiscalFixture.nf()));
 	}
 	

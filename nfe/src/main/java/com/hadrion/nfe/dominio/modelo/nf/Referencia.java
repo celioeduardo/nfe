@@ -117,16 +117,15 @@ public class Referencia {
 
 
 	public boolean referenciaNfe() {
-		return new Modelo("55").equals(modelo);
+		return Modelo.nfe(modelo);
 	}
 
 	public boolean referenciaNotaProdutorRural() {
-		return new Modelo("4").equals(modelo);
+		return Modelo.produtorRural(modelo);
 	}
 	
 	public boolean referenciaNota1_1A() {
-		return new Modelo("1").equals(modelo) ||
-				new Modelo("1A").equals(modelo);
+		return Modelo.modelo1_1A(modelo);
 	}
 
 

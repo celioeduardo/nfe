@@ -1,5 +1,6 @@
 package com.hadrion.nfe.port.adapters.portal.autorizacao;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,7 +12,7 @@ public class SoapAutorizacaoServiceAdapterTest extends DominioTest{
 	@Autowired
 	private AutorizacaoService autorizacaoService;
 	
-	@Test
+	@Ignore @Test
 	public void autorizar() throws Throwable{
 		autorizacaoService.autorizar(null);
 	}

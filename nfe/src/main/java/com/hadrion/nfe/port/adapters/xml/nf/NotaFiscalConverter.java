@@ -1,5 +1,7 @@
 package com.hadrion.nfe.port.adapters.xml.nf;
 
+import static org.apache.commons.lang.StringUtils.leftPad;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,14 +47,14 @@ public class NotaFiscalConverter extends AbstractConverter {
 		NotaFiscal nf = (NotaFiscal) source;
 		writer.startNode("ide");
 		convert("cUF", nf.emitente().endereco().municipio().uf(), writer,context);
-		convert("cNF", nf.codigoNumerico(), writer, context);
+		convert("cNF", leftPad(String.valueOf(nf.codigoNumerico()), 8, "0"), writer, context);
 		convert("natOp", nf.naturezaOperacao(), writer, context);
 		convert("indPag", nf.formaPagamento(), writer, context);
 		convert("mod", nf.modelo(), writer, context);
 		convert("serie", nf.serie(), writer, context);
 		convert("nNF", nf.numero(), writer, context);
-		convert("dEmi", nf.emissao(), writer, context);
-		convert("dSaiEnt", nf.dataHora(), writer, context);
+		convert("dhEmi", nf.emissao(), writer, context);
+		convert("dhSaiEnt", nf.dataHora(), writer, context);
 		convert("tpNF", nf.tipoOperacao(), writer, context);
 		convert("idDest", nf.localDestino(), writer, context);
 		convert("cMunFG", nf.municipioFatoGerador().codigo(), writer, context);

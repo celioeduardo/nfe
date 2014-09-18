@@ -51,7 +51,7 @@ class Ide {
 			if ("cUF".equals(reader.getNodeName()))
 				uf = (Uf) context.convertAnother(reader.getValue(), Uf.class);
 			if ("cNF".equals(reader.getNodeName()))
-				codigoNumerico = (int) context.convertAnother(reader.getValue(), Integer.class);
+				codigoNumerico = Integer.parseInt(reader.getValue());
 			if ("natOp".equals(reader.getNodeName()))
 				naturezaOperacao = (String) context.convertAnother(reader.getValue(), String.class);
 			if ("indPag".equals(reader.getNodeName()))
@@ -62,9 +62,9 @@ class Ide {
 				serie = (Serie) context.convertAnother(reader.getValue(),Serie.class);
 			if ("nNF".equals(reader.getNodeName()))
 				numero = (Long) context.convertAnother(reader.getValue(), Long.class);
-			if ("dEmi".equals(reader.getNodeName()))
+			if ("dhEmi".equals(reader.getNodeName()))
 				emissao = (Date) context.convertAnother(reader.getValue(),Date.class);
-			if ("dSaiEnt".equals(reader.getNodeName()))
+			if ("dhSaiEnt".equals(reader.getNodeName()))
 				dataSaidaEntrada = (Date) context.convertAnother(reader.getValue(),Date.class);
 			if ("tpNF".equals(reader.getNodeName()))
 				tipoOperacao = (TipoOperacao) context.convertAnother(reader.getValue(), TipoOperacao.class);

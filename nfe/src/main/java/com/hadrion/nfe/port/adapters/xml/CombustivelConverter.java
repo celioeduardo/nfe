@@ -23,7 +23,7 @@ public class CombustivelConverter extends AbstractConverter{
 		Combustivel comb = (Combustivel) source;
 		convert("cProdANP",comb.codAnp(),writer,context);
 		convert("qTemp",comb.quantidade(),writer,context);
-		convert("UFCons",comb.ufConsumo(),writer,context);
+		convert("UFCons",String.valueOf(comb.ufConsumo()),writer,context);
 		convert("CIDE",comb.cide(),writer,context);
 	}
 
@@ -42,7 +42,7 @@ public class CombustivelConverter extends AbstractConverter{
 			} else if ("qTemp".equals(reader.getNodeName())) {
 				quantidade = (Quantidade) context.convertAnother(reader.getValue(), Quantidade.class);
 			} else if ("UFCons".equals(reader.getNodeName())) {
-				ufConsumo = (Uf) context.convertAnother(reader.getValue(), Uf.class);
+				ufConsumo = Uf.valueOf(reader.getValue());
 			} else if ("CIDE".equals(reader.getNodeName())) {
 				cide = (Cide) context.convertAnother(reader.getValue(), Cide.class);
 			}

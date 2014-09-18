@@ -1,6 +1,6 @@
 package com.hadrion.nfe.port.adapters.xml;
 
-import org.apache.commons.lang.StringUtils;
+import static org.apache.commons.lang.StringUtils.leftPad;
 
 import com.hadrion.nfe.dominio.modelo.endereco.Cep;
 import com.thoughtworks.xstream.converters.Converter;
@@ -21,8 +21,7 @@ public class CepConverter implements Converter{
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
 		Cep cep = (Cep) source;
-		String valor = StringUtils.leftPad(
-				String.valueOf(cep.numero()), 8, "0");
+		String valor = leftPad(String.valueOf(cep), 8, "0");
 		writer.setValue(valor);
 	}
 

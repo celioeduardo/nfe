@@ -41,7 +41,6 @@ public class Cep {
 
 	@Override
 	public String toString() {
-		return "Cep [numero="+ numero
-				+ "]";
+		return String.valueOf(numero);
 	} 
 }

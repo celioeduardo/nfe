@@ -5,6 +5,7 @@ import com.hadrion.nfe.port.adapters.xml.cobranca.DuplicataConverter;
 import com.hadrion.nfe.port.adapters.xml.cobranca.FaturaConverter;
 import com.hadrion.nfe.port.adapters.xml.exportacao.ExportacaoNotaConverter;
 import com.hadrion.nfe.port.adapters.xml.nf.ContingenciaConverter;
+import com.hadrion.nfe.port.adapters.xml.nf.ModeloConverter;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalIdConverter;
 import com.hadrion.nfe.port.adapters.xml.nf.PresencaConverter;
 import com.hadrion.nfe.port.adapters.xml.nf.ReferenciaConverter;

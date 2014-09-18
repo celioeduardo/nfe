@@ -28,7 +28,7 @@ public class ReferenciaTradutorXmlTest extends AbstractXmlTest{
 			"		<cUF>31</cUF>\r\n" + 
 			"		<AAMM>1305</AAMM>\r\n" + 
 			"		<CNPJ>32750618000165</CNPJ>\r\n" + 
-			"		<mod>1</mod>\r\n" + 
+			"		<mod>01</mod>\r\n" + 
 			"		<serie>3</serie>\r\n" + 
 			"		<nNF>123456</nNF>\r\n" + 
 			"	</refNF>\r\n" + 
@@ -41,7 +41,7 @@ public class ReferenciaTradutorXmlTest extends AbstractXmlTest{
 			"		<AAMM>1305</AAMM>\r\n" + 
 			"		<CPF>56115316600</CPF>\r\n" + 
 			"		<IE>ISENTO</IE>\r\n" + 
-			"		<mod>4</mod>\r\n" + 
+			"		<mod>04</mod>\r\n" + 
 			"		<serie>2</serie>\r\n" + 
 			"		<nNF>654321</nNF>\r\n" + 
 			"	</refNFP>\r\n" + 

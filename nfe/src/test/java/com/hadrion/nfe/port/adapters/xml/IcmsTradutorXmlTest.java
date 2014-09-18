@@ -33,7 +33,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 			"		<CST>00</CST>\r\n" + 
 			"		<modBC>3</modBC>\r\n" + 
 			"		<vBC>1200.32</vBC>\r\n" + 
-			"		<pICMS>12.00</pICMS>\r\n" + 
+			"		<pICMS>12.0000</pICMS>\r\n" + 
 			"		<vICMS>144.03</vICMS>\r\n" + 
 			"	</ICMS00>\r\n" + 
 			"</ICMS>\r\n";
@@ -60,7 +60,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<CST>00</CST>\r\n" + 
 				"		<modBC>3</modBC>\r\n" + 
 				"		<vBC>1200.32</vBC>\r\n" + 
-				"		<pICMS>12.00</pICMS>\r\n" + 
+				"		<pICMS>12.0000</pICMS>\r\n" + 
 				"		<vICMS>144.03</vICMS>\r\n" + 
 				"	</ICMS00>\r\n" + 
 				"</ICMS>\r\n";
@@ -88,7 +88,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<CST>10</CST>\r\n" + 
 				"		<modBC>3</modBC>\r\n" + 
 				"		<vBC>2500.00</vBC>\r\n" + 
-				"		<pICMS>8.00</pICMS>\r\n" + 
+				"		<pICMS>8.0000</pICMS>\r\n" + 
 				"		<vICMS>200.00</vICMS>\r\n" + 
 				"		<modBCST>4</modBCST>\r\n" + 
 				"		<pMVAST>10.00</pMVAST>\r\n" + 
@@ -126,7 +126,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<CST>10</CST>\r\n" + 
 				"		<modBC>3</modBC>\r\n" + 
 				"		<vBC>2500.00</vBC>\r\n" + 
-				"		<pICMS>8.00</pICMS>\r\n" + 
+				"		<pICMS>8.0000</pICMS>\r\n" + 
 				"		<vICMS>200.00</vICMS>\r\n" + 
 				"		<modBCST>4</modBCST>\r\n" + 
 				"		<pMVAST>10.00</pMVAST>\r\n" + 
@@ -169,7 +169,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 			"		<modBC>3</modBC>\r\n" + 
 			"		<pRedBC>33.00</pRedBC>\r\n" + 
 			"		<vBC>670.00</vBC>\r\n" + 
-			"		<pICMS>18.00</pICMS>\r\n" + 
+			"		<pICMS>18.0000</pICMS>\r\n" + 
 			"		<vICMS>120.60</vICMS>\r\n" + 
 			"	</ICMS20>\r\n" + 
 			"</ICMS>";
@@ -197,7 +197,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<modBC>3</modBC>\r\n" + 
 				"		<pRedBC>33.00</pRedBC>\r\n" + 
 				"		<vBC>670.00</vBC>\r\n" + 
-				"		<pICMS>18.00</pICMS>\r\n" + 
+				"		<pICMS>18.0000</pICMS>\r\n" + 
 				"		<vICMS>120.60</vICMS>\r\n" + 
 				"	</ICMS20>\r\n" + 
 				"</ICMS>\r\n";		
@@ -374,9 +374,9 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 			"		<modBC>3</modBC>\r\n" + 
 			"		<pRedBC>0.00</pRedBC>\r\n" + 
 			"		<vBC>1000.00</vBC>\r\n" + 
-			"		<pICMS>18.00</pICMS>\r\n" + 
+			"		<pICMS>18.0000</pICMS>\r\n" + 
 			"		<vICMSOp>180.00</vICMSOp>\r\n" + 
-			"		<pDif>100.00</pDif>\r\n" + 
+			"		<pDif>100</pDif>\r\n" + 
 			"		<vICMSDif>180.00</vICMSDif>\r\n" + 
 			"		<vICMS>0.00</vICMS>\r\n" + 
 			"	</ICMS51>\r\n" + 
@@ -404,7 +404,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<modBC>3</modBC>\r\n" + 
 				"		<pRedBC>0.00</pRedBC>\r\n" + 
 				"		<vBC>1000.00</vBC>\r\n" + 
-				"		<pICMS>18.00</pICMS>\r\n" + 
+				"		<pICMS>18.0000</pICMS>\r\n" + 
 				"		<vICMSOp>180.00</vICMSOp>\r\n" + 
 				"		<pDif>100.00</pDif>\r\n" + 
 				"		<vICMSDif>180.00</vICMSDif>\r\n" + 
@@ -461,7 +461,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 			"		<modBC>3</modBC>\r\n" + 
 			"		<pRedBC>40.00</pRedBC>\r\n" + 
 			"		<vBC>1500.00</vBC>\r\n" + 
-			"		<pICMS>18.00</pICMS>\r\n" + 
+			"		<pICMS>18.0000</pICMS>\r\n" + 
 			"		<vICMS>270.00</vICMS>\r\n" + 
 			"		<modBCST>4</modBCST>\r\n" + 
 			"		<pMVAST>10.00</pMVAST>\r\n" + 
@@ -499,7 +499,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<modBC>3</modBC>\r\n" + 
 				"		<pRedBC>40.00</pRedBC>\r\n" + 
 				"		<vBC>1500.00</vBC>\r\n" + 
-				"		<pICMS>18.00</pICMS>\r\n" + 
+				"		<pICMS>18.0000</pICMS>\r\n" + 
 				"		<vICMS>270.00</vICMS>\r\n" + 
 				"		<modBCST>4</modBCST>\r\n" + 
 				"		<pMVAST>10.00</pMVAST>\r\n" + 

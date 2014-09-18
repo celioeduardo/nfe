@@ -54,10 +54,10 @@ public class DescritorProdutoTradutorXmlTest extends AbstractXmlTest{
 			"	<comb>\r\n" + 
 			"		<cProdANP>123456789</cProdANP>\r\n" + 
 			"		<qTemp>568.1234</qTemp>\r\n" + 
-			"		<UFCons>35</UFCons>\r\n" + 
+			"		<UFCons>SP</UFCons>\r\n" + 
 			"		<CIDE>\r\n" + 
 			"			<qBCProd>500.78</qBCProd>\r\n" + 
-			"			<vAliqProd>18.00</vAliqProd>\r\n" + 
+			"			<vAliqProd>18.0000</vAliqProd>\r\n" + 
 			"			<vCIDE>90.14</vCIDE>\r\n" + 
 			"		</CIDE>\r\n" + 
 			"	</comb>" +

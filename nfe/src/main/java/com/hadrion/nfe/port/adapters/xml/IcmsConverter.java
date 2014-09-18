@@ -1,5 +1,10 @@
 package com.hadrion.nfe.port.adapters.xml;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import com.hadrion.nfe.dominio.modelo.icms.Cst;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculoSt;
@@ -16,7 +21,12 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class IcmsConverter extends AbstractConverter implements Converter {
-
+	private NumberFormat fmt4decimais;
+	
+	public IcmsConverter(){
+		fmt4decimais = new DecimalFormat("#0.0000",DecimalFormatSymbols.getInstance(Locale.US));
+	}
+	
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean canConvert(Class type) {
@@ -36,7 +46,7 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 			convert("CST", icms.cst(), writer, context);
 			convert("modBC", icms.determinacaoBaseCalculo(), writer, context);
 			convert("vBC", icms.baseCalculo(), writer, context);
-			convert("pICMS", icms.aliquota(), writer, context);
+			convert("pICMS", formatarAliquota(icms.aliquota()), writer, context);
 			convert("vICMS", icms.valor(), writer, context);
 			break;
 		case CST_10:
@@ -45,7 +55,7 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 			convert("CST", icms.cst(), writer, context);
 			convert("modBC", icms.determinacaoBaseCalculo(), writer, context);
 			convert("vBC", icms.baseCalculo(), writer, context);
-			convert("pICMS", icms.aliquota(), writer, context);
+			convert("pICMS", formatarAliquota(icms.aliquota()), writer, context);
 			convert("vICMS", icms.valor(), writer, context);
 			convert("modBCST", icms.st().determinacaoBaseCalculo(), writer, context);
 			convert("pMVAST", icms.st().percentualMargemValorAdicionado(), writer, context);
@@ -61,7 +71,7 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 			convert("modBC", icms.determinacaoBaseCalculo(), writer, context);
 			convert("pRedBC", icms.percentualReducaoBaseCalculo(), writer, context);
 			convert("vBC", icms.baseCalculo(), writer, context);
-			convert("pICMS", icms.aliquota(), writer, context);
+			convert("pICMS", formatarAliquota(icms.aliquota()), writer, context);
 			convert("vICMS", icms.valor(), writer, context);
 			break;
 		case CST_30:
@@ -91,9 +101,9 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 			convert("modBC", icms.determinacaoBaseCalculo(), writer, context);
 			convert("pRedBC", icms.percentualReducaoBaseCalculo(), writer, context);
 			convert("vBC", icms.baseCalculo(), writer, context);
-			convert("pICMS", icms.aliquota(), writer, context);
+			convert("pICMS", formatarAliquota(icms.aliquota()), writer, context);
 			convert("vICMSOp", icms.valorSemDiferimento(), writer, context);
-			convert("pDif", icms.percentualDiferimento(), writer, context);
+			convert("pDif", formatarPercentualDiferimento(icms.percentualDiferimento()), writer, context);
 			convert("vICMSDif", icms.valorDiferido(), writer, context);
 			convert("vICMS", icms.valor(), writer, context);
 			break;
@@ -104,7 +114,7 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 			convert("modBC", icms.determinacaoBaseCalculo(), writer, context);
 			convert("pRedBC", icms.percentualReducaoBaseCalculo(), writer, context);
 			convert("vBC", icms.baseCalculo(), writer, context);
-			convert("pICMS", icms.aliquota(), writer, context);
+			convert("pICMS", formatarAliquota(icms.aliquota()), writer, context);
 			convert("vICMS", icms.valor(), writer, context);
 			convert("modBCST", icms.st().determinacaoBaseCalculo(), writer, context);
 			convert("pMVAST", icms.st().percentualMargemValorAdicionado(), writer, context);
@@ -118,7 +128,14 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 		}
 		writer.endNode();
 	}
-	
+	private String formatarAliquota(Aliquota aliquota){
+		return fmt4decimais.format(aliquota.valor());
+	}
+	private String formatarPercentualDiferimento(Percentual percentual){
+		if (percentual.valor() == 100.0)
+			return "100";
+		return fmt4decimais.format(percentual.valor());
+	}
 	@Override
 	public Object unmarshal(HierarchicalStreamReader reader,
 			UnmarshallingContext context) {

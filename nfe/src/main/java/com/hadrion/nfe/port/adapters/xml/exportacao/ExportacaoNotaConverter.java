@@ -20,7 +20,7 @@ public class ExportacaoNotaConverter extends AbstractConverter{
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
 		Exportacao exp = (Exportacao) source;
-		convert("UFSaidaPais", exp.uf(), writer, context);
+		convert("UFSaidaPais", String.valueOf(exp.uf()), writer, context);
 		convert("xLocExporta", exp.localEmbarque(), writer, context);
 		convert("xLocDespacho", exp.localDespacho(),writer, context);
 	}
@@ -33,7 +33,7 @@ public class ExportacaoNotaConverter extends AbstractConverter{
 		while (reader.hasMoreChildren()) {
 			reader.moveDown();
 			if ("UFSaidaPais".equals(reader.getNodeName())) {
-				ufSaidaPais = (Uf) context.convertAnother(reader.getValue(), Uf.class);
+				ufSaidaPais = Uf.valueOf(reader.getValue());
 			} else if ("xLocExporta".equals(reader.getNodeName())) {
 				localExportacao = (String) context.convertAnother(reader.getValue(), String.class);
 			} else if ("xLocDespacho".equals(reader.getNodeName())) {

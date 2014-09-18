@@ -30,9 +30,9 @@ public class ImpostoTradutorXmlTest extends AbstractXmlTest{
 			"			<modBC>3</modBC>\r\n" + 
 			"			<pRedBC>0.00</pRedBC>\r\n" + 
 			"			<vBC>1000.00</vBC>\r\n" + 
-			"			<pICMS>0.00</pICMS>\r\n" + 
+			"			<pICMS>0.0000</pICMS>\r\n" + 
 			"			<vICMSOp>0.00</vICMSOp>\r\n" + 
-			"			<pDif>0.00</pDif>\r\n" + 
+			"			<pDif>1.0000</pDif>\r\n" + 
 			"			<vICMSDif>0.00</vICMSDif>\r\n" + 
 			"			<vICMS>0.00</vICMS>\r\n" + 
 			"		</ICMS51>\r\n" + 
@@ -68,7 +68,7 @@ public class ImpostoTradutorXmlTest extends AbstractXmlTest{
 	public void serializar(){
 		imposto = new Imposto(Dinheiro.ZERO, 
 				Icms.cst_51(Origem.NACIONAL,new Dinheiro(1000), Aliquota.ZERO,
-						Percentual.ZERO,Percentual.ZERO, DeterminacaoBaseCalculo.VALOR_OPERACAO), 
+						Percentual.ZERO,new Percentual(1), DeterminacaoBaseCalculo.VALOR_OPERACAO), 
 				new Pis(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null), 
 				new Cofins(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null));
 		
@@ -80,7 +80,7 @@ public class ImpostoTradutorXmlTest extends AbstractXmlTest{
 		imposto = new Imposto(Dinheiro.ZERO, 
 				new IcmsDeserializado(Origem.NACIONAL,Cst.CST_51, DeterminacaoBaseCalculo.VALOR_OPERACAO,
 						Percentual.ZERO, new Dinheiro(1000), Aliquota.ZERO, Dinheiro.ZERO, null, 
-						Percentual.ZERO, new Dinheiro(1000)), 
+						new Percentual(1), new Dinheiro(1000)), 
 				new PisDeserializado(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO), 
 				new CofinsDeserializado(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO));
 		assertEquals(imposto,fromXML(XML));

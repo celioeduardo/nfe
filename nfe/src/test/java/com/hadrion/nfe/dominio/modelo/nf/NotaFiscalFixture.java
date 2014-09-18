@@ -146,7 +146,7 @@ public class NotaFiscalFixture {
 			null,
 			IndicadorIe.CONTRIBUINTE,
 			new InscricaoEstadual("0012134380047"),
-			123456L, //Inscrição Suframa
+			12345678L, //Inscrição Suframa
 			new Email("hadrion@hadrion.com.br"));
 	}
 	
@@ -187,7 +187,7 @@ public class NotaFiscalFixture {
 					new Gtin(12345678L),
 					"SOJA EM GRAOS DEPOSITO",
 					new Ncm(31052000L),
-					"ABCDEF",
+					"AB1234",
 					"123",
 					new Cfop(5102L),
 					"SC",
@@ -202,16 +202,16 @@ public class NotaFiscalFixture {
 					new Dinheiro(99.0),
 					new Dinheiro(88.0),
 					new Dinheiro(77.0),
-					new Exportacao(12345678901L, 
+					new Exportacao(110203073L, 
 						new ExportacaoIndireta(
 							123456789012L, 
 							new ChaveAcesso("29140600891206000310550010000110017000481161"),
 							new Quantidade(50.1234))),
-					new Combustivel(123456789L, new Quantidade(568.1234), Uf.SP, 
+					new Combustivel(110203073L, new Quantidade(568.1234), Uf.SP, 
 							new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14)))),
 			new Imposto(Dinheiro.ZERO, 
 				Icms.cst_51(Origem.NACIONAL,new Dinheiro(1000), Aliquota.ZERO,
-						Percentual.ZERO,Percentual.ZERO, DeterminacaoBaseCalculo.VALOR_OPERACAO), 
+						Percentual.ZERO,new Percentual(1), DeterminacaoBaseCalculo.VALOR_OPERACAO), 
 				new Pis(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null), 
 				new Cofins(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null)),
 			"Informação Adicional");

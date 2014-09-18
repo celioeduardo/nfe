@@ -23,7 +23,7 @@ public class VeiculoConverter extends AbstractConverter{
 		Veiculo veic = (Veiculo) source;
 		if (veic.placa() != null){
 			convert("placa", veic.placa().numero(), writer, context);
-			convert("UF", veic.placa().uf(), writer, context);
+			convert("UF", String.valueOf(veic.placa().uf()), writer, context);
 		}
 		convertIf("RNTC", veic.registroAntt(), writer, context);
 	}
@@ -39,7 +39,7 @@ public class VeiculoConverter extends AbstractConverter{
 			if ("placa".equals(reader.getNodeName())) {
 				numeroPlaca = (String) context.convertAnother(reader.getValue(), String.class);
 			} else if ("UF".equals(reader.getNodeName())) {
-				ufPlaca = (Uf) context.convertAnother(reader.getValue(), Uf.class);
+				ufPlaca = Uf.valueOf(reader.getValue());
 			} else if ("RNTC".equals(reader.getNodeName())) {
 				registroAntt = reader.getValue();
 			}

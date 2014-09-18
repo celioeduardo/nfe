@@ -66,10 +66,10 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 			"	  <comb>\r\n" + 
 			"		<cProdANP>123456789</cProdANP>\r\n" + 
 			"		<qTemp>568.1234</qTemp>\r\n" + 
-			"		<UFCons>35</UFCons>\r\n" + 
+			"		<UFCons>SP</UFCons>\r\n" + 
 			"		<CIDE>\r\n" + 
 			"		  <qBCProd>500.78</qBCProd>\r\n" + 
-			"		  <vAliqProd>18.00</vAliqProd>\r\n" + 
+			"		  <vAliqProd>18.0000</vAliqProd>\r\n" + 
 			"		  <vCIDE>90.14</vCIDE>\r\n" + 
 			"		</CIDE>\r\n" + 
 			"	  </comb>\r\n" + 
@@ -83,9 +83,9 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 			"		  <modBC>3</modBC>\r\n" + 
 			"		  <pRedBC>0.00</pRedBC>\r\n" + 
 			"		  <vBC>1000.00</vBC>\r\n" + 
-			"		  <pICMS>0.00</pICMS>\r\n" + 
+			"		  <pICMS>0.0000</pICMS>\r\n" + 
 			"		  <vICMSOp>0.00</vICMSOp>\r\n" + 
-			"		  <pDif>0.00</pDif>\r\n" + 
+			"		  <pDif>0.0000</pDif>\r\n" + 
 			"		  <vICMSDif>0.00</vICMSDif>\r\n" + 
 			"		  <vICMS>0.00</vICMS>\r\n" + 
 			"		</ICMS51>\r\n" + 
