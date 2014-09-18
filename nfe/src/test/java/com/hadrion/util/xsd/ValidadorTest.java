@@ -31,7 +31,6 @@ public class ValidadorTest {
 		validador = new Validador(arquivoXsd(),source);
 		assertTrue(validador.temErros());
         assertEquals(6,validador.quantidadeErros());
-        System.out.println(validador.errosComoTexto());
 	}
 	
 	private File arquivoXsd(){
