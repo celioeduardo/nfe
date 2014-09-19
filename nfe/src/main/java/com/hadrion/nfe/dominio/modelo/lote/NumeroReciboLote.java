@@ -49,7 +49,7 @@ public class NumeroReciboLote {
 	
 	@Override
 	public String toString() {
-		return "NumeroReciboLote [numero=" + numero() + "]";
+		return numero();
 	}
 	
 }

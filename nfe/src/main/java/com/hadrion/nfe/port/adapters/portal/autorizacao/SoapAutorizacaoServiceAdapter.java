@@ -3,6 +3,7 @@ package com.hadrion.nfe.port.adapters.portal.autorizacao;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -41,7 +42,8 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 		//StreamSource source = new StreamSource(new StringReader("<message xmlns=\"http://tempuri.org\">Hello Web Service World</message>"));
 		StreamSource source = new StreamSource(
 				new StringReader(nfeDadosMsg()));
-		StreamResult result = new StreamResult(System.out);
+		StringWriter writerResult = new StringWriter();
+		StreamResult result = new StreamResult(writerResult);
 //		webServiceTemplate.sendSourceAndReceiveToResult(
 //				//"https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2",
 //				"https://nfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao",
@@ -72,7 +74,9 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 					}
 				},
 				result);
-		return null;
+		
+		return new RetornoAutorizacaoDeserializador(
+				writerResult.toString()).deserializar();
 	}
 	
 	
