@@ -34,7 +34,7 @@ public class Certificado {
 			throw new RuntimeException(e);
 		}
 	}
-	private String senha(){
+	public String senha(){
 		return senha;
 	}
 
@@ -44,7 +44,7 @@ public class Certificado {
 
 	public PrivateKey privateKey() {
 		try {
-			return (PrivateKey)ks().getKey(alias(), senha().toCharArray());
+			return (PrivateKey)keyStore().getKey(alias(), senha().toCharArray());
 		} catch (UnrecoverableKeyException | KeyStoreException
 				| NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
@@ -53,13 +53,13 @@ public class Certificado {
 
 	public X509Certificate x509Certificate() {
 		try {
-			return (X509Certificate) ks().getCertificate(alias());
+			return (X509Certificate) keyStore().getCertificate(alias());
 		} catch (KeyStoreException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	private KeyStore ks(){
+	public KeyStore keyStore(){
 		if (ks == null){
 			try {
 				ks = KeyStore.getInstance("PKCS12");
@@ -74,7 +74,7 @@ public class Certificado {
 	private String alias(){
 		if (alias == null)
 			try {
-				alias = (String) ks().aliases().nextElement();
+				alias = (String) keyStore().aliases().nextElement();
 			} catch (KeyStoreException e) {
 				throw new RuntimeException(e);
 			}

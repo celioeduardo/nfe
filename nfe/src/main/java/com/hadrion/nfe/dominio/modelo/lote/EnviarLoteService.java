@@ -1,5 +1,6 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
+import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.AutorizacaoService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
@@ -7,16 +8,18 @@ import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
 
 public class EnviarLoteService {
 	
-	AutorizacaoService recepcaoLoteService;
+	AutorizacaoService autorizacaoService;
 	
 	public EnviarLoteService(AutorizacaoService recepcaoLoteService){
-		this.recepcaoLoteService = recepcaoLoteService;
+		this.autorizacaoService = recepcaoLoteService;
 	}
 	
 	public void enviar(Lote lote) {
+		//TODO obter certificado
+		Certificado certificado = null;
 		RetornoAutorizacao retorno=null; 
 		try {
-			retorno = recepcaoLoteService.autorizar(lote);
+			retorno = autorizacaoService.autorizar(lote,certificado);
 		} catch (Throwable t) {
 			lote.erroTransmissao(new Mensagem(-1, t.getMessage()));
 			return;

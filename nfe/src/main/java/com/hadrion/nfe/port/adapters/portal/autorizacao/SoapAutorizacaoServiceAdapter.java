@@ -20,18 +20,20 @@ import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapMessage;
 import org.springframework.xml.transform.StringSource;
 
+import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.AutorizacaoService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
+import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 
 @Service
 public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 	
 	@Autowired
-	private WebServiceTemplate webServiceTemplate;
+	private WebServiceTemplateFabrica webServiceTemplateFabrica;
 	
 	@Override
-	public RetornoAutorizacao autorizar(Lote lote) throws Throwable {
+	public RetornoAutorizacao autorizar(Lote lote, Certificado certificado) throws Throwable {
 		
 		//final String endpoint = "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao";
 		final String endpoint = "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao";
@@ -44,8 +46,12 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 //				//"https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2",
 //				"https://nfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao",
 //				source, result);
-	        
-		webServiceTemplate.sendSourceAndReceiveToResult(
+		
+		WebServiceTemplate ws;
+		
+		ws = webServiceTemplateFabrica.criar(certificado.keyStore(), certificado.senha());
+		
+		ws.sendSourceAndReceiveToResult(
 				endpoint,
 				source,
 				new WebServiceMessageCallback() {
