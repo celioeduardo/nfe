@@ -109,7 +109,6 @@ public class NotaFiscal {
 		this.finalidade=finalidade;
 		this.presenca=presenca;
 		this.processo=processo;
-		consistirNotasReferencia();
 		this.emitente = emitente;
 		this.destinatario = destinatario;
 		this.localRetirada = localRetirada;
@@ -126,6 +125,7 @@ public class NotaFiscal {
 
 		for (Referencia referencia : referencias) 
 			referenciar(referencia);
+		consistirNotasReferencia();
 	}
 	
 	public NotaFiscal(NotaFiscalId notaFiscalId) {

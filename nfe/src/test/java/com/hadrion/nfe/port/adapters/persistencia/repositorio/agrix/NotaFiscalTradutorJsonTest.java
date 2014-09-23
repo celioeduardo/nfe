@@ -148,8 +148,8 @@ public class NotaFiscalTradutorJsonTest {
 			nf.cobranca());
 		
 
-		//assertEquals("Observação do Fisco",nf.informacaoFisco().texto());
-		//assertEquals("Observação do Contribuinte",nf.informacaoContribuinte().texto());
+		assertEquals("Observação do Fisco",nf.informacaoFisco().texto());
+		assertEquals("Observação do Contribuinte",nf.informacaoContribuinte().texto());
 		
 		assertEquals(
 				new Exportacao(Uf.MG, "Local do Embarque", "Despacho"),

@@ -47,7 +47,7 @@ public class DescritorProduto {
 		this.ncm = ncm;
 		this.nve = nve;
 		this.extipi = extipi;
-		this.cfop = cfop;
+		this.cfop = cfop;	
 		this.unidadeComercial = unidadeComercial;
 		this.quantidadeComercial = quantidadeComercial;
 		this.valorUnitarioComercializacao = valorUnitarioComercializacao;
