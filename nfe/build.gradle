@@ -43,19 +43,19 @@ dependencies {
 	compile("joda-time:joda-time:2.4")
 	compile("org.apache.httpcomponents:httpclient:4.3.5")
 	
-
-	testCompile('xmlunit:xmlunit:1.4')
-	
     //jasper
-    testCompile('net.sf.jasperreports:jasperreports:5.6.1')
-	testCompile('com.itextpdf:itextpdf:5.5.2')
-	testCompile('com.itextpdf:itext-pdfa:5.5.2')
-	testCompile('com.itextpdf:itext-xtra:5.5.2')
-	testCompile('com.lowagie:itext:4.2.1')
+    compile('net.sf.jasperreports:jasperreports:5.6.1')
+	compile('com.itextpdf:itextpdf:5.5.2')
+	compile('com.itextpdf:itext-pdfa:5.5.2')
+	compile('com.itextpdf:itext-xtra:5.5.2')
+	compile('com.lowagie:itext:4.2.1')
+	compile('xalan:xalan:2.7.2')
+	compile('net.sourceforge.barbecue:barbecue:1.5-beta1')
+	compile "org.codehaus.groovy:groovy:2.3.6"
 	
+	testCompile('xmlunit:xmlunit:1.4')
     testCompile("org.springframework.boot:spring-boot-starter-test")
 	
-	testCompile "org.codehaus.groovy:groovy:2.3.6"
 }
 
 test {
