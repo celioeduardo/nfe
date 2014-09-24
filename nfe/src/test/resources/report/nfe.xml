@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<nfeProc>
+	<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+		<infNFe Id="NFe31131016832651000420550010000199361002699180" versao="2.00">
+			<ide>
+				<cUF>31</cUF>
+				<cNF>00269918</cNF>
+				<natOp>VENDA DE PRODUTOS ADQ. TERCEIROS</natOp>
+				<indPag>1</indPag>
+				<mod>55</mod>
+				<serie>1</serie>
+				<nNF>19936</nNF>
+				<dEmi>2013-10-25</dEmi>
+				<dSaiEnt>2013-10-25</dSaiEnt>
+				<tpNF>1</tpNF>
+				<cMunFG>3111606</cMunFG>
+				<tpImp>1</tpImp>
+				<tpEmis>1</tpEmis>
+				<cDV>0</cDV>
+				<tpAmb>1</tpAmb>
+				<finNFe>1</finNFe>
+				<procEmi>0</procEmi>
+				<verProc>1.0</verProc>
+			</ide>
+			<emit>
+				<CNPJ>16832651000420</CNPJ>
+				<xNome>COOPERATIVA DOS CAF. DE CAMPOS GERAIS E CAMPO DO MEIO LTDA</xNome>
+				<xFant>COOPERCAM</xFant>
+				<enderEmit>
+					<xLgr>R JOSE PEDRO DE ARAUJO</xLgr>
+					<nro>448</nro>
+					<xBairro>DIST. CORREGO DO OURO</xBairro>
+					<cMun>3111606</cMun>
+					<xMun>CAMPOS GERAIS</xMun>
+					<UF>MG</UF>
+					<CEP>37163000</CEP>
+					<cPais>1058</cPais>
+					<xPais>BRASIL</xPais>
+					<fone>3538535044</fone>
+				</enderEmit>
+				<IE>1163598340341</IE>
+				<CRT>3</CRT>
+			</emit>
+			<dest>
+				<CPF>72014253668</CPF>
+				<xNome>DENISIO DONIZETE TEODORO</xNome>
+				<enderDest>
+					<xLgr>ESTRADA CORREGO DO OURO PARA FAMA KM 02</xLgr>
+					<nro>S/N</nro>
+					<xBairro>ZONA RURAL</xBairro>
+					<cMun>3111606</cMun>
+					<xMun>CAMPOS GERAIS</xMun>
+					<UF>MG</UF>
+					<CEP>37160000</CEP>
+					<cPais>1058</cPais>
+					<xPais>BRASIL</xPais>
+					<fone>3599716587</fone>
+				</enderDest>
+				<IE>0012134380047</IE>
+			</dest>
+			<det nItem="1">
+				<prod>
+					<cProd>00000000000000006152</cProd>
+					<cEAN/>
+					<xProd>FERT. 08.24.12 + 0,3% ZN</xProd>
+					<NCM>31052000</NCM>
+					<CFOP>5102</CFOP>
+					<uCom>SC</uCom>
+					<qCom>30.0000</qCom>
+					<vUnCom>59.7716666667</vUnCom>
+					<vProd>1793.15</vProd>
+					<cEANTrib/>
+					<uTrib>SC</uTrib>
+					<qTrib>30.0000</qTrib>
+					<vUnTrib>59.7716666667</vUnTrib>
+					<vDesc>60.65</vDesc>
+					<indTot>1</indTot>
+				</prod>
+				<imposto>
+					<ICMS>
+						<ICMS51>
+							<orig>0</orig>
+							<CST>51</CST>
+							<modBC>3</modBC>
+							<pRedBC>0.00</pRedBC>
+							<vBC>0.00</vBC>
+							<pICMS>0.00</pICMS>
+							<vICMS>0.00</vICMS>
+						</ICMS51>
+					</ICMS>
+					<PIS>
+						<PISNT>
+							<CST>06</CST>
+						</PISNT>
+					</PIS>
+					<COFINS>
+						<COFINSNT>
+							<CST>06</CST>
+						</COFINSNT>
+					</COFINS>
+				</imposto>
+			</det>
+			<total>
+				<ICMSTot>
+					<vBC>0.00</vBC>
+					<vICMS>0.00</vICMS>
+					<vBCST>0.00</vBCST>
+					<vST>0.00</vST>
+					<vProd>1793.15</vProd>
+					<vFrete>0.00</vFrete>
+					<vSeg>0.00</vSeg>
+					<vDesc>60.65</vDesc>
+					<vII>0.00</vII>
+					<vIPI>0.00</vIPI>
+					<vPIS>0.00</vPIS>
+					<vCOFINS>0.00</vCOFINS>
+					<vOutro>0.00</vOutro>
+					<vNF>1732.50</vNF>
+				</ICMSTot>
+			</total>
+			<transp>
+				<modFrete>9</modFrete>
+			</transp>
+			<cobr>
+				<fat>
+					<nFat>DCO-19936</nFat>
+					<vOrig>1732.50</vOrig>
+					<vLiq>1732.50</vLiq>
+				</fat>
+				<dup>
+					<nDup>DCO-19936/1</nDup>
+					<dVenc>2013-10-28</dVenc>
+					<vDup>1732.50</vDup>
+				</dup>
+			</cobr>
+			<infAdic>
+				<infAdFisco>ICMS DIFERIDO CONFORME ITEM 25 , PARTE 1 DO ANEXO II, ARTIGO 8 DO DECR ETO 43.080/2002.</infAdFisco>
+				<infCpl>DESCONTO CONCEDIDO: 60,65VENDEDOR:REGINALDO PEREIRA PUBLICO:A1875  &lt;&lt; NA COMPRA DE PRODUTOS DA LINHA DEFENSIVOS E ADUBOS, FAVOR EFETUAR A RETIRADA NA COOPERCAM NO PRAZO MÁXIMO DE 24 HORAS &gt;&gt;</infCpl>
+			</infAdic>
+		</infNFe>
+		<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+			<SignedInfo>
+				<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+				<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+				<Reference URI="#NFe31131016832651000420550010000199361002699180">
+					<Transforms>
+						<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+						<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+					</Transforms>
+					<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+					<DigestValue>kt5gpHWWT3uX1towxN3Bmx2uTd4=</DigestValue>
+				</Reference>
+			</SignedInfo>
+			<SignatureValue>RFGMW8Zbv5Bvl1PZprpEJfYBm7ytF6r7eFVTsD+km+fZ0igVJN+/dqQyhCQyE9nr87cNz0mIOhz2
+Ej9VS9DC0/GKE4GuVdmFjJNLrBdecfFjf5sw+SbQcphj/EQONhFUz7/WTqbFkizipIY4nDMhPB0o
+jt204kT217hGETCmh5iLbAkP36+WiDnrStruPf8b0pcv0YyQ9NbzH/t1poVG9Wd5y+Rzfc8atbAe
+84gxrrIX/4OMin45pxy/kLJTRWlcfs9q21zsqeOCif1FsSNWvb6mXuClViCEZX5lt6ASDwNTEySd
+yQPtgRnVPmohfYRj640zUNeOSeoIcDLTeF0IDA==</SignatureValue>
+			<KeyInfo>
+				<X509Data>
+					<X509Certificate>MIIH4DCCBcigAwIBAgIIbeIuK8xd6pcwDQYJKoZIhvcNAQELBQAwTDELMAkGA1UEBhMCQlIxEzAR
+BgNVBAoTCklDUC1CcmFzaWwxKDAmBgNVBAMTH1NFUkFTQSBDZXJ0aWZpY2Fkb3JhIERpZ2l0YWwg
+djIwHhcNMTQwNjIwMTczNjAwWhcNMTUwNjIwMTczNjAwWjCCAQAxCzAJBgNVBAYTAkJSMRMwEQYD
+VQQKEwpJQ1AtQnJhc2lsMRQwEgYDVQQLEwsoRU0gQlJBTkNPKTEYMBYGA1UECxMPMDAwMDAxMDA1
+Mjg3MjQ5MRQwEgYDVQQLEwsoRU0gQlJBTkNPKTEUMBIGA1UECxMLKEVNIEJSQU5DTykxFDASBgNV
+BAsTCyhFTSBCUkFOQ08pMRQwEgYDVQQLEwsoRU0gQlJBTkNPKTEUMBIGA1UECxMLKEVNIEJSQU5D
+TykxPjA8BgNVBAMTNUNPT1AgRE9TIENBRkVJQyBERSBDQU1QT1MgR0VSQUlTIEUgQ0FNUE8gRE8g
+TUVJTyBMVERBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArj7/cG5tHClfvghC5OBt
+z0ZVygcOZpYMFbXX3qoPUshbgz8lmg7QzAuOdM/ExX3qWbvdEFtQCXaFbQla2GH4bBHtcwBh0PYz
+Lkgo7oDscY1+B/0hIDdN8Ffn39K6nZCJE0knUSfKndVL3ezk+1mUVP5kyF7v+F+C6J0WZJhOoGiz
+/ZNmwpQvpuicL97q9K2d3w9xa/QPOTLi9N62Y0LyZHl2pja2R3M8IpvaEFxl6pE70nJAs1tkty4p
+j3i3a4sN2M4fK1u3jdKyu0ixOIZsdnoaHB74iEpi9iXN8mcswMrcy7M2XfLomswmBAwwJlUo7P5Q
+y2MirvCeY5puzB/+7wIDAQABo4IDDjCCAwowgZcGCCsGAQUFBwEBBIGKMIGHMEcGCCsGAQUFBzAC
+hjtodHRwOi8vd3d3LmNlcnRpZmljYWRvZGlnaXRhbC5jb20uYnIvY2FkZWlhcy9zZXJhc2FjZHYy
+LnA3YjA8BggrBgEFBQcwAYYwaHR0cDovL29jc3AuY2VydGlmaWNhZG9kaWdpdGFsLmNvbS5ici9z
+ZXJhc2FjZHYyMB8GA1UdIwQYMBaAFJrggxDXJpvputqCsoHOORrTh3CGMHEGA1UdIARqMGgwZgYG
+YEwBAgEGMFwwWgYIKwYBBQUHAgEWTmh0dHA6Ly9wdWJsaWNhY2FvLmNlcnRpZmljYWRvZGlnaXRh
+bC5jb20uYnIvcmVwb3NpdG9yaW8vZHBjL2RlY2xhcmFjYW8tc2NkLnBkZjCB8AYDVR0fBIHoMIHl
+MEmgR6BFhkNodHRwOi8vd3d3LmNlcnRpZmljYWRvZGlnaXRhbC5jb20uYnIvcmVwb3NpdG9yaW8v
+bGNyL3NlcmFzYWNkdjIuY3JsMEOgQaA/hj1odHRwOi8vbGNyLmNlcnRpZmljYWRvcy5jb20uYnIv
+cmVwb3NpdG9yaW8vbGNyL3NlcmFzYWNkdjIuY3JsMFOgUaBPhk1odHRwOi8vcmVwb3NpdG9yaW8u
+aWNwYnJhc2lsLmdvdi5ici9sY3IvU2VyYXNhL3JlcG9zaXRvcmlvL2xjci9zZXJhc2FjZHYyLmNy
+bDAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMIG3BgNVHREE
+ga8wgayBGkNPT1BFUkNBTUBDT09QRVJDQU0uQ09NLkJSoD4GBWBMAQMEoDUTMzI0MDMxOTU1MTcx
+ODI3Nzg2NTMwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMKAaBgVgTAEDAqAREw9UQVJD
+SVNJTyBSQUJFTE+gGQYFYEwBAwOgEBMOMTY4MzI2NTEwMDAxODigFwYFYEwBAwegDhMMMDAwMDAw
+MDAwMDAwMA0GCSqGSIb3DQEBCwUAA4ICAQBp59RmfrMAkVq7G0f3K1wQ8/nhLngCs/GzDocnBN6k
+d57mCpyM+ZuiGujWSztuy97EFEMb50LxMOjwJk8HgNNu/Z7kyadxvEiSm8wI8kcaytUtHu884rMZ
+WoH/S9gH5Gs8kQJun/hqvZy2dJ3gpNBMaaPlp6ltdNNUXi4TkE9hY+ksrxONQGgFDusgmrD1mgr8
+dwYVVACxVUd8rqUNhfL5KhGB5o1La2EmsxT7JRJMfiCkVQysb9sfMEfE8sq6duBLnW7mOOlDdvLd
+PPjOz767kMLD06G/qIBGBPPyjcbbrM9tixmM2hgZFunKCmbOBXzoppp82d8hUTf+vxN3+3AtIQzF
+2Y2exl1vNxMRz30DM3zzLundqw8IF0aUiWZl4V+yVQd09hlCrrW2icyujl8NuRb2U4qSO8t+yOND
+gTmJJOP9WGcgUgdE9dqE1/tY3XVQ7pjO+u37kw0xGm8T0OrpQzFPw4zwh3qgYqTtJ6c/+5aCPRzm
++TkW6v6gpLw5MMgR2dksBQ29muYCzMaJB4TyYTv9Cf8flhI7leOCOictba25YgmbH70cg1HJhrXI
+YSY/h/zakNplHduFPTBiWl3nbHOEXhb8tm1BsrlKMEaHW8fmHcNVLMxcHMAloJtaq3lUTLnnfHlA
+S7qT4Da9ww77MgBb4QCPeZbG/4u4a/ndVw==</X509Certificate>
+				</X509Data>
+			</KeyInfo>
+		</Signature>
+	</NFe>
+	<protNFe versao="2.00">
+		<infProt>
+			<tpAmb>2</tpAmb>
+			<verAplic>SP_NFE_PL_006h</verAplic>
+			<chNFe>31131016832651000420550010000199361002699180</chNFe>
+			<dhRecbto>2011-06-25T00:25:13</dhRecbto>
+			<nProt>135110004829809</nProt>
+			<digVal>BFM3qBEEshhFLdAAxnsq0pRnAZU=</digVal>
+			<cStat>100</cStat>
+			<xMotivo>Autorizado o uso da  NF-e</xMotivo>
+		</infProt>
+	</protNFe>
+</nfeProc>
