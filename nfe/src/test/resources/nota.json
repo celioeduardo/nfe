@@ -1,58 +1,36 @@
 {
-  "NotaFiscalId" : "013924F159424CC4E050007F010060FB",
-  "numero" : 183898,
-  "serie" : 1,
-  "modelo" : "1",
-  "emissao" : "31/05/04",
-  "dataHora" : "31/05/04",
+  "NotaFiscalId" : "013924F30E424CC4E050007F010060FB",
+  "chaveAcesso" : "31131016832651000420550010000199361002699180",
+  "numero" : 618,
+  "serie" : "2",
+  "modelo" : "55",
+  "emissao" : "28/09/09",
+  "dataHora" : "28/09/09",
   "tipoOperacao" : "SAIDA",
   "localDestino" : "INTERNA",
   "finalidade" : "NORMAL",
   "consumidorFinal" : false,
   "itens" : [{
-    "produtoId" : "013924F59BB64CC4E050007F010060FB",
-    "codigo" : "74",
-    "descricao" : "TOTRIL 1 LT",
-    "gtin" : "",
-    "ncm" : "38089329",
-    "nve" : "",
-    "cfop" : 5102,
-    "unidade" : "LT",
-    "quantidade" : 24,
-    "unitario" : 119,
-    "bruto" : 2856,
-    "gtinTributavel" : "",
-    "unidadeTributavel" : "LT",
-    "quantidadeTributavel" : 24,
-    "unitarioTributacao" : 119,
-    "frete" : 0,
-    "desconto" : null,
-    "acessorias" : 0,
-    "exportacao" : "",
-    "combustivel" : ""
+    "produtoId" : "013924F59CC04CC4E050007F010060FB",
+    "codigo" : "9001",
+    "descricao" : "MILHO"
   }, {
-    "produtoId" : "013924F5A0D84CC4E050007F010060FB",
-    "codigo" : "34",
-    "descricao" : "FUSILADE 250 5 LT",
-    "gtin" : "",
-    "ncm" : "38089329",
-    "nve" : "",
-    "cfop" : 5102,
-    "unidade" : "GL",
-    "quantidade" : 2,
-    "unitario" : 392.7,
-    "bruto" : 785.4,
-    "gtinTributavel" : "",
-    "unidadeTributavel" : "GL",
-    "quantidadeTributavel" : 2,
-    "unitarioTributacao" : 392.7,
-    "frete" : 0,
-    "desconto" : null,
-    "acessorias" : 0,
-    "exportacao" : "",
-    "combustivel" : ""
+    "produtoId" : "013924F5A00A4CC4E050007F010060FB",
+    "codigo" : "8578",
+    "descricao" : "PROSTORE 25 CE BD C/ 20 L"
+  }, {
+    "produtoId" : "013924F5A00F4CC4E050007F010060FB",
+    "codigo" : "8583",
+    "descricao" : "GASTOXIN 1,5 KG"
+  }, {
+    "produtoId" : "013924F5A1C84CC4E050007F010060FB",
+    "codigo" : "8452",
+    "descricao" : "LENHA"
   }],
-  "referencias" : [],
+  "referencias" : [{
+    "modelo" : "55",
+    "chave" : "013924F307774CC4E050007F010060FB"
+  }],
   "emitente" : {
     "cnpj" : "86675642000106",
     "cpf" : "86675642000106",
@@ -62,48 +40,48 @@
     "numero" : "443",
     "complemento" : "CX P 37",
     "bairro" : "GUARDA DOS FERREIROS",
+    "codigoMunicipio" : 0,
     "municipio" : "SAO GOTARDO - MG",
     "pais" : "BRASIL",
     "cep" : 38800000,
     "telefone" : "3436161200",
     "ie" : "6219059370082",
     "ieSubstituto" : "6219059370082",
-    "uf" : "MG",
-    "codigoMunicipio" : 3162104
+    "uf" : "MG"
   },
   "destinatario" : {
-    "cnpj" : "4737717000171",
-    "cpf" : "4737717000171",
+    "cnpj" : "7233848000100",
+    "cpf" : "7233848000100",
     "idEstrangeiro" : "",
-    "razaoSocial" : "AGROPECUARIA ALIMENTAR LTDA",
+    "razaoSocial" : "OSPER AGROINDUSTRIAL S/A",
     "nomeFantasia" : "",
-    "logradouro" : "RODOVIA BR 354 - S/N S/N",
+    "logradouro" : "ROD. BR 262 KM 443 S/N ",
     "numero" : "S/N",
     "complemento" : "",
     "bairro" : "ZONA RURAL",
-    "municipio" : "RIO PARANAIBA - MG",
+    "codigoMunicipio" : 0,
+    "municipio" : "NOVA SERRANA - MG",
     "pais" : "BRASIL",
-    "cep" : 38810000,
-    "telefone" : "3436716546",
+    "cep" : 35519000,
+    "telefone" : "3732322434",
     "indicadorIe" : 1,
-    "ie" : "001123165.00-28",
+    "ie" : "452332065.00-50",
     "inscricaoSuframa" : 0,
     "uf" : "MG",
-    "email" : "janete@grupookuyama.com.br",
-    "codigoMunicipio" : 3155504
+    "email" : "JEANPETER@osper.ind.br"
   },
   "localEntrega" : {
-    "cnpj" : "4737717000171",
-    "cpf" : "4737717000171",
-    "logradouro" : "RODOVIA BR 354 - S/N S/N",
+    "cnpj" : "7233848000100",
+    "cpf" : "7233848000100",
+    "logradouro" : "ROD. BR 262 KM 443 S/N ",
     "numero" : "S/N",
     "complemento" : "",
     "bairro" : "ZONA RURAL",
-    "municipio" : "RIO PARANAIBA - MG",
+    "codigoMunicipio" : 0,
+    "municipio" : "NOVA SERRANA - MG",
     "pais" : "BRASIL",
-    "cep" : 38810000,
-    "uf" : "MG",
-    "codigoMunicipio" : 3155504
+    "cep" : 35519000,
+    "uf" : "MG"
   },
   "localRetirada" : {
     "cnpj" : "86675642000106",
@@ -112,13 +90,13 @@
     "numero" : "443",
     "complemento" : "CX P 37",
     "bairro" : "GUARDA DOS FERREIROS",
+    "codigoMunicipio" : 0,
     "municipio" : "SAO GOTARDO - MG",
     "pais" : "BRASIL",
     "cep" : 38800000,
-    "uf" : "MG",
-    "codigoMunicipio" : 3162104
+    "uf" : "MG"
   },
-  "cobranca" : [{
+ "cobranca" : [{
     "tipoDoc" : "DM",
     "numero" : 183898,
     "sequencia" : "01",
@@ -133,7 +111,11 @@
     "valor" : 785.4,
     "desconto" : 0
   }],
-  "observacao" : "",
-  "observacaoFisco" : "",
-  "exportacao" : ""
+  "observacaoFisco" : "Observação do Fisco",
+  "observacao" : "Observação do Contribuinte",
+  "exportacao":{
+     "uf": "MG",
+     "localEmbarque": "Local do Embarque",
+     "localDespacho": "Despacho"
+  }
 }

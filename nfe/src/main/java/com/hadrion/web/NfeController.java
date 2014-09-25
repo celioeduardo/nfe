@@ -11,7 +11,7 @@ public class NfeController {
 	@RequestMapping("/req")
 	public String index(HttpServletRequest req){
 		//req.getRemoteUser();
-		return "Uhuhuhuhuh - Spring Boot is ON ";
+		return "Uhuhuhuhuh - Spring Boot is ON id:"+req.getSession().getId();
 	}
 	
 }

@@ -25,5 +25,16 @@ public class ItemTradutorJsonTest {
 		assertEquals("1012",item.produto().codigo());
 		assertEquals("ALHO COOPADAP ESPECIAL 04 (NOBILISSIMO)",item.produto().descricao());
 	}
+	@Test
+	public void traduzirItemCompleto() throws IOException{
+		
+		final File json =FileUtils.getFile("src","test", "resources", "itemCompleto.json");
+		
+		NotaFiscalTradutorJson tradutor = new NotaFiscalTradutorJson(FileUtils.readFileToString(json));
+		Item item = tradutor.converterItem();
+		
+		assertEquals("74",item.produto().codigo());
+		assertEquals("TOTRIL 1 LT",item.produto().descricao());
+	}
 
 }
