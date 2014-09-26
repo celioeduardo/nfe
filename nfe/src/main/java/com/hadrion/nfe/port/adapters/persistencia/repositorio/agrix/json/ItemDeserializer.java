@@ -43,7 +43,7 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		extipi=j.get("extipi").getAsString();
 		unidadeComercial=j.get("unidadeComercial").getAsString();
 		unidadeTributavel=j.get("unidadeTributavel").getAsString();
-		gtin = j.get("gtin").getAsString();
+		/*gtin = j.get("gtin").getAsString();
 		gtinTributavel=j.get("gtinTributavel").getAsString();
 		ncm=null; 
 		cfop=null;
@@ -51,7 +51,7 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		valorUnitarioComercializacao=null,valorUnitarioTributacao=null;
 		totalFrete=null, totalSeguro=null, valorDesconto=null,outrasDespesasAcessorias=null,valorTotalBruto=null;
 		exportacao=null;
-		combustivel=null;		
+		combustivel=null;	*/	
 		
 		final Item item = new Item(
 				new DescritorProduto(codigo, gtin, descricao, ncm, nve, extipi, cfop, unidadeComercial, 
