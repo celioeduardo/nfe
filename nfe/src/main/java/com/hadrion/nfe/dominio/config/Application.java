@@ -12,8 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.SoapVersion;
@@ -26,12 +24,6 @@ import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "com.hadrion")
 public abstract class Application extends WebMvcConfigurerAdapter{
-	
-//	@Override
-//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//		super.addResourceHandlers(registry);
-//		registry.addResourceHandler("/resources/**").addResourceLocations("resources");
-//	}
 	
 	@Bean
 	DataSource dataSource() {
@@ -62,11 +54,11 @@ public abstract class Application extends WebMvcConfigurerAdapter{
 		ApplicationContext ctx = SpringApplication.run(Application.class, args);
 
         
-//        String[] beanNames = ctx.getBeanDefinitionNames();
-//        Arrays.sort(beanNames);
-//        for (String beanName : beanNames) {
-//            System.out.println(beanName);
-//        }
-//        
+        String[] beanNames = ctx.getBeanDefinitionNames();
+        Arrays.sort(beanNames);
+        for (String beanName : beanNames) {
+            System.out.println(beanName);
+        }
+        
 	}
 }

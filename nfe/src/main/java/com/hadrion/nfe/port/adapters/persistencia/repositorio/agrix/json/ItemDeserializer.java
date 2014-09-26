@@ -14,7 +14,6 @@ import com.hadrion.nfe.dominio.modelo.nf.item.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
-import com.hadrion.nfe.dominio.modelo.nf.publico.Crt;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;
 
@@ -37,19 +36,23 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		Exportacao exportacao=null;
 		Combustivel combustivel=null;		
 		
-		codigo=j.get("codigo").getAsString();
-		descricao = j.get("descricao").getAsString();
-		nve=j.get("nve").getAsString();
-		extipi=j.get("extipi").getAsString();
-		unidadeComercial=j.get("unidadeComercial").getAsString();
-		unidadeTributavel=j.get("unidadeTributavel").getAsString();
-		/*gtin = j.get("gtin").getAsString();
-		gtinTributavel=j.get("gtinTributavel").getAsString();
-		ncm=null; 
-		cfop=null;
-		quantidadeComercial=null,quantidadeTributavel=null;
-		valorUnitarioComercializacao=null,valorUnitarioTributacao=null;
-		totalFrete=null, totalSeguro=null, valorDesconto=null,outrasDespesasAcessorias=null,valorTotalBruto=null;
+		codigo=s(j,"codigo");
+		descricao = s(j,"descricao");
+		nve=s(j,"nve");
+		extipi=s(j,"extIpi");
+		unidadeComercial=s(j,"unidade");
+		unidadeTributavel=s(j,"unidadeTributavel");
+		gtin = new Gtin(s(j,"gtin"));
+		ncm = new Ncm(s(j,"ncm")); 
+		cfop = new Cfop(l(j,"cfop"));
+		quantidadeComercial = new Quantidade(d(j,"quantidade"));
+		quantidadeTributavel = new Quantidade(d(j,"quantidadeTributavel"));
+		valorUnitarioComercializacao=d(j,"unitario");
+		valorTotalBruto = new Dinheiro(d(j,"bruto"));
+		gtinTributavel= new Gtin(s(j,"gtinTributavel"));
+		/*
+		,valorUnitarioTributacao=null;
+		totalFrete=null, totalSeguro=null, valorDesconto=null,outrasDespesasAcessorias=null,
 		exportacao=null;
 		combustivel=null;	*/	
 		
@@ -64,15 +67,11 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		return item;
 	}
 
-	private Crt crt(JsonObject j){
-		return tem(j,"crt")?Crt.valueOf(s(j,"crt")):null;
-	}
-	
 	private Long l(JsonObject j, String propriedade){
 		return j.get(propriedade).getAsLong();
 	}
-	private int i(JsonObject j, String propriedade){
-		return j.get(propriedade).getAsInt();
+	private Double d(JsonObject j, String propriedade){
+		return j.get(propriedade).getAsDouble();
 	}
 
 	private String s(JsonObject j, String propriedade){
