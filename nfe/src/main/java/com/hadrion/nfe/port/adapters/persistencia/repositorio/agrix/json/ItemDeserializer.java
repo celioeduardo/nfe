@@ -32,7 +32,7 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		Cfop cfop=null;
 		Quantidade quantidadeComercial=null,quantidadeTributavel=null;
 		Double valorUnitarioComercializacao=null,valorUnitarioTributacao=null;
-		Dinheiro totalFrete=null, totalSeguro=null, valorDesconto=null,outrasDespesasAcessorias=null,valorTotalBruto=null;
+		Dinheiro frete=null, seguro=null, desconto=null,acessorias=null,valorTotalBruto=null;
 		Exportacao exportacao=null;
 		Combustivel combustivel=null;		
 		
@@ -50,17 +50,19 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		valorUnitarioComercializacao=d(j,"unitario");
 		valorTotalBruto = new Dinheiro(d(j,"bruto"));
 		gtinTributavel= new Gtin(s(j,"gtinTributavel"));
-		/*
-		,valorUnitarioTributacao=null;
-		totalFrete=null, totalSeguro=null, valorDesconto=null,outrasDespesasAcessorias=null,
+		valorUnitarioTributacao=new Double(d(j,"unitarioTributacao"));
+		frete=new Dinheiro(d(j,"frete"));
+		seguro=new Dinheiro(d(j,"seguro"));
+		desconto=new Dinheiro(d(j,"desconto"));
+		acessorias=new Dinheiro(d(j,"acessorias"));
 		exportacao=null;
-		combustivel=null;	*/	
+		combustivel=null;	
 		
 		final Item item = new Item(
 				new DescritorProduto(codigo, gtin, descricao, ncm, nve, extipi, cfop, unidadeComercial, 
 						quantidadeComercial, valorUnitarioComercializacao, valorTotalBruto, gtinTributavel, 
-						unidadeTributavel, quantidadeTributavel, valorUnitarioTributacao, totalFrete, totalSeguro, 
-						valorDesconto, outrasDespesasAcessorias, exportacao, combustivel),
+						unidadeTributavel, quantidadeTributavel, valorUnitarioTributacao, frete, seguro, 
+						desconto, acessorias, exportacao, combustivel),
 				null,//IMPOSTO
 				"ADICIONAL");//INFORMACAO ADICIONAL
 		

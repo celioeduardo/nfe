@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -33,12 +34,13 @@ public class ItemTradutorJsonTest {
 			"    \"quantidade\" : 24,\r\n" + 
 			"    \"unitario\" : 119,\r\n" + 
 			"    \"bruto\" : 2856,\r\n" + 
-			"    \"gtinTributavel\" : \"\",\r\n" + 
+			"    \"gtinTributavel\" : \"1\",\r\n" + 
 			"    \"unidadeTributavel\" : \"LT\",\r\n" + 
 			"    \"quantidadeTributavel\" : 24,\r\n" + 
 			"    \"unitarioTributacao\" : 119,\r\n" + 
 			"    \"frete\" : 0,\r\n" + 
-			"    \"desconto\" : null,\r\n" + 
+			"    \"seguro\" : 0,\r\n" + 
+			"    \"desconto\" : 0,\r\n" + 
 			"    \"acessorias\" : 0,\r\n" + 
 			"    \"drawback\" : null,\r\n" + 
 			"    \"registroExportacao\" : null,\r\n" + 
@@ -78,7 +80,7 @@ public class ItemTradutorJsonTest {
 				"LT",				
 				new Quantidade(24.0),
 				new Double(119), 
-				new Dinheiro(2856), 
+				new Dinheiro(0), 
 				Dinheiro.ZERO, 
 				Dinheiro.ZERO, 
 				Dinheiro.ZERO,
