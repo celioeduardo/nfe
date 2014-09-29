@@ -47,7 +47,7 @@ import com.hadrion.nfe.tipos.Telefone;
 
 public class NotaFiscalTradutorJsonTest {
 
-	@Ignore @Test
+	@Test
 	public void traduzirNota() throws IOException{
 		
 		final File json =FileUtils.getFile("src","test", "resources", "nota.json");
@@ -156,7 +156,7 @@ public class NotaFiscalTradutorJsonTest {
 				new Exportacao(Uf.MG, "Local do Embarque", "Despacho"),
 				nf.exportacao());
 	}
-	@Ignore @Test
+	@Test
 	public void traduzirNotaCompleta() throws IOException{
 		
 		final File json =FileUtils.getFile("src","test", "resources", "notaCompleta.json");

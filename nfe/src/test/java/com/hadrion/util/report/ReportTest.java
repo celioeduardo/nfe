@@ -99,7 +99,7 @@ public class ReportTest {
         JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
    	
     }
-    @Test
+    @Ignore @Test
     public void novoXmlDataSource() throws JRException{
     	
         File xmlFile = new File("src/test/resources/report/nfe.xml");  
