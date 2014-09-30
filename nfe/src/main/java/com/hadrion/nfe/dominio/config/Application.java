@@ -35,6 +35,18 @@ public abstract class Application extends WebMvcConfigurerAdapter{
 				setPassword("");
 			}
 		};
+		
+		
+//		return new SimpleDriverDataSource() {
+//			{
+//				setDriverClass(oracle.jdbc.driver.OracleDriver.class);
+//				setUrl("jdbc:oracle:thin:@192.168.151.3:1521:orcl");
+//				setUsername("coopadap");
+//				setPassword("sucesso");
+//			}		
+//		};
+
+		
 	}
 	
 	@Bean

@@ -14,8 +14,8 @@ import com.hadrion.nfe.dominio.modelo.lote.LoteId;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 
-@Profile("teste")
 @Repository("loteRepositorio")
+@Profile("teste")
 public class MockLoteRepositorio implements LoteRepositorio {
 
 	private Map<String,Lote> store=new HashMap<String, Lote>();
