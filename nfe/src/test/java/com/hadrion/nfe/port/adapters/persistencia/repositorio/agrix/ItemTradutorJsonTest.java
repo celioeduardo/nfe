@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -42,10 +41,10 @@ public class ItemTradutorJsonTest {
 			"    \"seguro\" : 0,\r\n" + 
 			"    \"desconto\" : 0,\r\n" + 
 			"    \"acessorias\" : 0,\r\n" + 
-			"    \"drawback\" : null,\r\n" + 
-			"    \"registroExportacao\" : null,\r\n" + 
+			"    \"drawback\" : 0,\r\n" + 
+			"    \"registroExportacao\" : 0,\r\n" + 
 			"    \"chaveNfRecebida\" : \"\",\r\n" + 
-			"    \"quantidadeExportada\" : null,\r\n" + 
+			"    \"quantidadeExportada\" : 0,\r\n" + 
 			"    \"combustivel\" : \"\"\r\n" + 
 			"  }";
 

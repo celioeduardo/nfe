@@ -42,14 +42,14 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		extipi=s(j,"extIpi");
 		unidadeComercial=s(j,"unidade");
 		unidadeTributavel=s(j,"unidadeTributavel");
-		gtin = new Gtin(s(j,"gtin"));
+		gtin = gtin(j,"gtin");
 		ncm = new Ncm(s(j,"ncm")); 
 		cfop = new Cfop(l(j,"cfop"));
 		quantidadeComercial = new Quantidade(d(j,"quantidade"));
 		quantidadeTributavel = new Quantidade(d(j,"quantidadeTributavel"));
 		valorUnitarioComercializacao=d(j,"unitario");
 		valorTotalBruto = new Dinheiro(d(j,"bruto"));
-		gtinTributavel= new Gtin(s(j,"gtinTributavel"));
+		gtinTributavel= gtin(j,"gtinTributavel");;
 		valorUnitarioTributacao=new Double(d(j,"unitarioTributacao"));
 		frete=new Dinheiro(d(j,"frete"));
 		seguro=new Dinheiro(d(j,"seguro"));
@@ -84,4 +84,7 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		return j.has(propriedade);
 	}
 
+	private Gtin gtin(JsonObject j, String propriedade){
+		return tem(j,propriedade) ? new Gtin(s(j,propriedade)) : null;
+	}
 }

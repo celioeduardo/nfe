@@ -63,11 +63,6 @@ public class DescritorProduto {
 		this.exportacao = exportacao;
 		this.combustivel = combustivel;
 	}
-	public DescritorProduto(String codigo, String descricao) {
-		super();
-		this.codigo = codigo;
-		this.descricao = descricao;
-	}	
 	public String codigo() {
 		return codigo;
 	}
