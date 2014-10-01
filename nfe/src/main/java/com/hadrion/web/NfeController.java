@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NfeController {
 	@RequestMapping("/req")
+	public String erro(HttpServletRequest req){
+		//req.getRemoteUser();
+		return "Tela de erro";
+	}
+	@RequestMapping("/")
 	public String index(HttpServletRequest req){
 		//req.getRemoteUser();
 		return "Uhuhuhuhuh - Spring Boot is ON id:"+req.getSession().getId();
