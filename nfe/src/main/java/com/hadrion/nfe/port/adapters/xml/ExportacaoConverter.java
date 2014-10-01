@@ -1,6 +1,6 @@
 package com.hadrion.nfe.port.adapters.xml;
 
-import com.hadrion.nfe.dominio.modelo.nf.item.Exportacao;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -12,13 +12,13 @@ public class ExportacaoConverter extends AbstractConverter{
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean canConvert(Class type) {
-		return Exportacao.class.isAssignableFrom(type);
+		return ExportacaoItem.class.isAssignableFrom(type);
 	}
 
 	@Override
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
-		Exportacao exp = (Exportacao) source;
+		ExportacaoItem exp = (ExportacaoItem) source;
 		convert("nDraw",exp.numeroDrawBack(),writer,context);
 		convert("exportInd",exp.exportacaoIndireta(),writer,context);
 	}
@@ -37,7 +37,7 @@ public class ExportacaoConverter extends AbstractConverter{
 			}
 			reader.moveUp();
 		}
-		return new Exportacao(nDraw, exportacaoIndireta);
+		return new ExportacaoItem(nDraw, exportacaoIndireta);
 	}
 
 }

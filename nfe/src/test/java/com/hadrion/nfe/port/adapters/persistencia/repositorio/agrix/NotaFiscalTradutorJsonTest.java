@@ -12,13 +12,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
+import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
 import com.hadrion.nfe.dominio.modelo.endereco.Cep;
 import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.endereco.Pais;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
+import com.hadrion.nfe.dominio.modelo.icms.Icms;
+import com.hadrion.nfe.dominio.modelo.icms.Origem;
 import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
 import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
@@ -32,19 +38,27 @@ import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Fatura;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
+import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
+import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.publico.IndicadorIe;
+import com.hadrion.nfe.dominio.modelo.pis.CstPis;
+import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.NotaFiscalTradutorJson;
+import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Email;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
+import com.hadrion.nfe.tipos.Percentual;
 import com.hadrion.nfe.tipos.Quantidade;
 import com.hadrion.nfe.tipos.Telefone;
 
@@ -73,7 +87,8 @@ public class NotaFiscalTradutorJsonTest {
 				Referencia.nfe(new ChaveAcesso("013924F307774CC4E050007F010060FB"))));		
 		assertFalse(nf.consumidorFinal());		
 		assertEquals(4, nf.itens().size());
-		assertEquals(new DescritorProduto(
+		assertEquals(new Item(
+				new DescritorProduto(
 				"9001", 
 				new Gtin("1"), 
 				"MILHO",
@@ -93,8 +108,17 @@ public class NotaFiscalTradutorJsonTest {
 				Dinheiro.ZERO, 
 				Dinheiro.ZERO, 
 				Dinheiro.ZERO,
-				null, 
-				null),nf.item(0).produto());
+				new ExportacaoItem(999L, 
+						new ExportacaoIndireta(888L, 
+							new ChaveAcesso("31131016832651000420550010000199361002699180"),
+							new Quantidade(777.0))), 
+				null),
+				new Imposto(Dinheiro.ZERO, 
+						Icms.cst_00(Origem.NACIONAL,new Dinheiro(2600.02), new Aliquota(18),
+								DeterminacaoBaseCalculo.VALOR_OPERACAO), 
+						new Pis(CstPis.CST_01, new Dinheiro(3513.75), new Aliquota(1.65), .0, new Double(57.98)), 
+						new Cofins(CstCofins.CST_01, new Dinheiro(3513.75), new Aliquota(7.6), .0, new Double(267.05))),
+				"ADICIONAL"),nf.item(0));
 
 		assertEquals(new Emitente(
 						new Cnpj(86675642000106L), 

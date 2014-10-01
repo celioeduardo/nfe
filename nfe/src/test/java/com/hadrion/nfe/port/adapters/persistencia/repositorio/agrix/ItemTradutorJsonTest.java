@@ -9,15 +9,24 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
+import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
+import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
+import com.hadrion.nfe.dominio.modelo.icms.Icms;
+import com.hadrion.nfe.dominio.modelo.icms.Origem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
-import com.hadrion.nfe.dominio.modelo.nf.item.Exportacao;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
+import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
+import com.hadrion.nfe.dominio.modelo.pis.CstPis;
+import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.ItemDeserializer;
+import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;
 
@@ -51,8 +60,41 @@ public class ItemTradutorJsonTest {
 			"	 	\"quantidadeExportada\" : 777\r\n" +
 			"	 }," +
 			"    \"combustivel\" : \"\"\r\n" + 
-			"  }";
+			",\r\n" + 
+			"	\"imposto\" : {\r\n" + 
+			"		\"icms\" : {\r\n" + 
+			"			\"origem\" : 0,\r\n" + 
+			"			\"aliquotaSt\" : 0,\r\n" + 
+			"			\"aliquota\" : 18,\r\n" + 
+			"			\"coeficiente\" : 0.7,\r\n" + 
+			"			\"cvSt\" : 0,\r\n" + 
+			"			\"ivaSt\" : 0,\r\n" + 
+			"			\"mvaSt\" : 0,\r\n" + 
+			"			\"base\" : 2600.02,\r\n" + 
+			"			\"baseSt\" : 0,\r\n" + 
+			"			\"reducao\" : 200.57,\r\n" + 
+			"			\"valor\" : 468,\r\n" + 
+			"			\"ipi\" : 0,\r\n" + 
+			"			\"outras\" : 0,\r\n" + 
+			"			\"valorSt\" : 0,\r\n" + 
+			"			\"st\" : 20\r\n" + 
+			"		},\r\n" + 
+			"		\"pis\" : {\r\n" + 
+			"			\"aliquota\" : 1.65,\r\n" + 
+			"			\"base\" : 3513.75,\r\n" + 
+			"			\"valor\" : 57.98,\r\n" + 
+			"			\"st\" : \"01\"\r\n" + 
+			"		},\r\n" + 
+			"		\"cofins\" : {\r\n" + 
+			"			\"aliquota\" : 7.6,\r\n" + 
+			"			\"base\" : 3513.75,\r\n" + 
+			"			\"valor\" : 267.05,\r\n" + 
+			"			\"st\" : \"01\"\r\n" + 
+			"		}\r\n" + 
+			"	}  " +
+			"}";
 
+	
 	private GsonBuilder gsonBuilder;
 	private Gson gson;
 	
@@ -68,7 +110,8 @@ public class ItemTradutorJsonTest {
 		
 		Item item = gson.fromJson(JSON, Item.class);
 
-		assertEquals(new DescritorProduto(
+		assertEquals(new Item(
+			new DescritorProduto(
 				"74", 
 				new Gtin("1"), 
 				"TOTRIL 1 LT",
@@ -88,11 +131,17 @@ public class ItemTradutorJsonTest {
 				Dinheiro.ZERO, 
 				Dinheiro.ZERO, 
 				Dinheiro.ZERO,
-				new Exportacao(999L, 
+				new ExportacaoItem(999L, 
 						new ExportacaoIndireta(888L, 
 							new ChaveAcesso("31131016832651000420550010000199361002699180"),
 							new Quantidade(777.0))),
-				null),item.produto());
+				null),
+				new Imposto(Dinheiro.ZERO, 
+						Icms.cst_00(Origem.NACIONAL,new Dinheiro(2600.02), new Aliquota(18),
+								DeterminacaoBaseCalculo.VALOR_OPERACAO), 
+						new Pis(CstPis.CST_01, new Dinheiro(3513.75), new Aliquota(1.65), .0, new Double(57.98)), 
+						new Cofins(CstCofins.CST_01, new Dinheiro(3513.75), new Aliquota(7.6), .0, new Double(267.05))),
+				"ADICIONAL"),item);
 		
 	}
 

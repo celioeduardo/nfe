@@ -3,12 +3,12 @@ package com.hadrion.nfe.dominio.modelo.nf.item;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-public class Exportacao {
+public class ExportacaoItem {
 	
 	private Long numeroDrawBack;
 	private ExportacaoIndireta exportacaoIndireta;
 	
-	public Exportacao(Long numeroDrawBack, ExportacaoIndireta exportacaoIndireta) {
+	public ExportacaoItem(Long numeroDrawBack, ExportacaoIndireta exportacaoIndireta) {
 		super();
 		this.numeroDrawBack = numeroDrawBack;
 		this.exportacaoIndireta = exportacaoIndireta;
@@ -27,7 +27,7 @@ public class Exportacao {
 		boolean objetosIguais = false;
 
 		if (objeto != null && this.getClass() == objeto.getClass()) {
-			Exportacao objetoTipado = (Exportacao) objeto;
+			ExportacaoItem objetoTipado = (ExportacaoItem) objeto;
 			objetosIguais = new EqualsBuilder()
 				.append(numeroDrawBack(),objetoTipado.numeroDrawBack())
 				.append(exportacaoIndireta(),objetoTipado.exportacaoIndireta())

@@ -3,7 +3,7 @@ package com.hadrion.nfe.port.adapters.xml;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.Combustivel;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
-import com.hadrion.nfe.dominio.modelo.nf.item.Exportacao;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
 import com.hadrion.nfe.tipos.Dinheiro;
@@ -61,7 +61,7 @@ public class DescritorProdutoConverter extends AbstractConverter{
 		Dinheiro valorTotalBruto = null, totalFrete = null,valorDesconto = null, 
 				outrasDespesasAcessorias = null, totalSeguro = null;
 		Combustivel combustivel = null;
-		Exportacao exportacao = null;
+		ExportacaoItem exportacao = null;
 		
 		while (reader.hasMoreChildren()) {
 			reader.moveDown();
@@ -104,7 +104,7 @@ public class DescritorProdutoConverter extends AbstractConverter{
 			} else if ("vOutro".equals(reader.getNodeName())) {
 				outrasDespesasAcessorias = (Dinheiro) context.convertAnother(reader.getValue(),Dinheiro.class);
 			} else if ("detExport".equals(reader.getNodeName())) {
-				exportacao = (Exportacao) context.convertAnother(reader.getValue(),Exportacao.class);
+				exportacao = (ExportacaoItem) context.convertAnother(reader.getValue(),ExportacaoItem.class);
 			} else if ("comb".equals(reader.getNodeName())) {
 				combustivel = (Combustivel) context.convertAnother(reader.getValue(),Combustivel.class);
 			}

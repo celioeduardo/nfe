@@ -25,7 +25,7 @@ import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cide;
 import com.hadrion.nfe.dominio.modelo.nf.item.Combustivel;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
-import com.hadrion.nfe.dominio.modelo.nf.item.Exportacao;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
@@ -202,7 +202,7 @@ public class NotaFiscalFixture {
 					new Dinheiro(99.0),
 					new Dinheiro(88.0),
 					new Dinheiro(77.0),
-					new Exportacao(110203073L, 
+					new ExportacaoItem(110203073L, 
 						new ExportacaoIndireta(
 							123456789012L, 
 							new ChaveAcesso("29140600891206000310550010000110017000481161"),

@@ -37,7 +37,38 @@
 		"chaveNfRecebida" : "31131016832651000420550010000199361002699180",
 		"quantidadeExportada" : 777
 	},
-    "combustivel" : ""
+    "combustivel" : "",
+	"imposto" : {
+		"icms" : {
+			"origem" : 0,
+			"aliquotaSt" : 0,
+			"aliquota" : 18,
+			"coeficiente" : 0.7,
+			"cvSt" : 0,
+			"ivaSt" : 0,
+			"mvaSt" : 0,
+			"base" : 2600.02,
+			"baseSt" : 0,
+			"reducao" : 200.57,
+			"valor" : 468,
+			"ipi" : 0,
+			"outras" : 0,
+			"valorSt" : 0,
+			"st" : 20
+		},
+		"pis" : {
+			"aliquota" : 1.65,
+			"base" : 3513.75,
+			"valor" : 57.98,
+			"st" : "01"
+		},
+		"cofins" : {
+			"aliquota" : 7.6,
+			"base" : 3513.75,
+			"valor" : 267.05,
+			"st" : "01"
+		}
+    }
   }, {
     "produtoId" : "013924F5A00A4CC4E050007F010060FB",
     "codigo" : "8578",
@@ -65,7 +96,39 @@
 		"chaveNfRecebida" : "31131016832651000420550010000199361002699180",
 		"quantidadeExportada" : 777
 	},
-    "combustivel" : ""
+    "combustivel" : "",
+	"imposto" : {
+		"icms" : {
+			"origem" : 0,
+			"aliquotaSt" : 0,
+			"aliquota" : 18,
+			"coeficiente" : 0.7,
+			"cvSt" : 0,
+			"ivaSt" : 0,
+			"mvaSt" : 0,
+			"base" : 2600.02,
+			"baseSt" : 0,
+			"reducao" : 200.57,
+			"valor" : 468,
+			"ipi" : 0,
+			"outras" : 0,
+			"valorSt" : 0,
+			"st" : 20
+		},
+		"pis" : {
+			"aliquota" : 1.65,
+			"base" : 3513.75,
+			"valor" : 57.98,
+			"st" : "01"
+			
+		},
+		"cofins" : {
+			"aliquota" : 7.6,
+			"base" : 3513.75,
+			"valor" : 267.05,
+			"st" : "01"
+		}
+    }
   }, {
     "produtoId" : "013924F5A00F4CC4E050007F010060FB",
     "codigo" : "8583",
@@ -93,7 +156,38 @@
 		"chaveNfRecebida" : "31131016832651000420550010000199361002699180",
 		"quantidadeExportada" : 777
 	},
-    "combustivel" : ""
+    "combustivel" : "",
+	"imposto" : {
+		"icms" : {
+			"origem" : 0,
+			"aliquotaSt" : 0,
+			"aliquota" : 18,
+			"coeficiente" : 0.7,
+			"cvSt" : 0,
+			"ivaSt" : 0,
+			"mvaSt" : 0,
+			"base" : 2600.02,
+			"baseSt" : 0,
+			"reducao" : 200.57,
+			"valor" : 468,
+			"ipi" : 0,
+			"outras" : 0,
+			"valorSt" : 0,
+			"st" : 20
+		},
+		"pis" : {
+			"aliquota" : 1.65,
+			"base" : 3513.75,
+			"valor" : 57.98,
+			"st" : "01"
+		},
+		"cofins" : {
+			"aliquota" : 7.6,
+			"base" : 3513.75,
+			"valor" : 267.05,
+			"st" : "01"
+		}
+    }
   }, {
     "produtoId" : "013924F5A1C84CC4E050007F010060FB",
     "codigo" : "8452",
@@ -121,7 +215,38 @@
 		"chaveNfRecebida" : "31131016832651000420550010000199361002699180",
 		"quantidadeExportada" : 777
 	},
-    "combustivel" : ""
+    "combustivel" : "",
+	"imposto" : {
+		"icms" : {
+			"origem" : 0,
+			"aliquotaSt" : 0,
+			"aliquota" : 18,
+			"coeficiente" : 0.7,
+			"cvSt" : 0,
+			"ivaSt" : 0,
+			"mvaSt" : 0,
+			"base" : 2600.02,
+			"baseSt" : 0,
+			"reducao" : 200.57,
+			"valor" : 468,
+			"ipi" : 0,
+			"outras" : 0,
+			"valorSt" : 0,
+			"st" : 20
+		},
+		"pis" : {
+			"aliquota" : 1.65,
+			"base" : 3513.75,
+			"valor" : 57.98,
+			"st" : "01"
+		},
+		"cofins" : {
+			"aliquota" : 7.6,
+			"base" : 3513.75,
+			"valor" : 267.05,
+			"st" : "01"
+		}
+    }
   }],
   "referencias" : [{
     "modelo" : "55",

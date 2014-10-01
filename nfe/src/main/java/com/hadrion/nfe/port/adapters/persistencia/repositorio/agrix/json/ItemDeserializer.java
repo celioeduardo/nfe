@@ -7,15 +7,24 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
+import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
+import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
+import com.hadrion.nfe.dominio.modelo.icms.Icms;
+import com.hadrion.nfe.dominio.modelo.icms.Origem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.Combustivel;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
-import com.hadrion.nfe.dominio.modelo.nf.item.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
+import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
+import com.hadrion.nfe.dominio.modelo.pis.CstPis;
+import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
+import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;
 
@@ -35,9 +44,9 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		Quantidade quantidadeComercial=null,quantidadeTributavel=null;
 		Double valorUnitarioComercializacao=null,valorUnitarioTributacao=null;
 		Dinheiro frete=null, seguro=null, desconto=null,acessorias=null,valorTotalBruto=null;
-		Exportacao exportacao=null;
+		ExportacaoItem exportacao=null;
 		Combustivel combustivel=null;		
-		
+
 		codigo=s(j,"codigo");
 		descricao = s(j,"descricao");
 		nve=s(j,"nve");
@@ -65,7 +74,7 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 						quantidadeComercial, valorUnitarioComercializacao, valorTotalBruto, gtinTributavel, 
 						unidadeTributavel, quantidadeTributavel, valorUnitarioTributacao, frete, seguro, 
 						desconto, acessorias, exportacao, combustivel),
-				null,//IMPOSTO
+				imposto(j),//IMPOSTO
 				"ADICIONAL");//INFORMACAO ADICIONAL
 		
 		return item;
@@ -81,6 +90,9 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 	private String s(JsonObject j, String propriedade){
 		return j.get(propriedade).getAsString();
 	}
+	private Integer i(JsonObject j, String propriedade){
+		return j.get(propriedade).getAsInt();
+	}
 	
 	boolean tem(JsonObject j, String propriedade){
 		return j.has(propriedade);
@@ -90,16 +102,42 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		return tem(j,propriedade) ? new Gtin(s(j,propriedade)) : null;
 	}
 	
-	private Exportacao exportacao(JsonObject j){
-		Exportacao exportacao = null;
+	private ExportacaoItem exportacao(JsonObject j){
 		if (tem(j,"exportacao")){
 			JsonObject g = j.get("exportacao").getAsJsonObject();
 			
-			return new Exportacao(g.get("drawback").getAsLong(), 
+			return new ExportacaoItem(g.get("drawback").getAsLong(), 
 					new ExportacaoIndireta(g.get("registroExportacao").getAsLong(), 
 							new ChaveAcesso(g.get("chaveNfRecebida").getAsString()),
 							new Quantidade(g.get("quantidadeExportada").getAsDouble())));
 		}			
-		return exportacao;			
+		return null;			
+	}
+	private Imposto imposto(JsonObject j){
+		
+		Icms icms = null; Pis pis = null; Cofins cofins = null;JsonObject g = null;JsonObject f = null;
+		
+		f = j.get("imposto").getAsJsonObject();
+		g = f.get("icms").getAsJsonObject();
+		icms = Icms.cst_00(Origem.obterPeloCodigo(i(g,"origem")), 
+				new Dinheiro(d(g,"base")), 
+				new Aliquota(d(g,"aliquota")), 
+				DeterminacaoBaseCalculo.VALOR_OPERACAO);
+
+		g = f.get("pis").getAsJsonObject();
+		pis = new Pis(CstPis.obterPeloCodigo(i(g,"st")), 
+				new Dinheiro(d(g,"base")), 
+				new Aliquota(d(g,"aliquota")), 
+				.0, 
+				d(g,"valor"));
+
+		g = f.get("cofins").getAsJsonObject();
+		cofins = new Cofins(CstCofins.obterPeloCodigo(i(g,"st")), 
+				new Dinheiro(d(g,"base")), 
+				new Aliquota(d(g,"aliquota")), 
+				.0, 
+				d(g,"valor"));
+			
+		return new Imposto(Dinheiro.ZERO, icms, pis, cofins);
 	}
 }

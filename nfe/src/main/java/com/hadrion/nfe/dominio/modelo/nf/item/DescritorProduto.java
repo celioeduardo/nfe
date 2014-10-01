@@ -27,7 +27,7 @@ public class DescritorProduto {
 	private Dinheiro totalSeguro;
 	private Dinheiro valorDesconto;
 	private Dinheiro outrasDespesasAcessorias;
-	private Exportacao exportacao;
+	private ExportacaoItem exportacao;
 	private Combustivel combustivel;
 	
 	public DescritorProduto(String codigo, Gtin gtin, String descricao,
@@ -38,7 +38,7 @@ public class DescritorProduto {
 			Quantidade quantidadeTributavel, Double valorUnitarioTributacao,
 			Dinheiro totalFrete, Dinheiro totalSeguro, Dinheiro valorDesconto,
 			Dinheiro outrasDespesasAcessorias,
-			Exportacao exportacao,
+			ExportacaoItem exportacao,
 			Combustivel combustivel) {
 		super();
 		this.codigo = codigo;
@@ -120,7 +120,7 @@ public class DescritorProduto {
 	public Dinheiro outrasDespesasAcessorias() {
 		return outrasDespesasAcessorias;
 	}
-	public Exportacao exportacao(){
+	public ExportacaoItem exportacao(){
 		return exportacao;
 	}
 	public Combustivel combustivel(){

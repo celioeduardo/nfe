@@ -29,7 +29,7 @@ Ext.define('nfe.view.main.Main', {
         width: 250,
         split: true,
         tbar: [{
-            text: 'XXX',
+            text: 'Button',
             handler: 'onClickButton'
         }]
     },{
@@ -37,7 +37,7 @@ Ext.define('nfe.view.main.Main', {
         xtype: 'tabpanel',
         items:[{
             title: 'Tab 1',
-            html: '<h2>99</h2>'
+            html: '<h2>Content appropriate for the current navigation.</h2>'
         }]
     }]
 });
