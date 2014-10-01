@@ -31,7 +31,12 @@
     "seguro" : 0,
     "desconto" : 0,
     "acessorias" : 0,
-    "exportacao" : "",
+	"exportacao" : {
+		"drawback" : 999,
+		"registroExportacao" : 888,
+		"chaveNfRecebida" : "31131016832651000420550010000199361002699180",
+		"quantidadeExportada" : 777
+	},
     "combustivel" : ""
   }, {
     "produtoId" : "013924F5A00A4CC4E050007F010060FB",
@@ -54,7 +59,12 @@
     "seguro" : 0,
     "desconto" : 0,
     "acessorias" : 0,
-    "exportacao" : "",
+	"exportacao" : {
+		"drawback" : 999,
+		"registroExportacao" : 888,
+		"chaveNfRecebida" : "31131016832651000420550010000199361002699180",
+		"quantidadeExportada" : 777
+	},
     "combustivel" : ""
   }, {
     "produtoId" : "013924F5A00F4CC4E050007F010060FB",
@@ -77,7 +87,12 @@
     "seguro" : 0,
     "desconto" : 0,
     "acessorias" : 0,
-    "exportacao" : "",
+	"exportacao" : {
+		"drawback" : 999,
+		"registroExportacao" : 888,
+		"chaveNfRecebida" : "31131016832651000420550010000199361002699180",
+		"quantidadeExportada" : 777
+	},
     "combustivel" : ""
   }, {
     "produtoId" : "013924F5A1C84CC4E050007F010060FB",
@@ -100,7 +115,12 @@
     "seguro" : 0,
     "desconto" : 0,
     "acessorias" : 0,
-    "exportacao" : "",
+	"exportacao" : {
+		"drawback" : 999,
+		"registroExportacao" : 888,
+		"chaveNfRecebida" : "31131016832651000420550010000199361002699180",
+		"quantidadeExportada" : 777
+	},
     "combustivel" : ""
   }],
   "referencias" : [{

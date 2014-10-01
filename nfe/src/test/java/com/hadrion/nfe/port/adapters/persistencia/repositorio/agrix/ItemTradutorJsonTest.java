@@ -11,9 +11,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
+import com.hadrion.nfe.dominio.modelo.nf.item.Exportacao;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
+import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.ItemDeserializer;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;
@@ -41,10 +44,12 @@ public class ItemTradutorJsonTest {
 			"    \"seguro\" : 0,\r\n" + 
 			"    \"desconto\" : 0,\r\n" + 
 			"    \"acessorias\" : 0,\r\n" + 
-			"    \"drawback\" : 0,\r\n" + 
-			"    \"registroExportacao\" : 0,\r\n" + 
-			"    \"chaveNfRecebida\" : \"\",\r\n" + 
-			"    \"quantidadeExportada\" : 0,\r\n" + 
+			"	 \"exportacao\" : {\r\n" +
+			"	 	\"drawback\" : 999,\r\n" +
+			"	 	\"registroExportacao\" : 888,\r\n" +
+			"	 	\"chaveNfRecebida\" : \"31131016832651000420550010000199361002699180\",\r\n" +
+			"	 	\"quantidadeExportada\" : 777\r\n" +
+			"	 }," +
 			"    \"combustivel\" : \"\"\r\n" + 
 			"  }";
 
@@ -83,7 +88,10 @@ public class ItemTradutorJsonTest {
 				Dinheiro.ZERO, 
 				Dinheiro.ZERO, 
 				Dinheiro.ZERO,
-				null, 
+				new Exportacao(999L, 
+						new ExportacaoIndireta(888L, 
+							new ChaveAcesso("31131016832651000420550010000199361002699180"),
+							new Quantidade(777.0))),
 				null),item.produto());
 		
 	}

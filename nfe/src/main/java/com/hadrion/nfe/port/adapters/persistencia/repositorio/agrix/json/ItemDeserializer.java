@@ -11,9 +11,11 @@ import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.Combustivel;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
 import com.hadrion.nfe.dominio.modelo.nf.item.Exportacao;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
+import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;
 
@@ -51,12 +53,12 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		valorTotalBruto = new Dinheiro(d(j,"bruto"));
 		gtinTributavel= gtin(j,"gtinTributavel");;
 		valorUnitarioTributacao=new Double(d(j,"unitarioTributacao"));
-		frete=new Dinheiro(d(j,"frete"));
-		seguro=new Dinheiro(d(j,"seguro"));
-		desconto=new Dinheiro(d(j,"desconto"));
-		acessorias=new Dinheiro(d(j,"acessorias"));
-		exportacao=null;
-		combustivel=null;	
+		frete = new Dinheiro(d(j,"frete"));
+		seguro = new Dinheiro(d(j,"seguro"));
+		desconto = new Dinheiro(d(j,"desconto"));
+		acessorias = new Dinheiro(d(j,"acessorias"));
+		exportacao = exportacao(j);
+		combustivel = null;	
 		
 		final Item item = new Item(
 				new DescritorProduto(codigo, gtin, descricao, ncm, nve, extipi, cfop, unidadeComercial, 
@@ -86,5 +88,18 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 
 	private Gtin gtin(JsonObject j, String propriedade){
 		return tem(j,propriedade) ? new Gtin(s(j,propriedade)) : null;
+	}
+	
+	private Exportacao exportacao(JsonObject j){
+		Exportacao exportacao = null;
+		if (tem(j,"exportacao")){
+			JsonObject g = j.get("exportacao").getAsJsonObject();
+			
+			return new Exportacao(g.get("drawback").getAsLong(), 
+					new ExportacaoIndireta(g.get("registroExportacao").getAsLong(), 
+							new ChaveAcesso(g.get("chaveNfRecebida").getAsString()),
+							new Quantidade(g.get("quantidadeExportada").getAsDouble())));
+		}			
+		return exportacao;			
 	}
 }
