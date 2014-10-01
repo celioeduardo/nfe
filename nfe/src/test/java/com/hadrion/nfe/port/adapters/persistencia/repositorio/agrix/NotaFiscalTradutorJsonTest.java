@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
@@ -58,7 +57,6 @@ import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Email;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
-import com.hadrion.nfe.tipos.Percentual;
 import com.hadrion.nfe.tipos.Quantidade;
 import com.hadrion.nfe.tipos.Telefone;
 
