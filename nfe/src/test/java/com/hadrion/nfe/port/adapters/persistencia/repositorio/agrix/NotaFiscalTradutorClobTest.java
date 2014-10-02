@@ -37,7 +37,7 @@ public class NotaFiscalTradutorClobTest {
 	public void setUp() {
 	}
 
-	@Test @Ignore
+	@Test
 	@Transactional
 	public void obterClob() throws SQLException {
 
@@ -62,7 +62,7 @@ public class NotaFiscalTradutorClobTest {
 		String conteudo =  clob.getSubString(1, (int)clob.length());
 		System.out.println(conteudo);
 		System.out.println("TAMANHO DO CLOB: "+clob.length());
-		clobToString(clob);
+		//clobToString(clob);
 //		Reader reader = null;
 //		reader = clob.getCharacterStream();
 //		System.out.println(clobToString(clob));
