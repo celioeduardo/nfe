@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.SoapVersion;
@@ -22,6 +23,7 @@ import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 @Configuration
 @EnableTransactionManagement
 @EnableAutoConfiguration
+@EnableWebMvc
 @ComponentScan(basePackages = "com.hadrion")
 public abstract class Application extends WebMvcConfigurerAdapter{
 	
