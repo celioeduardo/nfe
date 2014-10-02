@@ -6,11 +6,14 @@ import java.io.Reader;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +26,13 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.google.gson.JsonObject;
 import com.hadrion.nfe.dominio.config.Application;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @ActiveProfiles("teste")
-public class NotaFiscalTradutorClobTest {
+public class NotaFiscalDescritorTradutorClobTest {
 
 	@Autowired
 	JdbcTemplate jdbc;
@@ -41,28 +45,33 @@ public class NotaFiscalTradutorClobTest {
 	@Transactional
 	public void obterClob() throws SQLException {
 
-		// Gson g=new Gson();
-		//
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
 				.withCatalogName("pcg_nf_json_adapter")
-				.withFunctionName("construirJson")
-				.declareParameters(new SqlParameter("vc2_es", Types.VARCHAR))
-				.declareParameters(new SqlParameter("r", Types.VARCHAR))
+				.withFunctionName("obterPendentes")
+				.declareParameters(new SqlParameter("empresa", Types.INTEGER))
+				.declareParameters(new SqlParameter("filial", Types.INTEGER))
+				.declareParameters(new SqlParameter("inicio", Types.DATE))
+				.declareParameters(new SqlParameter("fim", Types.DATE))
+				.declareParameters(new SqlParameter("usuario", Types.VARCHAR))				
 				.declareParameters(
 						new SqlOutParameter("RETURN_VALUE", Types.CLOB));
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
 
-		params.addValue("vc2_es", "S", Types.VARCHAR);
-		params.addValue("r", "AACTBxAAHAAFox6AAM", Types.VARCHAR);
+		params.addValue("empresa", 1, Types.INTEGER);
+		params.addValue("filial", null , Types.INTEGER);
+		params.addValue("inicio", data("01/09/2014"), Types.DATE);
+		params.addValue("fim", null, Types.DATE);
+		params.addValue("usuario", "", Types.VARCHAR);
 
 		call.compile();
 
 		Clob clob = call.executeFunction(Clob.class, params);
 		String conteudo =  clob.getSubString(1, (int)clob.length());
-		System.out.println(conteudo);
-		System.out.println("TAMANHO DO CLOB: "+clob.length());
-		//clobToString(clob);
+		JsonObject j = new JsonObject();
+		//System.out.println(conteudo);
+		//System.out.println("TAMANHO DO CLOB: "+clob.length());
+//		clobToString(clob);
 //		Reader reader = null;
 //		reader = clob.getCharacterStream();
 //		System.out.println(clobToString(clob));
@@ -91,5 +100,14 @@ public class NotaFiscalTradutorClobTest {
 				}
 		}
 		return clob.toString();
+	}
+	private Date data(String data){
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+		try {
+			return formatter.parse(data);
+		} catch (ParseException e) {
+			return null;
+		}	
+		
 	}
 }

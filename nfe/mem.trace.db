@@ -78,3 +78,6 @@ org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement " ? = CALL PCG_NF_JS
 09-30 09:40:13 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement " ? = CALL PCG_NF_JSON_ADAPTER.CONSTRUIRJSON([*]?, ?)  "; SQL statement:
  ? = call PCG_NF_JSON_ADAPTER.CONSTRUIRJSON(?, ?)  [42000-176]
+10-02 16:43:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement " ? = CALL PCG_NF_JSON_ADAPTER.OBTERPENDENTES([*]?, ?, ?, ?, ?)  "; SQL statement:
+ ? = call PCG_NF_JSON_ADAPTER.OBTERPENDENTES(?, ?, ?, ?, ?)  [42000-176]

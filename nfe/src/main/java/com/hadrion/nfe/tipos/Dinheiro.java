@@ -94,6 +94,5 @@ public class Dinheiro {
 	@Override
 	public String toString() {
 		return new BigDecimal(quantia).divide(new BigDecimal(fatorCentavos)).toString();
-		
 	}
 }

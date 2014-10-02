@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface NotaFiscalRepositorio {
 
-	public List<NotaFiscal> pendentesTransmissao();
+	public List<NotaFiscal> notasPendentesAutorizacao();
 	public void salvar(NotaFiscal notaFiscal);
 
 	public NotaFiscal notaFiscalPeloId(NotaFiscalId notaFiscalId);

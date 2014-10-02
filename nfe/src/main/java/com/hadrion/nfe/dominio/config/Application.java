@@ -12,45 +12,61 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.SoapVersion;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationConfig;
 import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 
 @Configuration
 @EnableTransactionManagement
 @EnableAutoConfiguration
-@EnableWebMvc
 @ComponentScan(basePackages = "com.hadrion")
 public abstract class Application extends WebMvcConfigurerAdapter{
 	
 	@Bean
 	DataSource dataSource() {
-		return new SimpleDriverDataSource() {
-			{
-				setDriverClass(org.h2.Driver.class);
-				setUsername("sa");
-				setUrl("jdbc:h2:mem");
-				setPassword("");
-			}
-		};
-		
-		
 //		return new SimpleDriverDataSource() {
 //			{
-//				setDriverClass(oracle.jdbc.driver.OracleDriver.class);
-//				setUrl("jdbc:oracle:thin:@192.168.151.3:1521:orcl");
-//				setUsername("coopadap");
-//				setPassword("sucesso");
-//			}		
+//				setDriverClass(org.h2.Driver.class);
+//				setUsername("sa");
+//				setUrl("jdbc:h2:mem");
+//				setPassword("");
+//			}
 //		};
+		
+		
+		return new SimpleDriverDataSource() {
+			{
+				setDriverClass(oracle.jdbc.driver.OracleDriver.class);
+				setUrl("jdbc:oracle:thin:@192.168.151.3:1521:orcl");
+				setUsername("coopadap");
+				setPassword("sucesso");
+			}		
+		};
 
 		
 	}
 	
+	@Bean
+	ObjectMapper jacksonObjectMapper(){
+		return new CustomJacksonObjectMapper();
+	}
+	
+	@Bean
+	SerializationConfig serializationConfig(){
+		return jacksonObjectMapper().getSerializationConfig();
+	}
+	
+	
+//	@Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/**").addResourceLocations("/public/**");
+//    }
+//	
 	@Bean
 	WebServiceTemplateFabrica webServiceTemplateFabrica(){
 		return new WebServiceTemplateFabrica();

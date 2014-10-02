@@ -25,7 +25,7 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 	JdbcTemplate jdbc;
 	
 	@Override
-	public List<NotaFiscal> pendentesTransmissao() {
+	public List<NotaFiscal> notasPendentesAutorizacao() {
 		 return jdbc.query("Select * From VW_NFE_PENDENTES", new RowMapper<NotaFiscal>(){
 			@Override
 			public NotaFiscal mapRow(ResultSet rs, int rowNum){
