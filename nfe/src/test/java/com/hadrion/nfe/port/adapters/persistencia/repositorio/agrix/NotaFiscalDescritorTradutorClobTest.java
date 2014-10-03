@@ -69,6 +69,7 @@ public class NotaFiscalDescritorTradutorClobTest {
 		Clob clob = call.executeFunction(Clob.class, params);
 		String conteudo =  clob.getSubString(1, (int)clob.length());
 		JsonObject j = new JsonObject();
+		
 		//System.out.println(conteudo);
 		//System.out.println("TAMANHO DO CLOB: "+clob.length());
 //		clobToString(clob);
