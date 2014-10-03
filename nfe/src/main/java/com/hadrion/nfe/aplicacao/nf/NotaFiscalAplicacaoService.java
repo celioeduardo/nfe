@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
+import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
 @Service
@@ -17,17 +17,21 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 public class NotaFiscalAplicacaoService {
 	
 	@Autowired
-	NotaFiscalRepositorio repositorio;
+	private NotaFiscalRepositorio repositorio;
 	
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacao(){
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 		
-		for (NotaFiscal nf : repositorio.notasPendentesAutorizacao()) {
+		for (DescritorNotaFiscal nf : repositorio.notasPendentesAutorizacaoResumo()) {
 			result.add(new NotaFiscalData(
 					nf.numero(),
 					String.valueOf(nf.serie().numero()),
 					nf.emissao(),
-					nf.total().valor()));
+					nf.valor().valor(),
+					nf.publicoTipo(),
+					nf.publicoCodigo(),
+					nf.publicoNome(),
+					nf.tipo()));
 		}
 		
 		return result;

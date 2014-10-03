@@ -90,5 +90,7 @@ public abstract class Application extends WebMvcConfigurerAdapter{
             System.out.println(beanName);
         }
         
+        
+        
 	}
 }

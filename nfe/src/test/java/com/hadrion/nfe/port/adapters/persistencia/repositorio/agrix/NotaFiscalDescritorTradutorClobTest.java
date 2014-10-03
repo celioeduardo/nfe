@@ -1,15 +1,16 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
+import static org.junit.Assert.assertEquals;
+
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -26,8 +27,15 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.gson.JsonObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.hadrion.nfe.dominio.config.Application;
+import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.Serie;
+import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.DescritorNotaFiscalDeserializer;
+import com.hadrion.nfe.tipos.Cnpj;
+import com.hadrion.nfe.tipos.Dinheiro;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -36,9 +44,15 @@ public class NotaFiscalDescritorTradutorClobTest {
 
 	@Autowired
 	JdbcTemplate jdbc;
+	private GsonBuilder gsonBuilder;
+	private Gson gson;
 
 	@Before
 	public void setUp() {
+		gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer());
+		gson = gsonBuilder.create();
+		
 	}
 
 	@Test
@@ -48,38 +62,56 @@ public class NotaFiscalDescritorTradutorClobTest {
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
 				.withCatalogName("pcg_nf_json_adapter")
 				.withFunctionName("obterPendentes")
-				.declareParameters(new SqlParameter("empresa", Types.INTEGER))
-				.declareParameters(new SqlParameter("filial", Types.INTEGER))
+				.declareParameters(new SqlParameter("empresa", Types.DOUBLE))
+				.declareParameters(new SqlParameter("filial", Types.DOUBLE))
 				.declareParameters(new SqlParameter("inicio", Types.DATE))
 				.declareParameters(new SqlParameter("fim", Types.DATE))
-				.declareParameters(new SqlParameter("usuario", Types.VARCHAR))				
+				.declareParameters(new SqlParameter("id", Types.VARCHAR))
+				.declareParameters(new SqlParameter("usuario", Types.VARCHAR))
 				.declareParameters(
 						new SqlOutParameter("RETURN_VALUE", Types.CLOB));
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
 
-		params.addValue("empresa", 1, Types.INTEGER);
-		params.addValue("filial", null , Types.INTEGER);
-		params.addValue("inicio", data("01/09/2014"), Types.DATE);
-		params.addValue("fim", null, Types.DATE);
+		params.addValue("empresa",86675642000106L , Types.DOUBLE);
+		params.addValue("filial", 86675642000106L, Types.DOUBLE);
+		params.addValue("inicio", data("22/09/2014"), Types.DATE);
+		params.addValue("fim", data("22/09/2014"), Types.DATE);
+		params.addValue("id", "03ADF8A01D1727DDE050007F01002730", Types.VARCHAR);
 		params.addValue("usuario", "", Types.VARCHAR);
+		//params.addValue("notaFiscalId", "", Types.VARCHAR);
 
 		call.compile();
 
 		Clob clob = call.executeFunction(Clob.class, params);
 		String conteudo =  clob.getSubString(1, (int)clob.length());
-		JsonObject j = new JsonObject();
+
+		List<DescritorNotaFiscal> lista = Arrays.asList(gson.fromJson(conteudo, DescritorNotaFiscal[].class));
+		assertEquals(new DescritorNotaFiscal(new NotaFiscalId("03ADF8A01D1727DDE050007F01002730"),
+				"E",
+				new Cnpj(86675642000106L),
+				new Cnpj(86675642000106L),
+				204818L,
+				new Serie(2L),
+				data("22/09/14"),
+				data("22/09/14"),
+				"A",
+				157L,
+				"AKEMI YOSHIE YAMAGUCHI",
+				new Dinheiro(1000.))
+		,lista.get(0));
+
 		
 		//System.out.println(conteudo);
 		//System.out.println("TAMANHO DO CLOB: "+clob.length());
-//		clobToString(clob);
+		//clobToString(clob);
 //		Reader reader = null;
 //		reader = clob.getCharacterStream();
 //		System.out.println(clobToString(clob));
 
 	}
 
-	private String clobToString(Clob clob) {
+	/*private String clobToString(Clob clob) {
 		Reader reader = null;
 		try {
 			reader = clob.getCharacterStream();
@@ -101,7 +133,7 @@ public class NotaFiscalDescritorTradutorClobTest {
 				}
 		}
 		return clob.toString();
-	}
+	}*/
 	private Date data(String data){
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
 		try {

@@ -25,8 +25,8 @@ Ext.define('nfe.view.main.Main', {
             title: '{name}'
         },
         region: 'west',
-        html: '<ul><li>wwww loba loba boooommmmm!!!!</li></ul>',
-        width: 250,
+        html: '<ul><li>wwww</li></ul>',
+        width: 150,
         split: true,
         tbar: [{
             text: 'Button',
@@ -51,27 +51,41 @@ Ext.define('nfe.view.main.Main', {
                 model: 'NotaFiscal'
             },
             columns: [{
-          	    text: 'Número',
-                width: 100,
-                sortable: false,
-                hideable: false,
-                dataIndex: 'numero'
-            },{
-                text: 'Série',
-                width: 150,
-                dataIndex: 'serie'
-            },{
                 text: 'Emissão',
                 xtype: 'datecolumn',
                 format: 'd/m/Y',
-                flex: 1,
+                width: 100,
                 dataIndex: 'emissao'
+            },{
+                text: 'Tipo',
+                width: 50,
+                dataIndex: 'tipo'
+            },{
+          	    text: 'Número',
+                width: 90,
+                sortable: false,
+                hideable: false,
+                dataIndex: 'numero',
+                align: 'right'
+            },{
+                text: 'Série',
+                width: 80,
+                dataIndex: 'serie',
+                align: 'right'
+            },{
+                text: 'Público',
+                width: 250,
+                dataIndex: 'publicoNome'
             },{
                 text: 'Valor',
                 xtype:'numbercolumn',
-                flex: 1,
+                width: 100,                
                 format:'0.00',
-                dataIndex: 'valor'
+                dataIndex: 'valor',
+                align: 'right'
+            },{
+                text: 'Observação',
+                flex: 1
             }]
         }]
     }]

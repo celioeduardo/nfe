@@ -1,9 +1,13 @@
 Ext.define('nfe.model.NotaFiscal', {
     extend: 'nfe.model.Base',
-    fields: ['numero','serie','tipo',
-    {name: 'emissao', type: 'date'},
-    'valor'],
-
+    fields: ['numero',
+             'serie',
+		    {name: 'emissao', type: 'date'},
+		    'valor',
+		    'publicoTipo',
+		    'publicoCodigo',
+		    'publicoNome',
+		    'tipo'],
     proxy: {
         url : 'notas_fiscais/pendentes_autorizacao'
     }

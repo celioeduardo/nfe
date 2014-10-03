@@ -2,39 +2,60 @@ package com.hadrion.nfe.dominio.modelo.nf;
 
 import java.util.Date;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import com.hadrion.nfe.tipos.Cnpj;
+import com.hadrion.nfe.tipos.Dinheiro;
+
 public class DescritorNotaFiscal {
 	private NotaFiscalId notaFiscalId;
-	private Modelo modelo;
+	private String tipo;
+	private Cnpj empresa;
+	private Cnpj filial;
+	private Long numero; 
 	private Serie serie;
-	private Long numero;
-	private Date emissao;
+	private Date emissao; 
 	private Date dataHora;
-
+	private String publicoTipo;
+	private Long publicoCodigo;
+	private String publicoNome;
+	private Dinheiro valor;
+	
 	@SuppressWarnings("unused")
 	private DescritorNotaFiscal() {
 		super();
 	}
 
 	public DescritorNotaFiscal(NotaFiscalId notaFiscalId,
-			Modelo modelo,
-			Serie serie,
+			String tipo,
+			Cnpj empresa,
+			Cnpj filial,
 			Long numero, 
+			Serie serie,
 			Date emissao, 
-			Date dataHora) {
+			Date dataHora,
+			String publicoTipo,
+			Long publicoCodigo,
+			String publicoNome,
+			Dinheiro valor){
+	
 		this.notaFiscalId = notaFiscalId;
-		this.modelo=modelo;
-		this.serie=serie;
-		this.numero=numero;
-		this.emissao=emissao;
-		this.dataHora=dataHora;
+		this.tipo = tipo;
+		this.empresa = empresa;
+		this.filial = filial;
+		this.numero = numero;
+		this.serie = serie;
+		this.emissao = emissao;
+		this.dataHora = dataHora;
+		this.publicoTipo = publicoTipo;
+		this.publicoCodigo = publicoCodigo;
+		this.publicoNome = publicoNome;	
+		this.valor = valor;
 	}
 	
 	public NotaFiscalId notaFiscalId(){
 		return this.notaFiscalId;
-	}
-
-	public Modelo modelo() {
-		return modelo;
 	}
 	public Serie serie() {
 		return serie;
@@ -47,5 +68,82 @@ public class DescritorNotaFiscal {
 	}
 	public Date dataHora() {
 		return dataHora;
+	}
+	public String publicoTipo(){
+		return publicoTipo;
+	}
+	public String publicoNome(){
+		return publicoNome;
+	}
+	public Long publicoCodigo(){
+		return publicoCodigo;
+	}
+	public String tipo(){
+		return tipo;
+	}
+	
+	@Override
+	public boolean equals(Object objeto) {
+		boolean objetosIguais = false;
+
+		if (objeto != null && this.getClass() == objeto.getClass()) {
+			DescritorNotaFiscal objetoTipado = (DescritorNotaFiscal) objeto;
+			
+			objetosIguais = new EqualsBuilder()
+			.append(notaFiscalId, objetoTipado.notaFiscalId)
+			.append(serie, objetoTipado.serie)
+			.append(numero,  objetoTipado.numero)
+			.append(emissao, objetoTipado.emissao)
+			.append(dataHora, objetoTipado.dataHora)
+			.append(tipo, objetoTipado.tipo)
+			.append(empresa, objetoTipado.empresa)
+			.append(filial, objetoTipado.filial)
+			.append(publicoTipo, objetoTipado.publicoTipo)
+			.append(publicoCodigo, objetoTipado.publicoCodigo)
+			.append(publicoNome, objetoTipado.publicoNome)
+			.append(valor, objetoTipado.valor)
+			.isEquals();
+		}
+
+		return objetosIguais;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(3237,1367) 
+				.append(notaFiscalId)
+				.append(serie)
+				.append(numero)
+				.append(emissao)
+				.append(dataHora)			
+				.append(tipo)
+				.append(empresa)
+				.append(filial)
+				.append(publicoTipo)
+				.append(publicoCodigo)
+				.append(publicoNome)
+				.append(valor)
+				.toHashCode();		
+	}
+	
+	@Override
+	public String toString() {
+		return "DescritorNotaFiscal [notaFiscalId=" + notaFiscalId
+				+ ",serie=" + serie
+				+ ",numero=" + numero
+				+ ",emissao=" + emissao
+				+ ",dataHora=" + dataHora 
+				+ ",tipo=" + tipo 
+				+ ",empresa=" + empresa 
+				+ ",filial=" + filial 
+				+ ",publicoTipo=" + publicoTipo 
+				+ ",publicoCodigo=" + publicoCodigo 
+				+ ",publicoNome=" + publicoNome
+				+ ",valor=" + valor
+				+ "]";	
+	}
+
+	public Dinheiro valor() {
+		return valor;
 	}
 }
