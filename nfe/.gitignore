@@ -26,5 +26,5 @@ nfe/.gradle
 
 .temp/
 /gradlew.bat
-/gradle/
-/.gradle/
+##/gradle/
+##/.gradle/
