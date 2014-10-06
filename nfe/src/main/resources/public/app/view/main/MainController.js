@@ -22,5 +22,16 @@ Ext.define('nfe.view.main.MainController', {
         if (choice === 'yes') {
             //
         }
+    },
+    
+    onClickEnviar: function () {
+    	Ext.Msg.confirm('Confirmar', 'Enviar Notas?', 'enviarNotas', this);
+    },
+    
+    enviarNotas: function (choice) {
+    	if (choice === 'yes') {
+    		//pegar selecao, enviar para controler 
+    		
+    	}
     }
 });

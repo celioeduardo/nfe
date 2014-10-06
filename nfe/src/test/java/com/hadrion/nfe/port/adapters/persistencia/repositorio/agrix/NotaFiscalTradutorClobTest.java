@@ -1,8 +1,5 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -37,7 +34,7 @@ public class NotaFiscalTradutorClobTest {
 	public void setUp() {
 	}
 
-	@Test
+	@Test @Ignore
 	@Transactional
 	public void obterClob() throws SQLException {
 
@@ -68,28 +65,28 @@ public class NotaFiscalTradutorClobTest {
 //		System.out.println(clobToString(clob));
 
 	}
-
-	private String clobToString(Clob clob) {
-		Reader reader = null;
-		try {
-			reader = clob.getCharacterStream();
-			BufferedReader buffReader = new BufferedReader(reader);
-			String line = null;
-			StringBuffer buff = new StringBuffer();
-			while ((line = buffReader.readLine()) != null) {
-				buff.append(line);
-			}
-			return buff.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null)
-				try {
-					reader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-		}
-		return clob.toString();
+	@Test
+	@Transactional
+	public void obterNotas() throws SQLException {
+		
+		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
+		.withCatalogName("pcg_nf_json_adapter")
+		.withFunctionName("obterNotas")
+		.declareParameters(new SqlParameter("vc", Types.CLOB))
+		.declareParameters(
+				new SqlOutParameter("RETURN_VALUE", Types.CLOB));
+		
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		
+		params.addValue("vc", "'02931ADEA95F0FC5E050007F01001783','02CB7F2F30E0D13CE050007F01002AEB'", Types.CLOB);
+		
+		call.compile();
+		
+		Clob ret = call.executeFunction(Clob.class, params);
+		String conteudo =  ret.getSubString(1, (int)ret.length());
+		System.out.println(conteudo);
+		System.out.println("TAMANHO DO CLOB: "+ret.length());
+		
 	}
 }

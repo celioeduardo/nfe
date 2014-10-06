@@ -44,7 +44,8 @@ Ext.define('nfe.view.main.Main', {
             },
             tbar:[{
                 xtype:'button',
-                text:'Enviar'
+                text:'Enviar',
+                handler: 'onClickEnviar'
             }],
             autoLoad:true,
             store: {

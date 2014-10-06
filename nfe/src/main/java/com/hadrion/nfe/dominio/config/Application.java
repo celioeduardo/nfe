@@ -61,12 +61,6 @@ public abstract class Application extends WebMvcConfigurerAdapter{
 		return jacksonObjectMapper().getSerializationConfig();
 	}
 	
-	
-//	@Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/**").addResourceLocations("/public/**");
-//    }
-//	
 	@Bean
 	WebServiceTemplateFabrica webServiceTemplateFabrica(){
 		return new WebServiceTemplateFabrica();

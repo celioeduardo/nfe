@@ -20,16 +20,7 @@ public class NfeController {
 	
 	@RequestMapping("/pendentes_autorizacao")
 	public List<NotaFiscalData> pendentes_autorizacao(HttpServletRequest req){
-		List<NotaFiscalData> result = notaFiscalAplicacaoService.notasFicaisPendentesAutorizacao();
-		
-/*		for (NotaFiscalData nf : result) {
-			if ("E".equals(nf.getTipo()))
-				nf.setTipo("Entrada");
-			else
-				nf.setTipo("Saída");
-		}*/
-		
-		return result;
+		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacao();
 	}
 
 	
