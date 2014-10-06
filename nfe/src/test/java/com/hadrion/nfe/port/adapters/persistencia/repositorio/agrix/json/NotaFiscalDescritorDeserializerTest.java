@@ -12,25 +12,27 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
-import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
-import com.hadrion.nfe.dominio.modelo.nf.cobranca.Fatura;
+import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.Serie;
+import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 public class NotaFiscalDescritorDeserializerTest {
 	private static String JSON = 
 			"{\r\n" + 
-			"		\"id\" : \"0215C27A36D5B0E0E050007F01004D45\",\r\n" + 
+			"		\"id\" : \"03ADF8A01D1727DDE050007F01002730\",\r\n" + 
 			"		\"tipo\" : \"E\",\r\n" + 
 			"		\"empresa\" : 86675642000106,\r\n" + 
-			"		\"filial\" : 86675642000700,\r\n" + 
-			"		\"numero\" : 2121,\r\n" + 
-			"		\"serie\" : \"AE\",\r\n" + 
-			"		\"emissao\" : \"02/09/14\",\r\n" + 
-			"		\"movimentacao\" : \"02/09/14\",\r\n" + 
-			"		\"publicoTipo\" : \"C\",\r\n" + 
-			"		\"publicoCodigo\" : 56,\r\n" + 
-			"		\"publicoNome\" : \"CEREALISTA SIQUEIRANDRADE LTDA.         \"\r\n" + 
+			"		\"filial\" : 86675642000106,\r\n" + 
+			"		\"numero\" : 204818,\r\n" + 
+			"		\"serie\" : \"2\",\r\n" + 
+			"		\"emissao\" : \"22/09/14\",\r\n" + 
+			"		\"movimentacao\" : \"22/09/14\",\r\n" + 
+			"		\"publicoTipo\" : \"A\",\r\n" + 
+			"		\"publicoCodigo\" : 157,\r\n" + 
+			"		\"publicoNome\" : \"AKEMI YOSHIE YAMAGUCHI\",\r\n" + 
+			"		\"valor\" : 1000\r\n" + 
 			"	}";
 
 	private GsonBuilder gsonBuilder;
@@ -39,22 +41,29 @@ public class NotaFiscalDescritorDeserializerTest {
 	@Before
 	public void setUp(){
 		gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(Date.class, new CpfDeserializer());
-		gsonBuilder.registerTypeAdapter(Dinheiro.class, new DinheiroDeserializer());
+		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer());
 		gson = gsonBuilder.create();
 	}
 	
-//	@Test
-//	public void converter(){
-//		DescritorNotaFiscal descritorNotaFiscal = gson.fromJson(JSON, Cobranca.class);
-//		assertEquals(new Fatura("DM-183898", new Dinheiro(3641.4), Dinheiro.ZERO),cobranca.fatura());
-//		assertEquals(2,cobranca.quantidadeDuplicatas());
-//		
-//		assertEquals(new Duplicata("DM-183898/01", data("05/08/04"), new Dinheiro(2856)),
-//				cobranca.obterDuplicata(1));
-//		assertEquals(new Duplicata("DM-183898/02", data("29/09/04"), new Dinheiro(785.4)),
-//				cobranca.obterDuplicata(2));
-//	}
+	@Test
+	public void converter(){
+		
+		DescritorNotaFiscal descritor = gson.fromJson(JSON, DescritorNotaFiscal.class);
+		
+		assertEquals(new DescritorNotaFiscal(new NotaFiscalId("03ADF8A01D1727DDE050007F01002730"),
+				"E",
+				new Cnpj(86675642000106L),
+				new Cnpj(86675642000106L),
+				204818L,
+				new Serie(2L),
+				data("22/09/14"),
+				data("22/09/14"),
+				"A",
+				157L,
+				"AKEMI YOSHIE YAMAGUCHI",
+				new Dinheiro(1000.))
+		,descritor);
+	}
 	
 	private Date data(String data){
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yy");

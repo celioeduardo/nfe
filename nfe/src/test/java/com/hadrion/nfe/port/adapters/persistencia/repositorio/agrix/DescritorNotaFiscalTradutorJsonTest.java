@@ -30,7 +30,8 @@ public class DescritorNotaFiscalTradutorJsonTest {
 			"		\"movimentacao\" : \"02/09/14\",\r\n" + 
 			"		\"publicoTipo\" : \"C\",\r\n" + 
 			"		\"publicoCodigo\" : 56,\r\n" + 
-			"		\"publicoNome\" : \"CEREALISTA SIQUEIRANDRADE LTDA.         \"\r\n" + 
+			"		\"publicoNome\" : \"CEREALISTA SIQUEIRANDRADE LTDA.         \",\r\n" +
+			"		\"valor\":1000" + 
 			"}";
 
 	
