@@ -3,7 +3,7 @@ package com.hadrion.nfe.aplicacao.nf.data;
 import java.util.Date;
 
 public class NotaFiscalData {
-	
+	private String notaFiscalId;
 	private Long numero;
 	private String serie;
 	private Date emissao;
@@ -16,10 +16,11 @@ public class NotaFiscalData {
 	
 	public NotaFiscalData(){}
 	
-	public NotaFiscalData(Long numero, String serie, Date emissao,
+	public NotaFiscalData(String notaFiscalId,Long numero, String serie, Date emissao,
 			Double valor, String tipoPublico,Long codigoPublico,
 			String nomePublico,String tipo) {
 		super();
+		this.notaFiscalId=notaFiscalId;
 		this.numero = numero;
 		this.serie = serie;
 		this.emissao = emissao;
@@ -93,6 +94,14 @@ public class NotaFiscalData {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getNotaFiscalId() {
+		return notaFiscalId;
+	}
+
+	public void setNotaFiscalId(String id) {
+		this.notaFiscalId = id;
 	}
 
 }

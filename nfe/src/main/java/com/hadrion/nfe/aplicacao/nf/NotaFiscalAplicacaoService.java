@@ -23,7 +23,7 @@ public class NotaFiscalAplicacaoService {
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 		
 		for (DescritorNotaFiscal nf : repositorio.notasPendentesAutorizacaoResumo()) {
-			result.add(new NotaFiscalData(
+			result.add(new NotaFiscalData(nf.notaFiscalId().id(),
 					nf.numero(),
 					String.valueOf(nf.serie().numero()),
 					nf.emissao(),

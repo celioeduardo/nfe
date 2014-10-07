@@ -1,5 +1,6 @@
 Ext.define('nfe.model.NotaFiscal', {
     extend: 'nfe.model.Base',
+    idProperty: 'notaFiscalId',
     fields: ['numero',
              'serie',
 		    {name: 'emissao', type: 'date'},

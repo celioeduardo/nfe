@@ -37,57 +37,7 @@ Ext.define('nfe.view.main.Main', {
         xtype: 'tabpanel',
         items:[{
         	title: 'Notas',
-        	xtype:'grid',
-            selModel: {
-                selType: 'checkboxmodel',
-                mode: 'MULTI'
-            },
-            tbar:[{
-                xtype:'button',
-                text:'Enviar',
-                handler: 'onClickEnviar'
-            }],
-            autoLoad:true,
-            store: {
-                model: 'NotaFiscal'
-            },
-            columns: [{
-                text: 'Emissão',
-                xtype: 'datecolumn',
-                format: 'd/m/Y',
-                width: 100,
-                dataIndex: 'emissao'
-            },{
-                text: 'Tipo',
-                width: 50,
-                dataIndex: 'tipo'
-            },{
-          	    text: 'Número',
-                width: 90,
-                sortable: false,
-                hideable: false,
-                dataIndex: 'numero',
-                align: 'right'
-            },{
-                text: 'Série',
-                width: 80,
-                dataIndex: 'serie',
-                align: 'right'
-            },{
-                text: 'Público',
-                width: 250,
-                dataIndex: 'publicoNome'
-            },{
-                text: 'Valor',
-                xtype:'numbercolumn',
-                width: 100,                
-                format:'0.00',
-                dataIndex: 'valor',
-                align: 'right'
-            },{
-                text: 'Observação',
-                flex: 1
-            }]
+        	xtype:'notas-pendentes'
         }]
     }]
 });
