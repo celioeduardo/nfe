@@ -17,6 +17,10 @@ Ext.define('nfe.view.nf.NotasPendentes', {
         text:'Enviar',
         handler: 'onClickEnviar'
     },{
+        xtype:'button',
+        text:'Atualizar',
+        handler: 'onClickAtualizar'
+    },{
         xtype:'textfield',
         bind:{
             value: '{titulo}'
@@ -28,38 +32,22 @@ Ext.define('nfe.view.nf.NotasPendentes', {
         store: '{notasPendentes}',
         selection: '{notasSelecionadas}'
     },
+    hideHeaders: true,
     columns: [{
-        text: 'Emissão',
-        xtype: 'datecolumn',
-        format: 'd/m/Y',
-        width: 100,
-        dataIndex: 'emissao'
-    },{
-        text: 'Tipo',
-        width: 50,
-        dataIndex: 'tipo'
-    },{
         text: 'Número',
-        width: 90,
+        width: 300,
         sortable: false,
         hideable: false,
-        dataIndex: 'numero',
-        align: 'right'
-    },{
-        text: 'Série',
-        width: 80,
-        dataIndex: 'serie',
-        align: 'right'
-    },{
-        text: 'Público',
-        width: 250,
-        dataIndex: 'publicoNome'
+        renderer: 'rendererNumero',
+        dataIndex: 'numero'
+
     },{
         text: 'Valor',
         xtype:'numbercolumn',
-        width: 100,                
+        width: 150,                
         format:'0.00',
         dataIndex: 'valor',
+        renderer: 'rendererValor',
         align: 'right'
     },{
         text: 'Observação',

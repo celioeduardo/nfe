@@ -10,7 +10,15 @@ Ext.define('nfe.view.main.NotasPendentesModel', {
     stores:{
     	notasPendentes:{
     		model: 'NotaFiscal',
-    		autoLoad: true
+    		autoLoad: true,
+            proxy:{
+                url:'notas_fiscais/pendentes_autorizacao_resumo',
+                type: 'rest',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'rows'
+                }
+            }
     	}
     }
     

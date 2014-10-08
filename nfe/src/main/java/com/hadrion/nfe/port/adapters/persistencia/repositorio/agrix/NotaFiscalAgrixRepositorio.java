@@ -39,8 +39,8 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 	private GsonBuilder gsonBuilder;
 	private Gson gson;
 	
-	@Override
-	public List<NotaFiscal> notasPendentesAutorizacao() {
+	
+	public List<NotaFiscal> notasPendentesAutorizacaoOld() {
 		 return jdbc.query("Select * From VW_NFE_PENDENTES", new RowMapper<NotaFiscal>(){
 			@Override
 			public NotaFiscal mapRow(ResultSet rs, int rowNum){
@@ -49,7 +49,7 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 		});
 	}
 	@Override
-	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo() {
+	public List<NotaFiscal> notasPendentesAutorizacao() {
 
 		gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer());
@@ -71,8 +71,8 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 		
 		params.addValue("empresa",86675642000106L , Types.DOUBLE);
 		params.addValue("filial", 86675642000106L, Types.DOUBLE);
-		params.addValue("inicio", data("22/09/2014"), Types.DATE);
-		params.addValue("fim", data("22/09/2014"), Types.DATE);
+		params.addValue("inicio", data("24/09/2014"), Types.DATE);
+		params.addValue("fim", data("24/09/2014"), Types.DATE);
 		params.addValue("id", "", Types.VARCHAR);
 		params.addValue("usuario", "", Types.VARCHAR);
 		
@@ -86,8 +86,49 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 			conteudo=null;
 		}
 		
-		return Arrays.asList(gson.fromJson(conteudo, DescritorNotaFiscal[].class));
+		return Arrays.asList(gson.fromJson(conteudo, NotaFiscal[].class));
 
+	}
+	@Override
+	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo() {
+		
+		gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer());
+		gson = gsonBuilder.create();
+		
+		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
+		.withCatalogName("pcg_nf_json_adapter")
+		.withFunctionName("obterPendentes")
+		.declareParameters(new SqlParameter("empresa", Types.DOUBLE))
+		.declareParameters(new SqlParameter("filial", Types.DOUBLE))
+		.declareParameters(new SqlParameter("inicio", Types.DATE))
+		.declareParameters(new SqlParameter("fim", Types.DATE))
+		.declareParameters(new SqlParameter("id", Types.VARCHAR))
+		.declareParameters(new SqlParameter("usuario", Types.VARCHAR))
+		.declareParameters(
+				new SqlOutParameter("RETURN_VALUE", Types.CLOB));
+		
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		params.addValue("empresa",86675642000106L , Types.DOUBLE);
+		params.addValue("filial", 86675642000106L, Types.DOUBLE);
+		params.addValue("inicio", data("01/09/2014"), Types.DATE);
+		params.addValue("fim", data("30/09/2014"), Types.DATE);
+		params.addValue("id", "", Types.VARCHAR);
+		params.addValue("usuario", "", Types.VARCHAR);
+		
+		call.compile();
+		
+		Clob clob = call.executeFunction(Clob.class, params);
+		String conteudo;
+		try {
+			conteudo =  clob.getSubString(1, (int)clob.length());			
+		} catch ( SQLException  e) {
+			conteudo=null;
+		}
+		
+		return Arrays.asList(gson.fromJson(conteudo, DescritorNotaFiscal[].class));
+		
 	}
 
 	@Override

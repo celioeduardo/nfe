@@ -25,12 +25,45 @@ Ext.define('nfe.view.main.Main', {
             title: '{name}'
         },
         region: 'west',
-        html: '<ul><li>wwww</li></ul>',
-        width: 150,
+        html: '<ul>'+
+                '<li>Notas enviadas: 1999</li>' +
+                '<li>Notas Processadas: 1800</li>' +
+                '<li>Validade Certificado: 31/02/2015</li>' +
+                '<li>wwww</li>' +
+            '</ul>',
+        width: 200,
         split: true,
-        tbar: [{
-            text: 'Button',
-            handler: 'onClickButton'
+        items: [{
+            xtype: 'segmentedbutton',
+            vertical: true,
+            allowToggle: false,
+            items: [{
+                icon: null,
+                glyph: 72,
+                scale: 'large',
+                text: 'PENDENTES'
+            }, {
+                text: 'AUTORIZADAS',
+                icon: null,
+                glyph: 72,
+                scale: 'large',
+                menu: [
+                    { text: 'Menu Item 1' },
+                    { text: 'Menu Item 2' },
+                    { text: 'Menu Item 3' }
+                ]
+            }, {
+                xtype: 'splitbutton',
+                text: 'Eventos',
+                icon: null,
+                glyph: 72,
+                scale: 'large',
+                menu: [
+                    { text: 'Cancelamento' },
+                    { text: 'Inutilização' },
+                    { text: 'CC-e' }
+                ]
+            }]
         }]
     },{
         region: 'center',
@@ -39,5 +72,23 @@ Ext.define('nfe.view.main.Main', {
         	title: 'Notas',
         	xtype:'notas-pendentes'
         }]
-    }]
+    },{
+        xtype: 'panel',
+        bind: {
+            title: '{name}'
+        },
+        region: 'east',
+        html: '<ul>'+
+                '<li>Notas enviadas: 1999</li>' +
+                '<li>Notas Processadas: 1800</li>' +
+                '<li>Validade Certificado: 31/02/2015</li>' +
+                '<li>wwww</li>' +
+            '</ul>',
+        width: 250,
+        split: true,
+        tbar: [{
+            text: 'Button',
+            handler: 'onClickButton'
+        }]
+    },]
 });

@@ -10,7 +10,7 @@ Ext.define('nfe.model.NotaFiscal', {
 		    'publicoNome',
 		    'tipo'],
     proxy: {
-        url : 'notas_fiscais/pendentes_autorizacao'
+        url : 'notas_fiscais/pendentes_autorizacao_resumo'
     }
 
 });

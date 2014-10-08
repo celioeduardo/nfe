@@ -18,9 +18,13 @@ public class NfeController {
 	@Autowired
 	NotaFiscalAplicacaoService notaFiscalAplicacaoService; 
 	
+	@RequestMapping("/pendentes_autorizacao_resumo")
+	public List<NotaFiscalData> pendentes_autorizacao_resumo(HttpServletRequest req){
+		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacaoResumo();
+	}
 	@RequestMapping("/pendentes_autorizacao")
 	public List<NotaFiscalData> pendentes_autorizacao(HttpServletRequest req){
-		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacao();
+		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacao(); 
 	}
 
 	

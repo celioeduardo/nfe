@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
 @Service
@@ -19,7 +20,7 @@ public class NotaFiscalAplicacaoService {
 	@Autowired
 	private NotaFiscalRepositorio repositorio;
 	
-	public List<NotaFiscalData> notasFicaisPendentesAutorizacao(){
+	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(){
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 		
 		for (DescritorNotaFiscal nf : repositorio.notasPendentesAutorizacaoResumo()) {
@@ -32,6 +33,23 @@ public class NotaFiscalAplicacaoService {
 					nf.publicoCodigo(),
 					nf.publicoNome(),
 					nf.tipo()));
+		}
+		
+		return result;
+	}
+	public List<NotaFiscalData> notasFicaisPendentesAutorizacao(){
+		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
+		
+		for (NotaFiscal nf : repositorio.notasPendentesAutorizacao()) {
+			result.add(new NotaFiscalData(nf.notaFiscalId().id(),
+					nf.numero(),
+					String.valueOf(nf.serie().numero()),
+					nf.emissao(),
+					nf.total().valor(),
+					"C",
+					1L,
+					nf.destinatario().razaoSocial(),
+					nf.tipoOperacao().toString()));
 		}
 		
 		return result;
