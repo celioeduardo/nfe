@@ -7,7 +7,8 @@ Ext.define('nfe.view.main.MainModel', {
     alias: 'viewmodel.main',
 
     data: {
-        name: 'nfe'
+        name: 'nfe',
+        titulo: 'Nota Fiscal Eletrônica - 3.10'
     }
 
     //TODO - add data, formulas and/or methods to support your view

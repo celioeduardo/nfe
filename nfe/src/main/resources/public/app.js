@@ -4,6 +4,9 @@
  * Sencha Cmd when upgrading.
  */
 Ext.application({
+	requires: [
+        'nfe.*'
+    ],    
     name: 'nfe',
 
     extend: 'nfe.Application',

@@ -7,7 +7,11 @@
  */
 Ext.define('nfe.view.main.Main', {
     extend: 'Ext.container.Container',
-    requires:['Ext.grid.Panel','nfe.model.NotaFiscal'],
+    requires:['Ext.grid.Panel',
+        'nfe.model.NotaFiscal',
+        'Ext.layout.container.Border',
+        'nfe.view.main.Header'
+    ],
     xtype: 'app-main',
     
     controller: 'main',
@@ -20,10 +24,22 @@ Ext.define('nfe.view.main.Main', {
     },
 
     items: [{
+        /*region: 'north',
         xtype: 'panel',
-        bind: {
-            title: '{name}'
-        },
+        layout: 'border',
+        height: 100,    
+        title: 'Nota Fiscal Eletrônica - 3.10',
+        html:'<div style="font-size:large;font-weight: bold;">Empresa: COOPADAP - Cooperativa do Alto Paranaíba</div>'+
+             '<div style="padding: 2px 0px 0px 0px; font-weight: 400;font-size: 16px;line-height: 22px; font-family:Arial">Filial: 1 - Matriz</div>'+
+             '<hr style="margin: 2px">'+
+             '<div style="font-size: small;font-color=gray;color: yellow;font-style: italic;">Usuário - Kent Bek</div>',
+        minHeight: 75,
+        maxHeight: 150   */
+        id: 'app-header',
+        xtype: 'app-header',
+        region: 'north'
+    },{
+        xtype: 'panel',
         region: 'west',
         html: '<ul>'+
                 '<li>Notas enviadas: 1999</li>' +
@@ -36,33 +52,27 @@ Ext.define('nfe.view.main.Main', {
         items: [{
             xtype: 'segmentedbutton',
             vertical: true,
-            allowToggle: false,
+            type: 'vbox',
+            align: 'left',
+            width: 200,
             items: [{
-                icon: null,
-                glyph: 72,
                 scale: 'large',
-                text: 'PENDENTES'
-            }, {
-                text: 'AUTORIZADAS',
-                icon: null,
-                glyph: 72,
+                text: 'Pendentes'
+            },{
                 scale: 'large',
-                menu: [
-                    { text: 'Menu Item 1' },
-                    { text: 'Menu Item 2' },
-                    { text: 'Menu Item 3' }
-                ]
-            }, {
-                xtype: 'splitbutton',
-                text: 'Eventos',
-                icon: null,
-                glyph: 72,
+                text: 'Autorizadas'
+            },{
                 scale: 'large',
-                menu: [
-                    { text: 'Cancelamento' },
-                    { text: 'Inutilização' },
-                    { text: 'CC-e' }
-                ]
+                text: 'Cancelamento' 
+            },{
+                scale: 'large',
+                text: 'Inutilização'
+            },{
+                scale: 'large',
+                text: 'CC-e'
+            },{
+                scale: 'large',
+                text: 'Ambiente'                        
             }]
         }]
     },{
@@ -72,23 +82,5 @@ Ext.define('nfe.view.main.Main', {
         	title: 'Notas',
         	xtype:'notas-pendentes'
         }]
-    },{
-        xtype: 'panel',
-        bind: {
-            title: '{name}'
-        },
-        region: 'east',
-        html: '<ul>'+
-                '<li>Notas enviadas: 1999</li>' +
-                '<li>Notas Processadas: 1800</li>' +
-                '<li>Validade Certificado: 31/02/2015</li>' +
-                '<li>wwww</li>' +
-            '</ul>',
-        width: 250,
-        split: true,
-        tbar: [{
-            text: 'Button',
-            handler: 'onClickButton'
-        }]
-    },]
+    }]
 });

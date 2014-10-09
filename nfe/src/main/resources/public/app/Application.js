@@ -23,5 +23,6 @@ Ext.define('nfe.Application', {
     
     launch: function () {
         // TODO - Launch the application
-    }
+    },
+    glyphFontFamily: 'font-awesome-4.2.0'
 });
