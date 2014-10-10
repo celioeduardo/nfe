@@ -22,16 +22,16 @@ Ext.define('nfe.view.main.Header', {
         cls: 'app-header-title',
         html: document.title,
         flex: 1
-    },{
+    },/*{
         xtype: 'component',
         cls: 'app-header-title',
         html: 'Empresa/Filial',
         flex: 1
-    },{
+    },*/{
         xtype: 'component',
         id: 'app-header-username',
         cls: 'app-header-title',
-        html: 'USERNAME',
+        html: 'cavalohehe@hadrion.com.br',
         listeners: {
             click: 'onClickEnviar',
             element: 'el'
