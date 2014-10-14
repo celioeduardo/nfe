@@ -1,4 +1,4 @@
-Ext.define('nfe.view.main.NotasPendentesModel', {
+Ext.define('nfe.view.nf.NotasPendentesModel', {
     extend: 'Ext.app.ViewModel',
 
     alias: 'viewmodel.notas-pendentes',

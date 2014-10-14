@@ -1,6 +1,7 @@
 package com.hadrion.nfe.aplicacao.nf;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
 @Service
@@ -20,10 +22,12 @@ public class NotaFiscalAplicacaoService {
 	@Autowired
 	private NotaFiscalRepositorio repositorio;
 	
-	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(){
+	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(Double empresa,Double filial,Date inicio,Date fim,String usuario,String notaFiscalId){
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
-		
-		for (DescritorNotaFiscal nf : repositorio.notasPendentesAutorizacaoResumo()) {
+		NotaFiscalId notaFiscalIdFiltro = null;
+		if (notaFiscalId!=null)
+			notaFiscalIdFiltro=new NotaFiscalId(notaFiscalId);
+		for (DescritorNotaFiscal nf : repositorio.notasPendentesAutorizacaoResumo(empresa,filial,inicio,fim,usuario,notaFiscalIdFiltro)) {
 			result.add(new NotaFiscalData(nf.notaFiscalId().id(),
 					nf.numero(),
 					String.valueOf(nf.serie().numero()),

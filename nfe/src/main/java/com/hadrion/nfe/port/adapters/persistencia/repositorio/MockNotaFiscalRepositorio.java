@@ -1,5 +1,6 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +38,12 @@ public class MockNotaFiscalRepositorio implements NotaFiscalRepositorio {
 	}
 
 	@Override
-	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo() {
+	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
+			Double empresa, Double filial, Date inicio, Date fim,
+			String usuario, NotaFiscalId notaFiscalId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	
 } 

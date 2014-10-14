@@ -1,11 +1,11 @@
-Ext.define('nfe.view.nf.NotasPendentesController', {
+Ext.define('nfe.view.teste.NotasPendentesController', {
     extend: 'Ext.app.ViewController',
 
     requires: [
         'Ext.MessageBox'
     ],
 
-    alias: 'controller.notas-pendentes',
+    alias: 'controller.notas-pendentes-teste',
 
     onClickEnviar: function () {
 
@@ -31,14 +31,6 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
 
     aspas: function (s) {
         return "'" + s + "'";
-    },
-
-    onClickAtualizar: function (){
-        //console.log("url proxy:" + this.getStore().load({url:'newUrl'});
-            //pendentes_autorizacao_selecionadas
-        //    console.log("url proxy:" + JSON.stringify(this.getStore().getProxy()));
-        this.getViewModel().getStore('notasPendentes').getModel().getProxy().url = "notas_fiscais/pendentes_autorizacao";
-        //this.getViewModel().getStore('notasPendentes').reload();
     },
 
     rendererNumero: function(numero, metadata, rec){

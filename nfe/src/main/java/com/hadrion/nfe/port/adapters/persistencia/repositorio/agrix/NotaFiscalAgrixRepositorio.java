@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +91,7 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 
 	}
 	@Override
-	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo() {
+	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(Double empresa,Double filial,Date inicio,Date fim,String usuario,NotaFiscalId notaFiscalId) {
 		
 		gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer());
@@ -99,24 +100,50 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
 		.withCatalogName("pcg_nf_json_adapter")
 		.withFunctionName("obterPendentes")
+		/*.withoutProcedureColumnMetaDataAccess()
 		.declareParameters(new SqlParameter("empresa", Types.DOUBLE))
 		.declareParameters(new SqlParameter("filial", Types.DOUBLE))
 		.declareParameters(new SqlParameter("inicio", Types.DATE))
 		.declareParameters(new SqlParameter("fim", Types.DATE))
 		.declareParameters(new SqlParameter("id", Types.VARCHAR))
-		.declareParameters(new SqlParameter("usuario", Types.VARCHAR))
+		.declareParameters(new SqlParameter("usuario", Types.VARCHAR))*/
 		.declareParameters(
 				new SqlOutParameter("RETURN_VALUE", Types.CLOB));
 		
 		MapSqlParameterSource params = new MapSqlParameterSource();
+		/*if (empresa==null)
+			params.addValue("empresa",null, Types.DOUBLE);
+		else 
+			params.addValue("empresa",empresa, Types.DOUBLE);
 		
-		params.addValue("empresa",86675642000106L , Types.DOUBLE);
-		params.addValue("filial", 86675642000106L, Types.DOUBLE);
-		params.addValue("inicio", data("01/09/2014"), Types.DATE);
-		params.addValue("fim", data("30/09/2014"), Types.DATE);
-		params.addValue("id", "", Types.VARCHAR);
-		params.addValue("usuario", "", Types.VARCHAR);
+		if (filial==null)
+			params.addValue("filial", null, Types.DOUBLE);
+		else
+			params.addValue("filial", filial, Types.DOUBLE);
 		
+		inicio=null;
+		
+		if (inicio==null)
+			params.addValue("inicio", data("01/09/2014"), Types.DATE);
+		else
+			params.addValue("inicio", inicio, Types.DATE);
+		
+		fim=null;
+		if (fim==null)
+			params.addValue("fim", data("30/09/2014"), Types.DATE);
+		else
+			params.addValue("fim", fim, Types.DATE);
+		
+		if (notaFiscalId==null)
+			params.addValue("id", "", Types.VARCHAR);
+		else
+			params.addValue("id", notaFiscalId.id(), Types.VARCHAR);
+		
+		if (usuario==null)
+			params.addValue("usuario", "", Types.VARCHAR);
+		else
+			params.addValue("usuario", usuario, Types.VARCHAR);
+		*/
 		call.compile();
 		
 		Clob clob = call.executeFunction(Clob.class, params);

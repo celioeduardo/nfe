@@ -2,20 +2,16 @@
 $app-header-background-color: #1487AC;
 $app-header-text-color: #fff;
 $app-header-text-shadow-color: null;
-$app-header-use-gradient: true;
-
-@if $theme-name == 'ext-theme-classic' or $theme-name == 'ext-theme-gray' {
-    $app-header-background-color: darken($base-color, 55%);
-}
+$app-header-use-gradient: false;
 
 @if $theme-name == 'ext-theme-crisp' {
     $app-header-background-color: #1487AC;
-    $app-header-use-gradient: false;
+    $app-header-use-gradient: true;
 }
 
 .app-header {
     @if $app-header-use-gradient {
-        @include background-image(linear-gradient(top, lighten($app-header-background-color, 5), darken($app-header-background-color, 5)));
+        @include background-image(linear-gradient(top, lighten($app-header-background-color, 20), darken($app-header-background-color, 20)));
     } @else {
         background-color: $app-header-background-color;
     }

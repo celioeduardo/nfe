@@ -13,17 +13,17 @@ Ext.define('nfe.view.nf.NotasPendentes', {
         mode: 'MULTI'
     },
     tbar:[{
-        xtype:'button',
-        text:'Enviar',
-        handler: 'onClickEnviar'
-    },{
-        xtype:'button',
-        text:'Atualizar',
-        handler: 'onClickAtualizar'
-    },{
-        xtype:'textfield',
-        bind:{
-            value: '{titulo}'
+            xtype:'button',
+            text:'Enviar',
+            handler: 'onClickEnviar'
+        },{
+            xtype:'button',
+            text:'Atualizar',
+            handler: 'onClickAtualizar'
+        },{
+            xtype:'textfield',
+            bind:{
+                value: '{titulo}'
         }
     }],
     reference: 'gridNf',
@@ -32,25 +32,32 @@ Ext.define('nfe.view.nf.NotasPendentes', {
         store: '{notasPendentes}',
         selection: '{notasSelecionadas}'
     },
-    hideHeaders: true,
-    columns: [{
-        text: 'Número',
-        width: 300,
-        sortable: false,
-        hideable: false,
-        renderer: 'rendererNumero',
-        dataIndex: 'numero'
+        selModel: {
+        selType: 'checkboxmodel',
+        mode: 'MULTI'
+    },
 
-    },{
-        text: 'Valor',
-        xtype:'numbercolumn',
-        width: 150,                
-        format:'0.00',
-        dataIndex: 'valor',
-        renderer: 'rendererValor',
-        align: 'right'
-    },{
-        text: 'Observação',
-        flex: 1
-    }]
+    hideHeaders: true,
+    columns: [
+        {
+            text: 'Número',
+            width: 300,
+            sortable: false,
+            hideable: false,
+            renderer: 'rendererNumero',
+            dataIndex: 'numero'
+
+        },{
+            text: 'Valor',
+            xtype:'numbercolumn',
+            width: 150,                
+            format:'0.00',
+            dataIndex: 'valor',
+            renderer: 'rendererValor',
+            align: 'right'
+        },{
+            text: 'Observação',
+            flex: 1
+        }
+    ]
 });
