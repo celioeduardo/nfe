@@ -100,50 +100,38 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
 		.withCatalogName("pcg_nf_json_adapter")
 		.withFunctionName("obterPendentes")
-		/*.withoutProcedureColumnMetaDataAccess()
+		//.withoutProcedureColumnMetaDataAccess()
 		.declareParameters(new SqlParameter("empresa", Types.DOUBLE))
 		.declareParameters(new SqlParameter("filial", Types.DOUBLE))
 		.declareParameters(new SqlParameter("inicio", Types.DATE))
 		.declareParameters(new SqlParameter("fim", Types.DATE))
+		.declareParameters(new SqlParameter("usuario", Types.VARCHAR))
 		.declareParameters(new SqlParameter("id", Types.VARCHAR))
-		.declareParameters(new SqlParameter("usuario", Types.VARCHAR))*/
 		.declareParameters(
 				new SqlOutParameter("RETURN_VALUE", Types.CLOB));
 		
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		/*if (empresa==null)
-			params.addValue("empresa",null, Types.DOUBLE);
-		else 
-			params.addValue("empresa",empresa, Types.DOUBLE);
-		
-		if (filial==null)
-			params.addValue("filial", null, Types.DOUBLE);
-		else
-			params.addValue("filial", filial, Types.DOUBLE);
-		
-		inicio=null;
+		params.addValue("empresa",empresa, Types.DOUBLE);
+	
+		params.addValue("filial", filial, Types.DOUBLE);
 		
 		if (inicio==null)
 			params.addValue("inicio", data("01/09/2014"), Types.DATE);
 		else
 			params.addValue("inicio", inicio, Types.DATE);
 		
-		fim=null;
 		if (fim==null)
 			params.addValue("fim", data("30/09/2014"), Types.DATE);
 		else
 			params.addValue("fim", fim, Types.DATE);
 		
+		params.addValue("usuario", usuario, Types.VARCHAR);
+		
 		if (notaFiscalId==null)
 			params.addValue("id", "", Types.VARCHAR);
 		else
-			params.addValue("id", notaFiscalId.id(), Types.VARCHAR);
+			params.addValue("id", notaFiscalId.id(), Types.VARCHAR);			
 		
-		if (usuario==null)
-			params.addValue("usuario", "", Types.VARCHAR);
-		else
-			params.addValue("usuario", usuario, Types.VARCHAR);
-		*/
 		call.compile();
 		
 		Clob clob = call.executeFunction(Clob.class, params);
@@ -179,5 +167,31 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 
 	@Override
 	public void limpar() {}
+	@Override
+	public String queryToJson(String query) {
+		
+		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
+		.withCatalogName("pcg_nf_json_adapter")
+		.withFunctionName("queryToJson")
+		.declareParameters(new SqlParameter("v", Types.VARCHAR))
+		.declareParameters(
+				new SqlOutParameter("RETURN_VALUE", Types.CLOB));
+
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		params.addValue("v", query, Types.VARCHAR);
+		
+		call.compile();
+		
+		Clob clob = call.executeFunction(Clob.class, params);
+		String conteudo; 
+		try {
+			conteudo =  clob.getSubString(1, (int)clob.length());			
+		} catch ( SQLException  e) {
+			conteudo=null;
+		}
+		
+		return conteudo;
+	}
 
 }

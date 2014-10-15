@@ -47,5 +47,6 @@ Ext.define('nfe.view.configuracao.Configuracao', {
             }
         ];
         this.callParent();
+        
     }
 });

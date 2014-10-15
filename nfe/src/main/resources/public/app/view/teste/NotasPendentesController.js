@@ -7,30 +7,49 @@ Ext.define('nfe.view.teste.NotasPendentesController', {
 
     alias: 'controller.notas-pendentes-teste',
 
-    onClickEnviar: function () {
-
-        if (this.getView().getSelection().length==0){
-            Ext.Msg.alert('Selecionar','Nenhum item selecionado!');
-        } else {
-            Ext.Msg.confirm('Confirmar', 'Enviar Notas?', 'enviarNotas', this);
-        }
-    },
-
-    enviarNotas: function (choice) {
-        if (choice === 'yes') {
-            var s = this.getView().getSelection();
-
-            var temp = '';
-            for (var i = 0; i < s.length; i++) {
-                temp = temp + aspas(s[i].getId()) + ',';
-            };
-            temp = temp.substr(0,temp.length-1);
-            alert(temp);
-        }
-    },
-
     aspas: function (s) {
         return "'" + s + "'";
+    },
+
+    onClickEnviar: function () {
+
+        var s = this.getView().getSelection();
+
+        if (s.length==0){
+            Ext.Msg.alert('Selecionar','Nenhum item selecionado!');
+        } else {
+            Ext.Msg.confirm('Confirmar', 'Enviar Notas?', 
+                function (choice) {
+                    if (choice == 'yes') {                        
+                        var temp = '';
+                        for (var i = 0; i < s.length; i++) {
+                            temp = temp + "'" + s[i].get('NotaFiscalId') + "'" + ',';
+                        };
+                        temp = temp.substr(0,temp.length-1);
+                    }
+                    Ext.Msg.alert('Selecionadas',temp);
+                });
+        }
+    },
+
+    onClickAtualizar: function (){
+        //console.log("url proxy:" + this.getStore().load({url:'newUrl'});
+        //    console.log("url proxy:" + JSON.stringify(this.getStore().getProxy()));
+        //this.getViewModel().getStore('notasPendentes').getModel().getProxy().url = "notas_fiscais/pendentes_autorizacao";
+        //this.getViewModel().getStore('notasPendentes').reload();
+        var local = this.getViewModel().getStore('notasPendentes');
+        local.filter("NotaFiscalId" , "02931ADEA95F0FC5E050007F01001788");
+        local.reload();
+    },
+
+    onClickFiltrar: function (){
+        var local = this.getViewModel().getStore('notasPendentes');
+        var s = this.getView().getSelection();
+        for (var i = 0; i < s.length; i++) {
+            local.filter('NotaFiscalId' , s[i].get('NotaFiscalId'));
+        };
+
+        //local.reload();
     },
 
     rendererNumero: function(numero, metadata, rec){

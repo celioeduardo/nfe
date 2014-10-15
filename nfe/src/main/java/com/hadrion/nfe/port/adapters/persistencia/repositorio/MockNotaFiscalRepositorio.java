@@ -45,5 +45,11 @@ public class MockNotaFiscalRepositorio implements NotaFiscalRepositorio {
 		return null;
 	}
 
+	@Override
+	public String queryToJson(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 } 

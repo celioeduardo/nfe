@@ -47,9 +47,14 @@ Ext.define('nfe.view.main.Main', {
             bodyPadding: 2
         },
         items:[{
-            xtype:'notas-pendentes'
-        }
-
+            title: 'Autorizadas',
+            xtype:'notas-pendentes',
+            glyph: 0xf064,
+            selModel: {
+                selType: 'checkboxmodel',
+                mode: 'MULTI'
+            }
+        },
         /*{
             title: 'Pendentes',
             xtype:'notas-pendentes-teste',
@@ -63,7 +68,7 @@ Ext.define('nfe.view.main.Main', {
             bind:{
                 store: '{notasPendentes}'
             }
-        }*/,{
+        },*/{
             title: 'Autorizadas',
             xtype:'notas-pendentes-teste',
             glyph: 0xf087,
@@ -77,6 +82,7 @@ Ext.define('nfe.view.main.Main', {
             }
         },{
             title: 'Cancelamento',
+            xtype: 'tela-cancelamento',
             glyph: 0xf00d
         },{
             title: 'Inutilização',

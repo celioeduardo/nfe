@@ -8,10 +8,6 @@ Ext.define('nfe.view.nf.NotasPendentes', {
         session : true*/
     },
 
-    selModel: {
-        selType: 'checkboxmodel',
-        mode: 'MULTI'
-    },
     tbar:[{
             xtype:'button',
             text:'Enviar',
@@ -31,10 +27,6 @@ Ext.define('nfe.view.nf.NotasPendentes', {
         title: '{titulo}',
         store: '{notasPendentes}',
         selection: '{notasSelecionadas}'
-    },
-        selModel: {
-        selType: 'checkboxmodel',
-        mode: 'MULTI'
     },
 
     hideHeaders: true,

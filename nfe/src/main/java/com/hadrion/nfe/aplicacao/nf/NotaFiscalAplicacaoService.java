@@ -58,5 +58,7 @@ public class NotaFiscalAplicacaoService {
 		
 		return result;
 	}
-	
+	public String obterComboFilial(String query){
+		return repositorio.queryToJson(query);
+	}
 }

@@ -18,6 +18,10 @@ Ext.define('nfe.view.teste.NotasPendentes', {
         xtype:'button',
         text:'Atualizar',
         handler: 'onClickAtualizar'
+    },{
+        xtype:'button',
+        text:'Filtrar',
+        handler: 'onClickFiltrar'
     }],
     //reference: 'gridNf',
     layout: 'fit',

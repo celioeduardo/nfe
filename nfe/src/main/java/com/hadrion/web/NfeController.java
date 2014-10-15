@@ -24,19 +24,14 @@ public class NfeController {
 	NotaFiscalAplicacaoService notaFiscalAplicacaoService; 
 	
 	@RequestMapping(value="/notas_fiscais/pendentes_autorizacao_resumo", method = RequestMethod.GET)
-	public List<NotaFiscalData> pendentes_autorizacao_resumo(/*
-			@RequestParam(value="empresa",required=false,defaultValue="")String _empresa,
-			@RequestParam(value="filial",required=false,defaultValue="")String _filial,
-			@RequestParam(value="inicio",required=false,defaultValue="")String _inicio,
-			@RequestParam(value="fim",required=false,defaultValue="")String _fim,
-			@RequestParam(value="usuario",required=false,defaultValue="")String _usuario,
-			@RequestParam(value="notafiscalid",required=false,defaultValue="")String _notaFiscalId*/){
+	public List<NotaFiscalData> pendentes_autorizacao_resumo(
+			@RequestParam(value="empresa",required=false)Double empresa,
+			@RequestParam(value="filial",required=false)Double filial,
+			@RequestParam(value="inicio",required=false)Date inicio,
+			@RequestParam(value="fim",required=false)Date fim,
+			@RequestParam(value="usuario",required=false)String usuario,
+			@RequestParam(value="notafiscalid",required=false)String notaFiscalId){
 		
-		Double empresa=null;Double filial=null;Date inicio=null;Date fim=null;String usuario=null;String notaFiscalId=null;
-		
-		//empresa = Double.parseDouble(_empresa);
-		//filial = Double.parseDouble(_filial);
-
 		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacaoResumo(empresa,filial,inicio,fim,usuario,notaFiscalId);
 	}
 	@RequestMapping("/notas_fiscais/pendentes_autorizacao")
@@ -44,14 +39,14 @@ public class NfeController {
 		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacao(); 
 	}
 	@RequestMapping("/notas_fiscais/configuracao")
-	public Map<String, String> configuracao(HttpServletRequest req){
-		HashMap<String, String> mapa= new HashMap<String, String>();		
-		mapa.put("COD_EMPRESA" , "1");
-		mapa.put("COD_CIDADE" , "621");
-		mapa.put("NOM_EMPRESA" , "COOPERATIVA AGROPECUARIA DO ALTO PARANAIBA - COOPADAP");
-		mapa.put("NOM_FANTASIA" , "COOPADAP");
-		mapa.put("NOM_EMPR_RELAT" , "COOPERATIVA AGROPECUARIA DO ALTO PARANAIBA");
-		return mapa; 
+	public String configuracao(HttpServletRequest req){
+		return "[{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"REGISTRO AUTOMATICO\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"CAFE\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"CAFE TERCEIROS\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"CAFE **ARAX\\u00C1**\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"HORTI FRUTI\"},{\"NUM_CNPJ\":86675642000882,\"NOM_CURTO_FILIAL\":\"LAVADOR - COOPADAP\"},{\"NUM_CNPJ\":86675642000963,\"NOM_CURTO_FILIAL\":\"COOPADAP RURAL\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"GRAOS\"},{\"NUM_CNPJ\":86675642000700,\"NOM_CURTO_FILIAL\":\"EERP-OUTRAS CULTURAS\"},{\"NUM_CNPJ\":86675642000700,\"NOM_CURTO_FILIAL\":\"ESTACAO EXPERIMENTAL\"},{\"NUM_CNPJ\":86675642000297,\"NOM_CURTO_FILIAL\":\"UND. ALHO\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"LOJA INSUMOS\"}]"; 
+	}
+	@RequestMapping("/notas_fiscais/combofilial")
+	public String combofilial(
+			@RequestParam(value="query",required=false,
+			defaultValue="select NUM_CNPJ,nom_curto_filial from cad_filial where cod_empresa = 1")String query){
+		return notaFiscalAplicacaoService.obterComboFilial(query); 
 	}
 	
 	@RequestMapping("/barra")
@@ -62,5 +57,4 @@ public class NfeController {
 	public String home(HttpServletRequest req){
 		return "home";
 	}
-	
 }
