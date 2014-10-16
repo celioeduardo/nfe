@@ -8,7 +8,24 @@ Ext.define('nfe.view.main.MainModel', {
 
     data: {
         name: 'nfe',
-        titulo: 'Nota Fiscal Eletrônica - 3.10'
+        titulo: 'Nota Fiscal Eletrônica - 3.10',
+        empresa: -1,
+        filial: -1
+    },
+    stores:{
+    	empresaFilial:{
+    		fields: ['NUM_CNPJ','NOM_CURTO_FILIAL'],		
+    		//model: 'NotaFiscal',
+    		autoLoad: true,
+            proxy:{
+                url : 'notas_fiscais/combofilial',
+                type: 'rest',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'rows'
+                }
+            }
+    	}
     }
 
     //TODO - add data, formulas and/or methods to support your view

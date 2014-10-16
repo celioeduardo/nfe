@@ -22,12 +22,7 @@ Ext.define('nfe.view.main.Header', {
         cls: 'app-header-title',
         html: document.title,
         flex: 1
-    },/*{
-        xtype: 'component',
-        cls: 'app-header-title',
-        html: 'Empresa/Filial',
-        flex: 1
-    },*/{
+    },{
         xtype: 'component',
         id: 'app-header-username',
         cls: 'app-header-title',
@@ -39,3 +34,10 @@ Ext.define('nfe.view.main.Header', {
         margin: '0 10 0 0'
     }]
 });
+
+/*{
+        xtype: 'component',
+        cls: 'app-header-title',
+        html: 'Empresa/Filial',
+        flex: 1
+    },*/

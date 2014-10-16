@@ -14,6 +14,15 @@ Ext.define('nfe.view.main.MainController', {
 
     alias: 'controller.main',
 
+    onChangeFilial: function () {
+        var me = this;
+        var combo = Ext.getCmp('empresaFilial');
+        //Ext.Msg.alert('empresa',this.getViewModel().getData().empresa);
+        me.getView().getData().filial=combo.getValue();
+        //me.getViewModel().getStore('notasPendentes').load();
+    }
+
+/*
     onClickButton: function () {
         Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
     },
@@ -54,5 +63,5 @@ Ext.define('nfe.view.main.MainController', {
         return Ext.String.format(
             '<div style="font-size: large;font-weight: bold;font-style: italic;margin-top: 20px;">{0}</div>',
             "R$ " + Ext.util.Format.number(valor,'0,000.00'));
-    }
+    }*/
 });

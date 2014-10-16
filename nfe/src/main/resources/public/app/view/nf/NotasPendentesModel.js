@@ -14,6 +14,10 @@ Ext.define('nfe.view.nf.NotasPendentesModel', {
             proxy:{
                 url:'notas_fiscais/pendentes_autorizacao_resumo',
                 type: 'rest',
+                extraParams:{
+                    "empresa":"{empresa}",
+                    "filial":"{filial}"
+                },
                 reader: {
                     type: 'json',
                     rootProperty: 'rows'

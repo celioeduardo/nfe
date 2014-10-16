@@ -37,7 +37,11 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
         //console.log("url proxy:" + this.getStore().load({url:'newUrl'});
             //pendentes_autorizacao_selecionadas
         //    console.log("url proxy:" + JSON.stringify(this.getStore().getProxy()));
-        this.getViewModel().getStore('notasPendentes').getModel().getProxy().url = "notas_fiscais/pendentes_autorizacao";
+        this.getViewModel().getStore('notasPendentes').load(
+            {"params":{
+                "notafiscalid":"03F79B1D8D397592E050007F01005CC8"
+            }
+        });
         //this.getViewModel().getStore('notasPendentes').reload();
     },
 

@@ -45,7 +45,7 @@ public class NfeController {
 	@RequestMapping("/notas_fiscais/combofilial")
 	public String combofilial(
 			@RequestParam(value="query",required=false,
-			defaultValue="select NUM_CNPJ,nom_curto_filial from cad_filial where cod_empresa = 1")String query){
+			defaultValue="select NUM_CNPJ,NUM_CNPJ||' : '||cod_empresa||'/'||COD_FILIAL||' - '||nom_curto_filial nom_curto_filial from cad_filial where cod_empresa = 1")String query){
 		return notaFiscalAplicacaoService.obterComboFilial(query); 
 	}
 	
