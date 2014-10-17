@@ -44,6 +44,9 @@ Ext.define('nfe.view.main.Main', {
                 editable: false, 
                 //queryMode: 'local', 
                 //flex: 1,
+                //forceSelection: true,
+                emptyText: 'Selecione uma Empresa/Filial...',
+                //selectOnFocus: true,                
                 width:350,
                 valueField: 'NUM_CNPJ', 
                 bind:{
@@ -51,7 +54,7 @@ Ext.define('nfe.view.main.Main', {
                 },
                 //handler: 'onClickEnviar',
                 listeners: {
-                    select: 'onChangeFilial'/*function(combo, record, index) {
+                    select: 'onChangeFilial(combo)'/*function(combo, record, index) {
                         
                         onChangeFilial();
 

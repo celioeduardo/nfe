@@ -9,7 +9,7 @@ Ext.define('nfe.view.main.MainModel', {
     data: {
         name: 'nfe',
         titulo: 'Nota Fiscal Eletrônica - 3.10',
-        empresa: -1,
+        empresa: 86675642000106,
         filial: -1
     },
     stores:{

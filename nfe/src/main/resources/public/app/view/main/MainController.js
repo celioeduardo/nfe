@@ -14,12 +14,11 @@ Ext.define('nfe.view.main.MainController', {
 
     alias: 'controller.main',
 
-    onChangeFilial: function () {
-        var me = this;
-        var combo = Ext.getCmp('empresaFilial');
+    onChangeFilial: function (combo) {
         //Ext.Msg.alert('empresa',this.getViewModel().getData().empresa);
-        me.getView().getData().filial=combo.getValue();
-        //me.getViewModel().getStore('notasPendentes').load();
+        //me.getViewModel().getData().filial=combo.getValue();
+        this.getViewModel().setData({filial:combo.getValue()});
+        Ext.getCmp('notas-pendentes').getStore('notasPendentes').load();
     }
 
 /*

@@ -3,6 +3,7 @@ Ext.define('nfe.view.nf.NotasPendentes', {
     requires:['Ext.grid.Panel','nfe.model.NotaFiscal'],
     xtype: 'notas-pendentes',
     controller: 'notas-pendentes',
+    id:'notas-pendentes',
     viewModel: {
         type: 'notas-pendentes'/*,
         session : true*/
@@ -20,8 +21,8 @@ Ext.define('nfe.view.nf.NotasPendentes', {
             xtype:'textfield',
             bind:{
                 value: '{titulo}'
-        }
-    }],
+            }    
+        }],
     reference: 'gridNf',
     bind:{
         title: '{titulo}',
