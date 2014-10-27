@@ -61,4 +61,8 @@ public class NotaFiscalAplicacaoService {
 	public String obterComboFilial(String query){
 		return repositorio.queryToJson(query);
 	}
+	public String obterDanfe(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

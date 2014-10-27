@@ -1,16 +1,34 @@
 package com.hadrion.web;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRXmlDataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hadrion.nfe.aplicacao.nf.NotaFiscalAplicacaoService;
@@ -45,10 +63,42 @@ public class NfeController {
 	@RequestMapping("/notas_fiscais/combofilial")
 	public String combofilial(
 			@RequestParam(value="query",required=false,
-			defaultValue="select NUM_CNPJ,NUM_CNPJ||' : '||cod_empresa||'/'||COD_FILIAL||' - '||nom_curto_filial nom_curto_filial from cad_filial where cod_empresa = 1")String query){
+			defaultValue="select NUM_CNPJ,cod_empresa||'/'||COD_FILIAL||' - '||nom_curto_filial nom_curto_filial from cad_filial where cod_empresa = 1 and cod_filial > 0")String query){
 		return notaFiscalAplicacaoService.obterComboFilial(query); 
 	}
-	
+	@RequestMapping(value="/notas_fiscais/danfe", method = RequestMethod.GET)
+	@ResponseBody
+	public FileSystemResource danfe(HttpServletResponse response) throws JRException{
+        
+		response.setContentType("application/pdf");
+		
+		JasperReport jasperReport;
+		JasperPrint jasperPrint;
+
+		File xmlFile = new File("src/test/resources/report/nfe.xml");  
+        JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/nfeProc/NFe/infNFe/det");
+        
+        jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
+        jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
+        JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
+        
+        response.setHeader("Content-Disposition", "attachment; filename=src/test/resources/report/danfe.pdf"); 
+        return new FileSystemResource("src/test/resources/report/danfe.pdf");
+
+	}
+	@RequestMapping(value = "/notas_fiscais/danfe2", method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> downloadStuff(@PathVariable int stuffId)
+	                                                                  throws IOException {
+	    File file = new File("src/test/resources/report/nfe.xml");
+
+	    HttpHeaders respHeaders = new HttpHeaders();
+	    respHeaders.setContentType(new MediaType("application", "pdf")); // ("application/pdf");
+	    respHeaders.setContentLength(12345678);
+	    respHeaders.setContentDispositionFormData("attachment", "danfe.pdf");
+
+	    InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
+	    return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
+	}	
 	@RequestMapping("/barra")
 	public String index(HttpServletRequest req){
 		return "Uhuhuhuhuh - Spring Boot is ON id:"+req.getSession().getId();

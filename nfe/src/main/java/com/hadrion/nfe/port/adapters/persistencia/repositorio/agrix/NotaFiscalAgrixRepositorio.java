@@ -115,15 +115,9 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 	
 		params.addValue("filial", filial, Types.DOUBLE);
 		
-		if (inicio==null)
-			params.addValue("inicio", data("01/09/2014"), Types.DATE);
-		else
-			params.addValue("inicio", inicio, Types.DATE);
+		params.addValue("inicio", inicio, Types.DATE);
 		
-		if (fim==null)
-			params.addValue("fim", data("30/09/2014"), Types.DATE);
-		else
-			params.addValue("fim", fim, Types.DATE);
+		params.addValue("fim", fim, Types.DATE);
 		
 		params.addValue("usuario", usuario, Types.VARCHAR);
 		
@@ -188,6 +182,7 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 		try {
 			conteudo =  clob.getSubString(1, (int)clob.length());			
 		} catch ( SQLException  e) {
+			System.out.println(e.getMessage());
 			conteudo=null;
 		}
 		

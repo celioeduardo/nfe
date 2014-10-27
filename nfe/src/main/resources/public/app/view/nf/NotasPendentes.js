@@ -8,7 +8,6 @@ Ext.define('nfe.view.nf.NotasPendentes', {
         type: 'notas-pendentes'/*,
         session : true*/
     },
-
     tbar:[{
             xtype:'button',
             text:'Enviar',

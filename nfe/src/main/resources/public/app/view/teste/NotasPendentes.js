@@ -16,8 +16,10 @@ Ext.define('nfe.view.teste.NotasPendentes', {
         handler: 'onClickEnviar'
     },{
         xtype:'button',
-        text:'Atualizar',
-        handler: 'onClickAtualizar'
+        text:'Danfe',
+        //handler: 'onClickDanfe',
+        href: '/notas_fiscais/danfe',
+        target:'_blank'
     },{
         xtype:'button',
         text:'Filtrar',

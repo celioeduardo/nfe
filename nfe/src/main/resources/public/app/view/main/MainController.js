@@ -17,8 +17,13 @@ Ext.define('nfe.view.main.MainController', {
     onChangeFilial: function (combo) {
         //Ext.Msg.alert('empresa',this.getViewModel().getData().empresa);
         //me.getViewModel().getData().filial=combo.getValue();
-        this.getViewModel().setData({filial:combo.getValue()});
-        Ext.getCmp('notas-pendentes').getStore('notasPendentes').load();
+        //this.getViewModel().setData({filial:combo.getValue()});
+        //Ext.getCmp('notas-pendentes').getStore('notasPendentes').load();
+        Ext.getCmp('notas-pendentes').getStore('notasPendentes').load({
+            params:{
+                'filial': combo.getValue()
+            } 
+        });
     }
 
 /*

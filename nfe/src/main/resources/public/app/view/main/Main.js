@@ -40,7 +40,7 @@ Ext.define('nfe.view.main.Main', {
                 xtype: 'combobox',
                 id:'empresaFilial',
                 displayField: 'NOM_CURTO_FILIAL', 
-                scope       : this,
+                //scope       : this,
                 editable: false, 
                 //queryMode: 'local', 
                 //flex: 1,
@@ -54,8 +54,7 @@ Ext.define('nfe.view.main.Main', {
                 },
                 //handler: 'onClickEnviar',
                 listeners: {
-                    select: 'onChangeFilial(combo)'/*function(combo, record, index) {
-                        
+                    select: 'onChangeFilial'/*function(combo, record, index) {
                         onChangeFilial();
 
                         Ext.toast({
