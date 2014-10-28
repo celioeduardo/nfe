@@ -19,10 +19,7 @@ public class MockNotaFiscalRepositorio implements NotaFiscalRepositorio {
 
 	private Map<String,NotaFiscal> store=new HashMap<String, NotaFiscal>();
 	
-	@Override
-	public List<NotaFiscal> notasPendentesAutorizacao() {		
-		return null;
-	}
+
 	
 	public void salvar(NotaFiscal notaFiscal){
 		store.put(notaFiscal.notaFiscalId().id(), notaFiscal);
@@ -47,6 +44,12 @@ public class MockNotaFiscalRepositorio implements NotaFiscalRepositorio {
 
 	@Override
 	public String queryToJson(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas) {
 		// TODO Auto-generated method stub
 		return null;
 	}
