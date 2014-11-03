@@ -68,7 +68,8 @@
 			"valor" : 267.05,
 			"st" : "01"
 		}
-    }
+    },
+    "informacaoAdicional" : "ADICIONAL"
   }, {
     "produtoId" : "013924F5A00A4CC4E050007F010060FB",
     "codigo" : "8578",
@@ -128,7 +129,8 @@
 			"valor" : 267.05,
 			"st" : "01"
 		}
-    }
+    },
+    "informacaoAdicional" : "ADICIONAL"
   }, {
     "produtoId" : "013924F5A00F4CC4E050007F010060FB",
     "codigo" : "8583",
@@ -187,7 +189,8 @@
 			"valor" : 267.05,
 			"st" : "01"
 		}
-    }
+    },
+    "informacaoAdicional" : "ADICIONAL"
   }, {
     "produtoId" : "013924F5A1C84CC4E050007F010060FB",
     "codigo" : "8452",
@@ -246,7 +249,8 @@
 			"valor" : 267.05,
 			"st" : "01"
 		}
-    }
+    },
+    "informacaoAdicional" : "ADICIONAL"
   }],
   "referencias" : [{
     "modelo" : "55",

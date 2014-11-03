@@ -37,7 +37,7 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		final JsonObject j = jsonSource.getAsJsonObject();
 		
 		String codigo = null,descricao = null,nve=null,extipi=null,unidadeComercial=null
-				,unidadeTributavel=null;
+				,unidadeTributavel=null,informacaoAdicional=null;
 		Gtin gtin = null,gtinTributavel=null;
 		Ncm ncm=null; 
 		Cfop cfop=null;
@@ -68,14 +68,14 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		acessorias = new Dinheiro(d(j,"acessorias"));
 		exportacao = exportacao(j);
 		combustivel = null;	
-		
+		informacaoAdicional = s(j,"informacaoAdicional");
 		final Item item = new Item(
 				new DescritorProduto(codigo, gtin, descricao, ncm, nve, extipi, cfop, unidadeComercial, 
 						quantidadeComercial, valorUnitarioComercializacao, valorTotalBruto, gtinTributavel, 
 						unidadeTributavel, quantidadeTributavel, valorUnitarioTributacao, frete, seguro, 
 						desconto, acessorias, exportacao, combustivel),
-				imposto(j),//IMPOSTO
-				"ADICIONAL");//INFORMACAO ADICIONAL
+				imposto(j),
+				informacaoAdicional);
 		
 		return item;
 	}

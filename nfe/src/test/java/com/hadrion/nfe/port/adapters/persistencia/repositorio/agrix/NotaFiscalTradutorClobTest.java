@@ -65,7 +65,7 @@ public class NotaFiscalTradutorClobTest {
 //		System.out.println(clobToString(clob));
 
 	}
-	@Test
+	@Test @Ignore
 	@Transactional
 	public void obterNotas() throws SQLException {
 		

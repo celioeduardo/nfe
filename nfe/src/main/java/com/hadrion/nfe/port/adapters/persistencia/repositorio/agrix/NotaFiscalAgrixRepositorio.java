@@ -92,7 +92,7 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 		.declareParameters(new SqlParameter("inicio", Types.DATE))
 		.declareParameters(new SqlParameter("fim", Types.DATE))
 		.declareParameters(new SqlParameter("usuario", Types.VARCHAR))
-		.declareParameters(new SqlParameter("id", Types.VARCHAR))
+		.declareParameters(new SqlParameter("notafiscalid", Types.VARCHAR))
 		.declareParameters(
 				new SqlOutParameter("RETURN_VALUE", Types.CLOB));
 		
@@ -103,9 +103,9 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 		params.addValue("fim", fim, Types.DATE);		
 		params.addValue("usuario", usuario, Types.VARCHAR);		
 		if (notaFiscalId==null)
-			params.addValue("id", "", Types.VARCHAR);
+			params.addValue("notafiscalid", "", Types.VARCHAR);
 		else
-			params.addValue("id", notaFiscalId.id(), Types.VARCHAR);			
+			params.addValue("notafiscalid", notaFiscalId.id(), Types.VARCHAR);			
 		
 		call.compile();
 		

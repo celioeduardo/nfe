@@ -95,10 +95,19 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 		return new NotaFiscalTradutorJson(j.get("observacaoFisco").toString()).converterObservacao();
 	}
 	private Informacao informacaoContribuinte(JsonObject j){
-		return new NotaFiscalTradutorJson(j.get("observacao").toString()).converterObservacao();
+		if (tem(j,"observacao")){
+			return new NotaFiscalTradutorJson(j.get("observacao").toString()).converterObservacao();
+		}
+		return null;
 	}
 	private Exportacao exportacao(JsonObject j){
-		return new NotaFiscalTradutorJson(j.get("exportacao").toString()).converterExportacao();
+		if (tem(j,"exportacao")){		
+			return new NotaFiscalTradutorJson(j.get("exportacao").toString()).converterExportacao();
+		}
+		return null;
+	}
+	boolean tem(JsonObject j, String propriedade){
+		return j.has(propriedade);
 	}
 	
 }

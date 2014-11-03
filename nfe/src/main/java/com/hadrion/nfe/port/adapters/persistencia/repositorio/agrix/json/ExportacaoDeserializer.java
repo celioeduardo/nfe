@@ -17,7 +17,7 @@ public class ExportacaoDeserializer implements JsonDeserializer<Exportacao>{
 			JsonDeserializationContext arg2) throws JsonParseException {
 		
 		final JsonObject j = jsonSource.getAsJsonObject();
-		
+		//TODO exportacao complementar
 		Exportacao exportacao = new Exportacao(Uf.valueOf(s(j,"uf")),s(j,""),s(j,""));
 		return exportacao;
 	}
