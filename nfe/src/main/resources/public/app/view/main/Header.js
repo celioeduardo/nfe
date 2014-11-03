@@ -26,7 +26,7 @@ Ext.define('nfe.view.main.Header', {
         xtype: 'component',
         id: 'app-header-username',
         cls: 'app-header-title',
-        html: 'cavalohehe@hadrion.com.br',
+        html: 'teste@hadrion.com.br',
         listeners: {
             click: 'onClickEnviar',
             element: 'el'

@@ -24,6 +24,15 @@ Ext.define('nfe.view.main.MainController', {
                 'filial': combo.getValue()
             } 
         });
+        Ext.toast({
+            title: 'Trocando Empresa...aguarde',
+            //ui: 'navigation',
+            html: combo.getValue() + ' - ' + combo.getRawValue(),
+            align: 't',
+            bodyPadding: 10,
+            width:350
+        });
+
     }
 
 /*

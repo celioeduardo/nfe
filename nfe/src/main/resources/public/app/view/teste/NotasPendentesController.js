@@ -57,14 +57,16 @@ Ext.define('nfe.view.teste.NotasPendentesController', {
             es = rec.get('tipo') == 'E' ? 'entrada' : 'saída';
 
         return Ext.String.format(
-            '<div style="font-size:x-large;font-weight: bold;">{0}</div>'+
-            '<div style="padding: 2px 0px 0px 0px; font-weight: 400;font-size: 18px;line-height: 22px; font-family:Arial">{1}</div>'+
-            '<hr style="margin: 2px">'+
-            '<div style="font-size: small;font-color=gray;color: gray;font-style: italic;">{2} - emitida em {3}</div>',
+            '<div style="padding: 4px 0px 0px 0px; font-size  :large ;font-weight: bold;">{0}</div>'+
+            '<div align=right style="padding: 4px 0px 0px 0px; font-size  :large ;font-weight: bold;">{4}</div>'+
+            '<div style="padding: 4px 0px 0px 0px; font-weight: 400  ;font-size  : 18px;line-height: 40px; font-family:Arial">{1}</div>'+
+            '<hr style="margin: 4px">'+
+            '<div style="font-size: small;font-color=red;color: green;font-style: italic;">{2} - emitida em {3}</div>',
             nf,
             rec.get('publicoNome'),
             es,
-            Ext.util.Format.date(rec.get('emissao'),'d/m/Y'));
+            Ext.util.Format.date(rec.get('emissao'),'d/m/Y'),
+            "R$ " + Ext.util.Format.number(rec.get('valor'),'0,000.00'));
     },
 
     rendererValor: function(valor, metadata, rec){

@@ -71,7 +71,7 @@ Ext.define('nfe.view.main.Main', {
         },   
         region: 'center',
         xtype: 'tabpanel',
-        ui: 'navigation',
+        //ui: 'navigation',
         tabPosition: 'left',
         tabRotation: 0,
         tabBar: {
@@ -103,7 +103,7 @@ Ext.define('nfe.view.main.Main', {
                 store: '{notasPendentes}'
             }
         },*/{
-            title: 'Autorizadas',
+            title: 'Autorizadas old',
             xtype:'notas-pendentes-teste',
             glyph: 0xf087,
             reference: 'gridAutorizada',

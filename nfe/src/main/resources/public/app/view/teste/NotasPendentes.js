@@ -30,13 +30,14 @@ Ext.define('nfe.view.teste.NotasPendentes', {
     //hideHeaders: true,
     columns: [{
         text: 'Número',
-        width: 300,
+        width: 400,
+        heigth: 200,
         sortable: false,
         hideable: false,
         renderer: 'rendererNumero',
         dataIndex: 'numero'
 
-    },{
+    }/*,{
         text: 'Valor',
         xtype:'numbercolumn',
         width: 150,                
@@ -47,5 +48,5 @@ Ext.define('nfe.view.teste.NotasPendentes', {
     },{
         text: 'Observação',
         flex: 1
-    }]
+    }*/]
 });
