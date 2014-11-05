@@ -18,6 +18,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
+import com.hadrion.nfe.dominio.modelo.nf.TipoEmissao;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
@@ -26,6 +27,7 @@ import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 
 public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 
@@ -36,34 +38,34 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 		final JsonObject j = jsonSource.getAsJsonObject();
 		
 		final NotaFiscal nf = new NotaFiscal(
-				new NotaFiscalId(j.get("NotaFiscalId").getAsString()),
+				new NotaFiscalId(s(j,"NotaFiscalId")),
+				s(j,"naturezaOperacao"),
 				null,
+				new Modelo(s(j,"modelo")),
+				new Serie(l(j,"serie")),
+				l(j,"numero"), 
+				data(s(j,"emissao")), 
+				data(s(j,"dataHora")),
 				null,
-				new Modelo(j.get("modelo").getAsString()),
-				new Serie(j.get("serie").getAsLong()),
-				j.get("numero").getAsLong(), 
-				data(j.get("emissao").getAsString()), 
-				data(j.get("dataHora").getAsString()),
+				null,//TODO Formato DANFE
+				TipoEmissao.NORMAL,//TODO TipoEmissao.valueOf(j.get("tipoEmissao").getAsString()),
+				TipoOperacao.valueOf(s(j,"tipoOperacao")),
+				LocalDestino.valueOf(s(j,"localDestino")), 
 				null,
-				null,//Formato DANFE
-				null,//TipoEmissao.valueOf(j.get("tipoEmissao").getAsString()),
-				TipoOperacao.valueOf(j.get("tipoOperacao").getAsString()),
-				LocalDestino.valueOf(j.get("localDestino").getAsString()), 
-				null,
-				j.get("consumidorFinal").getAsBoolean(),
-				Finalidade.valueOf(j.get("finalidade").getAsString()),
-				null,
-				null,
-				referencias(j), //Set<NotaFiscalId> referencias,
-				emitente(j), //Emitente emitente,
-				destinatario(j), //Destinatario destinatario,
-				localRetirada(j), //LocalRetirada localRetirada,
-				localEntrega(j), //LocalEntrega localEntrega,
-				itens(j), //j.get("itens").getAsJsonArray(), //List<Item> itens,
-				null,//TODO incluir transporte
-				cobranca(j), //Cobranca cobranca,
-				informacaoFisco(j), //Informacao informacaoFisco,
-				informacaoContribuinte(j), //Informacao informacaoContribuinte,
+				b(j,"consumidorFinal"),
+				Finalidade.valueOf(s(j,"finalidade")),
+				null,//TODO presenca
+				null,//TODO processo
+				referencias(j),
+				emitente(j),
+				destinatario(j),
+				localRetirada(j),
+				localEntrega(j),
+				itens(j),
+				transporte(j),
+				cobranca(j),
+				informacaoFisco(j),
+				informacaoContribuinte(j),
 				exportacao(j),
 				null); //Contingência
 		
@@ -79,6 +81,9 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 	private Emitente emitente(JsonObject j){
 		return new NotaFiscalTradutorJson(j.get("emitente").toString()).converterEmitente();
 	}
+	private Transporte transporte(JsonObject j){
+		return new NotaFiscalTradutorJson(j.get("transporte").toString()).converterTransporte();
+	}
 	private Destinatario destinatario(JsonObject j){
 		return new NotaFiscalTradutorJson(j.get("destinatario").toString()).converterDestinatario();
 	}
@@ -92,7 +97,10 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 		return new NotaFiscalTradutorJson(j.get("cobranca").toString()).converterCobranca();
 	}
 	private Informacao informacaoFisco(JsonObject j){
-		return new NotaFiscalTradutorJson(j.get("observacaoFisco").toString()).converterObservacao();
+		if (tem(j,"observacaoFisco")){
+			return new NotaFiscalTradutorJson(j.get("observacaoFisco").toString()).converterObservacao();
+		}
+		return null;
 	}
 	private Informacao informacaoContribuinte(JsonObject j){
 		if (tem(j,"observacao")){
@@ -110,4 +118,16 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 		return j.has(propriedade);
 	}
 	
+	private Long l(JsonObject j, String propriedade){
+		return j.get(propriedade).getAsLong();
+	}
+
+	private Boolean b(JsonObject j, String propriedade){
+		return j.get(propriedade).getAsBoolean();
+	}
+
+	private String s(JsonObject j, String propriedade){
+		return j.has(propriedade) ? j.get(propriedade).getAsString() : null;
+	}
+
 }
