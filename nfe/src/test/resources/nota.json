@@ -321,6 +321,23 @@
     "cep" : 38800000,
     "uf" : "MG"
   },
+  "transporte" : {
+		"tipoFrete" : "9",
+		"transportadora" : {
+			"cnpj" : "74230061000181",
+			"nome" : "CAD COMEDIA",
+			"ie" : "123456789",
+			"endereco" : "CENTRO",
+			"municipio" : "REBS",
+			"uf" : "SP"
+		},
+		"veiculo" : {
+			"tipo" : "VEICULO",
+			"placa" : "AAA9999",
+			"uf" : "SP",
+			"rntc" : ""
+		}
+ },
  "cobranca" : [{
     "tipoDoc" : "DM",
     "numero" : 183898,
