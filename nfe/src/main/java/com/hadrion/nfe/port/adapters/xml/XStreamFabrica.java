@@ -19,7 +19,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class XStreamFabrica {
 	public static XStream criar(){
-		XStream xstream = new XStream(new DomDriver());
+		XStream xstream = new XStream(new DomDriver("UTF-8"));
 		xstream.setMode(XStream.NO_REFERENCES);
 		xstream.registerConverter(new CpfConverter());
 		xstream.registerConverter(new CnpjConverter());

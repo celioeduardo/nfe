@@ -27,7 +27,7 @@ public class TransporteConverter extends AbstractConverter{
 			MarshallingContext context) {
 		Transporte transporte = (Transporte) source;
 		convert("modFrete", transporte.modalidadeFrete(), writer, context);
-		convert("transporta", transporte.transportador(), writer, context);
+		convertIf("transporta", transporte.transportador(), writer, context);
 		convertIf("veicTransp", transporte.veiculo(), writer, context);
 		for (Volume v : transporte.volumes()) 
 			convert("vol", v, writer, context);

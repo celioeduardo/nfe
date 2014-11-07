@@ -12,10 +12,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
+import com.hadrion.nfe.dominio.modelo.nf.FormaPagamento;
+import com.hadrion.nfe.dominio.modelo.nf.FormatoDanfe;
 import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
 import com.hadrion.nfe.dominio.modelo.nf.Modelo;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.Presenca;
+import com.hadrion.nfe.dominio.modelo.nf.Processo;
 import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoEmissao;
@@ -40,22 +44,22 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 		final NotaFiscal nf = new NotaFiscal(
 				new NotaFiscalId(s(j,"NotaFiscalId")),
 				s(j,"naturezaOperacao"),
-				null,
+				FormaPagamento.A_VISTA,//TODO forma pagamento
 				new Modelo(s(j,"modelo")),
 				new Serie(l(j,"serie")),
 				l(j,"numero"), 
 				data(s(j,"emissao")), 
 				data(s(j,"dataHora")),
-				null,
-				null,//TODO Formato DANFE
+				1,//TODO codigo numerico
+				FormatoDanfe.RETRATO,//TODO Formato DANFE
 				TipoEmissao.NORMAL,//TODO TipoEmissao.valueOf(j.get("tipoEmissao").getAsString()),
 				TipoOperacao.valueOf(s(j,"tipoOperacao")),
 				LocalDestino.valueOf(s(j,"localDestino")), 
-				null,
+				emitente(j).endereco().municipio(),//TODO MUNICIPIO FATO GERADOR
 				b(j,"consumidorFinal"),
 				Finalidade.valueOf(s(j,"finalidade")),
-				null,//TODO presenca
-				null,//TODO processo
+				Presenca.OUTROS,//TODO presenca
+				Processo.APLICATIVO_CONTRIBUINTE,//TODO processo
 				referencias(j),
 				emitente(j),
 				destinatario(j),

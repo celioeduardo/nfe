@@ -37,8 +37,8 @@ public class EmitenteConverter extends AbstractConverter implements Converter {
 		
 		if (emitente.ieSubstituto() != null)
 			convert("IEST",emitente.ieSubstituto(),writer,context);
-
-		convert("CRT",emitente.crt(),writer,context);
+		if (emitente.crt() != null)
+			convert("CRT",emitente.crt(),writer,context);//TODO crt
 	}
 	
 	@Override

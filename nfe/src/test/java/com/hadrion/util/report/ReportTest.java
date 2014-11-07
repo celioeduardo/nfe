@@ -1,6 +1,8 @@
 package com.hadrion.util.report;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,16 +20,32 @@ import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.w3c.dom.Document;
 
+import com.hadrion.nfe.dominio.config.Application;
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@ActiveProfiles("teste")
 public class ReportTest {
-	JasperReport jasperReport;
-	JasperPrint jasperPrint;
+	@Autowired
+	private NotaFiscalRepositorio repositorio;
+	private JasperReport jasperReport;
+	private JasperPrint jasperPrint;
 	class NotaFiscalJRDataSource implements JRDataSource {
 
 		private Iterator<NotaFiscal> iterator;
@@ -99,15 +117,28 @@ public class ReportTest {
         JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
    	
     }
-    @Test
+    @Test @Ignore
     public void novoXmlDataSource() throws JRException{
     	
         File xmlFile = new File("src/test/resources/report/nfe.xml");  
-        JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/nfeProc/NFe/infNFe/det");
+        JRXmlDataSource xmlDataSource = new JRXmlDataSource( xmlFile,"/nfeProc/NFe/infNFe/det");
         
         jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
         jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
         JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
+    }
+    @Test @Ignore
+    public void novoXmlDataSourceFromFile() throws JRException, IOException{
+    	NotaFiscalSerializador serializador = new NotaFiscalSerializador(Ambiente.HOMOLOGACAO);
+    	InputStream xmlFile = IOUtils.toInputStream("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" + 
+    			"<nfeProc>\r\n" +
+    			serializador.serializar(repositorio.notaFiscalPeloId(new NotaFiscalId("03F79B1D8D397592E050007F01005CC8"))) +
+    			"</nfeProc>", "UTF-8");
+    	
+    	JRXmlDataSource xmlDataSource = new JRXmlDataSource( xmlFile,"/nfeProc/NFe/infNFe/det");    	
+    	jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
+    	jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
+    	JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
     }
     @Ignore @Test
     public void novoXmlDataSourceInputStream() throws JRException{

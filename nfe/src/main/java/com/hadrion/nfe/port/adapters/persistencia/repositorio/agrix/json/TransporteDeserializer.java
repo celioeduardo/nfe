@@ -34,10 +34,16 @@ public class TransporteDeserializer implements JsonDeserializer<Transporte>{
 	}
 	
 	private Transportador transportador(JsonObject j){
-		return new TransporteTradutorJson(j.get("transportadora").toString()).converterTransportadora();
+		if (tem(j,"transportadora")){
+			return new TransporteTradutorJson(j.get("transportadora").toString()).converterTransportadora();
+		}
+		return null;
 	}
 	private Veiculo veiculo(JsonObject j){
-		return new TransporteTradutorJson(j.get("veiculo").toString()).converterVeiculo();
+		if (tem(j,"veiculo")){		
+			return new TransporteTradutorJson(j.get("veiculo").toString()).converterVeiculo();
+		}
+		return null;
 	}
 	private RetencaoIcms retencao(JsonObject j){
 		if (tem(j,"retencao")){

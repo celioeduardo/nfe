@@ -25,7 +25,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.DescritorNotaFiscalDeserializer;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.NotaFiscalDeserializer;
+import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.NotaFiscalTradutorJson;
 
 @Repository
 @Transactional
@@ -49,9 +49,6 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 	@Override
 	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas) {
 
-		gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(NotaFiscal.class, new NotaFiscalDeserializer());
-		gson = gsonBuilder.create();
 		
 		String in = "'" + StringUtils.join(notas, "','") + "'";
 		
@@ -74,7 +71,20 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 		} catch ( SQLException  e) {
 			conteudo=null;
 		}		
-		return Arrays.asList(gson.fromJson(conteudo, NotaFiscal[].class));
+
+		/*gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(NotaFiscal.class, new NotaFiscalDeserializer());
+		gson = gsonBuilder.create();
+		JsonObject jsonSource = gson.fromJson(conteudo, NotaFiscal.class);
+		final JsonArray j = jsonSource.getAsJsonArray();
+		
+		if (j.size() == 0)
+			return null;*/
+
+		NotaFiscalTradutorJson tradutor = new NotaFiscalTradutorJson(conteudo.substring(1, conteudo.length()-1));
+		NotaFiscal nf = tradutor.converterNotaFiscal();
+		
+		return Arrays.asList(nf);
 	}
 	@Override
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(Double empresa,Double filial,Date inicio,Date fim,String usuario,NotaFiscalId notaFiscalId) {

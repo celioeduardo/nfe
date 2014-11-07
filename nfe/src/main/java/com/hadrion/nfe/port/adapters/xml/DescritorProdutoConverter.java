@@ -26,7 +26,7 @@ public class DescritorProdutoConverter extends AbstractConverter{
 			MarshallingContext context) {
 		DescritorProduto produto = (DescritorProduto) source;
 		novoNo("cProd", produto.codigo(), writer);
-		convert("cEAN",produto.gtin(),writer,context);
+		convertIf("cEAN",produto.gtin(),writer,context);
 		convert("xProd",produto.descricao(),writer,context);
 		convert("NCM",produto.ncm(),writer,context);
 		convertIf("NVE",produto.nve(),writer,context);
@@ -36,7 +36,7 @@ public class DescritorProdutoConverter extends AbstractConverter{
 		convert("qCom",produto.quantidadeComercial(),writer,context);
 		convert("vUnCom",produto.valorUnitarioComercializacao(),writer,context);
 		convert("vProd",produto.totalBruto(),writer,context);
-		convert("cEANTrib",produto.gtinTributavel(),writer,context);
+		convertIf("cEANTrib",produto.gtinTributavel(),writer,context);
 		convert("uTrib",produto.unidadeTributavel(),writer,context);
 		convert("qTrib",produto.quantidadeTributavel(),writer,context);
 		convert("vUnTrib",produto.valorUnitarioTributacao(),writer,context);

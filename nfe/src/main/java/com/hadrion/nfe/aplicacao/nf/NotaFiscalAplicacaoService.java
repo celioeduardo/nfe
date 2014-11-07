@@ -87,9 +87,11 @@ public class NotaFiscalAplicacaoService {
 		JasperPrint jasperPrint;
 
 		NotaFiscalSerializador serializador = new NotaFiscalSerializador(Ambiente.HOMOLOGACAO);
-		InputStream xmlFile = IOUtils.toInputStream(serializador.serializar(repositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId))), "UTF-8");
+		InputStream xmlFile = IOUtils.toInputStream("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" + 
+    			"<nfeProc>\r\n" +
+				serializador.serializar(repositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId))) +
+    			"</nfeProc>", "UTF-8");
 		
-		//File xmlFile = new File("src/test/resources/report/nfe.xml");
 		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/nfeProc/NFe/infNFe/det");		
 		jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
 		jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
