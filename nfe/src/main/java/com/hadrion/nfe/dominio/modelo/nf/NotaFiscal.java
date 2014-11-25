@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
@@ -20,6 +21,7 @@ import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 public class NotaFiscal {
+	private Ambiente ambiente;
 	private NotaFiscalId notaFiscalId;
 	private Situacao situacaoHomologacao;
 	private Situacao situacaoProducao;	
@@ -61,7 +63,9 @@ public class NotaFiscal {
 		super();
 	}
 
-	public NotaFiscal(NotaFiscalId notaFiscalId,
+	public NotaFiscal(
+			Ambiente ambiente,
+			NotaFiscalId notaFiscalId,
 			String naturezaOperacao,
 			FormaPagamento formaPagamento,
 			Modelo modelo,
@@ -91,6 +95,7 @@ public class NotaFiscal {
 			Informacao informacaoContribuinte,
 			Exportacao exportacao,
 			Contingencia contingencia) {
+		this.ambiente = ambiente;
 		this.notaFiscalId = notaFiscalId;
 		this.situacaoHomologacao=Situacao.INDEFINIDA;
 		this.situacaoProducao=Situacao.INDEFINIDA;
@@ -128,12 +133,17 @@ public class NotaFiscal {
 		consistirNotasReferencia();
 	}
 	
-	public NotaFiscal(NotaFiscalId notaFiscalId) {
+	public NotaFiscal(Ambiente ambiente, NotaFiscalId notaFiscalId) {
 		this.notaFiscalId = notaFiscalId;
+		this.ambiente = ambiente;
 		this.situacaoHomologacao=Situacao.INDEFINIDA;
 		this.situacaoProducao=Situacao.INDEFINIDA;
-		
 	}
+	
+	public Ambiente ambiente(){
+		return ambiente;
+	}
+	
 	private void consistirNotasReferencia(){
 		if (referencias != null && referencias.size() > 500)
 			throw new IllegalArgumentException(

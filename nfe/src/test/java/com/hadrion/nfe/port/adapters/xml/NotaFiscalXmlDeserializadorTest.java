@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
 import com.hadrion.nfe.dominio.modelo.endereco.Cep;
 import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
@@ -133,6 +134,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 	
 	private NotaFiscal nf(){
 		return new NotaFiscal(
+				Ambiente.HOMOLOGACAO,
 				new NotaFiscalId("12346"),
 				"VENDA DE PRODUTOS ADQ. TERCEIROS", 
 				FormaPagamento.A_PRAZO, 

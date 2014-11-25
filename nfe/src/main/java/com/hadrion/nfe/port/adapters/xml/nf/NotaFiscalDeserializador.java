@@ -17,7 +17,7 @@ public class NotaFiscalDeserializador {
 		if (xstream == null)
 			xstream = XStreamFabrica.criar();
 		xstream.processAnnotations(Nfe.class);
-		xstream.registerConverter(new NotaFiscalConverter(null,null));
+		xstream.registerConverter(new NotaFiscalConverter(null));
 		xstream.registerConverter(new NfeConverter());
 		xstream.alias("infNFe", NotaFiscal.class);
 		xstream.alias("NFe", Nfe.class);

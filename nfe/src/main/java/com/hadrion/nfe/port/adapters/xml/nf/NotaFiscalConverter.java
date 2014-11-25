@@ -27,11 +27,9 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class NotaFiscalConverter extends AbstractConverter {
 	
-	private Ambiente ambiente;
 	private String versaoAplicativo;
 	
-	public NotaFiscalConverter(Ambiente ambiente, String versaoAplicativo){
-		this.ambiente = ambiente;
+	public NotaFiscalConverter(String versaoAplicativo){
 		this.versaoAplicativo = versaoAplicativo;
 	}
 	
@@ -61,7 +59,7 @@ public class NotaFiscalConverter extends AbstractConverter {
 		convert("tpImp", nf.formatoDanfe(), writer, context);
 		convert("tpEmis",nf.tipoEmissao().codigo(), writer, context);
 		convert("cDV",nf.chaveAcesso().digitoVerificador(), writer, context);
-		convert("tpAmb", ambiente(), writer, context);
+		convert("tpAmb", nf.ambiente(), writer, context);
 		convert("finNFe", nf.finalidade(), writer, context);
 		convert("indFinal", nf.consumidorFinal() ? 1 : 0, writer, context);
 		convert("indPres", nf.presenca(), writer, context);
@@ -136,14 +134,10 @@ public class NotaFiscalConverter extends AbstractConverter {
 		return versaoAplicativo;
 	}
 
-	private Ambiente ambiente() {
-		return this.ambiente;
-	}
-
 	@Override
 	public Object unmarshal(HierarchicalStreamReader reader,
 			UnmarshallingContext context) {
-		
+		Ambiente ambiente = null;
 		Ide ide = null;
 		Emitente emitente = null;
 		Destinatario destinatario = null;
@@ -184,6 +178,8 @@ public class NotaFiscalConverter extends AbstractConverter {
 				informacao = new InformacaoAdicional(reader, context);
 			if (reader.getNodeName().equals("exporta"))
 				exportacao = (Exportacao) context.convertAnother(reader.getValue(), Exportacao.class);
+			if (reader.getNodeName().equals("tpAmb"))
+				ambiente = (Ambiente) context.convertAnother(reader.getValue(), Ambiente.class);
 			reader.moveUp();
 		}
 		
@@ -192,6 +188,7 @@ public class NotaFiscalConverter extends AbstractConverter {
 					ide.getDataHoraContingencia(), ide.getJustificativaContingencia());
 		
 		return new NotaFiscal(
+				ambiente,
 				null, 
 				ide.getNaturezaOperacao(),
 				ide.getFormaPagamento(), 

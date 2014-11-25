@@ -27,7 +27,7 @@ public class SoapAutorizacaoServiceAdapterTest extends DominioTest{
 	
 	@Before
 	public void setUp(){
-		NotaFiscal nf = NotaFiscalFixture.nf();
+		NotaFiscal nf = NotaFiscalFixture.nfEmProducao();
 		nf.emitidaHomologacao();
 		lote = loteGeradoEmHomologacaoPersistidoParaTest(nf);
 	}

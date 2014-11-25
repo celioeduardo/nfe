@@ -31,7 +31,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.w3c.dom.Document;
 
 import com.hadrion.nfe.dominio.config.Application;
-import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
@@ -129,7 +128,7 @@ public class ReportTest {
     }
     @Test @Ignore
     public void novoXmlDataSourceFromFile() throws JRException, IOException{
-    	NotaFiscalSerializador serializador = new NotaFiscalSerializador(Ambiente.HOMOLOGACAO);
+    	NotaFiscalSerializador serializador = new NotaFiscalSerializador();
     	InputStream xmlFile = IOUtils.toInputStream("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" + 
     			"<nfeProc>\r\n" +
     			serializador.serializar(repositorio.notaFiscalPeloId(new NotaFiscalId("03F79B1D8D397592E050007F01005CC8"))) +
@@ -155,7 +154,7 @@ public class ReportTest {
     	//JasperViewer.viewReport(jasperPrint, true); 
     }
     private NotaFiscal nf(){
-		return NotaFiscalFixture.nf();
+		return NotaFiscalFixture.nfEmProducao();
 	}
     
     

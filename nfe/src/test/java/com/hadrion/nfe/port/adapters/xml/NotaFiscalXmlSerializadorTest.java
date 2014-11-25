@@ -9,7 +9,6 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
@@ -41,15 +40,15 @@ public class NotaFiscalXmlSerializadorTest extends AbstractXmlTest{
 	@Test
 	public void serializar() throws NoSuchAlgorithmException{
 		NotaFiscalSerializador serializador = 
-				new NotaFiscalSerializador(Ambiente.HOMOLOGACAO);
-		assertXMLEquals(XML,serializador.serializar(NotaFiscalFixture.nf()));
+				new NotaFiscalSerializador();
+		assertXMLEquals(XML,serializador.serializar(NotaFiscalFixture.nfEmHomologacao()));
 	}
 	
 	@Test
 	public void serializarComAssinatura(){
 		NotaFiscalSerializador serializador = 
-				new NotaFiscalSerializador(Ambiente.HOMOLOGACAO,certificado);
-		assertXMLEquals(XML_ASSINADO,serializador.serializar(NotaFiscalFixture.nf()));
+				new NotaFiscalSerializador(certificado);
+		assertXMLEquals(XML_ASSINADO,serializador.serializar(NotaFiscalFixture.nfEmHomologacao()));
 	}
 	
 }

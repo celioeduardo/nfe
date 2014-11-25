@@ -10,6 +10,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
 import com.hadrion.nfe.dominio.modelo.nf.FormaPagamento;
@@ -34,7 +35,9 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 
 public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
-
+	
+	
+	
 	@Override
 	public NotaFiscal deserialize(JsonElement jsonSource, Type type,
 			JsonDeserializationContext arg2) throws JsonParseException {
@@ -42,6 +45,7 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 		final JsonObject j = jsonSource.getAsJsonObject();
 		
 		final NotaFiscal nf = new NotaFiscal(
+				Ambiente.PRODUCAO, //TODO Parametrizar ambiente
 				new NotaFiscalId(s(j,"NotaFiscalId")),
 				s(j,"naturezaOperacao"),
 				FormaPagamento.A_VISTA,//TODO forma pagamento

@@ -2,7 +2,6 @@ package com.hadrion.nfe.port.adapters.xml.nf;
 
 import java.io.StringWriter;
 
-import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.port.adapters.xml.XStreamFabrica;
@@ -12,16 +11,14 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.io.xml.CompactWriter;
 
 public class NotaFiscalSerializador {
-	private Ambiente ambiente;
 	private XStream xstream;
 	private Certificado certificado;
 	
-	public NotaFiscalSerializador(Ambiente ambiente) {
-		this(ambiente,null);
+	public NotaFiscalSerializador() {
+		this(null);
 	}
 	
-	public NotaFiscalSerializador(Ambiente ambiente, Certificado certificado) {
-		this.ambiente = ambiente;
+	public NotaFiscalSerializador(Certificado certificado) {
 		this.certificado = certificado;
 	}
 
@@ -39,10 +36,6 @@ public class NotaFiscalSerializador {
 		return sw.toString();
 	}
 	
-	private Ambiente ambiente(){
-		return this.ambiente;
-	}
-
 	//TODO implementar versão do aplicativo do contribuinte
 	private String versaoAplicativo(){
 		return "1.0";
@@ -53,7 +46,7 @@ public class NotaFiscalSerializador {
 			xstream = XStreamFabrica.criar();
 		xstream.processAnnotations(Nfe.class);
 		xstream.registerConverter(
-				new NotaFiscalConverter(ambiente(),versaoAplicativo()));
+				new NotaFiscalConverter(versaoAplicativo()));
 		xstream.registerConverter(new NfeConverter());
 		return xstream;
 	}

@@ -28,7 +28,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
-import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
@@ -86,7 +85,7 @@ public class NotaFiscalAplicacaoService {
 		JasperReport jasperReport;
 		JasperPrint jasperPrint;
 
-		NotaFiscalSerializador serializador = new NotaFiscalSerializador(Ambiente.HOMOLOGACAO);
+		NotaFiscalSerializador serializador = new NotaFiscalSerializador();
 		InputStream xmlFile = IOUtils.toInputStream("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" + 
     			"<nfeProc>\r\n" +
 				serializador.serializar(repositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId))) +

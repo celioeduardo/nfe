@@ -29,7 +29,7 @@ public class Corpo {
 		this.lote = lote;
 		this.notas = notas;
 		this.certificado = certificado;
-		serializador =  new NotaFiscalSerializador(ambiente(), certificado());
+		serializador =  new NotaFiscalSerializador(certificado());
 	}
 
 	public String autorizacao() {
@@ -63,7 +63,7 @@ public class Corpo {
 		
 		//TODO Obter versão do aplicativo do contribuinte
 		String versaoAplicativo = "1.0";
-		xstream.registerConverter(new NotaFiscalConverter(lote.ambiente(),versaoAplicativo));
+		xstream.registerConverter(new NotaFiscalConverter(versaoAplicativo));
 		xstream.registerConverter(new CorpoConverter());
 		xstream.alias("nfeDadosMsg", Corpo.class);
 		return xstream;

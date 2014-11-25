@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
 import com.hadrion.nfe.dominio.modelo.endereco.Cep;
@@ -59,8 +60,44 @@ import com.hadrion.nfe.tipos.Telefone;
 
 public class NotaFiscalFixture {
 	
-	public static NotaFiscal nf(){
+	public static NotaFiscal nfEmProducao(){
 		return new NotaFiscal(
+				Ambiente.PRODUCAO,
+				new NotaFiscalId("12346"),
+				"VENDA DE PRODUTOS ADQ. TERCEIROS", 
+				FormaPagamento.A_PRAZO, 
+				new Modelo("55"), 
+				new Serie(1L), 
+				19936L, 
+				dataHora("25/10/2013 00:00:00","GMT-02:00"), 
+				dataHora("25/10/2013 00:00:00","GMT-02:00"), 
+				269918,
+				FormatoDanfe.RETRATO,
+				TipoEmissao.NORMAL,
+				TipoOperacao.SAIDA, 
+				LocalDestino.INTERNA, 
+				new Municipio(3111606, "CAMPOS GERAIS", Uf.MG), 
+				false, 
+				Finalidade.NORMAL, 
+				Presenca.OUTROS, 
+				Processo.APLICATIVO_CONTRIBUINTE, 
+				referencias(),
+				emitente(), 
+				destinatario(), 
+				localRetirada(), 
+				localEntrega(), 
+				itens() , 
+				transporte(),
+				cobranca(), 
+				informacaoFisco(), 
+				informacaoContribuinte(), 
+				exportacao(),
+				contingencia());
+		
+	}
+	public static NotaFiscal nfEmHomologacao(){
+		return new NotaFiscal(
+				Ambiente.HOMOLOGACAO,
 				new NotaFiscalId("12346"),
 				"VENDA DE PRODUTOS ADQ. TERCEIROS", 
 				FormaPagamento.A_PRAZO, 

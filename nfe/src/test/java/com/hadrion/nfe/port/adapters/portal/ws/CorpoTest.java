@@ -32,7 +32,7 @@ public class CorpoTest extends DominioTest {
 				"12345678");
 		
 		XML = xml();
-		nf = NotaFiscalFixture.nf();
+		nf = NotaFiscalFixture.nfEmHomologacao();
 		nf.emitidaHomologacao();
 		lote = Lote.gerarEmHomologacao(nf);
 	}
