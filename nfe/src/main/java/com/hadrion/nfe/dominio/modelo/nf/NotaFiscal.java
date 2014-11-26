@@ -155,7 +155,7 @@ public class NotaFiscal {
 
 	
 	public boolean pendenteDeTransmissao(){
-		return this.situacao == Situacao.EMITIDA;
+		return this.situacao == Situacao.EMITIDA || this.situacao == Situacao.INDEFINIDA;
 	}
 	public void emitida(){
 		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.INDEFINIDA);
@@ -422,18 +422,28 @@ public class NotaFiscal {
 	}
 	
 	
-	public void tipoEmissaoParaContingencia() {
+	public void alterarTipoEmissaoParaContingencia() {
 		//TODO tratar validação de mudança do tipo de emissão
 		setTipoEmissao(TipoEmissao.contingenciaPelaUf(
 				ufEmitente()));
 	}
 	
 	private void setTipoEmissao(TipoEmissao novoTipoEmissao){
+		if (tipoEmissao == novoTipoEmissao) return;
+		
+		if (!pendenteDeTransmissao())
+			throw new RuntimeException(
+					"Nota já transmitida. Não é possível alterar o Tipo de Emissão");
+		
 		tipoEmissao = novoTipoEmissao;
 	}
 
 	public Uf ufEmitente() {
 		return emitente().endereco().municipio().uf();
+	}
+
+	public void alterarTipoEmissao(TipoEmissao novoTipoEmissao) {
+		setTipoEmissao(novoTipoEmissao);
 	}
 
 }

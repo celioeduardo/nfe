@@ -297,4 +297,11 @@ public class NotaFiscalFixture {
 				Uf.MG,data("24/05/13"),new Cpf(56115316600L), new Serie(2), 654321L, InscricaoEstadual.ISENTO));
 		return result;
 	}
+	
+	public static NotaFiscal nfEmProducaoAutorizada() {
+		NotaFiscal nf = nfEmProducao();
+		nf.emitida();
+		nf.autorizada();
+		return nf;
+	}
 }

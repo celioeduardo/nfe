@@ -58,7 +58,7 @@ public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 		
 		NotaFiscal nfContingencia = NotaFiscalFixture.nfEmProducao();
 		nfContingencia.emitida();
-		nfContingencia.tipoEmissaoParaContingencia();
+		nfContingencia.alterarTipoEmissaoParaContingencia();
 		
 		geracaoLoteService.gerarLoteEmProducao(notas(nfNormal,nfContingencia));
 		

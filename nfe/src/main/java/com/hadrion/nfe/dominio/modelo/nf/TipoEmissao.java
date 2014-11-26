@@ -70,5 +70,8 @@ public enum TipoEmissao {
 		}
 	}
 	
+	public boolean contingencia(){
+		return this == TipoEmissao.SVC_AN || this == TipoEmissao.SVC_RS; 
+	}
 	
 }
