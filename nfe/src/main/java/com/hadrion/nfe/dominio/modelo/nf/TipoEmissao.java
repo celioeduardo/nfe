@@ -1,5 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
+import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+
 /**
  * 
 	1=Emissão normal (não em contingência);
@@ -43,6 +45,30 @@ public enum TipoEmissao {
 				return tipo;
 		return null;
 	}
-
+	
+	public static TipoEmissao contingenciaPelaUf(Uf uf){
+		switch (uf) {
+		case AC:
+		case AL:
+		case AP: 
+		case DF: 
+		case ES:
+		case MG: 
+		case PB:
+		case RJ: 
+		case RN: 
+		case RO: 
+		case RR: 
+		case RS: 
+		case SC: 
+		case SE: 
+		case SP: 
+		case TO :
+			return TipoEmissao.SVC_AN;
+		default:
+			return TipoEmissao.SVC_RS;
+		}
+	}
+	
 	
 }

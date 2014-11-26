@@ -61,9 +61,12 @@ import com.hadrion.nfe.tipos.Telefone;
 public class NotaFiscalFixture {
 	
 	public static NotaFiscal nfEmProducao(){
+		return nfEmProducao(new NotaFiscalId("12346"));
+	}
+	public static NotaFiscal nfEmProducao(NotaFiscalId notaFiscalId){
 		return new NotaFiscal(
 				Ambiente.PRODUCAO,
-				new NotaFiscalId("12346"),
+				notaFiscalId,
 				"VENDA DE PRODUTOS ADQ. TERCEIROS", 
 				FormaPagamento.A_PRAZO, 
 				new Modelo("55"), 
@@ -95,10 +98,15 @@ public class NotaFiscalFixture {
 				contingencia());
 		
 	}
+	
 	public static NotaFiscal nfEmHomologacao(){
+		return nfEmHomologacao(new NotaFiscalId("12346"));
+	}
+	
+	public static NotaFiscal nfEmHomologacao(NotaFiscalId notaFiscalId){
 		return new NotaFiscal(
 				Ambiente.HOMOLOGACAO,
-				new NotaFiscalId("12346"),
+				notaFiscalId,
 				"VENDA DE PRODUTOS ADQ. TERCEIROS", 
 				FormaPagamento.A_PRAZO, 
 				new Modelo("55"), 

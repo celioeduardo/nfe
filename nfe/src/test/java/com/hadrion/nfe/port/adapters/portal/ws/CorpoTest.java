@@ -9,14 +9,18 @@ import java.util.Collections;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hadrion.nfe.dominio.modelo.DominioTest;
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
+import com.hadrion.nfe.dominio.modelo.lote.GeracaoLoteService;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
 
 public class CorpoTest extends DominioTest {
+	@Autowired
+	private GeracaoLoteService geracaoLoteService;
 	private Certificado certificado;
 	
 	private String XML;
@@ -33,8 +37,8 @@ public class CorpoTest extends DominioTest {
 		
 		XML = xml();
 		nf = NotaFiscalFixture.nfEmHomologacao();
-		nf.emitidaHomologacao();
-		lote = Lote.gerarEmHomologacao(nf);
+		nf.emitida();
+		lote = geracaoLoteService.gerarLoteEmHomologacao(nf);
 	}
 	
 	@Test

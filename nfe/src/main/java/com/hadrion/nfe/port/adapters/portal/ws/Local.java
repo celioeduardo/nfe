@@ -13,7 +13,7 @@ Autorizadores em contingência:
   - UF que utilizam a SVC-RS - Sefaz Virtual de Contingência Rio Grande do Sul: 
       AM, BA, CE, GO, MA, MS, MT, PA, PE, PI, PR
 
-Autorizadores: AM BA CE GO MG MA MS MT PE PR RS SP SVAN SVRS SCAN SVC-AN SVC-RSAN
+Autorizadores: AM BA CE GO MG MA MS MT PE PR RS SP SVAN SVRS SCAN SVC-AN SVC-RS
  */
 
 public enum Local {

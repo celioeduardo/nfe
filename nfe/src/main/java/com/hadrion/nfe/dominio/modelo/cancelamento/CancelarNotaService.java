@@ -22,7 +22,7 @@ public class CancelarNotaService{
 		
 		assertNotaFiscalNaoNula(notaFiscal);
 		
-		if (!notaFiscal.estaAutorizadaEmHomologacao())
+		if (!notaFiscal.estaAutorizada())
 			throw new IllegalArgumentException(
 					"Somente Nota Fiscal AUTORIZADA pode ser Cancelada.");
 		
@@ -40,7 +40,7 @@ public class CancelarNotaService{
 	public void cancelarEmProducao(NotaFiscal notaFiscal) {
 		
 		assertNotaFiscalNaoNula(notaFiscal); 
-		if (!notaFiscal.estaAutorizadaEmProducao())
+		if (!notaFiscal.estaAutorizada())
 			throw new IllegalArgumentException(
 					"Somente Nota Fiscal AUTORIZADA pode ser Cancelada.");
 		

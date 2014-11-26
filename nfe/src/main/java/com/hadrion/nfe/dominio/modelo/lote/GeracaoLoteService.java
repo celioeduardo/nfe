@@ -40,8 +40,14 @@ public class GeracaoLoteService {
 	}
 	
 	private void assertPreCondicoes(Set<NotaFiscal> notas, Ambiente ambiente){
-		for (NotaFiscal nf : notas) 
+		for (NotaFiscal nf : notas){ 
+			if (nf.ambiente() != ambiente)
+				throw new IllegalArgumentException(
+						"Nota Fiscal "+nf.notaFiscalId()+
+						" gerada em ambiente diferente. ["+nf.ambiente()+"]");
+			
 			assertNotaNaoEstaPendenteEmOutrosLotes(nf, ambiente);
+		}
 	}
 	
 	private void assertNotaNaoEstaPendenteEmOutrosLotes(NotaFiscal nf, 

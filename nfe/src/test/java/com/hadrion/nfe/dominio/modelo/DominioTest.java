@@ -18,6 +18,7 @@ import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
 import com.hadrion.nfe.dominio.modelo.lote.NumeroReciboLote;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
@@ -43,107 +44,97 @@ public abstract class DominioTest extends RastreadorEventoTest {
 		solicitacaoCancelamentoRepositorio.limpar();
 	}
 	protected NotaFiscal notaEmitidaHomologacaoPersistidaParaTest(String id) {
-		NotaFiscal nf = new NotaFiscal(Ambiente.HOMOLOGACAO,new NotaFiscalId(id));
-		nf.emitidaHomologacao();
+		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));
+		nf.emitida();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaAutorizadaHomologacaoPersistidaParaTest(String id) {
-		NotaFiscal nf = new NotaFiscal(Ambiente.HOMOLOGACAO,new NotaFiscalId(id));
-		nf.emitidaHomologacao();
-		nf.autorizadaHomologacao();
+		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));
+		nf.emitida();
+		nf.autorizada();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaCanceladaHomologacaoPersistidaParaTest(String id) {
-		NotaFiscal nf = new NotaFiscal(Ambiente.HOMOLOGACAO,new NotaFiscalId(id));
-		nf.emitidaHomologacao();
-		nf.autorizadaHomologacao();
-		nf.canceladaHomologacao();
+		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));
+		nf.emitida();
+		nf.autorizada();
+		nf.cancelada();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaInutilizadaHomologacaoPersistidaParaTest(String id) {
-		NotaFiscal nf = new NotaFiscal(Ambiente.HOMOLOGACAO,new NotaFiscalId(id));
-		nf.emitidaHomologacao();
-		nf.inutilizadaHomologacao();
+		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));
+		nf.emitida();
+		nf.inutilizada();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaDenegadaHomologacaoPersistidaParaTest(String id) {
-		NotaFiscal nf = new NotaFiscal(Ambiente.HOMOLOGACAO,new NotaFiscalId(id));
-		nf.emitidaHomologacao();
-		nf.denegadaHomologacao();
+		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));
+		nf.emitida();
+		nf.denegada();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaEmitidaProducaoPersistidaParaTest(String id) {
-		NotaFiscal nf = new NotaFiscal(Ambiente.PRODUCAO,new NotaFiscalId(id));
-		nf.emitidaProducao();
+		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id));
+		nf.emitida();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaAutorizadaProducaoPersistidaParaTest(String id) {
-		NotaFiscal nf = new NotaFiscal(Ambiente.PRODUCAO,new NotaFiscalId(id));
-		nf.emitidaProducao();
-		nf.autorizadaProducao();
+		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id));
+		nf.emitida();
+		nf.autorizada();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaCanceladaProducaoPersistidaParaTest(String id) {
-		NotaFiscal nf = new NotaFiscal(Ambiente.PRODUCAO,new NotaFiscalId(id));
-		nf.emitidaProducao();
-		nf.autorizadaProducao();
-		nf.canceladaProducao();
+		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id));
+		nf.emitida();
+		nf.autorizada();
+		nf.cancelada();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaInutilizadaProducaoPersistidaParaTest(String id) {
-		NotaFiscal nf = new NotaFiscal(Ambiente.PRODUCAO,new NotaFiscalId(id));
-		nf.emitidaProducao();
-		nf.inutilizadaProducao();
+		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id));
+		nf.emitida();
+		nf.inutilizada();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaDenegadaProducaoPersistidaParaTest(String id) {
-		NotaFiscal nf = new NotaFiscal(Ambiente.PRODUCAO,new NotaFiscalId(id));
-		nf.emitidaProducao();
-		nf.denegadaProducao();
+		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id));
+		nf.emitida();
+		nf.denegada();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
-	
-	//TODO Rastrear
-	protected NotaFiscal notaEmitidaProducao_e_HomologacaoPersistidaParaTest(
-			String id) {
-				NotaFiscal nf = new NotaFiscal(Ambiente.PRODUCAO,new NotaFiscalId(id));
-				nf.emitidaHomologacao();
-				nf.emitidaProducao();
-				notaFiscalRepositorio.salvar(nf);
-				return nf;
-			}
 
 	protected Lote loteGeradoEmProducaoPersistidoParaTest(NotaFiscal... notas) {
-		Lote lote = Lote.gerarEmProducao(colecaoNotas(notas));
+		Lote lote = geracaoLoteService.gerarLoteEmProducao(colecaoNotas(notas));
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
 
 	protected Lote loteProcessadoEmProducaoPersistidoParaTest(NotaFiscal... notas) {
-		Lote lote = Lote.gerarEmProducao(colecaoNotas(notas));
+		Lote lote = geracaoLoteService.gerarLoteEmProducao(colecaoNotas(notas));
 		lote.transmitido(new NumeroReciboLote(""));
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
 
 	protected Lote loteGeradoEmHomologacaoPersistidoParaTest(NotaFiscal... notas) {
-		Lote lote = Lote.gerarEmHomologacao(colecaoNotas(notas));
+		Lote lote = geracaoLoteService.gerarLoteEmHomologacao(colecaoNotas(notas));
 		loteRepositorio.salvar(lote);
 		return lote;
 	}
 	
 	protected Lote loteProcessadoEmHomologacaoPersistidoParaTest(NotaFiscal... notas) {
-		Lote lote = Lote.gerarEmHomologacao(colecaoNotas(notas));
+		Lote lote = geracaoLoteService.gerarLoteEmHomologacao(colecaoNotas(notas));
 		lote.transmitido(new NumeroReciboLote(""));
 		loteRepositorio.salvar(lote);
 		return lote;

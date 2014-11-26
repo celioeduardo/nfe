@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
+import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
@@ -23,8 +24,7 @@ import com.hadrion.nfe.tipos.Dinheiro;
 public class NotaFiscal {
 	private Ambiente ambiente;
 	private NotaFiscalId notaFiscalId;
-	private Situacao situacaoHomologacao;
-	private Situacao situacaoProducao;	
+	private Situacao situacao;	
 	private String naturezaOperacao;
 	private FormaPagamento formaPagamento;
 	private Modelo modelo;
@@ -97,8 +97,7 @@ public class NotaFiscal {
 			Contingencia contingencia) {
 		this.ambiente = ambiente;
 		this.notaFiscalId = notaFiscalId;
-		this.situacaoHomologacao=Situacao.INDEFINIDA;
-		this.situacaoProducao=Situacao.INDEFINIDA;
+		this.situacao=Situacao.INDEFINIDA;
 		this.naturezaOperacao=naturezaOperacao;
 		this.formaPagamento=formaPagamento;
 		this.modelo=modelo;
@@ -136,8 +135,8 @@ public class NotaFiscal {
 	public NotaFiscal(Ambiente ambiente, NotaFiscalId notaFiscalId) {
 		this.notaFiscalId = notaFiscalId;
 		this.ambiente = ambiente;
-		this.situacaoHomologacao=Situacao.INDEFINIDA;
-		this.situacaoProducao=Situacao.INDEFINIDA;
+		this.tipoEmissao = TipoEmissao.NORMAL;
+		this.situacao=Situacao.INDEFINIDA;
 	}
 	
 	public Ambiente ambiente(){
@@ -154,71 +153,39 @@ public class NotaFiscal {
 		return this.notaFiscalId;
 	}
 
-	public boolean pendenteDeTransmissaoHomologacao(){
-		return this.situacaoHomologacao == Situacao.EMITIDA;
+	
+	public boolean pendenteDeTransmissao(){
+		return this.situacao == Situacao.EMITIDA;
 	}
-	public void emitidaHomologacao(){
-		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,Situacao.INDEFINIDA);
-		this.situacaoHomologacao=Situacao.EMITIDA;
+	public void emitida(){
+		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.INDEFINIDA);
+		this.situacao=Situacao.EMITIDA;
 	}
-	public void autorizadaHomologacao() {
-		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,Situacao.EMITIDA);
-		this.situacaoHomologacao=Situacao.AUTORIZADA;
+	public void autorizada() {
+		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.EMITIDA);
+		this.situacao=Situacao.AUTORIZADA;
 	}
-	public void canceladaHomologacao() {
-		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,Situacao.AUTORIZADA);
-		this.situacaoHomologacao=Situacao.CANCELADA;
+	public void cancelada() {
+		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.AUTORIZADA);
+		this.situacao=Situacao.CANCELADA;
 	}
-	public void inutilizadaHomologacao() {
-		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,Situacao.EMITIDA);
-		this.situacaoHomologacao=Situacao.INUTILIZADA;
+	public void inutilizada() {
+		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.EMITIDA);
+		this.situacao=Situacao.INUTILIZADA;
 	}
-	public void denegadaHomologacao() {
-		assertSituacaoIgualHomologacao("Situação inválida: "+this.situacaoHomologacao,Situacao.EMITIDA);
-		this.situacaoHomologacao=Situacao.DENEGADA;
+	public void denegada() {
+		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.EMITIDA);
+		this.situacao=Situacao.DENEGADA;
 	}
 	
-	public boolean pendenteDeTransmissaoProducao(){
-		return this.situacaoProducao == Situacao.EMITIDA;
+	public boolean estaEmitida() {
+		return this.situacao==Situacao.EMITIDA;
 	}
-	public void emitidaProducao(){
-		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,Situacao.INDEFINIDA);
-		this.situacaoProducao=Situacao.EMITIDA;
+	public boolean estaAutorizada() {
+		return this.situacao==Situacao.AUTORIZADA;
 	}
-	public void autorizadaProducao() {
-		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,Situacao.EMITIDA);
-		this.situacaoProducao=Situacao.AUTORIZADA;
-	}
-	public void canceladaProducao() {
-		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,Situacao.AUTORIZADA);
-		this.situacaoProducao=Situacao.CANCELADA;
-	}
-	public void inutilizadaProducao() {
-		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,Situacao.EMITIDA);
-		this.situacaoProducao=Situacao.INUTILIZADA;
-	}
-	public void denegadaProducao() {
-		assertSituacaoIgualProducao("Situação inválida: "+this.situacaoProducao,Situacao.EMITIDA);
-		this.situacaoProducao=Situacao.DENEGADA;
-	}
-	
-	public boolean estaEmitidaEmHomologacao() {
-		return this.situacaoHomologacao==Situacao.EMITIDA;
-	}
-	public boolean estaEmitidaEmProducao() {
-		return this.situacaoProducao==Situacao.EMITIDA;
-	}
-	public boolean estaAutorizadaEmHomologacao() {
-		return this.situacaoHomologacao==Situacao.AUTORIZADA;
-	}
-	public boolean estaAutorizadaEmProducao() {
-		return this.situacaoProducao==Situacao.AUTORIZADA;
-	}
-	public boolean estaCanceladaEmHomologacao() {
-		return this.situacaoHomologacao==Situacao.CANCELADA;
-	}
-	public boolean estaCanceladaEmProducao() {
-		return this.situacaoProducao==Situacao.CANCELADA;
+	public boolean estaCancelada() {
+		return this.situacao==Situacao.CANCELADA;
 	}
 	public String naturezaOperacao() {
 		return naturezaOperacao;
@@ -250,16 +217,9 @@ public class NotaFiscal {
 	public Municipio municipioFatoGerador() {
 		return municipioFatoGerador;
 	}
-	private void assertSituacaoIgualHomologacao(String mensagem,Situacao... esperadas){
+	private void assertSituacaoIgual(String mensagem,Situacao... esperadas){
 		for (Situacao esperada : esperadas) {
-			if (esperada == this.situacaoHomologacao)
-				return;
-		}
-		throw new UnsupportedOperationException(mensagem);
-	}
-	private void assertSituacaoIgualProducao(String mensagem,Situacao... esperadas){
-		for (Situacao esperada : esperadas) {
-			if (esperada == this.situacaoProducao)
+			if (esperada == this.situacao)
 				return;
 		}
 		throw new UnsupportedOperationException(mensagem);
@@ -459,6 +419,21 @@ public class NotaFiscal {
 
 	public void referenciar(Referencia ref) {
 		getReferencias().add(ref);
+	}
+	
+	
+	public void tipoEmissaoParaContingencia() {
+		//TODO tratar validação de mudança do tipo de emissão
+		setTipoEmissao(TipoEmissao.contingenciaPelaUf(
+				ufEmitente()));
+	}
+	
+	private void setTipoEmissao(TipoEmissao novoTipoEmissao){
+		tipoEmissao = novoTipoEmissao;
+	}
+
+	public Uf ufEmitente() {
+		return emitente().endereco().municipio().uf();
 	}
 
 }

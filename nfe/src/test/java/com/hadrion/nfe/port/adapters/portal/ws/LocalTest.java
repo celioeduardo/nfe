@@ -35,37 +35,37 @@ public class LocalTest {
 	
 	@Test
 	public void svcRS(){
-		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.SVC_RS,Uf.AM));
-		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.SVC_RS,Uf.BA));
-		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.SVC_RS,Uf.CE));
-		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.SVC_RS,Uf.GO));
-		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.SVC_RS,Uf.MA));
-		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.SVC_RS,Uf.MS));
-		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.SVC_RS,Uf.MT));
-		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.SVC_RS,Uf.PA));
-		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.SVC_RS,Uf.PE));
-		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.SVC_RS,Uf.PI));
-		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.SVC_RS,Uf.PR));
+		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.AM),Uf.AM));
+		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.BA),Uf.BA));
+		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.CE),Uf.CE));
+		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.GO),Uf.GO));
+		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.MA),Uf.MA));
+		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.MS),Uf.MS));
+		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.MT),Uf.MT));
+		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.PA),Uf.PA));
+		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.PE),Uf.PE));
+		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.PI),Uf.PI));
+		assertEquals(Local.SVC_RS,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.PR),Uf.PR));
 	}
 
 	@Test
 	public void svcAN(){
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.AC));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.AL));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.AP));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.DF));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.ES));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.MG));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.PB));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.RJ));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.RN));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.RO));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.RR));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.RS));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.SC));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.SE));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.SP));
-		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.SVC_AN,Uf.TO));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.AC),Uf.AC));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.AL),Uf.AL));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.AP),Uf.AP));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.DF),Uf.DF));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.ES),Uf.ES));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.MG),Uf.MG));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.PB),Uf.PB));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.RJ),Uf.RJ));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.RN),Uf.RN));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.RO),Uf.RO));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.RR),Uf.RR));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.RS),Uf.RS));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.SC),Uf.SC));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.SE),Uf.SE));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.SP),Uf.SP));
+		assertEquals(Local.SVC_AN,Local.obter(TipoEmissao.contingenciaPelaUf(Uf.TO),Uf.TO));
 	}
 	
 }

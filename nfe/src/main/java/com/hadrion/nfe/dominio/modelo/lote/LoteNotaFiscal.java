@@ -26,17 +26,10 @@ class LoteNotaFiscal {
 			throw new IllegalArgumentException(
 					"Nota Fiscal não pode ser nula.");
 		
-		if (ambiente == Ambiente.HOMOLOGACAO && 
-				!notaFiscal.pendenteDeTransmissaoHomologacao())
+		if (!notaFiscal.pendenteDeTransmissao())
 			throw new IllegalArgumentException(
 					"Nota Fiscal "+notaFiscal.notaFiscalId()+
-					" não está Pendente de Transmissão em Homologação.");
-		
-		if (ambiente == Ambiente.PRODUCAO && 
-				!notaFiscal.pendenteDeTransmissaoProducao())
-			throw new IllegalArgumentException(
-					"Nota Fiscal "+notaFiscal.notaFiscalId()+
-					" não está Pendente de Transmissão em Produção.");
+					" não está Pendente de Transmissão.");
 		
 		this.notaFiscalId = notaFiscal.notaFiscalId();
 		this.situacao = SituacaoLoteNotaFiscal.NAO_PROCESSADA;

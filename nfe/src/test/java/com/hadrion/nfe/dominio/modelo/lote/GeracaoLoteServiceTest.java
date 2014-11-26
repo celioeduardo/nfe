@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
 
 
 public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
@@ -20,48 +20,55 @@ public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 		super.setUp();
 	}
 	
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void gerar_lote_nota_em_homologacao_que_esta_em_producao(){
 		
 		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
-		notas.add(notaEmitidaProducao_e_HomologacaoPersistidaParaTest("1111"));
-		notas.add(notaEmitidaProducao_e_HomologacaoPersistidaParaTest("1112"));
+		notas.add(notaEmitidaHomologacaoPersistidaParaTest("1111"));
+		notas.add(notaEmitidaHomologacaoPersistidaParaTest("1112"));
 		
 		Lote loteEmHomologacao = geracaoLoteService.gerarLoteEmHomologacao(notas);
 		loteRepositorio.salvar(loteEmHomologacao);
 		assertEquals(2,loteEmHomologacao.quantidadeNotas());
 		assertEquals(loteEmHomologacao.ambiente(),Ambiente.HOMOLOGACAO);
 		
-		Lote loteEmProducao = geracaoLoteService.gerarLoteEmProducao(notas);
-		loteRepositorio.salvar(loteEmProducao);
-		assertEquals(2,loteEmProducao.quantidadeNotas());
-		assertEquals(loteEmProducao.ambiente(),Ambiente.PRODUCAO);
-		
-		assertEquals(2,loteRepositorio.lotesDaNota(new NotaFiscalId("1111")).size());
-		assertEquals(2,loteRepositorio.lotesDaNota(new NotaFiscalId("1112")).size());
-		
+		geracaoLoteService.gerarLoteEmProducao(notas);
 	}
 	
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void gerar_lote_nota_em_producao_que_esta_em_homologacao(){
 		
 		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
-		notas.add(notaEmitidaProducao_e_HomologacaoPersistidaParaTest("1111"));
-		notas.add(notaEmitidaProducao_e_HomologacaoPersistidaParaTest("1112"));
+		notas.add(notaEmitidaProducaoPersistidaParaTest("1111"));
+		notas.add(notaEmitidaProducaoPersistidaParaTest("1112"));
 		
 		Lote loteEmProducao = geracaoLoteService.gerarLoteEmProducao(notas);
 		loteRepositorio.salvar(loteEmProducao);
 		assertEquals(2,loteEmProducao.quantidadeNotas());
 		assertEquals(loteEmProducao.ambiente(),Ambiente.PRODUCAO);
 		
-		Lote loteEmHomologacao = geracaoLoteService.gerarLoteEmHomologacao(notas);
-		loteRepositorio.salvar(loteEmHomologacao);
-		assertEquals(2,loteEmHomologacao.quantidadeNotas());
-		assertEquals(loteEmHomologacao.ambiente(),Ambiente.HOMOLOGACAO);
+		geracaoLoteService.gerarLoteEmHomologacao(notas);
 		
-		assertEquals(2,loteRepositorio.lotesDaNota(new NotaFiscalId("1111")).size());
-		assertEquals(2,loteRepositorio.lotesDaNota(new NotaFiscalId("1112")).size());
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void nao_gerar_lote_com_notas_de_locais_diferentes(){
+		NotaFiscal nfNormal = NotaFiscalFixture.nfEmProducao();
+		nfNormal.emitida();
 		
+		NotaFiscal nfContingencia = NotaFiscalFixture.nfEmProducao();
+		nfContingencia.emitida();
+		nfContingencia.tipoEmissaoParaContingencia();
+		
+		geracaoLoteService.gerarLoteEmProducao(notas(nfNormal,nfContingencia));
+		
+	}
+	
+	private Set<NotaFiscal> notas(NotaFiscal ... notas) {
+		Set<NotaFiscal> lista = new HashSet<NotaFiscal>(notas.length);
+		for (NotaFiscal nota : notas) 
+			lista.add(nota);
+		return lista;
 	}
 	
 }

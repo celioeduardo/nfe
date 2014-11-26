@@ -11,6 +11,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
 import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.ProtocoloNotaProcessada;
+import com.hadrion.nfe.port.adapters.portal.ws.Local;
 
 public class Lote {
 	
@@ -22,6 +23,7 @@ public class Lote {
 	private Mensagem mensagemProcessamento;
 	private MensagemSefaz mensagemSefaz;
 	private Ambiente ambiente;
+	private Local local;
 	
 	public int quantidadeNotas() {
 		return notas.size();
@@ -31,13 +33,13 @@ public class Lote {
 		
 	}
 	
-	public static Lote gerarEmHomologacao(NotaFiscal nota) {
+	static Lote gerarEmHomologacao(NotaFiscal nota) {
 		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
 		notas.add(nota);
 		return gerarEmHomologacao(notas);
 	}
 	
-	public static Lote gerarEmHomologacao(Set<NotaFiscal> lista) {
+	static Lote gerarEmHomologacao(Set<NotaFiscal> lista) {
 		
 		return new Lote(
 				DominioRegistro.loteRepositorio().proximaIdentidade(),
@@ -45,13 +47,13 @@ public class Lote {
 				Ambiente.HOMOLOGACAO);
 	}
 	
-	public static Lote gerarEmProducao(NotaFiscal nota) {
+	static Lote gerarEmProducao(NotaFiscal nota) {
 		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
 		notas.add(nota);
 		return gerarEmProducao(notas);
 	}
 	
-	public static Lote gerarEmProducao(Set<NotaFiscal> lista) {
+	static Lote gerarEmProducao(Set<NotaFiscal> lista) {
 		return new Lote(
 				DominioRegistro.loteRepositorio().proximaIdentidade(),
 				lista,
@@ -67,12 +69,24 @@ public class Lote {
 		this.situacao = SituacaoLote.NAO_ENVIADO;
 		this.notas = new HashSet<LoteNotaFiscal>();
 		this.ambiente = ambiente;
-		
+		this.local = definirLocal(notas);
 		for (NotaFiscal notaFiscal : notas)
 			this.notas.add(
 					new LoteNotaFiscal(notaFiscal,ambiente));
 	}
-
+	
+	private Local definirLocal(Set<NotaFiscal> notas){
+		Local local = null;
+		for (NotaFiscal nf : notas) {
+			if (local == null)
+				local = Local.obter(nf.tipoEmissao(), nf.ufEmitente());
+			else if (local != Local.obter(nf.tipoEmissao(), nf.ufEmitente()))
+				throw new IllegalArgumentException(
+						"Todas as Notas Fiscais tem que ter como destino o mesmo local.");
+		}
+		return local;
+	}
+	
 	public LoteId loteId(){
 		return loteId;
 	}
@@ -238,5 +252,9 @@ public class Lote {
 					"Lote não pode ser definido para Erro de Transmissão."
 					+ "Situação é diferente de Não Enviado."); 
 		this.situacao = SituacaoLote.ERRO_TRANSMISSAO;
+	}
+
+	public Local local() {
+		return local;
 	}
 }

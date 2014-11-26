@@ -26,7 +26,6 @@ import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.AutorizacaoService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
 import com.hadrion.nfe.port.adapters.portal.ws.EndPoints;
-import com.hadrion.nfe.port.adapters.portal.ws.Local;
 import com.hadrion.nfe.port.adapters.portal.ws.Servico;
 import com.hadrion.nfe.port.adapters.portal.ws.Versao;
 import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
@@ -41,8 +40,8 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 	public RetornoAutorizacao autorizar(Lote lote, Certificado certificado) throws Throwable {
 		
 		final String endpoint = EndPoints.obter(
-				lote.ambiente(), 
-				Local.MG, //TODO definir o local do Endpoint SP,MG,SVAN,SVC... 
+				lote.ambiente(),
+				lote.local(),
 				Versao.V3_10, 
 				Servico.AUTORIZACAO);
 		//final String endpoint = "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao";
