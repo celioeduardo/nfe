@@ -1,6 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -118,20 +119,48 @@ public class NotaFiscalTest {
 		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
 	}
 	
-	@Test
-	public void trocaTipoEmissaoDeNormalParaContingencia(){
-		assertEquals(TipoEmissao.NORMAL,nf.tipoEmissao());
-		nf.alterarTipoEmissaoParaContingencia();
-		assertTrue(nf.tipoEmissao().contingencia());
-	} 
-	
 	@Test(expected=RuntimeException.class)
 	public void trocaTipoEmissaoDeNormalParaContingenciaNaoPermitida(){
 		nf = NotaFiscalFixture.nfEmProducaoAutorizada();
 		nf.alterarTipoEmissaoParaContingencia();
 	}
 	
-	//TODO NÃO PERMITIR troca do Tipo de Emissão quando houver Formulário de Segurança (FS-DA ou FS-IA) Impresso 
+	@Test(expected=RuntimeException.class)
+	public void trocaTipoEmissaoDeFsdaParaOutroTipoNaoPermitidoSeFormularioSegurancaFoiImpresso(){
+		nf = NotaFiscalFixture.nfEmProducao();
+		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
+		nf.definirFormularioSegurancaoComoImpresso();
+		nf.alterarTipoEmissao(TipoEmissao.NORMAL);
+	}
 	
+	@Test(expected=RuntimeException.class)
+	public void trocaTipoEmissaoDeFsiaParaOutroTipoNaoPermitidoSeFormularioSegurancaFoiImpresso(){
+		nf = NotaFiscalFixture.nfEmProducao();
+		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
+		nf.definirFormularioSegurancaoComoImpresso();
+		nf.alterarTipoEmissao(TipoEmissao.NORMAL);
+	}
+	
+	@Test
+	public void definirFormularioDeSegurancaFsdaComoImpresso(){
+		nf = NotaFiscalFixture.nfEmProducao();
+		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
+		nf.definirFormularioSegurancaoComoImpresso();
+		assertTrue(nf.formularioSegurancaImpresso());
+	}
+	
+	@Test
+	public void definirFormularioDeSegurancaFsiaComoImpresso(){
+		nf = NotaFiscalFixture.nfEmProducao();
+		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
+		nf.definirFormularioSegurancaoComoImpresso();
+		assertTrue(nf.formularioSegurancaImpresso());
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void definirFormularioDeSegurancaComoImpressoSomenteTipoEmissaoForFsdaOuFsia(){
+		nf = NotaFiscalFixture.nfEmProducao();
+		nf.definirFormularioSegurancaoComoImpresso();
+	}
 	
 }

@@ -57,6 +57,8 @@ public class NotaFiscal {
 	private Informacao informacaoContribuinte;
 	private Exportacao exportacao;
 	private Contingencia contingencia;
+	
+	private boolean formularioSegurancaImpresso = false;
 
 	@SuppressWarnings("unused")
 	private NotaFiscal() {
@@ -435,6 +437,10 @@ public class NotaFiscal {
 			throw new RuntimeException(
 					"Nota já transmitida. Não é possível alterar o Tipo de Emissão");
 		
+		if (formularioSegurancaImpresso)
+			throw new RuntimeException(
+					"Tipo de Emissão não pode ser alterado. Formulário de Segurança já foi impresso.");
+		
 		tipoEmissao = novoTipoEmissao;
 	}
 
@@ -444,6 +450,18 @@ public class NotaFiscal {
 
 	public void alterarTipoEmissao(TipoEmissao novoTipoEmissao) {
 		setTipoEmissao(novoTipoEmissao);
+	}
+
+	public void definirFormularioSegurancaoComoImpresso() {
+		if (tipoEmissao != TipoEmissao.FS_DA && tipoEmissao != TipoEmissao.FS_IA)
+			throw new RuntimeException(
+					"Formulário de Segurança não pode ser definido como impresso quando "
+					+ "o Tipo de Emissão for diferente de FS-DA ou FS-IA");
+		formularioSegurancaImpresso = true;
+	}
+
+	public boolean formularioSegurancaImpresso() {
+		return formularioSegurancaImpresso;
 	}
 
 }
