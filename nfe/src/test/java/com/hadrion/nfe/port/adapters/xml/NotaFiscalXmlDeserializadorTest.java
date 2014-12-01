@@ -20,6 +20,7 @@ import com.hadrion.nfe.dominio.modelo.endereco.Cep;
 import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.endereco.Pais;
+import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.icms.Cst;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
@@ -136,6 +137,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 		return new NotaFiscal(
 				Ambiente.HOMOLOGACAO,
 				new NotaFiscalId("12346"),
+				new FilialId("4007474000116"),
 				"VENDA DE PRODUTOS ADQ. TERCEIROS", 
 				FormaPagamento.A_PRAZO, 
 				new Modelo("55"), 

@@ -41,7 +41,8 @@ public class NotaFiscalAplicacaoService {
 	@Autowired
 	private NotaFiscalRepositorio repositorio;
 	
-	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(Double empresa,Double filial,Date inicio,Date fim,String usuario,String notaFiscalId){
+	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(Double empresa,Double filial,
+			Date inicio,Date fim,String usuario,String notaFiscalId){
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 		NotaFiscalId notaFiscalIdFiltro = null;
 		if (notaFiscalId!=null)

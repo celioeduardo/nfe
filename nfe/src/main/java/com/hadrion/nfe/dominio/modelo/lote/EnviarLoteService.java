@@ -1,22 +1,25 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
+import com.hadrion.nfe.dominio.modelo.empresa.EmpresaRepositorio;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.AutorizacaoService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
 
-
+@Service
 public class EnviarLoteService {
 	
-	AutorizacaoService autorizacaoService;
+	@Autowired
+	private AutorizacaoService autorizacaoService;
 	
-	public EnviarLoteService(AutorizacaoService recepcaoLoteService){
-		this.autorizacaoService = recepcaoLoteService;
-	}
+	@Autowired
+	private EmpresaRepositorio empresaRepositorio;
 	
 	public void enviar(Lote lote) {
-		//TODO obter certificado
-		Certificado certificado = null;
+		Certificado certificado = empresaRepositorio.obterCertificadoPelaEmpresa(lote.empresaId());
 		RetornoAutorizacao retorno=null; 
 		try {
 			retorno = autorizacaoService.autorizar(lote,certificado);

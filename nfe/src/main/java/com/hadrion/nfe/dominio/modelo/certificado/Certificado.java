@@ -12,12 +12,27 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
+
 import org.apache.commons.io.FileUtils;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Certificado {
+	
+	@Transient //TODO persistir como blob - usar byte array? 
 	private InputStream pkcs12;
+	
+	@Column(name="SENHA")
 	private String senha;
+	
+	@Transient
 	private String alias;
+	@Transient
 	private KeyStore ks;
 	
 	public Certificado(InputStream pkcs12, String senha) {
@@ -88,4 +103,11 @@ public class Certificado {
 	public Object validoAte() {
 		return x509Certificate().getNotAfter();
 	}
+	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Certificado(){}
+	
 }

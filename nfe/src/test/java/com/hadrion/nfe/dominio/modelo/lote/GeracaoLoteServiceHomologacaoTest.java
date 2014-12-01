@@ -11,11 +11,10 @@ import org.junit.Test;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 
-
 public class GeracaoLoteServiceHomologacaoTest extends AbstractLoteServiceTest {
 	
 	@Before
-	public void setup() throws Exception{
+	public void setUp() throws Exception{
 		super.setUp();
 	}
 	

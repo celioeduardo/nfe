@@ -15,7 +15,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 public class GeracaoLoteServiceProducaoTest extends AbstractLoteServiceTest {
 	
 	@Before
-	public void setup() throws Exception{
+	public void setUp() throws Exception{
 		super.setUp();
 	}
 	

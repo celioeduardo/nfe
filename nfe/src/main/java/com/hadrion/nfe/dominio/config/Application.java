@@ -6,10 +6,12 @@ import javax.sql.DataSource;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -25,28 +27,30 @@ import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 @EnableTransactionManagement
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "com.hadrion")
+@EnableJpaRepositories(basePackages="com.hadrion")
+@EntityScan(basePackages="com.hadrion")
 public abstract class Application extends WebMvcConfigurerAdapter{
 	
 	@Bean
 	DataSource dataSource() {
-//		return new SimpleDriverDataSource() {
-//			{
-//				setDriverClass(org.h2.Driver.class);
-//				setUsername("sa");
-//				setUrl("jdbc:h2:mem");
-//				setPassword("");
-//			}
-//		};
-		
-		
 		return new SimpleDriverDataSource() {
 			{
-				setDriverClass(oracle.jdbc.driver.OracleDriver.class);
-				setUrl("jdbc:oracle:thin:@192.168.151.3:1521:orcl");
-				setUsername("coopadap");
-				setPassword("sucesso");
-			}		
+				setDriverClass(org.h2.Driver.class);
+				setUsername("sa");
+				setUrl("jdbc:h2:mem");
+				setPassword("");
+			}
 		};
+		
+		
+//		return new SimpleDriverDataSource() {
+//			{
+//				setDriverClass(oracle.jdbc.driver.OracleDriver.class);
+//				setUrl("jdbc:oracle:thin:@192.168.151.3:1521:orcl");
+//				setUsername("coopadap");
+//				setPassword("sucesso");
+//			}		
+//		};
 
 		
 	}

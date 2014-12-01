@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
 import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
@@ -190,6 +191,7 @@ public class NotaFiscalConverter extends AbstractConverter {
 		return new NotaFiscal(
 				ambiente,
 				null, 
+				new FilialId("4007474000116"),
 				ide.getNaturezaOperacao(),
 				ide.getFormaPagamento(), 
 				ide.getModelo(), 

@@ -14,6 +14,7 @@ import com.hadrion.nfe.dominio.modelo.endereco.Cep;
 import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.endereco.Pais;
+import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
 import com.hadrion.nfe.dominio.modelo.icms.Icms;
@@ -26,8 +27,8 @@ import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cide;
 import com.hadrion.nfe.dominio.modelo.nf.item.Combustivel;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
-import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
@@ -67,6 +68,7 @@ public class NotaFiscalFixture {
 		return new NotaFiscal(
 				Ambiente.PRODUCAO,
 				notaFiscalId,
+				new FilialId("4007474000116"),
 				"VENDA DE PRODUTOS ADQ. TERCEIROS", 
 				FormaPagamento.A_PRAZO, 
 				new Modelo("55"), 
@@ -107,6 +109,7 @@ public class NotaFiscalFixture {
 		return new NotaFiscal(
 				Ambiente.HOMOLOGACAO,
 				notaFiscalId,
+				new FilialId("4007474000116"),
 				"VENDA DE PRODUTOS ADQ. TERCEIROS", 
 				FormaPagamento.A_PRAZO, 
 				new Modelo("55"), 

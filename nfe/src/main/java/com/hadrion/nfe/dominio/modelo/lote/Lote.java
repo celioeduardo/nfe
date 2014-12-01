@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
+import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
@@ -25,6 +26,8 @@ public class Lote {
 	private Ambiente ambiente;
 	private Local local;
 	
+	private EmpresaId empresaId;
+	
 	public int quantidadeNotas() {
 		return notas.size();
 	}
@@ -33,48 +36,53 @@ public class Lote {
 		
 	}
 	
-	static Lote gerarEmHomologacao(NotaFiscal nota) {
+	static Lote gerarEmHomologacao(NotaFiscal nota, EmpresaId empresaId) {
 		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
 		notas.add(nota);
-		return gerarEmHomologacao(notas);
+		return gerarEmHomologacao(notas, empresaId);
 	}
 	
-	static Lote gerarEmHomologacao(Set<NotaFiscal> lista) {
+	static Lote gerarEmHomologacao(Set<NotaFiscal> lista, EmpresaId empresaId) {
 		
 		return new Lote(
 				DominioRegistro.loteRepositorio().proximaIdentidade(),
 				lista,
-				Ambiente.HOMOLOGACAO);
+				Ambiente.HOMOLOGACAO,
+				empresaId);
 	}
 	
-	static Lote gerarEmProducao(NotaFiscal nota) {
+	static Lote gerarEmProducao(NotaFiscal nota, EmpresaId empresaId) {
 		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
 		notas.add(nota);
-		return gerarEmProducao(notas);
+		return gerarEmProducao(notas,empresaId);
 	}
 	
-	static Lote gerarEmProducao(Set<NotaFiscal> lista) {
+	static Lote gerarEmProducao(Set<NotaFiscal> lista, EmpresaId empresaId) {
 		return new Lote(
 				DominioRegistro.loteRepositorio().proximaIdentidade(),
 				lista,
-				Ambiente.PRODUCAO);
+				Ambiente.PRODUCAO,
+				empresaId);
 	}
 	
 	private Lote(
 			LoteId loteId,
 			Set<NotaFiscal> notas,
-			Ambiente ambiente){
+			Ambiente ambiente,
+			EmpresaId empresaId){
 		
 		this.loteId = loteId;
 		this.situacao = SituacaoLote.NAO_ENVIADO;
 		this.notas = new HashSet<LoteNotaFiscal>();
 		this.ambiente = ambiente;
+		this.empresaId = empresaId;
 		this.local = definirLocal(notas);
 		for (NotaFiscal notaFiscal : notas)
 			this.notas.add(
 					new LoteNotaFiscal(notaFiscal,ambiente));
 	}
 	
+
 	private Local definirLocal(Set<NotaFiscal> notas){
 		Local local = null;
 		for (NotaFiscal nf : notas) {
@@ -256,5 +264,9 @@ public class Lote {
 
 	public Local local() {
 		return local;
+	}
+
+	public EmpresaId empresaId() {
+		return empresaId;
 	}
 }

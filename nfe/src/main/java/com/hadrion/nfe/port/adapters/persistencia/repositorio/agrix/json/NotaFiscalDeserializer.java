@@ -11,6 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
 import com.hadrion.nfe.dominio.modelo.nf.FormaPagamento;
@@ -47,6 +48,7 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 		final NotaFiscal nf = new NotaFiscal(
 				Ambiente.PRODUCAO, //TODO Parametrizar ambiente
 				new NotaFiscalId(s(j,"NotaFiscalId")),
+				new FilialId("4007474000116"), //TODO Obter Filial
 				s(j,"naturezaOperacao"),
 				FormaPagamento.A_VISTA,//TODO forma pagamento
 				new Modelo(s(j,"modelo")),

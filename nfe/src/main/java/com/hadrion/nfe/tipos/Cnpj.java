@@ -1,10 +1,18 @@
 package com.hadrion.nfe.tipos;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Cnpj {
 	
+	@Column(name="CNPJ")
 	private Long numero;
 
 	public Cnpj(Long numero) {
@@ -52,7 +60,13 @@ public class Cnpj {
 
 	@Override
 	public String toString() {
-		return "Cnpj [numero="+ numero
-				+ "]";
+		return String.valueOf(numero);
 	} 
+	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Cnpj(){}
+	
 }

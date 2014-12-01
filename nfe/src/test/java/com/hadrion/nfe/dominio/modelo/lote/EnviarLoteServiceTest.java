@@ -13,6 +13,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
+import com.hadrion.nfe.dominio.modelo.certificado.CertificadoFixture;
+import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
+import com.hadrion.nfe.dominio.modelo.empresa.EmpresaRepositorio;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.AutorizacaoService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.ReciboLote;
@@ -25,11 +28,17 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	@Mock
 	private AutorizacaoService recepcaoLoteService;
+	
+	@Mock
+	private EmpresaRepositorio empresaRepositorio;
 		
 	@Before
-	public void setup() throws Exception{
+	public void setUp() throws Exception{
 		super.setUp();
 		MockitoAnnotations.initMocks(this);
+		
+		when(empresaRepositorio.obterCertificadoPelaEmpresa(any(EmpresaId.class))).thenReturn(
+				CertificadoFixture.certificado());
 	}
 	
 	@Test

@@ -3,6 +3,8 @@ package com.hadrion.nfe.dominio.modelo;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationContextLoader;
@@ -13,6 +15,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.hadrion.comum.domain.model.RastreadorEventoTest;
 import com.hadrion.nfe.dominio.config.Application;
 import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamentoRepositorio;
+import com.hadrion.nfe.dominio.modelo.certificado.CertificadoFixture;
+import com.hadrion.nfe.dominio.modelo.empresa.Empresa;
+import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
+import com.hadrion.nfe.dominio.modelo.empresa.EmpresaRepositorio;
+import com.hadrion.nfe.dominio.modelo.filial.Filial;
+import com.hadrion.nfe.dominio.modelo.filial.FilialId;
+import com.hadrion.nfe.dominio.modelo.filial.FilialRepositorio;
 import com.hadrion.nfe.dominio.modelo.lote.GeracaoLoteService;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
@@ -21,12 +30,17 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+import com.hadrion.nfe.tipos.Cnpj;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={Application.class}, loader = SpringApplicationContextLoader.class)
 @ActiveProfiles("teste")
+@Transactional
 public abstract class DominioTest extends RastreadorEventoTest {
-	
+	@Autowired
+	protected EmpresaRepositorio empresaRepositorio;
+	@Autowired
+	protected FilialRepositorio filialRepositorio;
 	@Autowired
 	protected GeracaoLoteService geracaoLoteService;
 	@Autowired
@@ -42,6 +56,23 @@ public abstract class DominioTest extends RastreadorEventoTest {
 		loteRepositorio.limpar();
 		notaFiscalRepositorio.limpar();
 		solicitacaoCancelamentoRepositorio.limpar();
+		
+		Empresa empresa = new Empresa(
+				new EmpresaId("4007474000116"),
+				"Hadrion",
+				new Cnpj(4007474000116L),
+				CertificadoFixture.certificado());
+		
+		empresaRepositorio.salvar(empresa);
+		
+		Filial filial = new Filial(
+				new FilialId("4007474000116"),
+				"Hadrion",
+				new Cnpj(4007474000116L),
+				empresa.empresaId());
+		
+		filialRepositorio.salvar(filial);
+		
 	}
 	protected NotaFiscal notaEmitidaHomologacaoPersistidaParaTest(String id) {
 		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));

@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
+import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
@@ -60,6 +61,8 @@ public class NotaFiscal {
 	
 	private boolean formularioSegurancaImpresso = false;
 
+	private FilialId filialId;
+	
 	@SuppressWarnings("unused")
 	private NotaFiscal() {
 		super();
@@ -68,6 +71,7 @@ public class NotaFiscal {
 	public NotaFiscal(
 			Ambiente ambiente,
 			NotaFiscalId notaFiscalId,
+			FilialId filialId,
 			String naturezaOperacao,
 			FormaPagamento formaPagamento,
 			Modelo modelo,
@@ -97,8 +101,10 @@ public class NotaFiscal {
 			Informacao informacaoContribuinte,
 			Exportacao exportacao,
 			Contingencia contingencia) {
+		
 		this.ambiente = ambiente;
 		this.notaFiscalId = notaFiscalId;
+		this.filialId = filialId;
 		this.situacao=Situacao.INDEFINIDA;
 		this.naturezaOperacao=naturezaOperacao;
 		this.formaPagamento=formaPagamento;
@@ -134,15 +140,20 @@ public class NotaFiscal {
 		consistirNotasReferencia();
 	}
 	
-	public NotaFiscal(Ambiente ambiente, NotaFiscalId notaFiscalId) {
+	public NotaFiscal(Ambiente ambiente, NotaFiscalId notaFiscalId, FilialId filialId) {
 		this.notaFiscalId = notaFiscalId;
 		this.ambiente = ambiente;
 		this.tipoEmissao = TipoEmissao.NORMAL;
 		this.situacao=Situacao.INDEFINIDA;
+		this.filialId = filialId;
 	}
 	
 	public Ambiente ambiente(){
 		return ambiente;
+	}
+	
+	public FilialId filialId(){
+		return filialId;
 	}
 	
 	private void consistirNotasReferencia(){
@@ -425,7 +436,6 @@ public class NotaFiscal {
 	
 	
 	public void alterarTipoEmissaoParaContingencia() {
-		//TODO tratar validação de mudança do tipo de emissão
 		setTipoEmissao(TipoEmissao.contingenciaPelaUf(
 				ufEmitente()));
 	}

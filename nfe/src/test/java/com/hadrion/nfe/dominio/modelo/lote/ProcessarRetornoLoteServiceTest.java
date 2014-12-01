@@ -22,7 +22,7 @@ import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.RetornoConsultaPr
 public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 	
 	@Before
-	public void setup() throws Exception{
+	public void setUp() throws Exception{
 		super.setUp();
 	}
 	

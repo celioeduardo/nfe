@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 
 public class NotaFiscalTest {
 	
@@ -21,18 +22,22 @@ public class NotaFiscalTest {
 	public void novaNotaEmProducao(){
 		NotaFiscal nf = new NotaFiscal(
 				Ambiente.PRODUCAO,
-				new NotaFiscalId("123456"));
+				new NotaFiscalId("123456"),
+				new FilialId("4007474000116"));
 		
 		assertEquals(Ambiente.PRODUCAO,nf.ambiente());
+		assertEquals(new FilialId("4007474000116"),nf.filialId());
 	}
 	
 	@Test
 	public void novaNotaEmHomologacao(){
 		NotaFiscal nf = new NotaFiscal(
 				Ambiente.HOMOLOGACAO,
-				new NotaFiscalId("123456"));
+				new NotaFiscalId("123456"),
+				new FilialId("4007474000116"));
 		
 		assertEquals(Ambiente.HOMOLOGACAO,nf.ambiente());
+		assertEquals(new FilialId("4007474000116"),nf.filialId());
 	}
 	
 	@Test

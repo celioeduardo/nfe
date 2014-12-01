@@ -1,10 +1,18 @@
-package com.hadrion.nfe.dominio.modelo.lote;
+package com.hadrion.nfe.dominio.modelo.filial;
 
-public class LoteId {
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+@Embeddable
+@Access(AccessType.FIELD)
+public class FilialId {
 	
+	@Column(name="FILIAL_ID")
 	private String id; 
 	
-	public LoteId(String id){
+	public FilialId(String id){
 		this.id=id;
 	}
 	
@@ -17,7 +25,7 @@ public class LoteId {
 		boolean objetosIguais = false;
 
 		if (objeto != null && this.getClass() == objeto.getClass()) {
-			LoteId objetoTipado = (LoteId) objeto;
+			FilialId objetoTipado = (FilialId) objeto;
 			objetosIguais = this.id().equals(objetoTipado.id());
 		} 
 
@@ -27,7 +35,7 @@ public class LoteId {
 	@Override
 	public int hashCode() {
 		int hashCodeValue = 
-				+ (7844 * 5) 
+				+ (5547 * 37) 
 				+ this.id().hashCode();
 		return hashCodeValue;
 	}
@@ -36,4 +44,10 @@ public class LoteId {
 	public String toString() {
 		return id;
 	}
+	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private FilialId(){}
 }

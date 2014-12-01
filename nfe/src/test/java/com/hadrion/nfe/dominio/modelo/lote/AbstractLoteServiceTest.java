@@ -7,6 +7,7 @@ import com.hadrion.nfe.dominio.modelo.DominioTest;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 
 public abstract class AbstractLoteServiceTest extends DominioTest{
+	
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
