@@ -1,12 +1,9 @@
 package com.hadrion.nfe.port.adapters.portal.autorizacao;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -14,6 +11,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ws.WebServiceMessage;
@@ -25,45 +23,33 @@ import org.springframework.xml.transform.StringSource;
 
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
-import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
-import com.hadrion.nfe.dominio.modelo.portal.autorizacao.AutorizacaoService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
-import com.hadrion.nfe.port.adapters.portal.ws.Cabecalho;
-import com.hadrion.nfe.port.adapters.portal.ws.Corpo;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ConsultaProcessamentoLoteService;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.RetornoConsultaProcessamentoLote;
 import com.hadrion.nfe.port.adapters.portal.ws.EndPoints;
 import com.hadrion.nfe.port.adapters.portal.ws.Servico;
 import com.hadrion.nfe.port.adapters.portal.ws.Versao;
 import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 
 @Service
-public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
+public class SoapConsultaProcessamentoLoteServiceAdapter implements ConsultaProcessamentoLoteService{
 	
 	@Autowired
 	private WebServiceTemplateFabrica webServiceTemplateFabrica;
 	
-	@Autowired
-	private LoteRepositorio loteRepositorio;
-	
-	@Autowired
-	private NotaFiscalRepositorio notaFiscalRepositorio; 
-	
 	@Override
-	public RetornoAutorizacao autorizar(final Lote lote, Certificado certificado) throws Throwable {
-		
+	public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 		final String endpoint = EndPoints.obter(
 				lote.ambiente(),
 				lote.local(),
 				Versao.V3_10, 
-				Servico.AUTORIZACAO);
+				Servico.RET_AUTORIZACAO);
 		
 		StreamSource source = new StreamSource(
-				new StringReader(nfeDadosMsg(lote,notasDoLote(lote),certificado)));
+				new StringReader(nfeDadosMsg()));
 		StringWriter writerResult = new StringWriter();
 		StreamResult result = new StreamResult(writerResult);
-
+		
 		WebServiceTemplate ws;
 		
 		ws = webServiceTemplateFabrica.criar(certificado.keyStore(), certificado.senha());
@@ -77,9 +63,9 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 							TransformerException {
 						
 						((SoapMessage)arg).setSoapAction(
-								endpoint+"/nfeAutorizacao");
+								endpoint+"/nfeRetAutorizacao");
 						
-						StringSource ss = new StringSource(nfeCabecMsg(lote));
+						StringSource ss = new StringSource(nfeCabecMsg());
 						SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
 						Transformer transformer = TransformerFactory.newInstance().newTransformer();
 						transformer.transform(ss, soapHeader.getResult());
@@ -90,32 +76,32 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 				},
 				result);
 		
-		return new RetornoAutorizacaoDeserializador(
+		return new RetornoConsultaProcessamentoLoteDeserializador(
 				writerResult.toString()).deserializar();
+
 	}
-	
-	private Set<NotaFiscal> notasDoLote(Lote lote){
-		List<NotaFiscalId> notas = new ArrayList<NotaFiscalId>(lote.notas());
-		return new HashSet<NotaFiscal>(notaFiscalRepositorio.notasPendentesAutorizacao(notas));
-	}
-	
-	private String nfeCabecMsg(Lote lote){
-		Cabecalho cabecalho = new Cabecalho(lote.uf());
-		return cabecalho.autorizacao();
-	}
-	
-	private String nfeDadosMsg(Lote lote, Set<NotaFiscal> notas, 
-			Certificado certificado){
-		Corpo corpo = new Corpo(lote, notas, certificado);
-		return corpo.autorizacao();
 		
-//		final File xml = FileUtils.getFile("src","test","resources","ws","Autorizacao-nfeDadosMsg.xml");
-//		
-//		try {
-//			return FileUtils.readFileToString(xml);
-//		} catch (IOException e) {
-//			throw new RuntimeException(e);
-//		}
+	private String nfeCabecMsg(){
+		final File xml = FileUtils.getFile("src","test","resources","ws","Autorizacao-nfeCabecMsg.xml");
+		
+		try {
+			return FileUtils.readFileToString(xml);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
+	
+	private String nfeDadosMsg(){
+		final File xml = FileUtils.getFile("src","test","resources","ws","Autorizacao-nfeDadosMsg.xml");
+		
+		try {
+			return FileUtils.readFileToString(xml);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
+	
 	
 }

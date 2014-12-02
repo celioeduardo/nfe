@@ -1,7 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
-import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.ConsultaProcessamentoLoteService;
-import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.RetornoConsultaProcessamentoLote;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ConsultaProcessamentoLoteService;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.RetornoConsultaProcessamentoLote;
 
 public class ProcessarRetornoLoteService {
 	
@@ -14,8 +14,9 @@ public class ProcessarRetornoLoteService {
 	}
 	
 	public void processar(Lote lote) {
+		//TODO obter certificado
 		RetornoConsultaProcessamentoLote retorno = 
-				consultaProcessamentoLoteService.consultar(lote);
+				consultaProcessamentoLoteService.consultar(lote,null);
 		
 		if (retorno.loteFoiProcessado())
 			lote.processado(

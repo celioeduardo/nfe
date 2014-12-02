@@ -17,12 +17,12 @@ public class Cabecalho {
 	
 	public String autorizacao(){
 		return xstream().toXML(
-				new NfeCabecMsg(uf, "3.10","http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao3"));
+				new NfeCabecMsg(uf, "3.10","http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao"));
 	}
 
 	public String retornoAutorizacao() {
 		return xstream().toXML(
-				new NfeCabecMsg(uf, "3.10","http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao3"));	
+				new NfeCabecMsg(uf, "3.10","http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"));	
 	}
 
 	private XStream xstream(){

@@ -12,7 +12,7 @@ public class CabecalhoTest extends AbstractXmlTest {
 	public void cabecalhoAutorizacao(){
 		Cabecalho cabecalho = new Cabecalho(Uf.MG);
 		assertXMLEquals(
-			"<nfeCabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao3\">\r\n" + 
+			"<nfeCabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao\">\r\n" + 
 			"	<cUF>31</cUF>\r\n" + 
 			"	<versaoDados>3.10</versaoDados>\r\n" + 
 			"</nfeCabecMsg>", cabecalho.autorizacao());
@@ -22,7 +22,7 @@ public class CabecalhoTest extends AbstractXmlTest {
 	public void cabecalhoRetornoAutorizacao(){
 		Cabecalho cabecalho = new Cabecalho(Uf.MG);
 		assertXMLEquals(
-			"<nfeCabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao3\">\r\n" + 
+			"<nfeCabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao\">\r\n" + 
 			"	<cUF>31</cUF>\r\n" + 
 			"	<versaoDados>3.10</versaoDados>\r\n" + 
 			"</nfeCabecMsg>",

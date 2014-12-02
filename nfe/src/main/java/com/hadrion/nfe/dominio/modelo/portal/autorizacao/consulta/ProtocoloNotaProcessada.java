@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta;
+package com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta;
 
 import java.util.Date;
 

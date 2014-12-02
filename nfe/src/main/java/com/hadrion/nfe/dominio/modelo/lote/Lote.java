@@ -7,11 +7,12 @@ import java.util.Set;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
+import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
-import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.ProtocoloNotaProcessada;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ProtocoloNotaProcessada;
 import com.hadrion.nfe.port.adapters.portal.ws.Local;
 
 public class Lote {
@@ -25,7 +26,7 @@ public class Lote {
 	private MensagemSefaz mensagemSefaz;
 	private Ambiente ambiente;
 	private Local local;
-	
+	private Uf uf;
 	private EmpresaId empresaId;
 	
 	public int quantidadeNotas() {
@@ -77,12 +78,12 @@ public class Lote {
 		this.ambiente = ambiente;
 		this.empresaId = empresaId;
 		this.local = definirLocal(notas);
+		this.uf = definirUf(notas);
 		for (NotaFiscal notaFiscal : notas)
 			this.notas.add(
 					new LoteNotaFiscal(notaFiscal,ambiente));
 	}
 	
-
 	private Local definirLocal(Set<NotaFiscal> notas){
 		Local local = null;
 		for (NotaFiscal nf : notas) {
@@ -93,6 +94,10 @@ public class Lote {
 						"Todas as Notas Fiscais tem que ter como destino o mesmo local.");
 		}
 		return local;
+	}
+	
+	private Uf definirUf(Set<NotaFiscal> notas){
+		return notas.iterator().next().ufEmitente();
 	}
 	
 	public LoteId loteId(){
@@ -213,15 +218,24 @@ public class Lote {
 	}
 	
 	private LoteNotaFiscal loteNotaFiscal(NotaFiscalId notaFiscalId){
-		for (LoteNotaFiscal loteNotaFiscal : notas()) {
+		for (LoteNotaFiscal loteNotaFiscal : getNotas()) {
 			if (loteNotaFiscal.notaFiscalId().equals(notaFiscalId))
 				return loteNotaFiscal;
 		}
 		return null;
 	}
 	
-	private Set<LoteNotaFiscal> notas(){
+	private Set<LoteNotaFiscal> getNotas(){
 		return notas;
+	}
+	
+	public Set<NotaFiscalId> notas(){
+		Set<NotaFiscalId> result = new HashSet<NotaFiscalId>();
+		
+		for (LoteNotaFiscal loteNf : getNotas()) 
+			result.add(loteNf.notaFiscalId());
+		
+		return result;
 	}
 	
 	private void setMensagemProcessamento(Mensagem mensagem){
@@ -268,5 +282,9 @@ public class Lote {
 
 	public EmpresaId empresaId() {
 		return empresaId;
+	}
+
+	public Uf uf() {
+		return uf;
 	}
 }

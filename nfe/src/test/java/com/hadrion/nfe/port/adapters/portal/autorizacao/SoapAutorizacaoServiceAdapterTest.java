@@ -26,13 +26,14 @@ public class SoapAutorizacaoServiceAdapterTest extends DominioTest{
 	private Lote lote;
 	
 	@Before
-	public void setUp(){
+	public void setUp() throws Exception{
+		super.setUp();
 		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao();
 		nf.emitida();
 		lote = loteGeradoEmHomologacaoPersistidoParaTest(nf);
 	}
 	
-	@Ignore @Test
+	@Test
 	public void autorizar() throws Throwable{
 		certificado = new Certificado(
 				FileUtils.getFile("src","test","resources","assinatura","certificado.pfx"), 

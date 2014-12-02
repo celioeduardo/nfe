@@ -10,14 +10,15 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
-import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.ConsultaProcessamentoLoteService;
-import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.ProtocoloNotaProcessada;
-import com.hadrion.nfe.dominio.modelo.portal.recepcao.consulta.RetornoConsultaProcessamentoLote;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ConsultaProcessamentoLoteService;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ProtocoloNotaProcessada;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.RetornoConsultaProcessamentoLote;
 
 public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 	
@@ -31,7 +32,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						return new RetornoConsultaProcessamentoLote(
 								new Mensagem(104, "Lote processado"), 
 								MensagemSefaz.vazia(), 
@@ -50,7 +51,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						return new RetornoConsultaProcessamentoLote(
 								new Mensagem(105, "Lote em processamento"), 
 								MensagemSefaz.vazia(), 
@@ -68,7 +69,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						return new RetornoConsultaProcessamentoLote(
 								new Mensagem(215, "Rejeição: Falha no schema XML"), 
 								MensagemSefaz.vazia(), 
@@ -86,7 +87,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						List<ProtocoloNotaProcessada> protocolos = Arrays.asList(
 								new ProtocoloNotaProcessada(
 										new Date(), 
@@ -124,7 +125,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						List<ProtocoloNotaProcessada> protocolos = Arrays.asList(
 								new ProtocoloNotaProcessada(
 										new Date(), 
@@ -159,7 +160,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						List<ProtocoloNotaProcessada> protocolos = Arrays.asList(
 								new ProtocoloNotaProcessada(
 										new Date(), 
@@ -196,7 +197,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						return new RetornoConsultaProcessamentoLote(
 								new Mensagem(104, "Lote processado"), 
 								MensagemSefaz.vazia(), 
@@ -214,7 +215,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						return new RetornoConsultaProcessamentoLote(
 								new Mensagem(105, "Lote em processamento"), 
 								MensagemSefaz.vazia(), 
@@ -232,7 +233,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						return new RetornoConsultaProcessamentoLote(
 								new Mensagem(215, "Rejeição: Falha no schema XML"), 
 								MensagemSefaz.vazia(), 
@@ -249,7 +250,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						List<ProtocoloNotaProcessada> protocolos = Arrays.asList(
 								new ProtocoloNotaProcessada(
 										new Date(), 
@@ -286,7 +287,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						List<ProtocoloNotaProcessada> protocolos = Arrays.asList(
 								new ProtocoloNotaProcessada(
 										new Date(), 
@@ -321,7 +322,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		ProcessarRetornoLoteService processarRetorno = new ProcessarRetornoLoteService(
 				new ConsultaProcessamentoLoteService() {
 					@Override
-					public RetornoConsultaProcessamentoLote consultar(Lote lote) {
+					public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
 						List<ProtocoloNotaProcessada> protocolos = Arrays.asList(
 								new ProtocoloNotaProcessada(
 										new Date(), 
