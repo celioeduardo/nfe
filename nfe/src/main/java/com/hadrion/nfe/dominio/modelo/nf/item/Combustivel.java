@@ -1,15 +1,36 @@
 package com.hadrion.nfe.dominio.modelo.nf.item;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.tipos.Quantidade;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Combustivel {
+	
+	@Column(name="COMB_COD_ANP")
 	private Long codAnp;
+	
+	@Embedded
+	@AttributeOverride(name="quantidade", column=@Column(name="COMB_QUANTIDADE"))
 	private Quantidade quantidade;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="COMB_UF_CONSUMO")
 	private Uf ufConsumo;
+	
+	@Embedded
 	private Cide cide;
 	
 	public Combustivel(Long codAnp, Quantidade quantidade, Uf ufConsumo,
@@ -73,4 +94,9 @@ public class Combustivel {
 				+ "]";
 	} 
 	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Combustivel(){}
 }

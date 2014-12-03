@@ -1,5 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.nf.publico;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EnumType;
@@ -16,37 +18,57 @@ import com.hadrion.nfe.tipos.InscricaoEstadual;
 import com.hadrion.nfe.tipos.Telefone;
 
 public class Destinatario {
+
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="DEST_CNPJ"))
 	private Cnpj cnpj;
 	
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="DEST_CPF"))
 	private Cpf cpf;
 	
-	@Column(name="ID_ESTRANGEIRO")
+	@Column(name="DEST_ID_ESTRANGEIRO")
 	private String idEstrangeiro;
 	
-	@Column(name="RAZAO_SOCIAL")
+	@Column(name="DEST_RAZAO_SOCIAL")
 	private String razaoSocial;
 	
-	@Column(name="NOME_FANTASIA")
+	@Column(name="DEST_NOME_FANTASIA")
 	private String nomeFantasia;
 	
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="logradouro", column=@Column(name="DEST_END_LOGRADOURO")),
+		@AttributeOverride(name="numero", column=@Column(name="DEST_END_NUMERO")),
+		@AttributeOverride(name="complemento", column=@Column(name="DEST_END_COMPLEMENTO")),
+		@AttributeOverride(name="bairro", column=@Column(name="DEST_END_BAIRRO")),
+		@AttributeOverride(name="municipio.codigo", column=@Column(name="DEST_END_MUN_CODIGO")),
+		@AttributeOverride(name="municipio.nome", column=@Column(name="DEST_END_MUN_NOME")),
+		@AttributeOverride(name="municipio.uf", column=@Column(name="DEST_END_MUN_UF")),
+		@AttributeOverride(name="pais.codigo", column=@Column(name="DEST_END_PAIS_CODIGO")),
+		@AttributeOverride(name="pais.nome", column=@Column(name="DEST_END_PAIS_NOME")),
+		@AttributeOverride(name="cep.numero", column=@Column(name="DEST_END_CEP")),
+		@AttributeOverride(name="telefone.numero", column=@Column(name="DEST_END_TELEFONE")),		
+	})
 	private Endereco endereco;
 	
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="DEST_TELEFONE"))
 	private Telefone telefone;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="DEST_IND_IE")
 	private IndicadorIe indicadorIe;
 	
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="DEST_IE"))
 	private InscricaoEstadual ie;
 	
-	@Column(name="INSCRICAO_SUFRAMA")
+	@Column(name="DEST_INSCRICAO_SUFRAMA")
 	private Long inscricaoSuframa;
 	
 	@Embedded
+	@AttributeOverride(name="email", column=@Column(name="DEST_EMAIL"))
 	private Email email;
 	
 	public Destinatario(Cnpj cnpj, Cpf cpf, String idEstrangeiro,
@@ -167,5 +189,11 @@ public class Destinatario {
 				+ ",inscricaoSuframa="+ inscricaoSuframa
 				+ ",email="+ email
 				+ "]";
-	} 
+	}
+	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Destinatario(){}
 }

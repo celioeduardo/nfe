@@ -2,6 +2,9 @@ package com.hadrion.nfe.dominio.modelo.nf.locais;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 
@@ -15,13 +18,29 @@ import com.hadrion.nfe.tipos.Cpf;
 @Embeddable
 @Access(AccessType.FIELD)
 public class LocalEntrega {
+
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="ENTR_CNPJ"))
 	private Cnpj cnpj;
 	
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="ENTR_CPF"))
 	private Cpf cpf;
 	
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="logradouro", column=@Column(name="ENTR_END_LOGRADOURO")),
+		@AttributeOverride(name="numero", column=@Column(name="ENTR_END_NUMERO")),
+		@AttributeOverride(name="complemento", column=@Column(name="ENTR_END_COMPLEMENTO")),
+		@AttributeOverride(name="bairro", column=@Column(name="ENTR_END_BAIRRO")),
+		@AttributeOverride(name="municipio.codigo", column=@Column(name="ENTR_END_MUN_CODIGO")),
+		@AttributeOverride(name="municipio.nome", column=@Column(name="ENTR_END_MUN_NOME")),
+		@AttributeOverride(name="municipio.uf", column=@Column(name="ENTR_END_MUN_UF")),
+		@AttributeOverride(name="pais.codigo", column=@Column(name="ENTR_END_PAIS_CODIGO")),
+		@AttributeOverride(name="pais.nome", column=@Column(name="ENTR_END_PAIS_NOME")),
+		@AttributeOverride(name="cep.numero", column=@Column(name="ENTR_END_CEP")),
+		@AttributeOverride(name="telefone.numero", column=@Column(name="ENTR_END_TELEFONE")),		
+	})
 	private Endereco endereco;
 	
 	public LocalEntrega(Cnpj cnpj, Cpf cpf, Endereco endereco) {

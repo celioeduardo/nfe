@@ -29,14 +29,13 @@ import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.NotaFis
 
 @Repository
 @Transactional
-@Profile("teste")
-public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
+@Profile("agrix")
+public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 
 	@Autowired
 	JdbcTemplate jdbc;
 	private GsonBuilder gsonBuilder;
 	private Gson gson;
-	
 	
 	/*public List<NotaFiscal> notasPendentesAutorizacaoOld() {
 		 return jdbc.query("Select * From VW_NFE_PENDENTES", new RowMapper<NotaFiscal>(){
@@ -46,6 +45,7 @@ public class NotaFiscalAgrixRepositorio implements NotaFiscalRepositorio{
 			}
 		});
 	}*/
+	
 	@Override
 	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas) {
 

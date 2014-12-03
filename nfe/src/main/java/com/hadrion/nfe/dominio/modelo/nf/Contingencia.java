@@ -17,11 +17,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Access(AccessType.FIELD)
 public class Contingencia {
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name="DATA_HORA")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="CONTIN_DATA_HORA")
 	private Date dataHora;
 	
-	@Column(name="JUSTIFICATIVA")
+	@Column(name="CONTIN_JUSTIFICA")
 	private String justificativa;
 	
 	public Contingencia(Date dataHora, String justificativa) {

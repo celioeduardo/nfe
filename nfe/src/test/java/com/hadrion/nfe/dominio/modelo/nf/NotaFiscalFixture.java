@@ -4,6 +4,7 @@ import static com.hadrion.util.DataUtil.data;
 import static com.hadrion.util.DataUtil.dataHora;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -23,6 +24,7 @@ import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Fatura;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
+import com.hadrion.nfe.dominio.modelo.nf.informacao.Observacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cide;
 import com.hadrion.nfe.dominio.modelo.nf.item.Combustivel;
@@ -141,7 +143,7 @@ public class NotaFiscalFixture {
 				contingencia());
 		
 	}
-	private static Emitente emitente(){
+	static Emitente emitente(){
 		return new Emitente(
 			new Cnpj(16832651000420L),
 			null,
@@ -161,7 +163,7 @@ public class NotaFiscalFixture {
 			null,
 			Crt.REGIME_NORMAL);
 	}
-	private static Transporte transporte(){
+	static Transporte transporte(){
 		return new Transporte(
 				ModalidadeFrete.DESTINATARIO_REMETENTE, 
 				new Transportador(
@@ -173,9 +175,9 @@ public class NotaFiscalFixture {
 								Pais.BRASIL, null, null)), 
 						null, 
 				new Veiculo(TipoVeiculo.VEICULO,new Placa(Uf.GO,"KEP2310"),null, null), 
-				new Volume(37220, "KG", null, null, 37220.0, 37220.0, null));
+				new Volume(37220, "KG", null, null, 37220.0, 37220.0, Arrays.asList("LACRE1","LACRE2")));
 	}
-	private static Destinatario destinatario(){
+	static Destinatario destinatario(){
 		return new Destinatario(
 			null,
 			new Cpf(72014253668L),
@@ -198,7 +200,7 @@ public class NotaFiscalFixture {
 			new Email("hadrion@hadrion.com.br"));
 	}
 	
-	private static LocalRetirada localRetirada(){
+	public static LocalRetirada localRetirada(){
 		return new LocalRetirada(
 				new Cnpj(86675642000106L),
 				null,
@@ -212,7 +214,7 @@ public class NotaFiscalFixture {
 				    null,
 				    null));
 	}
-	private static LocalEntrega localEntrega(){
+	public static LocalEntrega localEntrega(){
 		return new LocalEntrega(
 				new Cnpj(86675642000106L),
 				null,
@@ -267,31 +269,33 @@ public class NotaFiscalFixture {
 		return result;
 	}
 	
-	private static Cobranca cobranca(){
+	static Cobranca cobranca(){
 		return new Cobranca(
 				new Fatura("DCO-19936", new Dinheiro(1732.5), new Dinheiro(0.5)), 
 				new Duplicata("DCO-19936/1", data("28/10/2013") , new Dinheiro(1732)));
 	}
 	
-	private static Informacao informacaoFisco(){
-		return new Informacao("ICMS DIFERIDO CONFORME ITEM 25 , PARTE 1 DO ANEXO II, ARTIGO 8 DO DECRETO 43.080/2002.", null);
+	static Informacao informacaoFisco(){
+		return new Informacao("ICMS DIFERIDO CONFORME ITEM 25 , PARTE 1 DO ANEXO II, ARTIGO 8 DO DECRETO 43.080/2002.", 
+				new Observacao("CAMPO_FISCO", "CONTEUDO_FISCO"));
 	}
 	
-	private static Informacao informacaoContribuinte(){
-		return new Informacao("FAVOR EFETUAR A RETIRADA NO PRAZO MÁXIMO DE 24 HORAS", null);
+	static Informacao informacaoContribuinte(){
+		return new Informacao("FAVOR EFETUAR A RETIRADA NO PRAZO MÁXIMO DE 24 HORAS", 
+				new Observacao("CAMPO_CONTRIBUINTE", "CONTEUDO_CONTRIBUINTE"));
 	}
 	
-	private static com.hadrion.nfe.dominio.modelo.nf.Exportacao exportacao(){
+	static com.hadrion.nfe.dominio.modelo.nf.Exportacao exportacao(){
 		return new com.hadrion.nfe.dominio.modelo.nf.Exportacao(
 				Uf.SP,"LOCAL DE EXPORTACAO","LOCAL DE DESPACHO");
 	}
 	
-	private static Contingencia contingencia(){
+	static Contingencia contingencia(){
 		return new Contingencia(dataHora("24/10/13 15:35:00", TimeZone.getTimeZone("GMT-02:00")), 
 				"Teste de entrada em contingência");
 	}
 	
-	private static List<Referencia> referencias(){
+	static List<Referencia> referencias(){
 		List<Referencia> result = new ArrayList<Referencia>();
 		result.add(Referencia.nfe(new ChaveAcesso("31131016832651000420550010000199361002699180")));
 		result.add(Referencia.modelo_1_1A(

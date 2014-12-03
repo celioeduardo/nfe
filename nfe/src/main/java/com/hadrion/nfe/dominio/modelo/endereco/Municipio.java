@@ -16,13 +16,14 @@ import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 @Access(AccessType.FIELD)
 public class Municipio {
 	
-	@Column(name="MUNICIPIO")
+	@Column(name="MUNICIPIO_CODIGO")
 	private int codigo;
 	
-	@Column(name="NOME")
+	@Column(name="MUNICIPIO_NOME")
 	private String nome;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="MUNICIPIO_UF")
 	private Uf uf;
 	
 	public Municipio(int codigo, String nome, Uf uf) {
@@ -69,7 +70,8 @@ public class Municipio {
 
 	@Override
 	public String toString() {
-		return "Municipio [nome="+ nome
+		return "Municipio [codigo="+ codigo
+				+",nome="+nome
 				+",uf="+uf
 				+ "]";
 	}

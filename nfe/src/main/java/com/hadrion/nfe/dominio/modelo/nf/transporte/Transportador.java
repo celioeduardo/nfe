@@ -1,5 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.nf.transporte;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 
@@ -12,19 +14,36 @@ import com.hadrion.nfe.tipos.Cpf;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
 
 public class Transportador {
+
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="TRANS_TR_CNPJ"))
 	private Cnpj cnpj;
 	
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="TRANS_TR_CPF"))
 	private Cpf cpf;
 	
-	@Column(name="RAZAO_SOCIAL")
+	@Column(name="TRANS_TR_RAZAO_SOCIAL")
 	private String razaoSocial;
 	
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="TRANS_TR_IE"))
 	private InscricaoEstadual ie;
 	
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="logradouro", column=@Column(name="TRANS_TR_END_LOGRADOURO")),
+		@AttributeOverride(name="numero", column=@Column(name="TRANS_TR_END_NUMERO")),
+		@AttributeOverride(name="complemento", column=@Column(name="TRANS_TR_END_COMPLEMENTO")),
+		@AttributeOverride(name="bairro", column=@Column(name="TRANS_TR_END_BAIRRO")),
+		@AttributeOverride(name="municipio.codigo", column=@Column(name="TRANS_TR_END_MUN_CODIGO")),
+		@AttributeOverride(name="municipio.nome", column=@Column(name="TRANS_TR_END_MUN_NOME")),
+		@AttributeOverride(name="municipio.uf", column=@Column(name="TRANS_TR_END_MUN_UF")),
+		@AttributeOverride(name="pais.codigo", column=@Column(name="TRANS_TR_END_PAIS_CODIGO")),
+		@AttributeOverride(name="pais.nome", column=@Column(name="TRANS_TR_END_PAIS_NOME")),
+		@AttributeOverride(name="cep.numero", column=@Column(name="TRANS_TR_END_CEP")),
+		@AttributeOverride(name="telefone", column=@Column(name="TRANS_TR_END_TELEFONE")),		
+	})
 	private Endereco endereco;
 	
 	public Transportador(Cnpj cnpj, Cpf cpf, String razaoSocial,

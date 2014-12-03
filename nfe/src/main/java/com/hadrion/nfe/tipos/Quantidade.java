@@ -1,9 +1,18 @@
 package com.hadrion.nfe.tipos;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Quantidade {
+	
+	@Column(name="QUANTIDADE")
 	private Double quantidade;
 
 	public Quantidade(Double quantidade) {
@@ -40,6 +49,12 @@ public class Quantidade {
 	public String toString() {
 		return String.valueOf(quantidade());
 	} 
-
+	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Quantidade(){}
+	
 	
 }

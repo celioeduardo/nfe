@@ -2,10 +2,18 @@ package com.hadrion.nfe.tipos;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
+
+@Embeddable
+@Access(AccessType.FIELD)
 public class Aliquota {
 	public final static Aliquota ZERO = new Aliquota(0.0);
 	
+	@Column(name="ALIQUOTA")
 	private Double valor;
 
 	public Aliquota(Double valor) {
@@ -54,4 +62,7 @@ public class Aliquota {
 	public Double valorDecimal() {
 		return new BigDecimal(valor).divide(new BigDecimal(100)).doubleValue();
 	}
+	
+	@SuppressWarnings("unused")
+	private Aliquota(){}
 }

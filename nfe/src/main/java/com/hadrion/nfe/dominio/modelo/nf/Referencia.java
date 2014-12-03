@@ -2,6 +2,19 @@ package com.hadrion.nfe.dominio.modelo.nf;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -11,19 +24,46 @@ import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Cpf;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
 
+@Entity
+@SequenceGenerator(name="SEQ",sequenceName="SQ_REFERENCIA")
+@Table(name="REFERENCIA")
 public class Referencia {
+	@Embedded
 	private Modelo modelo;
+	
 	//modelo 55
+	@Embedded
 	private ChaveAcesso chaveAcesso;
-	//modelo 1/1A	
+	
+	//modelo 1/1A
+	@Enumerated(EnumType.STRING)
+	@Column(name="UF_EMITENTE")
 	private Uf ufEmitente;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="EMISSAO")
 	private Date emissao;
+	
+	@Embedded
 	private Cnpj cnpjEmitente;
+	
+	@Embedded
 	private Serie serie;
+	
+	@Column(name="NUMERO")
 	private Long numero;
+	
 	//modelo produtor rural
+	@Embedded
 	private Cpf cpf;
+	
+	@Embedded
 	private InscricaoEstadual ie;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
+	@Column(name="ID")
+	private Long id;
 	
 	protected Referencia(Modelo modelo, ChaveAcesso chave, Uf ufEmitente,
 			Date emissao, Cnpj cnpjEmitente, Serie serie, Long numero, Cpf cpf,
@@ -164,5 +204,11 @@ public class Referencia {
 	public InscricaoEstadual ie(){
 		return ie;
 	}
+	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Referencia(){}
 	
 }

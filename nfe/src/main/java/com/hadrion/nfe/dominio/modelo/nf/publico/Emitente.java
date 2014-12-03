@@ -3,6 +3,7 @@ package com.hadrion.nfe.dominio.modelo.nf.publico;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
@@ -21,32 +22,51 @@ import com.hadrion.nfe.tipos.Telefone;
 @Embeddable
 @Access(AccessType.FIELD)
 public class Emitente {
+	
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="EMIT_CNPJ"))
 	private Cnpj cnpj;
 	
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="EMIT_CPF"))
 	private Cpf cpf;
 	
-	@Column(name="RAZAO_SOCIAL")
+	@Column(name="EMIT_RAZAO_SOCIAL")
 	private String razaoSocial;
 	
-	@Column(name="NOME_FANTASIA")
+	@Column(name="EMIT_NOME_FANTASIA")
 	private String nomeFantasia;
 	
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="logradouro", column=@Column(name="EMIT_END_LOGRADOURO")),
+		@AttributeOverride(name="numero", column=@Column(name="EMIT_END_NUMERO")),
+		@AttributeOverride(name="complemento", column=@Column(name="EMIT_END_COMPLEMENTO")),
+		@AttributeOverride(name="bairro", column=@Column(name="EMIT_END_BAIRRO")),
+		@AttributeOverride(name="municipio.codigo", column=@Column(name="EMIT_END_MUN_CODIGO")),
+		@AttributeOverride(name="municipio.nome", column=@Column(name="EMIT_END_MUN_NOME")),
+		@AttributeOverride(name="municipio.uf", column=@Column(name="EMIT_END_MUN_UF")),
+		@AttributeOverride(name="pais.codigo", column=@Column(name="EMIT_END_PAIS_CODIGO")),
+		@AttributeOverride(name="pais.nome", column=@Column(name="EMIT_END_PAIS_NOME")),
+		@AttributeOverride(name="cep.numero", column=@Column(name="EMIT_END_CEP")),
+		@AttributeOverride(name="telefone.numero", column=@Column(name="EMIT_END_TELEFONE")),		
+	})
 	private Endereco endereco;
 	
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="EMIT_TELEFONE"))
 	private Telefone telefone;
 	
 	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="EMIT_IE"))
 	private InscricaoEstadual ie;
 	
 	@Embedded
-	@AttributeOverride(name="numero", column=@Column(name="IE_SUBS"))
+	@AttributeOverride(name="numero", column=@Column(name="EMIT_IE_SUBS"))
 	private InscricaoEstadual ieSubstituto;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="EMIT_CRT")
 	private Crt crt;
 	
 	public Emitente(Cnpj cnpj, Cpf cpf, String razaoSocial,

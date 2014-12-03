@@ -2,6 +2,7 @@ package com.hadrion.nfe.dominio.modelo.nf.cobranca;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
@@ -14,13 +15,16 @@ import com.hadrion.nfe.tipos.Dinheiro;
 @Embeddable
 @Access(AccessType.FIELD)
 public class Fatura {
-	@Column(name="FATURA")
+	
+	@Column(name="FATURA_NUMERO")
 	private String numero;
 	
 	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="FATURA_VALOR"))
 	private Dinheiro valor;
 	
 	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="FATURA_DESCONTO"))
 	private Dinheiro desconto;
 	
 	public Fatura(String numero, Dinheiro valor, Dinheiro desconto) {

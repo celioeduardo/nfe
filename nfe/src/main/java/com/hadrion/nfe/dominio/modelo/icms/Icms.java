@@ -1,5 +1,13 @@
 package com.hadrion.nfe.dominio.modelo.icms;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Enumerated;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -7,19 +15,43 @@ import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Percentual;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Icms {
 	
 	public static final Icms NULO = 
 			new Icms(null, null, null,Percentual.ZERO, Dinheiro.ZERO, 
 					Aliquota.ZERO,null, Percentual.ZERO);
 	
+	@Enumerated
+	@Column(name="ICMS_ORIGEM")
 	private Origem origem;
+	@Enumerated
+	@Column(name="ICMS_CST")
 	private Cst cst;
+	@Enumerated
+	@Column(name="ICMS_DET_BC")
 	private DeterminacaoBaseCalculo determinacaoBaseCalculo;
+	
+	@Embedded
+	@AttributeOverride(name="valor", column=@Column(name="ICMS_PER_RBC"))
 	private Percentual percentualReducaoBaseCalculo;
+	
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="ICMS_VAL_OPERACAO"))
 	private Dinheiro valorOperacao;
+	
+	@Embedded
+	@AttributeOverride(name="valor", column=@Column(name="ICMS_ALIQUOTA"))
 	private Aliquota aliquota;
+	
+	@Embedded
+	@AttributeOverride(name="", column=@Column(name=""))
+	//TODO PAROU AQUI
 	private SubstituicaoTributaria substituicaoTributaria;
+	
+	@Embedded
+	@AttributeOverride(name="valor", column=@Column(name="ICMS_PER_DIFER"))
 	private Percentual percentualDiferimento; //CST 51
 	//private Dinheiro valorDiferido; //CST51
 	
@@ -181,4 +213,7 @@ public class Icms {
 			Percentual percentualReducaoBaseCalculo) {
 		return baseCalculo.dividir(percentualReducaoBaseCalculo.valorComplementarDecimalComoBigDecimal());
 	}
+	
+	@SuppressWarnings("unused")
+	private Icms(){}
 }

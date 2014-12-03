@@ -3,6 +3,11 @@ package com.hadrion.nfe.dominio.modelo.portal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -14,7 +19,11 @@ import com.hadrion.nfe.dominio.modelo.nf.TipoEmissao;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.util.GeradorDVModulo11;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class ChaveAcesso {
+	
+	@Column(name="CHAVE")
 	private String chave;
 
 	public ChaveAcesso(String chave) {
@@ -132,5 +141,11 @@ public class ChaveAcesso {
 			.append(modelo(),chave.modelo())
 			.isEquals(); 
 	}
+	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private ChaveAcesso(){}
 	
 }

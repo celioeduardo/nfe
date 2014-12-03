@@ -7,8 +7,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
 import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -17,10 +19,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
@@ -48,12 +54,14 @@ public class NotaFiscal {
 	private NotaFiscalId notaFiscalId;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="SITUACAO")
 	private Situacao situacao;
 	
 	@Column(name="NATUREZA_OPERACAO")
 	private String naturezaOperacao;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="FORMA_PAGAMENTO")
 	private FormaPagamento formaPagamento;
 	
 	@Embedded
@@ -66,26 +74,30 @@ public class NotaFiscal {
 	private Long numero;
 	
 	@Column(name="EMISSAO")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date emissao;
 	
 	@Column(name="DATA_HORA")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataHora;
 	
 	@Column(name="CODIGO_NUMERICO")
 	private int codigoNumerico;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="FORMATO_DANFE")
 	private FormatoDanfe formatoDanfe;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="TIPO_EMISSAO")
 	private TipoEmissao tipoEmissao;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="TIPO_OPERACAO")
 	private TipoOperacao tipoOperacao;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="LOCAL_DESTINO")
 	private LocalDestino localDestino;
 	
 	@Embedded
@@ -95,122 +107,48 @@ public class NotaFiscal {
 	private boolean consumidorFinal;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="FINALIDADE")
 	private Finalidade finalidade;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="PRESENCA")
 	private Presenca presenca;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="PROCESSO")
 	private Processo processo;	
 	
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name="cnpj", column=@Column(name="CNPJ_EMIT")),
-		@AttributeOverride(name="cpf", column=@Column(name="CPF_EMIT")),
-		@AttributeOverride(name="razaoSocial", column=@Column(name="RAZAO_SOCIAL_EMIT")),
-		@AttributeOverride(name="nomeFantasia", column=@Column(name="NOME_FANTASIA_EMIT")),
-		@AttributeOverride(name="endereco.logradouro", column=@Column(name="LOGRADOURO_EMIT")),
-		@AttributeOverride(name="endereco.numero", column=@Column(name="NUMERO_EMIT")),
-		@AttributeOverride(name="endereco.complemento", column=@Column(name="COMPLEMENTO_EMIT")),
-		@AttributeOverride(name="endereco.bairro", column=@Column(name="BAIRRO_EMIT")),
-		@AttributeOverride(name="endereco.pais", column=@Column(name="PAIS_EMIT")),
-		@AttributeOverride(name="endereco.cep", column=@Column(name="CEP_EMIT")),
-		@AttributeOverride(name="endereco.telefone", column=@Column(name="TELEFONE_END_EMIT")),		
-		@AttributeOverride(name="endereco.municipio.municipio", column=@Column(name="MUN_EMIT")),
-		@AttributeOverride(name="endereco.municipio.nome", column=@Column(name="MUN_NOME_EMIT")),
-		@AttributeOverride(name="endereco.municipio.uf", column=@Column(name="UF_EMIT")),
-		@AttributeOverride(name="telefone", column=@Column(name="TELEFONE_EMIT")),
-		@AttributeOverride(name="ie", column=@Column(name="IE_EMIT"))
-	})
 	private Emitente emitente;
-
+	
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name="cnpj", column=@Column(name="CNPJ_DEST")),
-		@AttributeOverride(name="cpf", column=@Column(name="CPF_DEST")),
-		@AttributeOverride(name="razaoSocial", column=@Column(name="RAZAO_SOCIAL_DEST")),
-		@AttributeOverride(name="nomeFantasia", column=@Column(name="NOME_FANTASIA_DEST")),
-		@AttributeOverride(name="endereco.logradouro", column=@Column(name="LOGRADOURO_DEST")),
-		@AttributeOverride(name="endereco.numero", column=@Column(name="NUMERO_DEST")),
-		@AttributeOverride(name="endereco.complemento", column=@Column(name="COMPLEMENTO_DEST")),
-		@AttributeOverride(name="endereco.bairro", column=@Column(name="BAIRRO_DEST")),
-		@AttributeOverride(name="endereco.pais", column=@Column(name="PAIS_DEST")),
-		@AttributeOverride(name="endereco.cep", column=@Column(name="CEP_DEST")),
-		@AttributeOverride(name="endereco.telefone", column=@Column(name="TELEFONE_END_DEST")),		
-		@AttributeOverride(name="endereco.municipio.municipio", column=@Column(name="MUN_DEST")),
-		@AttributeOverride(name="endereco.municipio.nome", column=@Column(name="MUN_NOME_DEST")),
-		@AttributeOverride(name="endereco.municipio.uf", column=@Column(name="UF_DEST")),
-		@AttributeOverride(name="telefone", column=@Column(name="TELEFONE_DEST")),
-		@AttributeOverride(name="ie", column=@Column(name="IE_DEST"))
-	})
 	private Destinatario destinatario;
 	
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name="cnpj", column=@Column(name="CNPJ_RET")),
-		@AttributeOverride(name="cpf", column=@Column(name="CPF_RET")),
-		@AttributeOverride(name="endereco.logradouro", column=@Column(name="LOGRADOURO_RETRADA")),
-		@AttributeOverride(name="endereco.numero", column=@Column(name="NUMERO_RET")),
-		@AttributeOverride(name="endereco.complemento", column=@Column(name="COMPLEMENTO_RET")),
-		@AttributeOverride(name="endereco.bairro", column=@Column(name="BAIRRO_RET")),
-		@AttributeOverride(name="endereco.pais", column=@Column(name="PAIS_RET")),
-		@AttributeOverride(name="endereco.cep", column=@Column(name="CEP_RET")),
-		@AttributeOverride(name="endereco.telefone", column=@Column(name="TELEFONE_RET")),
-		@AttributeOverride(name="endereco.municipio.municipio", column=@Column(name="MUN_RET")),
-		@AttributeOverride(name="endereco.municipio.nome", column=@Column(name="MUN_NOME_RET")),
-		@AttributeOverride(name="endereco.municipio.uf", column=@Column(name="UF_RET"))		
-	})
 	private LocalRetirada localRetirada;
 	
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name="cnpj", column=@Column(name="CNPJ_ENTR")),
-		@AttributeOverride(name="cpf", column=@Column(name="CPF_ENTR")),
-		@AttributeOverride(name="endereco.logradouro", column=@Column(name="LOGRADOURO_ENTR")),
-		@AttributeOverride(name="endereco.numero", column=@Column(name="NUMERO_ENTR")),
-		@AttributeOverride(name="endereco.complemento", column=@Column(name="COMPLEMENTO_ENTR")),
-		@AttributeOverride(name="endereco.bairro", column=@Column(name="BAIRRO_ENTR")),
-		@AttributeOverride(name="endereco.pais", column=@Column(name="PAIS_ENTR")),
-		@AttributeOverride(name="endereco.cep", column=@Column(name="CEP_ENTR")),
-		@AttributeOverride(name="endereco.telefone", column=@Column(name="TELEFONE_ENTR")),
-		@AttributeOverride(name="endereco.municipio.municipio", column=@Column(name="MUN_ENTR")),
-		@AttributeOverride(name="endereco.municipio.nome", column=@Column(name="MUN_NOME_ENTR")),
-		@AttributeOverride(name="endereco.municipio.uf", column=@Column(name="UF_ENTR"))		
-	})
 	private LocalEntrega localEntrega;	
 	
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name="cnpj", column=@Column(name="CNPJ_TRANSP")),
-		@AttributeOverride(name="cpf", column=@Column(name="CPF_TRANSP")),
-		@AttributeOverride(name="transportador.endereco.logradouro", column=@Column(name="LOGRADOURO_TRANSP")),
-		@AttributeOverride(name="transportador.endereco.numero", column=@Column(name="NUMERO_TRANSP")),
-		@AttributeOverride(name="transportador.endereco.complemento", column=@Column(name="COMPLEMENTO_TRANSP")),
-		@AttributeOverride(name="transportador.endereco.bairro", column=@Column(name="BAIRRO_TRANSP")),
-		@AttributeOverride(name="transportador.endereco.pais", column=@Column(name="PAIS_TRANSP")),
-		@AttributeOverride(name="transportador.endereco.cep", column=@Column(name="CEP_TRANSP")),
-		@AttributeOverride(name="transportador.endereco.telefone", column=@Column(name="TELEFONE_TRANSP")),
-		@AttributeOverride(name="transportador.endereco.municipio.municipio", column=@Column(name="MUN_TRANSP")),
-		@AttributeOverride(name="transportador.endereco.municipio.nome", column=@Column(name="MUN_NOME_TRANSP")),
-		@AttributeOverride(name="transportador.endereco.municipio.uf", column=@Column(name="UF_TRANSP")),
-		@AttributeOverride(name="transportador.ie", column=@Column(name="IE_TRANSP"))
-	})
 	private Transporte transporte;
 	
 	@Embedded
 	private Cobranca cobranca;
 	
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name="informacao", column=@Column(name="INF_FISCO")),
-		@AttributeOverride(name="observacao", column=@Column(name="OBS_FISCO"))
+	@AttributeOverride(name="texto", column=@Column(name="FISCO_INFORMACAO"))
+	@AssociationOverrides({
+		@AssociationOverride(name="observacoes",
+				joinTable=@JoinTable(name="FISCO_OBS"))
 	})
 	private Informacao informacaoFisco;
 	
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name="informacao", column=@Column(name="INF_CONTRIB")),
-		@AttributeOverride(name="observacao", column=@Column(name="OBS_CONTRIB"))
+	@AttributeOverride(name="texto", column=@Column(name="CONTRIB_INFORMACAO"))
+	@AssociationOverrides({
+		@AssociationOverride(name="observacoes",
+				joinTable=@JoinTable(name="CONTRIB_OBS"))
 	})
 	private Informacao informacaoContribuinte;
 	
@@ -222,11 +160,20 @@ public class NotaFiscal {
 	
 	@Column(name="FS_IMPRESSO")
 	private boolean formularioSegurancaImpresso = false;
-
+	
+	@Embedded
 	private FilialId filialId;
-
+	
+	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL)
+	@JoinTable(name="REFERENCIAS",
+	    joinColumns=@JoinColumn(name="ID_NF"),
+	    inverseJoinColumns=@JoinColumn(name="ID_REFERENCIA"))
 	private List<Referencia> referencias;
 	
+	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL)
+	@JoinTable(name="ITEM",
+	    joinColumns=@JoinColumn(name="ID_NF"),
+	    inverseJoinColumns=@JoinColumn(name="ID_ITEM"))
 	private List<Item> itens;
 
 	@Id

@@ -1,33 +1,91 @@
 package com.hadrion.nfe.dominio.modelo.nf.item;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class DescritorProduto {
 	
+	@Column(name="CODIGO")
 	private String codigo;
+	
+	@Embedded
 	private Gtin gtin;
+	
+	@Column(name="DESCRICAO")
 	private String descricao;
+	
+	@Embedded
 	private Ncm ncm;
+	
+	@Column(name="NVE")
 	private String nve;
+	
+	@Column(name="EXTIPI")
 	private String extipi;
+	
+	@Embedded
 	private Cfop cfop;
+	
+	@Column(name="CMR_UNIDADE")
 	private String unidadeComercial;
+	
+	@Embedded
+	@AttributeOverride(name="quantidade", column=@Column(name="CMR_QUANTIDADE"))
 	private Quantidade quantidadeComercial;
+	
+	@Column(name="CMR_VAL_UN")
 	private Double valorUnitarioComercializacao;
+	
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="CMR_VAL_TOTAL_BRUTO"))
 	private Dinheiro valorTotalBruto;
+	
+	@Embedded
+	@AttributeOverride(name="gtin", column=@Column(name="TRIB_GTIN"))
 	private Gtin gtinTributavel;
+	
+	@Column(name="TRIB_UNIDADE")
 	private String unidadeTributavel;
+	
+	@Embedded
+	@AttributeOverride(name="quantidade", column=@Column(name="TRIB_QUANTIDADE"))
 	private Quantidade quantidadeTributavel;
+	
+	@Column(name="TRIB_VAL_UN")
 	private Double valorUnitarioTributacao;
+	
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="TOTAL_FRETE"))
 	private Dinheiro totalFrete;
+	
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="TOTAL_SEGURO"))
 	private Dinheiro totalSeguro;
+	
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="VAL_DESCONTO"))
 	private Dinheiro valorDesconto;
+	
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="VAL_OUTR_DESP_AC"))
 	private Dinheiro outrasDespesasAcessorias;
+	
+	@Embedded
 	private ExportacaoItem exportacao;
+	
+	@Embedded
 	private Combustivel combustivel;
 	
 	public DescritorProduto(String codigo, Gtin gtin, String descricao,

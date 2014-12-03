@@ -1,5 +1,12 @@
 package com.hadrion.nfe.dominio.modelo.nf.item.imposto;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -8,12 +15,17 @@ import com.hadrion.nfe.dominio.modelo.icms.Icms;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.tipos.Dinheiro;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Imposto {
 	
 	public static final Imposto NULO = new Imposto(
 			Dinheiro.ZERO,Icms.NULO,Pis.NULO,Cofins.NULO);
 	
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="IMP_VAL_TOT_APROX"))
 	private Dinheiro valorTotalAproximado;
+	
 	private Icms icms;
 	private Pis pis;
 	private Cofins cofins;
@@ -81,5 +93,8 @@ public class Imposto {
 			+ ",cofins=" + cofins()
 			+ "]";
 	}
+	
+	@SuppressWarnings("unused")
+	private Imposto(){}
 	
 }

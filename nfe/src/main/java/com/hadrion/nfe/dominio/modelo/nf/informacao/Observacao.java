@@ -1,15 +1,19 @@
 package com.hadrion.nfe.dominio.modelo.nf.informacao;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-@Embeddable
-@Access(AccessType.FIELD)
+@Entity
+@SequenceGenerator(name="SEQ",sequenceName="SQ_OBSERVACAO")
+@Table(name="OBSERVACAO")
 public class Observacao {
 	
 	@Column(name="CAMPO")
@@ -17,6 +21,11 @@ public class Observacao {
 	
 	@Column(name="CONTEUDO")	
 	private String conteudo;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
+	@Column(name="ID")
+	private Long id;
 	
 	public Observacao(String campo, String conteudo) {
 		super();

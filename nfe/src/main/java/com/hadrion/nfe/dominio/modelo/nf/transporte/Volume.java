@@ -1,19 +1,24 @@
 package com.hadrion.nfe.dominio.modelo.nf.transporte;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-@Embeddable
-@Access(AccessType.FIELD)
+@Entity
+@SequenceGenerator(name="SEQ",sequenceName="SQ_VOLUME")
+@Table(name="VOLUME")
 public class Volume {
 	
 	@Column(name="QUANTIDADE")
@@ -38,6 +43,11 @@ public class Volume {
 	@CollectionTable(name="LACRES")
 	@Column(name="LACRE")
 	private List<String> lacres;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
+	@Column(name="ID")
+	private Long id;
 	
 	public Volume(int quantidade, String especie, String marca,
 			String numeracao, Double pesoLiquido, Double pesoBruto, 
@@ -77,6 +87,12 @@ public class Volume {
 	}
 
 	public List<String> lacres(){
+		return getLacres();
+	}
+	
+	private List<String> getLacres(){
+		if (lacres == null)
+			lacres = new ArrayList<String>();
 		return lacres;
 	}
 	

@@ -1,11 +1,22 @@
 package com.hadrion.nfe.dominio.modelo.nf.item;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class ExportacaoItem {
 	
+	@Column(name="NUMERO_DRAWBACK")
 	private Long numeroDrawBack;
+	
+	@Embedded
 	private ExportacaoIndireta exportacaoIndireta;
 	
 	public ExportacaoItem(Long numeroDrawBack, ExportacaoIndireta exportacaoIndireta) {
@@ -51,6 +62,12 @@ public class ExportacaoItem {
 				+ ",exportacaoIndireta="+ exportacaoIndireta()
 				+ "]";
 	} 
+	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private ExportacaoItem(){}
 	
 }
 

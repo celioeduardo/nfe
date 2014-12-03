@@ -5,13 +5,17 @@ import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CollectionTable;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -19,21 +23,38 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Embeddable
 @Access(AccessType.FIELD)
 public class Transporte {
+	
 	@Enumerated(EnumType.STRING)
+	@Column(name="TRANS_FRETE")
 	private ModalidadeFrete modalidadeFrete;
 	
 	@Embedded
 	private Transportador transportador;
 	
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="valorServico.quantia", column=@Column(name="TRANS_RETICMS_VALSERV")),
+		@AttributeOverride(name="baseCalculo.quantia", column=@Column(name="TRANS_RETICMS_BASE")),
+		@AttributeOverride(name="aliquota", column=@Column(name="TRANS_RETICMS_ALIQUOTA")),
+		@AttributeOverride(name="valor.quantia", column=@Column(name="TRANS_RETICMS_VALOR")),
+		@AttributeOverride(name="cfop.numero", column=@Column(name="TRANS_CFOP"))
+	})
 	private RetencaoIcms retencaoIcms;
 	
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="tipo", column=@Column(name="TRANS_VEIC_TIPO")),
+		@AttributeOverride(name="placa.uf", column=@Column(name="TRANS_VEIC_PLACA_UF")),
+		@AttributeOverride(name="placa.numero", column=@Column(name="TRANS_VEIC_PLACA_NUMERO")),
+		@AttributeOverride(name="registroAntt", column=@Column(name="TRANS_VEIC_REG_ANTT")),
+		@AttributeOverride(name="identificacao", column=@Column(name="TRANS_VEIC_IDENTIFICACAO"))
+	})
 	private Veiculo veiculo;
 	
-	@ElementCollection
-	@CollectionTable(name="VOLUMES")
-	@Column(name="VOLUME")	
+	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL)
+	@JoinTable(name="VOLUMES",
+	    joinColumns=@JoinColumn(name="ID_NF"),
+	    inverseJoinColumns=@JoinColumn(name="ID_VOLUME"))
 	private List<Volume> volumes;
 	
 	public Transporte(ModalidadeFrete modalidadeFrete,

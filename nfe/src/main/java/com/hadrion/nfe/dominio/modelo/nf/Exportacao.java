@@ -16,12 +16,13 @@ import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 @Access(AccessType.FIELD)
 public class Exportacao {
 	@Enumerated(EnumType.STRING)
+	@Column(name="EXP_UF")
 	private Uf uf;
 	
-	@Column(name="EMBARQUE")
+	@Column(name="EXP_EMBARQUE")
 	private String localEmbarque;
 	
-	@Column(name="DESPACHO")
+	@Column(name="EXP_DESPACHO")
 	private String localDespacho;
 	
 	public Exportacao(Uf uf, String localEmbarque, String localDespacho) {
