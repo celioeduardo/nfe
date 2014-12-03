@@ -26,6 +26,7 @@ public class Icms {
 	@Enumerated
 	@Column(name="ICMS_ORIGEM")
 	private Origem origem;
+
 	@Enumerated
 	@Column(name="ICMS_CST")
 	private Cst cst;
@@ -46,8 +47,8 @@ public class Icms {
 	private Aliquota aliquota;
 	
 	@Embedded
-	@AttributeOverride(name="", column=@Column(name=""))
-	//TODO PAROU AQUI
+	//@AttributeOverride(name="", column=@Column(name=""))
+	//TODO CELIAO
 	private SubstituicaoTributaria substituicaoTributaria;
 	
 	@Embedded
@@ -213,7 +214,10 @@ public class Icms {
 			Percentual percentualReducaoBaseCalculo) {
 		return baseCalculo.dividir(percentualReducaoBaseCalculo.valorComplementarDecimalComoBigDecimal());
 	}
-	
+
+	/*
+	 * Somente para JPA
+	 */
 	@SuppressWarnings("unused")
 	private Icms(){}
 }

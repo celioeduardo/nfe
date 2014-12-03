@@ -6,6 +6,7 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -26,8 +27,13 @@ public class Imposto {
 	@AttributeOverride(name="quantia", column=@Column(name="IMP_VAL_TOT_APROX"))
 	private Dinheiro valorTotalAproximado;
 	
+	@Embedded
 	private Icms icms;
+	
+	@Embedded
 	private Pis pis;
+	
+	@Embedded
 	private Cofins cofins;
 	
 	public Imposto(Dinheiro valorTotalAproximado, Icms icms, Pis pis,

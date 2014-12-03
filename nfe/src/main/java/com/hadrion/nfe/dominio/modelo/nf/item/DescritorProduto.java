@@ -53,7 +53,7 @@ public class DescritorProduto {
 	private Dinheiro valorTotalBruto;
 	
 	@Embedded
-	@AttributeOverride(name="gtin", column=@Column(name="TRIB_GTIN"))
+	@AttributeOverride(name="numero", column=@Column(name="TRIB_GTIN"))
 	private Gtin gtinTributavel;
 	
 	@Column(name="TRIB_UNIDADE")
@@ -272,4 +272,9 @@ public class DescritorProduto {
 	
 	}
 
+	/*
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private DescritorProduto(){}
 }

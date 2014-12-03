@@ -18,11 +18,13 @@ import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
 @SequenceGenerator(name="SEQ",sequenceName="SQ_ITEM")
 @Table(name="ITEM")
 public class Item {
-	
 	@Embedded
 	private DescritorProduto produto;
 	
-	private Imposto imposto; 
+	@Embedded
+	private Imposto imposto;
+	
+	@Column(name="ITEM_INF_ADIC")
 	private String informacaoAdicional;
 	
 	@Id

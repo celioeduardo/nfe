@@ -2,6 +2,14 @@ package com.hadrion.nfe.dominio.modelo.icms;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Enumerated;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -9,15 +17,30 @@ import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Percentual;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class SubstituicaoTributaria {
 	
 	public static final SubstituicaoTributaria NULA = new SubstituicaoTributaria(
 			Percentual.ZERO,Dinheiro.ZERO,Aliquota.ZERO,null, Percentual.ZERO);
 	
+	@Embedded
+	@AttributeOverride(name="valor", column=@Column(name="ST_PERCENTUAL"))
 	private Percentual percentualReducaoBaseCalculo;
+	
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="ST_VAL_OPERACAO"))
 	private Dinheiro valorOperacao;
+	
+	@Embedded
+	@AttributeOverride(name="valor", column=@Column(name="ST_ALIQUOTA"))
 	private Aliquota aliquota;
+	
+	@Enumerated
 	private DeterminacaoBaseCalculoSt determinacaoBaseCalculo;
+	
+	@Embedded
+	@AttributeOverride(name="valor", column=@Column(name="ST_PER_MARG_VAL_ADIC"))	
 	private Percentual percentualMargemValorAdicionado;
 	
 	public SubstituicaoTributaria(Percentual percentualReducaoBaseCalculo,
@@ -107,4 +130,9 @@ public class SubstituicaoTributaria {
 	}
 	
 	
+	/*
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private SubstituicaoTributaria(){}
 }

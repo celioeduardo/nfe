@@ -1,9 +1,11 @@
 package com.hadrion.nfe.dominio.config;
 
 import java.util.Arrays;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.hibernate.type.SetType;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.orm.jpa.EntityScan;
@@ -30,15 +32,21 @@ import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 @EnableJpaRepositories(basePackages="com.hadrion")
 @EntityScan(basePackages="com.hadrion")
 public abstract class Application extends WebMvcConfigurerAdapter{
-	
+
 	@Bean
 	DataSource dataSource() {
 		return new SimpleDriverDataSource() {
 			{
+				Properties prop=new Properties();
+				//prop.setProperty("hibernate.hbm2ddl.auto", "create");
+				prop.setProperty("hibernate.show_sql", "true");
+				prop.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+				
 				setDriverClass(org.h2.Driver.class);
 				setUsername("sa");
-				setUrl("jdbc:h2:mem");
+				setUrl("jdbc:h2:mem;MODE=Oracle");
 				setPassword("");
+				setConnectionProperties(prop);
 			}
 		};
 		
