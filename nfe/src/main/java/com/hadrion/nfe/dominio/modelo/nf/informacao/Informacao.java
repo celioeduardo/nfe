@@ -2,12 +2,27 @@ package com.hadrion.nfe.dominio.modelo.nf.informacao;
 
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Informacao {
+	@Column(name="INFORMACAO")
 	private String texto;
+	
+	@ElementCollection
+	@CollectionTable(name="OBSERVACOES")
+	@Column(name="OBSERVACAO")
 	private List<Observacao> observacoes=null;
+	
 	public Informacao(){
 		
 	}
@@ -54,5 +69,4 @@ public class Informacao {
 				+ ",observacoes=" + observacoes()
 				+ "]";	
 	}
-	
 }

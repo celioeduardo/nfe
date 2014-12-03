@@ -1,12 +1,24 @@
 package com.hadrion.nfe.dominio.modelo.nf.transporte;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Placa {
+	@Enumerated(EnumType.STRING)
 	private Uf uf;
+	
+	@Column(name="PLACA")
 	private String numero;
 	
 	public Placa(Uf uf, String numero) {
@@ -50,5 +62,10 @@ public class Placa {
 				+ ",numero="+ numero()
 				+ "]";
 	}	
-	
+
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Placa(){}
 }

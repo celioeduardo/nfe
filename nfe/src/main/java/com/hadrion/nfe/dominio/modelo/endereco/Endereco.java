@@ -1,19 +1,42 @@
 package com.hadrion.nfe.dominio.modelo.endereco;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.tipos.Telefone;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Endereco {
 	
+	@Column(name="LOGRADOURO")
 	private String logradouro;
+	
+	@Column(name="NUMERO")
 	private String numero;
+	
+	@Column(name="COMPLEMENTO")
 	private String complemento;
+	
+	@Column(name="BAIRRO")
 	private String bairro;
+	
+	@Embedded
 	private Municipio municipio;
-	private Pais pais;
+	
+	@Embedded
+	private Pais pais;	
+	
+	@Embedded
 	private Cep cep;
+	
+	@Embedded
 	private Telefone telefone;
 	
 	public Endereco(String logradouro, String numero, String complemento,
@@ -110,4 +133,9 @@ public class Endereco {
 				+ "]";
 	} 
 	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Endereco(){}
 }

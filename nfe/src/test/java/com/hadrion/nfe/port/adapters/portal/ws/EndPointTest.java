@@ -2,6 +2,7 @@ package com.hadrion.nfe.port.adapters.portal.ws;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
@@ -29,6 +30,48 @@ public class EndPointTest {
 		assertEquals("https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx",homologacao(local,versao,Servico.STATUS_SERVICO));
 		assertEquals("https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx",homologacao(local,versao,Servico.CONSULTA_PROTOCOLO));
 		assertEquals("https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao2.asmx",homologacao(local,versao,Servico.INUTILIZACAO));
+	}
+	@Test
+	public void mg(){
+		Local local = Local.MG;
+		Versao versao = Versao.V3_10;
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao",producao(local,versao,Servico.AUTORIZACAO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao",producao(local,versao,Servico.RET_AUTORIZACAO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento",producao(local,Versao.V1_00,Servico.EVENTO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2",producao(local,Versao.V2_00,Servico.CONSULTA_CADASTRO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2",producao(local,versao,Servico.STATUS_SERVICO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2",producao(local,versao,Servico.CONSULTA_PROTOCOLO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2",producao(local,versao,Servico.INUTILIZACAO));
+		//Homologação
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao",homologacao(local,versao,Servico.AUTORIZACAO));
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao",homologacao(local,versao,Servico.RET_AUTORIZACAO));
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento",homologacao(local,Versao.V1_00,Servico.EVENTO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2",homologacao(local,Versao.V2_00,Servico.CONSULTA_CADASTRO));
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2",homologacao(local,versao,Servico.STATUS_SERVICO));
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2",homologacao(local,versao,Servico.CONSULTA_PROTOCOLO));
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2",homologacao(local,versao,Servico.INUTILIZACAO));
+
+	}
+	@Test @Ignore
+	public void ba(){
+		Local local = Local.BA;
+		Versao versao = Versao.V3_10;
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao",producao(local,versao,Servico.AUTORIZACAO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao",producao(local,versao,Servico.RET_AUTORIZACAO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento",producao(local,Versao.V1_00,Servico.EVENTO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2",producao(local,Versao.V2_00,Servico.CONSULTA_CADASTRO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2",producao(local,versao,Servico.STATUS_SERVICO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2",producao(local,versao,Servico.CONSULTA_PROTOCOLO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2",producao(local,versao,Servico.INUTILIZACAO));
+		//Homologação
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao",homologacao(local,versao,Servico.AUTORIZACAO));
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao",homologacao(local,versao,Servico.RET_AUTORIZACAO));
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento",homologacao(local,Versao.V1_00,Servico.EVENTO));
+		assertEquals("https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2",homologacao(local,Versao.V2_00,Servico.CONSULTA_CADASTRO));
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2",homologacao(local,versao,Servico.STATUS_SERVICO));
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2",homologacao(local,versao,Servico.CONSULTA_PROTOCOLO));
+		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2",homologacao(local,versao,Servico.INUTILIZACAO));
+		
 	}
 	
 	

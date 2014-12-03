@@ -1,9 +1,17 @@
 package com.hadrion.nfe.dominio.modelo.endereco;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Cep {
+	@Column(name="CEP")
 	private Long numero;
 
 	public Cep(Long numero) {
@@ -43,4 +51,9 @@ public class Cep {
 	public String toString() {
 		return String.valueOf(numero);
 	} 
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Cep(){}
 }

@@ -1,5 +1,10 @@
 package com.hadrion.nfe.dominio.modelo.nf.locais;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -7,9 +12,16 @@ import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Cpf;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class LocalRetirada {
+	@Embedded
 	private Cnpj cnpj;
+	
+	@Embedded
 	private Cpf cpf;
+	
+	@Embedded
 	private Endereco endereco;
 	
 	public LocalRetirada(Cnpj cnpj, Cpf cpf, Endereco endereco) {
@@ -62,5 +74,10 @@ public class LocalRetirada {
 				+ ",endereco="+ endereco
 				+ "]";
 	} 
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private LocalRetirada(){}
 	
 }

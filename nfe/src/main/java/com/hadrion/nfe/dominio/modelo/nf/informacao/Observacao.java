@@ -1,10 +1,21 @@
 package com.hadrion.nfe.dominio.modelo.nf.informacao;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Observacao {
+	
+	@Column(name="CAMPO")
 	private String campo;
+	
+	@Column(name="CONTEUDO")	
 	private String conteudo;
 	
 	public Observacao(String campo, String conteudo) {
@@ -50,5 +61,10 @@ public class Observacao {
 				+ ",conteudo=" + conteudo()
 				+ "]";	
 	}
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Observacao(){}
 
 }

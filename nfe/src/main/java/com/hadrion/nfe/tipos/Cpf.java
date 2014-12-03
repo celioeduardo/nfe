@@ -1,11 +1,18 @@
 package com.hadrion.nfe.tipos;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-
+@Embeddable
+@Access(AccessType.FIELD)
 public class Cpf {
 	
+	@Column(name="CPF")
 	private Long numero;
 
 	public Cpf(Long numero) {
@@ -43,4 +50,9 @@ public class Cpf {
 		return "Cpf [numero="+ numero
 				+ "]";
 	} 
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Cpf(){}
 }

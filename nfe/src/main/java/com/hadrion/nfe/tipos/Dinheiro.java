@@ -3,12 +3,19 @@ package com.hadrion.nfe.tipos;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Dinheiro {
 	public final static Dinheiro ZERO = new Dinheiro(0.0);
 	public final static Dinheiro UM = new Dinheiro(1);
 	private final static int digitosFracionarios = 2;
 	private final static int fatorCentavos = (int) Math.pow(10,digitosFracionarios);
+	@Column(name="QUANTIA")
 	private Long quantia;
 
 	public Dinheiro(Double valor) {

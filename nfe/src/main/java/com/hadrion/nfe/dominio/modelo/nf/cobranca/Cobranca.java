@@ -4,11 +4,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Cobranca {
+	@Embedded
 	private Fatura fatura;
+	
+	@ElementCollection
+	@CollectionTable(name="DUPLICATAS")
+	@Column(name="DUPLICATA")	
 	private List<Duplicata> duplicatas;
 	
 	public Cobranca(Fatura fatura, List<Duplicata> duplicatas) {
@@ -72,4 +87,9 @@ public class Cobranca {
 		return getDuplicatas();
 	} 
 	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Cobranca(){}
 }

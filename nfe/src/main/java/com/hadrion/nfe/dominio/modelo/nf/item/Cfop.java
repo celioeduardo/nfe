@@ -1,9 +1,18 @@
 package com.hadrion.nfe.dominio.modelo.nf.item;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Cfop {
+	
+	@Column(name="CFOP")
 	private Long numero;
 
 	public Cfop(Long numero) {
@@ -43,4 +52,9 @@ public class Cfop {
 		return String.valueOf(numero());
 	} 
 
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Cfop(){}
 }

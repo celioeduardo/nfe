@@ -1,13 +1,28 @@
 package com.hadrion.nfe.dominio.modelo.endereco;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Municipio {
+	
+	@Column(name="MUNICIPIO")
 	private int codigo;
+	
+	@Column(name="NOME")
 	private String nome;
+	
+	@Enumerated(EnumType.STRING)
 	private Uf uf;
 	
 	public Municipio(int codigo, String nome, Uf uf) {
@@ -57,5 +72,11 @@ public class Municipio {
 		return "Municipio [nome="+ nome
 				+",uf="+uf
 				+ "]";
-	} 
+	}
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Municipio(){}
+	
 }

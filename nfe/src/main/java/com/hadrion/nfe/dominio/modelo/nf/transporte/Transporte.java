@@ -3,14 +3,37 @@ package com.hadrion.nfe.dominio.modelo.nf.transporte;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Transporte {
+	@Enumerated(EnumType.STRING)
 	private ModalidadeFrete modalidadeFrete;
+	
+	@Embedded
 	private Transportador transportador;
+	
+	@Embedded
 	private RetencaoIcms retencaoIcms;
+	
+	@Embedded
 	private Veiculo veiculo;
+	
+	@ElementCollection
+	@CollectionTable(name="VOLUMES")
+	@Column(name="VOLUME")	
 	private List<Volume> volumes;
 	
 	public Transporte(ModalidadeFrete modalidadeFrete,
@@ -87,5 +110,10 @@ public class Transporte {
 				+ ",volumes="+ volumes()
 				+ "]";
 	}
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Transporte(){}
 
 }

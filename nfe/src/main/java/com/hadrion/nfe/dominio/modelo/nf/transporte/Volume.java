@@ -2,17 +2,41 @@ package com.hadrion.nfe.dominio.modelo.nf.transporte;
 
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Volume {
 	
+	@Column(name="QUANTIDADE")
 	private int quantidade;
+	
+	@Column(name="ESPECIE")
 	private String especie;
+	
+	@Column(name="MARCA")
 	private String marca;
+	
+	@Column(name="NUMERACAO")
 	private String numeracao;
+	
+	@Column(name="PESO_LIQUIDO")
 	private Double pesoLiquido;
+	
+	@Column(name="PESO_BRUTO")
 	private Double pesoBruto;
+	
+	@ElementCollection
+	@CollectionTable(name="LACRES")
+	@Column(name="LACRE")
 	private List<String> lacres;
 	
 	public Volume(int quantidade, String especie, String marca,
@@ -100,4 +124,9 @@ public class Volume {
 				+ ",lacres="+ lacres()
 				+ "]";
 	}
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Volume(){}
 }

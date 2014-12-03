@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="danfe" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="14" rightMargin="16" topMargin="14" bottomMargin="14" uuid="3a66161b-c318-4cff-ae2a-897307b5d628">
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<property name="ireport.zoom" value="2.9230756500000017"/>
-	<property name="ireport.x" value="7"/>
-	<property name="ireport.y" value="41"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="101"/>
 	<style name="campoPequeno" hAlign="Left" vAlign="Top" markup="styled" pattern="" fontName="DejaVu Serif" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="DejaVu Serif" isPdfEmbedded="true"/>
 	<style name="borda" mode="Transparent" forecolor="#000000" fill="Solid" radius="3" scaleImage="Clip" hAlign="Left" vAlign="Top" markup="none" pattern="" fontName="DejaVu Serif" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="true" pdfFontName="DejaVu Serif" isPdfEmbedded="true">
 		<pen lineWidth="0.25"/>
@@ -77,9 +77,9 @@
 		<fieldDescription><![CDATA[../ide/dhSaiEnt]]></fieldDescription>
 	</field>
 	<field name="Hora_Saida" class="java.lang.String">
-		<fieldDescription><![CDATA[../ide/hSaiEnt]]></fieldDescription>
+		<fieldDescription><![CDATA[../ide/dhSaiEnt]]></fieldDescription>
 	</field>
-	<field name="TipoNF" class="java.lang.String">
+	<field name="TipoNF" class="java.lang.Integer">
 		<fieldDescription><![CDATA[../ide/tpNF]]></fieldDescription>
 	</field>
 	<field name="Ambiente" class="java.lang.String">
@@ -611,7 +611,10 @@ $F{Emi_Telefone}.substring(2,6) + "-" + $F{Emi_Telefone}.substring(6,10)]]></tex
 				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="146" width="565" height="260" isRemoveLineWhenBlank="true" uuid="2369c14a-7697-4713-95af-e9ad2a111d74">
 					<printWhenExpression><![CDATA[new Boolean($V{PAGE_NUMBER}.intValue() == 1 )]]></printWhenExpression>
 				</reportElement>
-				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<rectangle radius="3">
+					<reportElement style="borda" x="498" y="33" width="67" height="24" uuid="dda9cd7a-dbf6-4286-81ba-a88d9a61be00"/>
+				</rectangle>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
 					<reportElement style="dados" x="500" y="40" width="64" height="16" uuid="7c0c0021-6f8c-4328-bfdd-54458ebc2665"/>
 					<textFieldExpression><![CDATA[$F{Data_Saida} != null ? new SimpleDateFormat("yyyy-MM-dd").parse($F{Data_Saida}) : null]]></textFieldExpression>
 				</textField>
@@ -632,9 +635,6 @@ $F{Emi_Telefone}.substring(2,6) + "-" + $F{Emi_Telefone}.substring(6,10)]]></tex
 				</rectangle>
 				<rectangle radius="3">
 					<reportElement style="borda" x="498" y="9" width="67" height="24" uuid="18a56f6a-7e27-49ec-b334-a0e4e7905f1d"/>
-				</rectangle>
-				<rectangle radius="3">
-					<reportElement style="borda" x="498" y="33" width="67" height="24" uuid="dda9cd7a-dbf6-4286-81ba-a88d9a61be00"/>
 				</rectangle>
 				<rectangle radius="3">
 					<reportElement style="borda" x="211" y="57" width="106" height="24" uuid="7dee7a50-f08b-45d0-a4a8-a176ef9f5529"/>
@@ -744,10 +744,10 @@ $F{Emi_Telefone}.substring(2,6) + "-" + $F{Emi_Telefone}.substring(6,10)]]></tex
 				</staticText>
 				<staticText>
 					<reportElement style="campoPequeno" x="500" y="59" width="64" height="6" uuid="43a18e6e-b4ca-4d83-9499-59ddf9e1a4c2"/>
-					<textElement>
+					<textElement textAlignment="Center">
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[HORA ENTRADA / SAÍDA]]></text>
+					<text><![CDATA[HORA]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="campoPequeno" x="2" y="35" width="274" height="6" uuid="66fdfbe5-8bff-417f-a474-99a1b9c768e7"/>
@@ -779,13 +779,6 @@ $F{Emi_Telefone}.substring(2,6) + "-" + $F{Emi_Telefone}.substring(6,10)]]></tex
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[CNPJ / CPF]]></text>
-				</staticText>
-				<staticText>
-					<reportElement style="campoPequeno" x="500" y="35" width="64" height="6" uuid="3a50e19f-8894-4e80-bb7c-83d894f6d8f2"/>
-					<textElement>
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[DATA ENTRADA / SAÍDA]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="campoPequeno" x="2" y="11" width="343" height="6" uuid="3690e54f-e559-401d-9a06-e56cdec2b967"/>
@@ -943,10 +936,6 @@ $F{Emi_Telefone}.substring(2,6) + "-" + $F{Emi_Telefone}.substring(6,10)]]></tex
 					<reportElement style="dados" x="2" y="65" width="209" height="16" uuid="cf6404de-70b2-4428-877d-c36f01972a71"/>
 					<textFieldExpression><![CDATA[$F{Dest_Municipio}]]></textFieldExpression>
 				</textField>
-				<textField pattern="" isBlankWhenNull="true">
-					<reportElement style="dados" x="500" y="65" width="64" height="16" uuid="6656d2c2-187f-45af-891f-898ed301ab08"/>
-					<textFieldExpression><![CDATA[$F{Hora_Saida}]]></textFieldExpression>
-				</textField>
 				<textField>
 					<reportElement style="dados" x="347" y="65" width="151" height="16" uuid="6190f16e-0b7e-4883-8389-0a8563fd4145"/>
 					<textFieldExpression><![CDATA[$F{Dest_IE} != null ? $F{Dest_IE} : ""]]></textFieldExpression>
@@ -1042,16 +1031,10 @@ $F{Dest_CNPJ}.substring(8,12) + "-" + $F{Dest_CNPJ}.substring(12,14) : $F{Dest_C
 $F{Trans_CNPJ}.substring(2,5) + "." + $F{Trans_CNPJ}.substring(5,8) + "/" +
 $F{Trans_CNPJ}.substring(8,12) + "-" + $F{Trans_CNPJ}.substring(12,14) : $F{Trans_CNPJ}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-					<reportElement style="dados" x="226" y="194" width="68" height="16" uuid="8f88ede8-5bd5-45e5-84f7-c32cccadcb3b"/>
-					<box>
-						<topPen lineWidth="0.25"/>
-						<leftPen lineWidth="0.25"/>
-						<bottomPen lineWidth="0.25"/>
-						<rightPen lineWidth="0.25"/>
-					</box>
-					<textElement textAlignment="Center">
-						<font size="8"/>
+				<textField isBlankWhenNull="true">
+					<reportElement style="dados" x="228" y="194" width="65" height="16" uuid="8f88ede8-5bd5-45e5-84f7-c32cccadcb3b"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Frete}.equals( "0" ) ? "0-EMITENTE" : $F{Frete}.equals( "1" ) ? "1-DESTINATARIO"
 : $F{Frete}.equals( "2" ) ? "2-TERCEIRO" : "9-SEM FRETE"]]></textFieldExpression>
@@ -1242,6 +1225,16 @@ $F{Trans_CNPJ}.substring(8,12) + "-" + $F{Trans_CNPJ}.substring(12,14) : $F{Tran
 					</textElement>
 					<text><![CDATA[Outras Formas de Pagamento, Verifique as Informações no Campo de Dados Adicionais ]]></text>
 				</staticText>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement style="dados" x="501" y="65" width="63" height="16" uuid="b18c3e89-5eb1-496c-bcac-e7d93e093913"/>
+					<textElement textAlignment="Justified"/>
+					<textFieldExpression><![CDATA[new org.joda.time.DateTime($F{Hora_Saida}).toString("HH:mm")]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement style="campoPequeno" x="500" y="34" width="61" height="8" uuid="4764445e-859f-4865-891c-4fb87fb879ad"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{TipoNF} == 0 ? "Entrada" : "Saída"]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</pageHeader>
@@ -1615,7 +1608,6 @@ $F{Trans_CNPJ}.substring(8,12) + "-" + $F{Trans_CNPJ}.substring(12,14) : $F{Tran
 				<textElement textAlignment="Right">
 					<font size="5" isBold="true" isItalic="false" isUnderline="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["DANFE GERADO EM OPENFE.COM.BR"]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>
@@ -1703,11 +1695,11 @@ $F{Trans_CNPJ}.substring(8,12) + "-" + $F{Trans_CNPJ}.substring(12,14) : $F{Tran
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="dados" x="4" y="53" width="358" height="83" uuid="e96e69cc-e375-45d5-87ee-f5e72f69012b"/>
-					<textElement verticalAlignment="Top">
+					<textElement verticalAlignment="Top" markup="styled">
 						<font isItalic="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{InfoFisco}!= null ? $F{InfoFisco} : ""  +
-$F{InfoCpl}!= null ? $F{InfoCpl} : "InfoCpl"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{InfoFisco}!= null ? $F{InfoFisco} : "") + "\n" +
+($F{InfoCpl}  != null ? $F{InfoCpl}   : "")]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

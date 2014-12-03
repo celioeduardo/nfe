@@ -1,14 +1,23 @@
 package com.hadrion.nfe.dominio.modelo.endereco;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-
+@Embeddable
+@Access(AccessType.FIELD)
 public class Pais {
 	
 	public static final Pais BRASIL = new Pais(1058L,"BRASIL");
 	
+	@Column(name="CODIGO")
 	private Long codigo;
+	
+	@Column(name="NOME")
 	private String nome;
 	
 	public Pais(Long codigo, String nome) {
@@ -54,4 +63,9 @@ public class Pais {
 				+", nome="+nome
 				+ "]";
 	} 
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Pais(){}
 }

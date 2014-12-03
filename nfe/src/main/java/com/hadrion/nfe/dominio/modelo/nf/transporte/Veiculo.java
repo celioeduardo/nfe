@@ -1,12 +1,29 @@
 package com.hadrion.nfe.dominio.modelo.nf.transporte;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Veiculo {
+	@Enumerated(EnumType.STRING)
 	private TipoVeiculo tipo;
+	
+	@Embedded
 	private Placa placa;
+	
+	@Column(name="REGISTRO_ANTT")
 	private String registroAntt;
+	
+	@Column(name="IDENTIFICACAO")
 	private String identificacao;
 	
 	public Veiculo(TipoVeiculo tipo, Placa placa, String registroAntt,
@@ -69,5 +86,11 @@ public class Veiculo {
 				+ ",identificacao="+ identificacao()
 				+ "]";
 	}
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Veiculo(){}
+
 }
 

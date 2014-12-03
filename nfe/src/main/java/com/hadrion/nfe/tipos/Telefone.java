@@ -1,9 +1,18 @@
 package com.hadrion.nfe.tipos;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Telefone {
+	
+	@Column(name="TELEFONE")
 	private String numero;
 
 	public Telefone(String numero) {
@@ -45,4 +54,9 @@ public class Telefone {
 		return "Telefone [numero="+ numero
 				+ "]";
 	} 
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Telefone(){}
 }

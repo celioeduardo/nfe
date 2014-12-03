@@ -1,7 +1,15 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+@Embeddable
+@Access(AccessType.FIELD)
 public class NotaFiscalId {
 
+	@Column(name="NF_ID")
 	private String id;
 
 	public NotaFiscalId(String id) {
@@ -36,5 +44,9 @@ public class NotaFiscalId {
 	public String toString() {
 		return id;
 	}
-
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private NotaFiscalId(){}
 }

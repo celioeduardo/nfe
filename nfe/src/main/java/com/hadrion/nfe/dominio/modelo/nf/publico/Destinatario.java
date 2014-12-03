@@ -1,5 +1,10 @@
 package com.hadrion.nfe.dominio.modelo.nf.publico;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -11,16 +16,37 @@ import com.hadrion.nfe.tipos.InscricaoEstadual;
 import com.hadrion.nfe.tipos.Telefone;
 
 public class Destinatario {
+	@Embedded
 	private Cnpj cnpj;
+	
+	@Embedded
 	private Cpf cpf;
+	
+	@Column(name="ID_ESTRANGEIRO")
 	private String idEstrangeiro;
+	
+	@Column(name="RAZAO_SOCIAL")
 	private String razaoSocial;
+	
+	@Column(name="NOME_FANTASIA")
 	private String nomeFantasia;
+	
+	@Embedded
 	private Endereco endereco;
+	
+	@Embedded
 	private Telefone telefone;
+	
+	@Enumerated(EnumType.STRING)
 	private IndicadorIe indicadorIe;
+	
+	@Embedded
 	private InscricaoEstadual ie;
+	
+	@Column(name="INSCRICAO_SUFRAMA")
 	private Long inscricaoSuframa;
+	
+	@Embedded
 	private Email email;
 	
 	public Destinatario(Cnpj cnpj, Cpf cpf, String idEstrangeiro,

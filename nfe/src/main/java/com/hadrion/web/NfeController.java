@@ -43,17 +43,31 @@ public class NfeController {
 	}
 	@RequestMapping("/notas_fiscais/configuracao")
 	public String configuracao(HttpServletRequest req){
-		return "[{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"REGISTRO AUTOMATICO\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"CAFE\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"CAFE TERCEIROS\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"CAFE **ARAX\\u00C1**\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"HORTI FRUTI\"},{\"NUM_CNPJ\":86675642000882,\"NOM_CURTO_FILIAL\":\"LAVADOR - COOPADAP\"},{\"NUM_CNPJ\":86675642000963,\"NOM_CURTO_FILIAL\":\"COOPADAP RURAL\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"GRAOS\"},{\"NUM_CNPJ\":86675642000700,\"NOM_CURTO_FILIAL\":\"EERP-OUTRAS CULTURAS\"},{\"NUM_CNPJ\":86675642000700,\"NOM_CURTO_FILIAL\":\"ESTACAO EXPERIMENTAL\"},{\"NUM_CNPJ\":86675642000297,\"NOM_CURTO_FILIAL\":\"UND. ALHO\"},{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"LOJA INSUMOS\"}]"; 
+		return "[{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"REGISTRO AUTOMATICO\"},"
+				+ "{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"CAFE\"},"
+				+ "{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"CAFE TERCEIROS\"},"
+				+ "{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"CAFE **ARAX\\u00C1**\"},"
+				+ "{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"HORTI FRUTI\"},"
+				+ "{\"NUM_CNPJ\":86675642000882,\"NOM_CURTO_FILIAL\":\"LAVADOR - COOPADAP\"},"
+				+ "{\"NUM_CNPJ\":86675642000963,\"NOM_CURTO_FILIAL\":\"COOPADAP RURAL\"},"
+				+ "{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"GRAOS\"},"
+				+ "{\"NUM_CNPJ\":86675642000700,\"NOM_CURTO_FILIAL\":\"EERP-OUTRAS CULTURAS\"},"
+				+ "{\"NUM_CNPJ\":86675642000700,\"NOM_CURTO_FILIAL\":\"ESTACAO EXPERIMENTAL\"},"
+				+ "{\"NUM_CNPJ\":86675642000297,\"NOM_CURTO_FILIAL\":\"UND. ALHO\"},"
+				+ "{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"LOJA INSUMOS\"}]"; 
 	}
 	@RequestMapping("/notas_fiscais/combofilial")
 	public String combofilial(
 			@RequestParam(value="query",required=false,
-			defaultValue="select NUM_CNPJ,cod_empresa||'/'||COD_FILIAL||' - '||nom_curto_filial nom_curto_filial from cad_filial where cod_empresa = 1 and cod_filial > 0")String query){
+			defaultValue="select NUM_CNPJ,"
+					+ "cod_empresa||'/'||COD_FILIAL||' - '||nom_curto_filial nom_curto_filial "
+					+ "from cad_filial where cod_empresa = 1 and cod_filial > 0")String query){
 		return notaFiscalAplicacaoService.obterComboFilial(query); 
 	}
 
 	@RequestMapping(value = "/notas_fiscais/danfe", method = RequestMethod.GET)
-	public ResponseEntity<InputStreamResource> danfe(@RequestParam(value="notafiscalid")String notaFiscalId) throws IOException, JRException{		
+	public ResponseEntity<InputStreamResource> danfe(
+			@RequestParam(value="notafiscalid")String notaFiscalId) throws IOException, JRException{		
 		return notaFiscalAplicacaoService.obterDanfe(notaFiscalId);
 	}	
 	@RequestMapping("/barra")

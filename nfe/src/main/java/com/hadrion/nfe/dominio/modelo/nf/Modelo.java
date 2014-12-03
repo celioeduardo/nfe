@@ -1,7 +1,14 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Modelo {
 
 	public static final Modelo NFE = new Modelo("55");
@@ -9,6 +16,7 @@ public class Modelo {
 	public static final Modelo MODELO_1 = new Modelo("01");
 	public static final Modelo MODELO_1A = new Modelo("1A");
 	
+	@Column(name="MODELO")
 	private String modelo;
 
 	public Modelo(String modelo){
@@ -57,5 +65,9 @@ public class Modelo {
 		return MODELO_1.equals(modelo) || MODELO_1A.equals(modelo);
 	}
 	
-
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Modelo(){}
 }

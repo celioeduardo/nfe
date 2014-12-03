@@ -14,6 +14,7 @@ public class EndPoints {
 	public EndPoints(){
 		configurarMg();
 		configurarSp();
+		configurarBa();
 	}
 	
 	private void configurarMg(){
@@ -55,6 +56,26 @@ public class EndPoints {
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.INUTILIZACAO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao2.asmx");
 		
+	}
+	private void configurarBa(){
+		//TODO endpoint bahia
+		Local uf = Local.BA;
+		Versao versao = Versao.V3_10;
+		put(Ambiente.PRODUCAO,uf,versao,Servico.AUTORIZACAO,"https://nfe.sefaz.ba.gov.br/webservices/NfeAutorizacao/NfeAutorizacao.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.RET_AUTORIZACAO,"https://nfe.sefaz.ba.gov.br/webservices/NfeRetAutorizacao/NfeRetAutorizacao.asmx");	
+		put(Ambiente.PRODUCAO,uf,versao,Servico.EVENTO,"https://nfe.sefaz.ba.gov.br/webservices/sre/recepcaoevento.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_CADASTRO,"https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.STATUS_SERVICO,"https://nfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://nfe.sefaz.ba.gov.br/webservices/NfeConsulta/NfeConsulta.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.INUTILIZACAO,"https://nfe.sefaz.ba.gov.br/webservices/NfeInutilizacao/NfeInutilizacao.asmx");
+		//homologacao
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.AUTORIZACAO,"https://hnfe.sefaz.ba.gov.br/webservices/NfeAutorizacao/NfeAutorizacao.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.RET_AUTORIZACAO,"https://hnfe.sefaz.ba.gov.br/webservices/NfeRetAutorizacao/NfeRetAutorizacao.asmx");		
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.EVENTO,"https://hnfe.sefaz.ba.gov.br/webservices/sre/recepcaoevento.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_CADASTRO,"https://hnfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.STATUS_SERVICO,"https://hnfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://hnfe.sefaz.ba.gov.br/webservices/NfeConsulta/NfeConsulta.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.INUTILIZACAO,"https://hnfe.sefaz.ba.gov.br/webservices/NfeInutilizacao/NfeInutilizacao.asmx");
 	}
 	
 	private void put(Ambiente ambiente, Local local, Versao versao, Servico servico, String uri){

@@ -1,7 +1,15 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+@Embeddable
+@Access(AccessType.FIELD)
 public class Serie {
 
+	@Column(name="SERIE")	
 	private Long numero;
 
 	public Serie(Long numero){
@@ -40,6 +48,10 @@ public class Serie {
 	public String toString() {
 		return String.valueOf(numero);
 	}
-
 	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Serie(){} 
 }

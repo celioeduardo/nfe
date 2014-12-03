@@ -1,5 +1,8 @@
 package com.hadrion.nfe.dominio.modelo.nf.transporte;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -9,10 +12,19 @@ import com.hadrion.nfe.tipos.Cpf;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
 
 public class Transportador {
+	@Embedded
 	private Cnpj cnpj;
+	
+	@Embedded
 	private Cpf cpf;
+	
+	@Column(name="RAZAO_SOCIAL")
 	private String razaoSocial;
+	
+	@Embedded
 	private InscricaoEstadual ie;
+	
+	@Embedded
 	private Endereco endereco;
 	
 	public Transportador(Cnpj cnpj, Cpf cpf, String razaoSocial,
@@ -83,5 +95,11 @@ public class Transportador {
 				+ ",endereco="+ endereco()
 				+ "]";
 	}
+	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Transportador(){}
 	
 }

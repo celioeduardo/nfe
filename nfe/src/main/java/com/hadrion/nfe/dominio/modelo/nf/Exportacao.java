@@ -1,13 +1,27 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Exportacao {
+	@Enumerated(EnumType.STRING)
 	private Uf uf;
+	
+	@Column(name="EMBARQUE")
 	private String localEmbarque;
+	
+	@Column(name="DESPACHO")
 	private String localDespacho;
 	
 	public Exportacao(Uf uf, String localEmbarque, String localDespacho) {
@@ -59,4 +73,9 @@ public class Exportacao {
 				+ "]";
 	}	
 	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Exportacao(){}
 }

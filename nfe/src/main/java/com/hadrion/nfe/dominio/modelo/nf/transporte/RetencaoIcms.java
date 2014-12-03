@@ -1,16 +1,33 @@
 package com.hadrion.nfe.dominio.modelo.nf.transporte;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.tipos.Dinheiro;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class RetencaoIcms {
+	@Embedded
 	private Dinheiro valorServico;
+	
+	@Embedded
 	private Dinheiro baseCalculo;
+	
+	@Column(name="ALIQUOTA")
 	private Double aliquota;
+	
+	@Embedded
 	private Dinheiro valor;
+	
+	@Embedded
 	private Cfop cfop;
 	
 	public RetencaoIcms(Dinheiro valorServico, Dinheiro baseCalculo,
@@ -81,5 +98,10 @@ public class RetencaoIcms {
 				+ ",cfop="+ cfop()
 				+ "]";
 	}	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private RetencaoIcms(){}
 	
 }

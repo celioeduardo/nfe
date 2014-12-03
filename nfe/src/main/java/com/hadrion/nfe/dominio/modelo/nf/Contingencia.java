@@ -2,12 +2,26 @@ package com.hadrion.nfe.dominio.modelo.nf;
 
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Contingencia {
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="DATA_HORA")
 	private Date dataHora;
+	
+	@Column(name="JUSTIFICATIVA")
 	private String justificativa;
 	
 	public Contingencia(Date dataHora, String justificativa) {
@@ -63,4 +77,9 @@ public class Contingencia {
 				+",justificativa = " + justificativa()
 				+ "]";
 	} 
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Contingencia(){}
 }

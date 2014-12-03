@@ -1,5 +1,14 @@
 package com.hadrion.nfe.dominio.modelo.nf.publico;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -9,15 +18,35 @@ import com.hadrion.nfe.tipos.Cpf;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
 import com.hadrion.nfe.tipos.Telefone;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class Emitente {
+	@Embedded
 	private Cnpj cnpj;
+	
+	@Embedded
 	private Cpf cpf;
+	
+	@Column(name="RAZAO_SOCIAL")
 	private String razaoSocial;
+	
+	@Column(name="NOME_FANTASIA")
 	private String nomeFantasia;
+	
+	@Embedded
 	private Endereco endereco;
+	
+	@Embedded
 	private Telefone telefone;
+	
+	@Embedded
 	private InscricaoEstadual ie;
+	
+	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="IE_SUBS"))
 	private InscricaoEstadual ieSubstituto;
+	
+	@Enumerated(EnumType.STRING)
 	private Crt crt;
 	
 	public Emitente(Cnpj cnpj, Cpf cpf, String razaoSocial,
@@ -118,4 +147,9 @@ public class Emitente {
 				+ ",ieSubstituto="+ ieSubstituto
 				+ "]";
 	} 
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Emitente(){}
 }
