@@ -229,7 +229,7 @@ public class NotaFiscalFixture {
 					null));
 	}
 	
-	private static List<Item> itens(){
+	static List<Item> itens(){
 		List<Item> result = new ArrayList<Item>();
 		Item item = new Item( 
 			new DescritorProduto(

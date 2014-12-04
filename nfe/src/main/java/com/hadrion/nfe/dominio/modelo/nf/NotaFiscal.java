@@ -26,7 +26,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
@@ -171,9 +170,10 @@ public class NotaFiscal {
 	private List<Referencia> referencias;
 	
 	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL)
-	@JoinTable(name="ITEM",
+	/*@JoinTable(name="ITEM",
 	    joinColumns=@JoinColumn(name="ID_NF"),
-	    inverseJoinColumns=@JoinColumn(name="ID_ITEM"))
+	    inverseJoinColumns=@JoinColumn(name="ID_ITEM",nullable=false))*/
+	@JoinColumn(name="ID_NF")
 	private List<Item> itens;
 
 	@Id

@@ -4,6 +4,8 @@ import static com.hadrion.util.DataUtil.dataHora;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.sql.SQLException;
+
 import javax.persistence.EntityManager;
 
 import org.junit.Before;
@@ -33,7 +35,7 @@ public class NotaFiscalRepositorioTest extends DominioTest {
 	}
 	
 	@Test
-	public void salvar(){
+	public void salvar () throws SQLException {
 		
 		notaFiscalRepositorio.salvar(nf);
 		
@@ -76,6 +78,9 @@ public class NotaFiscalRepositorioTest extends DominioTest {
 		assertEquals(NotaFiscalFixture.referencias(),nf.referencias());
 		assertEquals(NotaFiscalFixture.informacaoFisco(),nf.informacaoFisco());
 		assertEquals(NotaFiscalFixture.informacaoContribuinte(),nf.informacaoContribuinte());
+		assertEquals(NotaFiscalFixture.itens(),nf.itens());
+		assertEquals(NotaFiscalFixture.itens().get(0),nf.item(0));
+		
 	} 
 	
 		

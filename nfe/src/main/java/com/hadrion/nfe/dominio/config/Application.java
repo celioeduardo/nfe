@@ -53,10 +53,16 @@ public abstract class Application extends WebMvcConfigurerAdapter{
 		
 //		return new SimpleDriverDataSource() {
 //			{
+//				Properties prop=new Properties();
+//				prop.setProperty("hibernate.show_sql", "true");
+//				prop.setProperty("hibernate.hbm2ddl.auto","create-drop");
+//				prop.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+//				
 //				setDriverClass(oracle.jdbc.driver.OracleDriver.class);
 //				setUrl("jdbc:oracle:thin:@192.168.151.3:1521:orcl");
-//				setUsername("coopadap");
-//				setPassword("sucesso");
+//				setUsername("NFE3");
+//				setPassword("NFE3");
+//				setConnectionProperties(prop);
 //			}		
 //		};
 
