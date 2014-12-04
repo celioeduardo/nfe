@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao">
+	<consReciNFe versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">
+		<tpAmb>2</tpAmb>
+		<nRec>310000035995659</nRec>
+	</consReciNFe>
+</nfeDadosMsg>

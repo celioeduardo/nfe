@@ -27,7 +27,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	private EnviarLoteService enviarLoteService;
 	
 	@Mock
-	private AutorizacaoService recepcaoLoteService;
+	private AutorizacaoService autorizacaoService;
 	
 	@Mock
 	private EmpresaRepositorio empresaRepositorio;
@@ -44,7 +44,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	@Test
 	public void enviar_com_sucesso_em_homologacao() throws Throwable{
 		
-		when(recepcaoLoteService.autorizar(any(Lote.class),any(Certificado.class))).thenReturn(
+		when(autorizacaoService.autorizar(any(Lote.class),any(Certificado.class))).thenReturn(
 				new RetornoAutorizacao(
 					new ReciboLote(new NumeroReciboLote("123456"))));
 		
@@ -57,7 +57,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 
 	@Test
 	public void enviar_com_sucesso_em_producao() throws Throwable{
-		when(recepcaoLoteService.autorizar(any(Lote.class),any(Certificado.class))).thenReturn(
+		when(autorizacaoService.autorizar(any(Lote.class),any(Certificado.class))).thenReturn(
 				new RetornoAutorizacao(
 					new ReciboLote(new NumeroReciboLote("123456"))));
 		Lote lote = loteEmProducaoNaoEnviadoParaTest();
@@ -69,7 +69,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	@Test
 	public void enviar_com_falha_consistencia_em_homologacao() throws Throwable{
-		when(recepcaoLoteService.autorizar(any(Lote.class),any(Certificado.class))).thenReturn(
+		when(autorizacaoService.autorizar(any(Lote.class),any(Certificado.class))).thenReturn(
 				new RetornoAutorizacao(
 						new Mensagem(214, "Rejeição: Tamanho da mensagem excedeu o limite estabelecido")));
 		Lote lote = loteEmHomologacaoNaoEnviadoParaTest();
@@ -81,7 +81,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	@Test
 	public void enviar_com_falha_consistencia_em_producao() throws Throwable{
-		when(recepcaoLoteService.autorizar(any(Lote.class),any(Certificado.class))).thenReturn(
+		when(autorizacaoService.autorizar(any(Lote.class),any(Certificado.class))).thenReturn(
 				new RetornoAutorizacao(
 						new Mensagem(214, "Rejeição: Tamanho da mensagem excedeu o limite estabelecido")));
 		Lote lote = loteEmProducaoNaoEnviadoParaTest();
@@ -93,7 +93,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	@Test
 	public void enviar_com_erro_transmissao_em_homologacao() throws Throwable{
-		when(recepcaoLoteService.autorizar(any(Lote.class),any(Certificado.class)))
+		when(autorizacaoService.autorizar(any(Lote.class),any(Certificado.class)))
 			.thenThrow(new Exception("Internet indisponível"));
 		
 		Lote lote = loteEmHomologacaoNaoEnviadoParaTest();
@@ -105,7 +105,7 @@ public class EnviarLoteServiceTest  extends AbstractLoteServiceTest {
 	
 	@Test
 	public void enviar_com_erro_transmissao_em_producao() throws Throwable{
-		when(recepcaoLoteService.autorizar(any(Lote.class),any(Certificado.class)))
+		when(autorizacaoService.autorizar(any(Lote.class),any(Certificado.class)))
 			.thenThrow(new Exception("Internet indisponível"));
 		Lote lote = loteEmProducaoNaoEnviadoParaTest();
 		enviarLoteService.enviar(lote);

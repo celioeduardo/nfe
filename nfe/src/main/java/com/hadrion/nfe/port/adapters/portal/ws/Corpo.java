@@ -74,7 +74,7 @@ public class Corpo {
 	}
 	
 	protected String uriWebService(){
-		return "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao3";
+		return "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao";
 	}
 
 	protected String idLote() {

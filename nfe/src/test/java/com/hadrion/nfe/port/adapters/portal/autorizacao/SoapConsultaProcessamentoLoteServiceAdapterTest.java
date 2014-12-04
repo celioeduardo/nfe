@@ -1,7 +1,6 @@
 package com.hadrion.nfe.port.adapters.portal.autorizacao;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -13,12 +12,12 @@ import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
-import com.hadrion.nfe.dominio.modelo.portal.autorizacao.AutorizacaoService;
-import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ConsultaProcessamentoLoteService;
+import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.RetornoConsultaProcessamentoLote;
 
-public class SoapAutorizacaoServiceAdapterTest extends DominioTest{
+public class SoapConsultaProcessamentoLoteServiceAdapterTest extends DominioTest{
 	@Autowired
-	private AutorizacaoService autorizacaoService;
+	private ConsultaProcessamentoLoteService consultaProcessamentoService;
 	
 	private Certificado certificado;
 	
@@ -34,15 +33,17 @@ public class SoapAutorizacaoServiceAdapterTest extends DominioTest{
 	}
 	
 	@Test
-	public void autorizar() throws Throwable{
+	public void consultar() throws Throwable{
 		certificado = new Certificado(
 				FileUtils.getFile("src","test","resources","assinatura","certificado.pfx"), 
 				"12345678"); 
-		RetornoAutorizacao retorno = autorizacaoService.autorizar(lote, certificado);
-		assertNotNull(retorno.recibo());
-		assertNull(retorno.erro());
+		RetornoConsultaProcessamentoLote retorno = consultaProcessamentoService.consultar(lote, certificado);
 		
-		System.out.println("\nNúmero do Recibo retornado: "+retorno.recibo().numero());
+		assertNotNull(retorno);
+		
+//		assertNull(retorno.erro());
+//		
+//		System.out.println("\nNúmero do Recibo retornado: "+retorno.recibo().numero());
 	}
 	
 }

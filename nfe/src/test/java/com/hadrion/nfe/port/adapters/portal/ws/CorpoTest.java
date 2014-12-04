@@ -47,8 +47,14 @@ public class CorpoTest extends DominioTest {
 		assertXMLEquals(XML, corpo.autorizacao());
 	}
 	
+//	@Test
+//	public void corpoRetAutorizacao(){
+//		Corpo corpo = new Corpo(lote,Collections.singleton(nf),certificado);
+//		assertXMLEquals(XML, corpo.retAutorizacao());
+//	}
+	
 	private String xml(){
-		final File xml = FileUtils.getFile("src","test","resources","ws","nfeDadosMsg.xml");
+		final File xml = FileUtils.getFile("src","test","resources","ws","Autorizacao-nfeDadosMsg.xml");
 		
 		try {
 			return FileUtils.readFileToString(xml);

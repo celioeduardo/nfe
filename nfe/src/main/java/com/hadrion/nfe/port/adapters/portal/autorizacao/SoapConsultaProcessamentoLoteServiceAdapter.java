@@ -23,7 +23,6 @@ import org.springframework.xml.transform.StringSource;
 
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
-import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ConsultaProcessamentoLoteService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.RetornoConsultaProcessamentoLote;
 import com.hadrion.nfe.port.adapters.portal.ws.EndPoints;
@@ -63,7 +62,7 @@ public class SoapConsultaProcessamentoLoteServiceAdapter implements ConsultaProc
 							TransformerException {
 						
 						((SoapMessage)arg).setSoapAction(
-								endpoint+"/nfeRetAutorizacao");
+								endpoint+"/nfeRetAutorizacaoLote");
 						
 						StringSource ss = new StringSource(nfeCabecMsg());
 						SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
@@ -76,13 +75,16 @@ public class SoapConsultaProcessamentoLoteServiceAdapter implements ConsultaProc
 				},
 				result);
 		
+		System.out.println("\nRETORNO:");
+		System.out.println(writerResult.toString());
+		
 		return new RetornoConsultaProcessamentoLoteDeserializador(
 				writerResult.toString()).deserializar();
 
 	}
 		
 	private String nfeCabecMsg(){
-		final File xml = FileUtils.getFile("src","test","resources","ws","Autorizacao-nfeCabecMsg.xml");
+		final File xml = FileUtils.getFile("src","test","resources","ws","RetAutorizacao-nfeCabecMsg.xml");
 		
 		try {
 			return FileUtils.readFileToString(xml);
@@ -92,7 +94,7 @@ public class SoapConsultaProcessamentoLoteServiceAdapter implements ConsultaProc
 	}
 	
 	private String nfeDadosMsg(){
-		final File xml = FileUtils.getFile("src","test","resources","ws","Autorizacao-nfeDadosMsg.xml");
+		final File xml = FileUtils.getFile("src","test","resources","ws","RetAutorizacao-nfeDadosMsg.xml");
 		
 		try {
 			return FileUtils.readFileToString(xml);

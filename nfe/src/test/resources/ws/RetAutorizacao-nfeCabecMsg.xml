@@ -1,0 +1,4 @@
+<nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao">
+  <cUF>31</cUF>
+  <versaoDados>3.10</versaoDados>
+</nfeCabecMsg>
