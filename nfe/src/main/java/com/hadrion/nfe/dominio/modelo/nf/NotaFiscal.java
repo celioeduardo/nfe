@@ -170,9 +170,6 @@ public class NotaFiscal {
 	private List<Referencia> referencias;
 	
 	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL)
-	/*@JoinTable(name="ITEM",
-	    joinColumns=@JoinColumn(name="ID_NF"),
-	    inverseJoinColumns=@JoinColumn(name="ID_ITEM",nullable=false))*/
 	@JoinColumn(name="ID_NF")
 	private List<Item> itens;
 

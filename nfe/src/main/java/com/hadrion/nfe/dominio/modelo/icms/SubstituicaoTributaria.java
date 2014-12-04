@@ -8,6 +8,7 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -25,22 +26,23 @@ public class SubstituicaoTributaria {
 			Percentual.ZERO,Dinheiro.ZERO,Aliquota.ZERO,null, Percentual.ZERO);
 	
 	@Embedded
-	@AttributeOverride(name="valor", column=@Column(name="ST_PERCENTUAL"))
+	@AttributeOverride(name="valor", column=@Column(name="ICMS_ST_PER_RBC"))
 	private Percentual percentualReducaoBaseCalculo;
 	
 	@Embedded
-	@AttributeOverride(name="quantia", column=@Column(name="ST_VAL_OPERACAO"))
+	@AttributeOverride(name="quantia", column=@Column(name="ICMS_ST_VAL_OPERACAO"))
 	private Dinheiro valorOperacao;
 	
 	@Embedded
-	@AttributeOverride(name="valor", column=@Column(name="ST_ALIQUOTA"))
+	@AttributeOverride(name="valor", column=@Column(name="ICMS_ST_ALIQUOTA"))
 	private Aliquota aliquota;
 	
-	@Enumerated
+	@Enumerated(EnumType.STRING)
+	@Column(name="ICMS_ST_DET_BC")
 	private DeterminacaoBaseCalculoSt determinacaoBaseCalculo;
 	
 	@Embedded
-	@AttributeOverride(name="valor", column=@Column(name="ST_PER_MARG_VAL_ADIC"))	
+	@AttributeOverride(name="valor", column=@Column(name="ICMS_ST_PER_MVA"))	
 	private Percentual percentualMargemValorAdicionado;
 	
 	public SubstituicaoTributaria(Percentual percentualReducaoBaseCalculo,

@@ -24,7 +24,7 @@ public class Item {
 	@Embedded
 	private Imposto imposto;
 	
-	@Column(name="ITEM_INF_ADIC")
+	@Column(name="INF_ADIC")
 	private String informacaoAdicional;
 	
 	@Id

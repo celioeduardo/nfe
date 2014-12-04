@@ -20,6 +20,7 @@ import com.hadrion.nfe.tipos.Dinheiro;
 @Access(AccessType.FIELD)
 public class Pis {
 	public static final Pis NULO = new Pis(null, Dinheiro.ZERO, Aliquota.ZERO, 0.0, 0.0);
+	
 	@Enumerated
 	@Column(name="PIS_CST")
 	private CstPis cst;

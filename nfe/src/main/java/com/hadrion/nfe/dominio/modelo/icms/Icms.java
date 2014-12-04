@@ -47,8 +47,6 @@ public class Icms {
 	private Aliquota aliquota;
 	
 	@Embedded
-	//@AttributeOverride(name="", column=@Column(name=""))
-	//TODO CELIAO
 	private SubstituicaoTributaria substituicaoTributaria;
 	
 	@Embedded

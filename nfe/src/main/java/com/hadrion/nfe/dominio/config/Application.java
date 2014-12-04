@@ -1,11 +1,7 @@
 package com.hadrion.nfe.dominio.config;
 
 import java.util.Arrays;
-import java.util.Properties;
 
-import javax.sql.DataSource;
-
-import org.hibernate.type.SetType;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.orm.jpa.EntityScan;
@@ -14,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.ws.soap.SoapMessageFactory;
@@ -33,41 +28,43 @@ import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 @EntityScan(basePackages="com.hadrion")
 public abstract class Application extends WebMvcConfigurerAdapter{
 
-	@Bean
-	DataSource dataSource() {
-		return new SimpleDriverDataSource() {
-			{
-				Properties prop=new Properties();
-				//prop.setProperty("hibernate.hbm2ddl.auto", "create");
-				prop.setProperty("hibernate.show_sql", "true");
-				prop.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
-				
-				setDriverClass(org.h2.Driver.class);
-				setUsername("sa");
-				setUrl("jdbc:h2:mem;MODE=Oracle");
-				setPassword("");
-				setConnectionProperties(prop);
-			}
-		};
-		
-		
+//	@Bean
+//	DataSource dataSource() {
 //		return new SimpleDriverDataSource() {
 //			{
 //				Properties prop=new Properties();
+//				prop.setProperty("hibernate.hbm2ddl.auto", "create");
+//				prop.setProperty("hibernate.hbm2ddl.export", "true");
+//				prop.setProperty("hibernate.hbm2ddl.outputfilename", "/Users/celioeduardo/Downloads/script.sql");
 //				prop.setProperty("hibernate.show_sql", "true");
-//				prop.setProperty("hibernate.hbm2ddl.auto","create-drop");
-//				prop.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+//				prop.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 //				
-//				setDriverClass(oracle.jdbc.driver.OracleDriver.class);
-//				setUrl("jdbc:oracle:thin:@192.168.151.3:1521:orcl");
-//				setUsername("NFE3");
-//				setPassword("NFE3");
+//				setDriverClass(org.h2.Driver.class);
+//				setUsername("sa");
+//				setUrl("jdbc:h2:mem;MODE=Oracle");
+//				setPassword("");
 //				setConnectionProperties(prop);
-//			}		
+//			}
 //		};
-
-		
-	}
+//		
+//		
+////		return new SimpleDriverDataSource() {
+////			{
+////				Properties prop=new Properties();
+////				prop.setProperty("hibernate.show_sql", "true");
+////				prop.setProperty("hibernate.hbm2ddl.auto","create-drop");
+////				prop.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+////				
+////				setDriverClass(oracle.jdbc.driver.OracleDriver.class);
+////				setUrl("jdbc:oracle:thin:@192.168.151.3:1521:orcl");
+////				setUsername("NFE3");
+////				setPassword("NFE3");
+////				setConnectionProperties(prop);
+////			}		
+////		};
+//
+//		
+//	}
 	
 	@Bean
 	ObjectMapper jacksonObjectMapper(){

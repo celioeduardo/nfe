@@ -22,6 +22,7 @@ public class Cofins {
 	public static final Cofins NULO = new Cofins(null, Dinheiro.ZERO, Aliquota.ZERO, 0.0, 0.0);
 	
 	@Enumerated
+	@Column(name="COFINS_CST")
 	private CstCofins cst;
 	
 	@Embedded

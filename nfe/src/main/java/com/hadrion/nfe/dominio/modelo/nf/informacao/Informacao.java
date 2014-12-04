@@ -35,7 +35,7 @@ public class Informacao {
 	public Informacao(String texto, Observacao ... observacoes) {
 		super();
 		this.texto = texto;
-		this.observacoes = Arrays.asList(observacoes);
+		this.observacoes = observacoes != null ? Arrays.asList(observacoes) : null;
 	}
 
 	public String texto() {
