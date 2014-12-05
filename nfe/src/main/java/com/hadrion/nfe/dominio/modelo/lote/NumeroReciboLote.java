@@ -23,7 +23,7 @@ public class NumeroReciboLote {
 		this.numero = numero;
 	}
 	
-	private String numero(){
+	public String numero(){
 		return numero;
 	}
 	

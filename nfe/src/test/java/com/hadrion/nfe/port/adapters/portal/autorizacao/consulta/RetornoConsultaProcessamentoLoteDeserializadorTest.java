@@ -1,4 +1,4 @@
-package com.hadrion.nfe.port.adapters.portal.autorizacao;
+package com.hadrion.nfe.port.adapters.portal.autorizacao.consulta;
 
 import static org.junit.Assert.assertEquals;
 

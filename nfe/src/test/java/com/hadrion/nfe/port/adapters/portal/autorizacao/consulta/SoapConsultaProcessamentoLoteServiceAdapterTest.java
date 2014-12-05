@@ -1,6 +1,6 @@
-package com.hadrion.nfe.port.adapters.portal.autorizacao;
+package com.hadrion.nfe.port.adapters.portal.autorizacao.consulta;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.hadrion.nfe.dominio.modelo.DominioTest;
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
+import com.hadrion.nfe.dominio.modelo.lote.NumeroReciboLote;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ConsultaProcessamentoLoteService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.RetornoConsultaProcessamentoLote;
 
@@ -30,6 +32,7 @@ public class SoapConsultaProcessamentoLoteServiceAdapterTest extends DominioTest
 		nf.emitida();
 		notaFiscalRepositorio.salvar(nf);
 		lote = loteGeradoEmHomologacaoPersistidoParaTest(nf);
+		lote.transmitido(new NumeroReciboLote("310000035995659"));
 	}
 	
 	@Test
@@ -37,9 +40,10 @@ public class SoapConsultaProcessamentoLoteServiceAdapterTest extends DominioTest
 		certificado = new Certificado(
 				FileUtils.getFile("src","test","resources","assinatura","certificado.pfx"), 
 				"12345678"); 
+		
 		RetornoConsultaProcessamentoLote retorno = consultaProcessamentoService.consultar(lote, certificado);
 		
-		assertNotNull(retorno);
+		assertEquals(new Mensagem(104, "Lote processado"),retorno.mensagem());
 		
 		System.out.println(retorno);
 		

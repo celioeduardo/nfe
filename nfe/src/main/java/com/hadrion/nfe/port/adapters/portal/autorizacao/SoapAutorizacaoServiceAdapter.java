@@ -32,7 +32,6 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.AutorizacaoService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
 import com.hadrion.nfe.port.adapters.portal.ws.Cabecalho;
-import com.hadrion.nfe.port.adapters.portal.ws.Corpo;
 import com.hadrion.nfe.port.adapters.portal.ws.EndPoints;
 import com.hadrion.nfe.port.adapters.portal.ws.Servico;
 import com.hadrion.nfe.port.adapters.portal.ws.Versao;
@@ -107,7 +106,7 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 	private String nfeDadosMsg(Lote lote, Set<NotaFiscal> notas, 
 			Certificado certificado){
 		Corpo corpo = new Corpo(lote, notas, certificado);
-		return corpo.autorizacao();
+		return corpo.gerar();
 		
 //		final File xml = FileUtils.getFile("src","test","resources","ws","Autorizacao-nfeDadosMsg.xml");
 //		

@@ -1,4 +1,4 @@
-package com.hadrion.nfe.port.adapters.portal.ws;
+package com.hadrion.nfe.port.adapters.portal.autorizacao.consulta;
 
 import com.hadrion.nfe.port.adapters.xml.AbstractConverter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -22,18 +22,16 @@ class CorpoConverter extends AbstractConverter{
 		
 		writer.addAttribute("xmlns", corpo.uriWebService());
 		
-		writer.startNode("enviNFe");
+		writer.startNode("consReciNFe");
 		writer.addAttribute("versao", corpo.versaoDados());
 		writer.addAttribute("xmlns", corpo.uriPortal());
 		
-		writer.startNode("idLote");
-		//TODO idLote fixo para test
-		//writer.setValue(obj.idLote());
-		writer.setValue("123456");
+		writer.startNode("tpAmb");
+		writer.setValue(String.valueOf(corpo.ambiente().codigo()));
 		writer.endNode();
 		
-		writer.startNode("indSinc");
-		writer.setValue(corpo.chamadaSincrona());
+		writer.startNode("nRec");
+		writer.setValue(corpo.numeroReciboLote());
 		writer.endNode();
 		
 		writer.endNode(); //enviNFe

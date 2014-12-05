@@ -1,6 +1,5 @@
-package com.hadrion.nfe.port.adapters.portal.autorizacao;
+package com.hadrion.nfe.port.adapters.portal.autorizacao.consulta;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -11,7 +10,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ws.WebServiceMessage;
@@ -22,9 +20,11 @@ import org.springframework.ws.soap.SoapMessage;
 import org.springframework.xml.transform.StringSource;
 
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
+import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ConsultaProcessamentoLoteService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.RetornoConsultaProcessamentoLote;
+import com.hadrion.nfe.port.adapters.portal.ws.Cabecalho;
 import com.hadrion.nfe.port.adapters.portal.ws.EndPoints;
 import com.hadrion.nfe.port.adapters.portal.ws.Servico;
 import com.hadrion.nfe.port.adapters.portal.ws.Versao;
@@ -37,7 +37,7 @@ public class SoapConsultaProcessamentoLoteServiceAdapter implements ConsultaProc
 	private WebServiceTemplateFabrica webServiceTemplateFabrica;
 	
 	@Override
-	public RetornoConsultaProcessamentoLote consultar(Lote lote, Certificado certificado) {
+	public RetornoConsultaProcessamentoLote consultar(final Lote lote, Certificado certificado) {
 		final String endpoint = EndPoints.obter(
 				lote.ambiente(),
 				lote.local(),
@@ -45,7 +45,7 @@ public class SoapConsultaProcessamentoLoteServiceAdapter implements ConsultaProc
 				Servico.RET_AUTORIZACAO);
 		
 		StreamSource source = new StreamSource(
-				new StringReader(nfeDadosMsg()));
+				new StringReader(nfeDadosMsg(lote)));
 		StringWriter writerResult = new StringWriter();
 		StreamResult result = new StreamResult(writerResult);
 		
@@ -64,7 +64,7 @@ public class SoapConsultaProcessamentoLoteServiceAdapter implements ConsultaProc
 						((SoapMessage)arg).setSoapAction(
 								endpoint+"/nfeRetAutorizacaoLote");
 						
-						StringSource ss = new StringSource(nfeCabecMsg());
+						StringSource ss = new StringSource(nfeCabecMsg(lote.uf()));
 						SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
 						Transformer transformer = TransformerFactory.newInstance().newTransformer();
 						transformer.transform(ss, soapHeader.getResult());
@@ -75,35 +75,19 @@ public class SoapConsultaProcessamentoLoteServiceAdapter implements ConsultaProc
 				},
 				result);
 		
-		System.out.println("\nRETORNO:");
-		System.out.println(writerResult.toString());
-		
 		return new RetornoConsultaProcessamentoLoteDeserializador(
 				writerResult.toString()).deserializar();
 
 	}
 		
-	private String nfeCabecMsg(){
-		final File xml = FileUtils.getFile("src","test","resources","ws","RetAutorizacao-nfeCabecMsg.xml");
-		
-		try {
-			return FileUtils.readFileToString(xml);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+	private String nfeCabecMsg(Uf uf){
+		Cabecalho cabecalho = new Cabecalho(uf);
+		return cabecalho.retornoAutorizacao();
 	}
 	
-	private String nfeDadosMsg(){
-		final File xml = FileUtils.getFile("src","test","resources","ws","RetAutorizacao-nfeDadosMsg.xml");
-		
-		try {
-			return FileUtils.readFileToString(xml);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+	private String nfeDadosMsg(Lote lote){
+		Corpo corpo = new Corpo(lote);
+		return corpo.gerar();
 	}
-
-
-	
 	
 }

@@ -1,4 +1,4 @@
-package com.hadrion.nfe.port.adapters.portal.ws;
+package com.hadrion.nfe.port.adapters.portal.autorizacao;
 
 import static com.hadrion.util.xml.XmlUtil.parseXml;
 import static com.hadrion.util.xml.XmlUtil.xmlParaString;
@@ -32,7 +32,7 @@ public class Corpo {
 		serializador =  new NotaFiscalSerializador(certificado());
 	}
 
-	public String autorizacao() {
+	public String gerar() {
 		Document doc = parseXml(xstream().toXML(this));
 		Node enviNfe = doc.getElementsByTagName("enviNFe").item(0);
 		

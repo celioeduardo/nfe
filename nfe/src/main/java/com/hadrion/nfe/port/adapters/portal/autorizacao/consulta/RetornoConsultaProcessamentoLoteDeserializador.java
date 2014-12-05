@@ -1,4 +1,4 @@
-package com.hadrion.nfe.port.adapters.portal.autorizacao;
+package com.hadrion.nfe.port.adapters.portal.autorizacao.consulta;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -95,7 +95,6 @@ class RetornoConsultaProcessamentoLoteDeserializador extends AbstractConverter{
 		
 		while (reader.hasMoreChildren()) {
 			reader.moveDown();
-			System.out.println(reader.getNodeName());
 			Date dataHoraProcessamento = null;
 			NumeroProtocolo numero = null;
 			int cStat = -1;

@@ -1,4 +1,4 @@
-package com.hadrion.nfe.port.adapters.portal.ws;
+package com.hadrion.nfe.port.adapters.portal.autorizacao;
 
 import static com.hadrion.util.xml.XmlTestUtil.assertXMLEquals;
 
@@ -17,6 +17,7 @@ import com.hadrion.nfe.dominio.modelo.lote.GeracaoLoteService;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
+import com.hadrion.nfe.port.adapters.portal.autorizacao.Corpo;
 
 public class CorpoTest extends DominioTest {
 	@Autowired
@@ -44,14 +45,8 @@ public class CorpoTest extends DominioTest {
 	@Test
 	public void corpoAutorizacao(){
 		Corpo corpo = new Corpo(lote,Collections.singleton(nf),certificado);
-		assertXMLEquals(XML, corpo.autorizacao());
+		assertXMLEquals(XML, corpo.gerar());
 	}
-	
-//	@Test
-//	public void corpoRetAutorizacao(){
-//		Corpo corpo = new Corpo(lote,Collections.singleton(nf),certificado);
-//		assertXMLEquals(XML, corpo.retAutorizacao());
-//	}
 	
 	private String xml(){
 		final File xml = FileUtils.getFile("src","test","resources","ws","Autorizacao-nfeDadosMsg.xml");
