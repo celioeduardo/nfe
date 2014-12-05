@@ -1,13 +1,24 @@
 package com.hadrion.nfe.dominio.modelo.portal;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 
 /**
  * Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor. (NT 2011/004)
  * @author celioeduardo
  *
  */
+@Embeddable
+@Access(AccessType.FIELD)
 public class MensagemSefaz {
+	
+	@Column(name="CODIGO")
 	private int codigo;
+
+	@Column(name="DESCRICAO")
 	private String descricao;
 	
 	public static MensagemSefaz vazia(){
@@ -54,4 +65,9 @@ public class MensagemSefaz {
 	public String toString() {
 		return "MensagemSefaz [codigo=" + codigo() + ", descrição="+descricao()+"]";
 	}
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private MensagemSefaz(){}
 }

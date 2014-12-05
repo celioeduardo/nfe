@@ -1,7 +1,14 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+@Embeddable
+@Access(AccessType.FIELD)
 public class LoteId {
-	
+	@Column(name="LOTE_ID")
 	private String id; 
 	
 	public LoteId(String id){
@@ -36,4 +43,9 @@ public class LoteId {
 	public String toString() {
 		return id;
 	}
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private LoteId(){}
 }

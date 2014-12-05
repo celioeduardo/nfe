@@ -1,13 +1,23 @@
 package com.hadrion.nfe.dominio.modelo.portal;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 
 /**
  * Representa a tabela 5.1.1 - Tabela de Códigos de Erros e Descrições de Mensagens de Erros
  * @author celioeduardo
  *
  */
+@Embeddable
+@Access(AccessType.FIELD)
 public class Mensagem {
+	@Column(name="CODIGO_MSG")
 	private int codigo;
+	
+	@Column(name="DESCRICAO_MSG")
 	private String descricao;
 	
 	public Mensagem(int codigo, String descricao) {
@@ -68,4 +78,9 @@ public class Mensagem {
 				+", descricao="+descricao()
 				+"]";
 	}
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private Mensagem(){}
 }

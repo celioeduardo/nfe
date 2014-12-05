@@ -2,6 +2,17 @@ package com.hadrion.nfe.dominio.modelo.lote;
 
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Enumerated;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.OverridesAttribute;
+
 import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
@@ -10,12 +21,30 @@ import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ProtocoloNotaProcessada;
 
+@Embeddable
+@Access(AccessType.FIELD)
 class LoteNotaFiscal {
+	
+	@Embedded
 	private NotaFiscalId notaFiscalId;
+	
+	@Enumerated
+	@Column(name="AMBIENTE")
 	private Ambiente ambiente;
+	
+	@Enumerated
+	@Column(name="SITUACAO")
 	private SituacaoLoteNotaFiscal situacao;
+	
+	@Column(name="DATA_HORA_PROC")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataHoraProcessamento;
+	
+	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="NUMERO_PROTOCOLO"))
 	private NumeroProtocolo numeroProtocolo;
+	
+	@Embedded
 	private Mensagem mensagem;
 	
 	LoteNotaFiscal(NotaFiscal notaFiscal, 
@@ -139,6 +168,10 @@ class LoteNotaFiscal {
 	private void setMensagem(Mensagem mensagem){
 		this.mensagem = mensagem;
 	}
-	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private LoteNotaFiscal(){}
 	
 }

@@ -1,4 +1,10 @@
 package com.hadrion.nfe.dominio.modelo.lote;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 /**
  * 
  * 5.5 Número do Recibo de Lote
@@ -16,7 +22,11 @@ package com.hadrion.nfe.dominio.modelo.lote;
 	Sequencial - 12 caracteres
 
 */
+@Embeddable
+@Access(AccessType.FIELD)
 public class NumeroReciboLote {
+	
+	@Column(name="NUMERO")
 	private String numero;
 	
 	public NumeroReciboLote(String numero){
@@ -52,4 +62,9 @@ public class NumeroReciboLote {
 		return numero();
 	}
 	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private NumeroReciboLote(){}
 }

@@ -3,6 +3,22 @@ package com.hadrion.nfe.dominio.modelo.lote;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
@@ -14,19 +30,66 @@ import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ProtocoloNotaProcessada;
 import com.hadrion.nfe.port.adapters.portal.ws.Local;
 
+
+@Entity
+@SequenceGenerator(name="SEQ", sequenceName="SQ_LOTE")
+@Table(name="LOTE")
 public class Lote {
+	@Embedded
+	private LoteId loteId;	
 	
-	private LoteId loteId;
-	private Set<LoteNotaFiscal> notas;
-	private SituacaoLote situacao;
-	private NumeroReciboLote numeroRecibo;
-	private Mensagem mensagemErro;
-	private Mensagem mensagemProcessamento;
-	private MensagemSefaz mensagemSefaz;
-	private Ambiente ambiente;
-	private Local local;
-	private Uf uf;
+	@Embedded
 	private EmpresaId empresaId;
+	
+	@Enumerated
+	@Column(name="SITUACAO")
+	private SituacaoLote situacao;
+	
+	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="RECIBO"))
+	private NumeroReciboLote numeroRecibo;
+	
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="codigo", column=@Column(name="CODIGO_MSG")),
+		@AttributeOverride(name="descricao", column=@Column(name="DESCRICAO_MSG"))
+	})
+	private Mensagem mensagemErro;
+
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="codigo", column=@Column(name="CODIGO_MSG_PROC")),
+		@AttributeOverride(name="descricao", column=@Column(name="DESCRICAO_MSG_PROC"))
+	})
+	private Mensagem mensagemProcessamento;
+	
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="codigo", column=@Column(name="CODIGO_MSG_SEFAZ")),
+		@AttributeOverride(name="descricao", column=@Column(name="DESCRICAO_MSG_SEFAZ"))
+	})
+	private MensagemSefaz mensagemSefaz;
+
+	@Enumerated
+	@Column(name="AMBIENTE")
+	private Ambiente ambiente;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name="LOCAL")
+	private Local local;
+
+	@Enumerated
+	@Column(name="UF")
+	private Uf uf;
+	
+	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL)
+	@JoinColumn(name="ID_LOTE")
+	private Set<LoteNotaFiscal> notas;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
+	@Column(name="ID")
+	private Long id;
 	
 	public int quantidadeNotas() {
 		return notas.size();

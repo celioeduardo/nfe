@@ -1,8 +1,16 @@
 package com.hadrion.nfe.dominio.modelo.portal;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
+
+@Embeddable
+@Access(AccessType.FIELD)
 public class NumeroProtocolo {
 	
+	@Column(name="NUMERO")
 	private String numero;
 
 	public NumeroProtocolo(String numero) {
@@ -39,4 +47,9 @@ public class NumeroProtocolo {
 		return numero();
 	}
 
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private NumeroProtocolo(){}
 }
