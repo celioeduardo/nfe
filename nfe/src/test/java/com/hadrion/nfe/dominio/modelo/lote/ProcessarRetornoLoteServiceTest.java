@@ -40,7 +40,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 
 		Lote lote = loteProcessandoEmHomologacaoPersistidoParaTest(
 						notaEmitidaHomologacaoPersistidaParaTest("1234"));
@@ -60,7 +60,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 		Lote lote = loteProcessandoEmHomologacaoPersistidoParaTest(
 						notaEmitidaHomologacaoPersistidaParaTest("1234"));
 		processarRetorno.processar(lote);
@@ -79,7 +79,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 		Lote lote = loteProcessandoEmHomologacaoPersistidoParaTest(
 						notaEmitidaHomologacaoPersistidaParaTest("1234"));
 		processarRetorno.processar(lote);
@@ -111,7 +111,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								protocolos);
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 		
 		NotaFiscal nf1111 = notaEmitidaHomologacaoPersistidaParaTest("1111",1111);
 		NotaFiscal nf1112 = notaEmitidaHomologacaoPersistidaParaTest("1112",1112);
@@ -150,7 +150,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								protocolos);
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 		
 		NotaFiscal nf1111 = notaEmitidaHomologacaoPersistidaParaTest("1111",1111);
 		NotaFiscal nf1112 = notaEmitidaHomologacaoPersistidaParaTest("1112",1112);
@@ -187,7 +187,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								protocolos);
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 		
 		NotaFiscal nf1111 =notaEmitidaHomologacaoPersistidaParaTest("1111",1111);
 		NotaFiscal nf1112 =notaEmitidaHomologacaoPersistidaParaTest("1112",1112);
@@ -212,7 +212,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 
 		Lote lote = loteProcessandoEmProducaoPersistidoParaTest(
 						notaEmitidaProducaoPersistidaParaTest("1234"));
@@ -231,7 +231,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 		Lote lote = loteProcessandoEmProducaoPersistidoParaTest(
 						notaEmitidaProducaoPersistidaParaTest("1234"));
 		processarRetorno.processar(lote);
@@ -250,7 +250,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								Collections.<ProtocoloNotaProcessada>emptyList());
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 		Lote lote = loteProcessandoEmProducaoPersistidoParaTest(
 						notaEmitidaProducaoPersistidaParaTest("1234"));
 		processarRetorno.processar(lote);
@@ -281,7 +281,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								protocolos);
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 		
 		
 		NotaFiscal nf1111 = notaEmitidaProducaoPersistidaParaTest("1111",1111);
@@ -320,7 +320,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								protocolos);
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 		NotaFiscal nf1111 = notaEmitidaProducaoPersistidaParaTest("1111",1111);
 		NotaFiscal nf1112 = notaEmitidaProducaoPersistidaParaTest("1112",1112);
 		
@@ -356,7 +356,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 								MensagemSefaz.vazia(), 
 								protocolos);
 					}
-				},notaFiscalRepositorio);
+				},notaFiscalRepositorio,empresaRepositorio);
 		
 		NotaFiscal nf1111 =notaEmitidaProducaoPersistidaParaTest("1111",1111);
 		NotaFiscal nf1112 =notaEmitidaProducaoPersistidaParaTest("1112",1112);

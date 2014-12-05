@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
+import com.hadrion.nfe.dominio.modelo.empresa.EmpresaRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
@@ -20,21 +22,26 @@ public class ProcessarRetornoLoteService {
 	private ConsultaProcessamentoLoteService consultaProcessamentoLoteService;
 	
 	@Autowired
+	private EmpresaRepositorio empresaRepositorio;
+	
+	@Autowired
 	private NotaFiscalRepositorio notaFiscalRepositorio;
 	
 	public ProcessarRetornoLoteService(
 			ConsultaProcessamentoLoteService consultaProcessamentoLoteService,
-			NotaFiscalRepositorio notaFiscalRepositorio){
+			NotaFiscalRepositorio notaFiscalRepositorio,
+			EmpresaRepositorio empresaRepositorio){
 		this.consultaProcessamentoLoteService = consultaProcessamentoLoteService;
 		this.notaFiscalRepositorio = notaFiscalRepositorio;
+		this.empresaRepositorio = empresaRepositorio;
 	}
 	
 	ProcessarRetornoLoteService(){}
 	
 	public void processar(Lote lote) {
-		//TODO obter certificado
+		Certificado certificado = empresaRepositorio.obterCertificadoPelaEmpresa(lote.empresaId());
 		RetornoConsultaProcessamentoLote retorno = 
-				consultaProcessamentoLoteService.consultar(lote,null);
+				consultaProcessamentoLoteService.consultar(lote,certificado);
 		
 		if (retorno.loteFoiProcessado()){
 			lote.processado(
