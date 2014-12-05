@@ -65,7 +65,7 @@ public class Mensagem {
 	@Override
 	public String toString() {
 		return "Mensagem [codigo=" + codigo() 
-				+", descrição="+descricao()
+				+", descricao="+descricao()
 				+"]";
 	}
 }

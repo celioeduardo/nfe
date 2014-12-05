@@ -1,7 +1,6 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
@@ -194,14 +193,11 @@ public class Lote {
 
 	public void processado(
 			Mensagem mensagem, 
-			MensagemSefaz mensagemSefaz, 
-			List<ProtocoloNotaProcessada> protocolos) {
+			MensagemSefaz mensagemSefaz) {
 		
 		this.setMensagemProcessamento(mensagem);
 		this.setMensagemSefaz(mensagemSefaz);
 		
-		for (ProtocoloNotaProcessada protocolo : protocolos) 
-			this.processarNotaPeloProtocolo(protocolo);
 		this.mudarParaProcessado();
 	}
 	
@@ -209,14 +205,15 @@ public class Lote {
 		this.situacao = SituacaoLote.PROCESSADO;
 	}
 	
-	private void processarNotaPeloProtocolo(
+	void processarNotaPeloProtocolo(
+			NotaFiscalId notaFiscalId,
 			ProtocoloNotaProcessada protocolo){
 		
-		LoteNotaFiscal loteNotaFiscal = loteNotaFiscal(protocolo.notaFiscalId());
+		LoteNotaFiscal loteNotaFiscal = loteNotaFiscal(notaFiscalId);
 		if (loteNotaFiscal != null)
 			loteNotaFiscal.processar(protocolo);
 	}
-	
+
 	private LoteNotaFiscal loteNotaFiscal(NotaFiscalId notaFiscalId){
 		for (LoteNotaFiscal loteNotaFiscal : getNotas()) {
 			if (loteNotaFiscal.notaFiscalId().equals(notaFiscalId))

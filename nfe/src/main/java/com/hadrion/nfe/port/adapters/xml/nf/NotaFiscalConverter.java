@@ -212,8 +212,8 @@ public class NotaFiscalConverter extends AbstractConverter {
 				ide.getReferencias(),
 				emitente, destinatario, localRetirada, localEntrega, itens,
 				transporte, cobranca, 
-				new Informacao(informacao.getFisco(), null),
-				new Informacao(informacao.getContribuinte(), null),
+				new Informacao(informacao.getFisco()),
+				new Informacao(informacao.getContribuinte()),
 				exportacao,contingencia);
 	}
 }

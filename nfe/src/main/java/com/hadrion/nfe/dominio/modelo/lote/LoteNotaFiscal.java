@@ -46,11 +46,11 @@ class LoteNotaFiscal {
 
 	public void processar(ProtocoloNotaProcessada protocolo) {
 		if (protocolo.notaAutorizada())
-			this.autorizada(dataHoraProcessamento, numeroProtocolo, mensagem);
+			this.autorizada(protocolo.dataHoraProcessamento(), protocolo.numero(), protocolo.mensagem());
 		else if(protocolo.notaDenegada())
-			this.denegada(dataHoraProcessamento, mensagem);
+			this.denegada(protocolo.dataHoraProcessamento(), protocolo.mensagem());
 		else
-			this.rejeitada(dataHoraProcessamento, mensagem);
+			this.rejeitada(protocolo.dataHoraProcessamento(), protocolo.mensagem());
 	}
 	
 	public boolean estaAutorizada(){
@@ -65,7 +65,7 @@ class LoteNotaFiscal {
 		return this.situacao == SituacaoLoteNotaFiscal.DENEGADA;
 	}
 	
-	private void autorizada(
+	void autorizada(
 			Date dataHoraProcessamento,
 			NumeroProtocolo numeroProtocolo,
 			Mensagem mensagem){
@@ -80,7 +80,7 @@ class LoteNotaFiscal {
 					ambiente));
 	}
 	
-	private void rejeitada(
+	void rejeitada(
 			Date dataHoraProcessamento,
 			Mensagem mensagem){
 		
@@ -89,7 +89,7 @@ class LoteNotaFiscal {
 		this.mudarParaRejeitada();
 	}
 	
-	private void denegada(
+	void denegada(
 			Date dataHoraProcessamento,
 			Mensagem mensagem){
 		

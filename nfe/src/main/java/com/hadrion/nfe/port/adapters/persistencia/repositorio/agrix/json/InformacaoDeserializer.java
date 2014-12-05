@@ -13,7 +13,7 @@ public class InformacaoDeserializer implements JsonDeserializer<Informacao>{
 	@Override
 	public Informacao deserialize(JsonElement jsonSource, Type type,
 			JsonDeserializationContext arg2) throws JsonParseException {
-		return new Informacao(jsonSource.getAsString(),null);
+		return new Informacao(jsonSource.getAsString());
 	}
 
 }	

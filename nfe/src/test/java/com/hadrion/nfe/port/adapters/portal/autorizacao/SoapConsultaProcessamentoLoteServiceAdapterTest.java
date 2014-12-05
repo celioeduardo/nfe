@@ -41,6 +41,8 @@ public class SoapConsultaProcessamentoLoteServiceAdapterTest extends DominioTest
 		
 		assertNotNull(retorno);
 		
+		System.out.println(retorno);
+		
 //		assertNull(retorno.erro());
 //		
 //		System.out.println("\nNúmero do Recibo retornado: "+retorno.recibo().numero());

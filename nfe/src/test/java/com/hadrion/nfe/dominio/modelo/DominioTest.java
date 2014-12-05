@@ -80,6 +80,12 @@ public abstract class DominioTest extends RastreadorEventoTest {
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
+	protected NotaFiscal notaEmitidaHomologacaoPersistidaParaTest(String id, int numero) {
+		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id), new Long(numero));
+		nf.emitida();
+		notaFiscalRepositorio.salvar(nf);
+		return nf;
+	}
 	protected NotaFiscal notaAutorizadaHomologacaoPersistidaParaTest(String id) {
 		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));
 		nf.emitida();
@@ -111,6 +117,12 @@ public abstract class DominioTest extends RastreadorEventoTest {
 	}
 	protected NotaFiscal notaEmitidaProducaoPersistidaParaTest(String id) {
 		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id));
+		nf.emitida();
+		notaFiscalRepositorio.salvar(nf);
+		return nf;
+	}
+	protected NotaFiscal notaEmitidaProducaoPersistidaParaTest(String id, int numero) {
+		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id), new Long(numero));
 		nf.emitida();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;

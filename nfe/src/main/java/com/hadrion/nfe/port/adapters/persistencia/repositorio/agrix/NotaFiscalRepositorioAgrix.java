@@ -20,10 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.DescritorNotaFiscalDeserializer;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.NotaFiscalTradutorJson;
 
@@ -184,6 +186,11 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	@Override
 	public NotaFiscal notaFiscalPeloId(NotaFiscalId notaFiscalId) {
 		return notasPendentesAutorizacao(Arrays.asList(notaFiscalId)).get(0);
+	}
+	@Override
+	public NotaFiscal notaFiscalPelaChave(ChaveAcesso chave, Ambiente ambiente) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

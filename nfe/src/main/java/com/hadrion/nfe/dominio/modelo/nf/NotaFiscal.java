@@ -52,6 +52,9 @@ public class NotaFiscal {
 	@Embedded
 	private NotaFiscalId notaFiscalId;
 	
+	@Embedded
+	private ChaveAcesso chaveAcesso;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name="SITUACAO")
 	private Situacao situacao;
@@ -249,12 +252,16 @@ public class NotaFiscal {
 		this.tipoEmissao = tipoEmissao;
 		this.codigoNumerico = codigoNumerico == null ? randInt(1, 99999999) : codigoNumerico;
 		this.contingencia = contingencia;
-
+		this.setChaveAcesso(gerarChaveAcesso());
 		for (Referencia referencia : referencias) 
 			referenciar(referencia);
 		consistirNotasReferencia();
 	}
 	
+	private void setChaveAcesso(ChaveAcesso novaChaveAcesso) {
+			this.chaveAcesso = novaChaveAcesso;
+	}
+
 	public NotaFiscal(Ambiente ambiente, NotaFiscalId notaFiscalId, FilialId filialId) {
 		this.notaFiscalId = notaFiscalId;
 		this.ambiente = ambiente;
@@ -520,8 +527,12 @@ public class NotaFiscal {
 	}
 	
 	public ChaveAcesso chaveAcesso(){
+		return chaveAcesso;
+	}
+	
+	private ChaveAcesso gerarChaveAcesso(){
 		return new ChaveAcesso(
-				emitente().endereco().municipio().uf() , 
+				emitente().endereco().municipio().uf(), 
 				emissao(), 
 				emitente().cnpj(), 
 				serie(), numero(), 
@@ -567,6 +578,12 @@ public class NotaFiscal {
 					"Tipo de Emissão não pode ser alterado. Formulário de Segurança já foi impresso.");
 		
 		tipoEmissao = novoTipoEmissao;
+		
+		this.atualizarChaveAcesso();
+	}
+	
+	private void atualizarChaveAcesso(){
+		this.setChaveAcesso(gerarChaveAcesso());
 	}
 
 	public Uf ufEmitente() {

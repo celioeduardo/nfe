@@ -36,7 +36,7 @@ public class NumeroProtocolo {
 	
 	@Override
 	public String toString() {
-		return "NumeroProtocolo [numero=" + numero()+"]";
+		return numero();
 	}
 
 }

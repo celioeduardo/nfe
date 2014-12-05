@@ -302,11 +302,11 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 	}
 	
 	private Informacao informacaoFisco(){
-		return new Informacao("ICMS DIFERIDO CONFORME ITEM 25 , PARTE 1 DO ANEXO II, ARTIGO 8 DO DECRETO 43.080/2002.", null);
+		return new Informacao("ICMS DIFERIDO CONFORME ITEM 25 , PARTE 1 DO ANEXO II, ARTIGO 8 DO DECRETO 43.080/2002.");
 	}
 	
 	private Informacao informacaoContribuinte(){
-		return new Informacao("FAVOR EFETUAR A RETIRADA NO PRAZO MÁXIMO DE 24 HORAS", null);
+		return new Informacao("FAVOR EFETUAR A RETIRADA NO PRAZO MÁXIMO DE 24 HORAS");
 	}
 	
 	private com.hadrion.nfe.dominio.modelo.nf.Exportacao exportacao(){

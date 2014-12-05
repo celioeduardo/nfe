@@ -67,6 +67,10 @@ public class NotaFiscalFixture {
 		return nfEmProducao(new NotaFiscalId("12346"));
 	}
 	public static NotaFiscal nfEmProducao(NotaFiscalId notaFiscalId){
+		return nfEmProducao(notaFiscalId, 19936L);
+		
+	}
+	public static NotaFiscal nfEmProducao(NotaFiscalId notaFiscalId, Long numero){
 		return new NotaFiscal(
 				Ambiente.PRODUCAO,
 				notaFiscalId,
@@ -75,7 +79,7 @@ public class NotaFiscalFixture {
 				FormaPagamento.A_PRAZO, 
 				new Modelo("55"), 
 				new Serie(1L), 
-				19936L, 
+				numero, 
 				dataHora("25/10/2013 00:00:00","GMT-02:00"), 
 				dataHora("25/10/2013 00:00:00","GMT-02:00"), 
 				269918,
@@ -108,6 +112,10 @@ public class NotaFiscalFixture {
 	}
 	
 	public static NotaFiscal nfEmHomologacao(NotaFiscalId notaFiscalId){
+		return nfEmHomologacao(notaFiscalId, 19936L);
+	}
+	
+	public static NotaFiscal nfEmHomologacao(NotaFiscalId notaFiscalId, Long numero){
 		return new NotaFiscal(
 				Ambiente.HOMOLOGACAO,
 				notaFiscalId,
@@ -116,7 +124,7 @@ public class NotaFiscalFixture {
 				FormaPagamento.A_PRAZO, 
 				new Modelo("55"), 
 				new Serie(1L), 
-				19936L, 
+				numero, 
 				dataHora("25/10/2013 00:00:00","GMT-02:00"), 
 				dataHora("25/10/2013 00:00:00","GMT-02:00"), 
 				269918,
@@ -141,8 +149,8 @@ public class NotaFiscalFixture {
 				informacaoContribuinte(), 
 				exportacao(),
 				contingencia());
-		
 	}
+	
 	static Emitente emitente(){
 		return new Emitente(
 			new Cnpj(16832651000420L),
