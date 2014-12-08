@@ -70,6 +70,11 @@ public class Observacao {
 				+ ",conteudo=" + conteudo()
 				+ "]";	
 	}
+	
+	public Observacao clonar(){
+		return new Observacao(campo, conteudo);
+	}
+	
 	/**
 	 * Somente para JPA
 	 */

@@ -56,14 +56,15 @@ public class NfeController {
 				+ "{\"NUM_CNPJ\":86675642000297,\"NOM_CURTO_FILIAL\":\"UND. ALHO\"},"
 				+ "{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"LOJA INSUMOS\"}]"; 
 	}
-	@RequestMapping("/notas_fiscais/combofilial")
-	public String combofilial(
-			@RequestParam(value="query",required=false,
-			defaultValue="select NUM_CNPJ,"
-					+ "cod_empresa||'/'||COD_FILIAL||' - '||nom_curto_filial nom_curto_filial "
-					+ "from cad_filial where cod_empresa = 1 and cod_filial > 0")String query){
-		return notaFiscalAplicacaoService.obterComboFilial(query); 
-	}
+	
+//	@RequestMapping("/notas_fiscais/combofilial")
+//	public String combofilial(
+//			@RequestParam(value="query",required=false,
+//			defaultValue="select NUM_CNPJ,"
+//					+ "cod_empresa||'/'||COD_FILIAL||' - '||nom_curto_filial nom_curto_filial "
+//					+ "from cad_filial where cod_empresa = 1 and cod_filial > 0")String query){
+//		return notaFiscalAplicacaoService.obterComboFilial(query); 
+//	}
 
 	@RequestMapping(value = "/notas_fiscais/danfe", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> danfe(

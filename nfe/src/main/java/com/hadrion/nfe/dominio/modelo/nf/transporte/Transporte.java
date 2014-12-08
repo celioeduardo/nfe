@@ -51,7 +51,7 @@ public class Transporte {
 	})
 	private Veiculo veiculo;
 	
-	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="VOLUMES",
 	    joinColumns=@JoinColumn(name="ID_NF"),
 	    inverseJoinColumns=@JoinColumn(name="ID_VOLUME"))
@@ -131,6 +131,19 @@ public class Transporte {
 				+ ",volumes="+ volumes()
 				+ "]";
 	}
+	
+	public Transporte mesclar(Transporte transp){
+		
+		if (equals(transp)) return this;
+			
+		return new Transporte(
+				transp.modalidadeFrete, 
+				transp.transportador, 
+				transp.retencaoIcms, 
+				transp.veiculo, 
+				transp.volumes);
+	}
+	
 	/**
 	 * Somente para JPA
 	 */

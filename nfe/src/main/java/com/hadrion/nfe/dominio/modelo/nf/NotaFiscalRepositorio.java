@@ -15,8 +15,6 @@ public interface NotaFiscalRepositorio {
 	
 	public NotaFiscal notaFiscalPeloId(NotaFiscalId notaFiscalId);
 	
-	public String queryToJson(String query);
-
 	public void limpar();
 	public void salvar(NotaFiscal notaFiscal);
 	public NotaFiscal notaFiscalPelaChave(ChaveAcesso chave, Ambiente ambiente);

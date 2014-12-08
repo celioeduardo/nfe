@@ -23,7 +23,7 @@ public class Informacao {
 	@Column(name="TEXTO")
 	private String texto;
 	
-	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL)
+	@OneToMany(orphanRemoval=true, cascade=CascadeType.ALL)
 	@JoinTable(name="OBSERVACOES",
 	    joinColumns=@JoinColumn(name="ID_NF"),
 	    inverseJoinColumns=@JoinColumn(name="ID_OBSERVACAO"))
@@ -32,12 +32,15 @@ public class Informacao {
 	public Informacao(){
 		
 	}
+	
 	public Informacao(String texto, Observacao ... observacoes) {
 		super();
 		this.texto = texto;
-		this.observacoes = observacoes != null ? Arrays.asList(observacoes) : null;
+		if (observacoes != null)  
+			getObservacoes().addAll(Arrays.asList(observacoes));
 	}
-
+	
+	
 	public String texto() {
 		return texto;
 	}
@@ -52,6 +55,26 @@ public class Informacao {
 		return observacoes;
 	}
 
+	public Informacao mesclar(Informacao outra){
+		if (outra == null) {
+			this.limpar();
+			return this;
+		}
+		if (equals(outra)) return this;
+		
+		return new Informacao(
+				outra.texto,
+				clonarObservacoes(outra));
+		
+	}
+	
+	private Observacao[] clonarObservacoes(Informacao inf){
+		List<Observacao> result = new ArrayList<Observacao>(getObservacoes().size());
+		for (Observacao observacao : inf.getObservacoes()) 
+			result.add(observacao.clonar());
+		return result.toArray(new Observacao[result.size()]);
+	}
+	
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;
@@ -80,5 +103,16 @@ public class Informacao {
 		return "Informacao [texto=" + texto()
 				+ ",observacoes=" + observacoes()
 				+ "]";	
+	}
+
+	public void limpar() {
+		texto = null;
+		getObservacoes().clear();
+	}
+
+	public Informacao clonar() {
+		return new Informacao(
+				texto, 
+				getObservacoes().toArray(new Observacao[getObservacoes().size()]));
 	}
 }

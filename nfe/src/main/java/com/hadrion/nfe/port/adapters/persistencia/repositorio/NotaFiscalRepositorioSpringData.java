@@ -1,4 +1,4 @@
-package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
+package com.hadrion.nfe.port.adapters.persistencia.repositorio;
 
 import java.util.List;
 

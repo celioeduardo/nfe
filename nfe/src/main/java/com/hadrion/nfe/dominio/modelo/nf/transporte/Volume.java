@@ -140,9 +140,26 @@ public class Volume {
 				+ ",lacres="+ lacres()
 				+ "]";
 	}
+	
+	public Long getId(){
+		return id;
+	}
+	
 	/**
 	 * Somente para JPA
 	 */
 	@SuppressWarnings("unused")
 	private Volume(){}
+
+	public void mesclar(Volume volume) {
+		this.quantidade = volume.quantidade;
+		this.especie = volume.especie;
+		this.marca = volume.marca;
+		this.numeracao = volume.numeracao;
+		this.pesoLiquido = volume.pesoLiquido;
+		this.pesoBruto = volume.pesoBruto;
+		this.lacres().retainAll(volume.lacres());
+		this.lacres().addAll(volume.lacres());
+		
+	}
 }

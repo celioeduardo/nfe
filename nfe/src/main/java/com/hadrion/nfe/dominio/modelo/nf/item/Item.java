@@ -53,7 +53,6 @@ public class Item {
 	public String informacaoAdicional(){
 		return informacaoAdicional;
 	}
-	
 
 	@Override
 	public boolean equals(Object objeto) {
@@ -88,10 +87,20 @@ public class Item {
 			+ "]";
 	}
 	
+	public Item mesclar(Item item){
+		if (equals(item)) return this;
+
+		return new Item(item.produto, item.imposto, item.informacaoAdicional);
+	}
+	
 	/**
 	 * Somente para JPA
 	 */
 	@SuppressWarnings("unused")
 	private Item(){}
+	
+	public Long getId(){
+		return this.id;
+	}
 	
 }

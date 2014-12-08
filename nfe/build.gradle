@@ -34,9 +34,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-tomcat")
     compile("org.springframework.boot:spring-boot-starter-amqp")
     compile("org.springframework.boot:spring-boot-starter-ws")
-    compile("com.h2database:h2")
     compile group: 'com.google.code.gson', name: 'gson', version:'2.1'
     compile group: 'commons-io', name: 'commons-io', version:'2.3'
     compile group: 'commons-lang', name: 'commons-lang', version:'2.3'
@@ -52,6 +52,7 @@ dependencies {
 	compile('net.sourceforge.barbecue:barbecue:1.5-beta1')	
 	compile "net.sf.jasperreports:jasperreports-fonts:5.6.1"
 	
+    compile("com.h2database:h2")
 	testCompile('xmlunit:xmlunit:1.4')
     testCompile("org.springframework.boot:spring-boot-starter-test")
   

@@ -1,4 +1,4 @@
-package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
+package com.hadrion.nfe.port.adapters.persistencia.repositorio;
 
 import java.util.Date;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
@@ -17,6 +18,7 @@ import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 
 @Repository
 @Transactional
+@Profile("x")
 public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 
 	@Autowired
@@ -26,7 +28,6 @@ public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
 			Double empresa, Double filial, Date inicio, Date fim,
 			String usuario, NotaFiscalId notaFiscalId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -38,12 +39,6 @@ public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 	@Override
 	public NotaFiscal notaFiscalPeloId(NotaFiscalId notaFiscalId) {
 		return repositorio.findByNotaFiscalId(notaFiscalId);
-	}
-
-	@Override
-	public String queryToJson(String query) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

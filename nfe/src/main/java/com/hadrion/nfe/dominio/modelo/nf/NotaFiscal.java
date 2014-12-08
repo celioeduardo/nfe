@@ -3,6 +3,7 @@ package com.hadrion.nfe.dominio.modelo.nf;
 import static com.hadrion.util.NumeroUtil.randInt;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -552,7 +553,7 @@ public class NotaFiscal {
 		return getReferencias().size() > 0;
 	}
 	
-	public Iterable<Referencia> referencias(){
+	public Collection<Referencia> referencias(){
 		return getReferencias();
 	}
 
@@ -604,6 +605,58 @@ public class NotaFiscal {
 
 	public boolean formularioSegurancaImpresso() {
 		return formularioSegurancaImpresso;
+	}
+	
+	//TODO Aprimorar Mesclagem
+	public void mesclar(NotaFiscal nf) {
+		this.naturezaOperacao = nf.naturezaOperacao;
+		this.formaPagamento = nf.formaPagamento;
+		this.modelo = nf.modelo;
+		this.serie = nf.serie;
+		this.numero = nf.numero;
+		this.emissao = nf.emissao;
+		this.dataHora = nf.dataHora;
+		this.tipoOperacao = nf.tipoOperacao;
+		this.localDestino = nf.localDestino;
+		this.municipioFatoGerador = nf.municipioFatoGerador;
+		this.consumidorFinal = nf.consumidorFinal;
+		this.finalidade = nf.finalidade;
+		this.presenca = nf.presenca;
+		this.processo = nf.processo;
+		this.emitente = nf.emitente;
+		this.destinatario = nf.destinatario;
+		this.localRetirada = nf.localRetirada;
+		this.localEntrega = nf.localEntrega;
+		this.transporte = this.transporte.mesclar(nf.transporte);
+		this.cobranca = nf.cobranca;
+		
+		mesclarInformacaoFisco(informacaoFisco);
+		
+		//this.informacaoContribuinte = nf.informacaoContribuinte.mesclar(nf.informacaoContribuinte);
+		this.exportacao = nf.exportacao;
+		
+		this.referencias.clear();
+
+		if (nf.referencias().size() > 0)
+			this.referencias.addAll(nf.referencias);
+		
+		for (Item item : itens()) 
+			mesclarItem(item,nf.itens());
+		
+	}
+	
+	private void mesclarInformacaoFisco(Informacao outra){
+		if (this.informacaoFisco == null)
+			this.informacaoFisco = outra.clonar(); 
+		else
+			this.informacaoFisco = this.informacaoFisco.mesclar(outra);
+	}
+	
+	private void mesclarItem(Item item, List<Item> itens){
+		for (Item outro : itens) {
+			if (item.getId().equals(outro.getId()))
+				item = item.mesclar(outro);
+		}
 	}
 
 }

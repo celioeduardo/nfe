@@ -2,14 +2,20 @@ package com.hadrion.nfe.dominio.config;
 
 import java.util.Arrays;
 
+import javax.sql.DataSource;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.ws.soap.SoapMessageFactory;
@@ -28,6 +34,25 @@ import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 @EntityScan(basePackages="com.hadrion")
 public abstract class Application extends WebMvcConfigurerAdapter{
 
+	
+	@Bean
+	@Primary
+	@ConfigurationProperties(prefix="spring.datasource.local")
+	public DataSource primaryDataSource() {
+	    return DataSourceBuilder.create().build();
+	}
+
+	@Bean
+	@ConfigurationProperties(prefix="spring.datasource.agrix")
+	public DataSource agrixDataSource() {
+	    return DataSourceBuilder.create().build();
+	}
+	
+	@Bean(name = "agrix") 
+    public JdbcTemplate jdbcTemplate() { 
+        return new JdbcTemplate(agrixDataSource()); 
+    } 
+	
 //	@Bean
 //	DataSource dataSource() {
 //		return new SimpleDriverDataSource() {

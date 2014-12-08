@@ -78,9 +78,7 @@ public class NotaFiscalAplicacaoService {
 		
 		return result;
 	}
-	public String obterComboFilial(String query){
-		return repositorio.queryToJson(query);
-	}
+	
 	public ResponseEntity<InputStreamResource> obterDanfe(String notaFiscalId) throws IOException,JRException{
 		
 		JasperReport jasperReport;
