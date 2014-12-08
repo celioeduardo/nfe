@@ -2,16 +2,18 @@ package com.hadrion.nfe.dominio.modelo.lote;
 
 import java.util.Date;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.OverridesAttribute;
 
 import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
@@ -21,8 +23,9 @@ import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ProtocoloNotaProcessada;
 
-@Embeddable
-@Access(AccessType.FIELD)
+@Entity
+@SequenceGenerator(name="SEQ", sequenceName="SQ_LOTE_NF")
+@Table(name="LOTE_NF")
 class LoteNotaFiscal {
 	
 	@Embedded
@@ -46,6 +49,11 @@ class LoteNotaFiscal {
 	
 	@Embedded
 	private Mensagem mensagem;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
+	@Column(name="ID")
+	private Long id;
 	
 	LoteNotaFiscal(NotaFiscal notaFiscal, 
 			Ambiente ambiente) {
