@@ -636,10 +636,10 @@ public class NotaFiscal {
 		//this.informacaoContribuinte = nf.informacaoContribuinte.mesclar(nf.informacaoContribuinte);
 		this.exportacao = nf.exportacao;
 		
-		this.referencias.clear();
+		this.getReferencias().clear();
 
 		if (nf.referencias().size() > 0)
-			this.referencias.addAll(nf.referencias);
+			this.getReferencias().addAll(nf.referencias);
 		
 		for (Item item : itens()) 
 			mesclarItem(item,nf.itens());
@@ -648,7 +648,7 @@ public class NotaFiscal {
 	
 	private void mesclarInformacaoFisco(Informacao outra){
 		if (this.informacaoFisco == null)
-			this.informacaoFisco = outra.clonar(); 
+			this.informacaoFisco = outra == null ? null : outra.clonar(); 
 		else
 			this.informacaoFisco = this.informacaoFisco.mesclar(outra);
 	}

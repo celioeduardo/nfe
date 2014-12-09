@@ -7,22 +7,30 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.util.DataUtil;
 
-public class DescritorNotaFiscalDeserializer implements JsonDeserializer<DescritorNotaFiscal>{
+public class DescritorNotaFiscalDeserializer extends AbstractDeserializer 
+	implements JsonDeserializer<DescritorNotaFiscal>{
 
+	private Ambiente ambiente;
+	
+	public DescritorNotaFiscalDeserializer(Ambiente ambiente){
+		this.ambiente = ambiente;
+	}
+	
 	@Override
 	public DescritorNotaFiscal deserialize(JsonElement jsonSource, Type type,
 			JsonDeserializationContext arg2) throws JsonParseException {
 		
 		final JsonObject j = jsonSource.getAsJsonObject();
 		
-		DescritorNotaFiscal descritor = new DescritorNotaFiscal(new NotaFiscalId(s(j,"id")),
+		DescritorNotaFiscal descritor = new DescritorNotaFiscal(
+				criarNotaFiscalId(s(j,"id"), ambiente),
 				s(j,"tipo"),
 				new Cnpj(l(j,"empresa")),
 				new Cnpj(l(j,"filial")),

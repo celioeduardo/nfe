@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
@@ -41,7 +42,7 @@ public class DescritorNotaFiscalTradutorJsonTest {
 	@Before
 	public void setUp(){
 		gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer());
+		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer(Ambiente.HOMOLOGACAO));
 		gson = gsonBuilder.create();
 	}
 
@@ -50,7 +51,7 @@ public class DescritorNotaFiscalTradutorJsonTest {
 		
 		DescritorNotaFiscal descritor = gson.fromJson(JSON, DescritorNotaFiscal.class);
 
-		assertEquals(new DescritorNotaFiscal(new NotaFiscalId("0215C27A36D5B0E0E050007F01004D45"),
+		assertEquals(new DescritorNotaFiscal(new NotaFiscalId("H-0215C27A36D5B0E0E050007F01004D45"),
 				"E",
 				new Cnpj(86675642000106L),
 				new Cnpj(86675642000700L),

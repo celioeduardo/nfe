@@ -102,10 +102,13 @@ public class AgrixService{
 		return result;
 	}
 	
-	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(Double empresa,Double filial,Date inicio,Date fim,String usuario,NotaFiscalId notaFiscalId) {
+	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
+			Ambiente ambiente,
+			Double empresa,Double filial,Date inicio,Date fim,String usuario,
+			NotaFiscalId notaFiscalId) {
 		
 		gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer());
+		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer(ambiente));
 		gson = gsonBuilder.create();
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)

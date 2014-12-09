@@ -32,6 +32,7 @@ public class NfeController {
 	
 	@RequestMapping(value="/pendentes_autorizacao_resumo", method = RequestMethod.GET)
 	public List<NotaFiscalData> pendentes_autorizacao_resumo(
+			@RequestParam(value="ambiente",required=false)Ambiente ambiente ,
 			@RequestParam(value="empresa",required=false)Double empresa,
 			@RequestParam(value="filial",required=false)Double filial,
 			@RequestParam(value="inicio",required=false)Date inicio,
@@ -40,7 +41,11 @@ public class NfeController {
 			@RequestParam(value="notafiscalid",required=false)String notaFiscalId){
 		empresa = Double.parseDouble("86675642000106");
 		filial = Double.parseDouble("86675642000106");
-		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacaoResumo(empresa,filial,inicio,fim,usuario,notaFiscalId);
+		
+		//TODO passar ambiente na chamada da IU
+		ambiente = Ambiente.HOMOLOGACAO;
+		
+		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacaoResumo(ambiente,empresa,filial,inicio,fim,usuario,notaFiscalId);
 	}
 	@RequestMapping("/pendentes_autorizacao")
 	public List<NotaFiscalData> pendentes_autorizacao(HttpServletRequest req){

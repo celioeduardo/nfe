@@ -26,16 +26,20 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	@Autowired
 	private AgrixService agrixService;
 	
+	@Autowired
+	private SincronizarService sincronizarService;
+	
 	@Override
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
+			Ambiente ambiente,
 			Double empresa, Double filial, Date inicio, Date fim,
 			String usuario, NotaFiscalId notaFiscalId) {
-		return agrixService.notasPendentesAutorizacaoResumo(empresa, filial, inicio, fim, usuario, notaFiscalId);
+		return agrixService.notasPendentesAutorizacaoResumo(ambiente,empresa, filial, inicio, fim, usuario, notaFiscalId);
 	}
 
 	@Override
 	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas,Ambiente ambiente) {
-		sincronizar(notas,ambiente);
+		sincronizarService.sincronizar(notas,ambiente);
 		return repositorio.findByNotaFiscalIdInAndAmbiente(notas,ambiente);
 	}
 
@@ -58,22 +62,6 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 		return repositorio.findByChaveAcessoAndAmbiente(chave,ambiente);
 	}
 	
-	private void sincronizar(List<NotaFiscalId> notas, Ambiente ambiente) {
-		List<NotaFiscal> notasAgrix = agrixService.obterNotas(notas,ambiente);
-		for (NotaFiscal nfAgrix : notasAgrix) {
-			mesclar(nfAgrix);
-		}
-	}
 	
-	private void mesclar(NotaFiscal nfAgrix){
-		NotaFiscal nfLocal = repositorio.findByNotaFiscalId(nfAgrix.notaFiscalId());
-		if (nfLocal != null){
-			if (nfLocal.pendenteDeTransmissao())
-				nfLocal.mesclar(nfAgrix);
-		}
-		else
-			nfLocal = nfAgrix;
-		repositorio.save(nfLocal);
-	}
 	
 }

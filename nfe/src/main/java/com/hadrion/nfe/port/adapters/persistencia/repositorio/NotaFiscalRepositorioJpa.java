@@ -26,6 +26,7 @@ public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 	
 	@Override
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
+			Ambiente ambiente,
 			Double empresa, Double filial, Date inicio, Date fim,
 			String usuario, NotaFiscalId notaFiscalId) {
 		return null;

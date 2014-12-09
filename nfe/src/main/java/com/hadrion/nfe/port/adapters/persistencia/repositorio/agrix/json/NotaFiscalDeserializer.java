@@ -19,7 +19,6 @@ import com.hadrion.nfe.dominio.modelo.nf.FormatoDanfe;
 import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
 import com.hadrion.nfe.dominio.modelo.nf.Modelo;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.Presenca;
 import com.hadrion.nfe.dominio.modelo.nf.Processo;
 import com.hadrion.nfe.dominio.modelo.nf.Referencia;
@@ -35,7 +34,7 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 
-public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
+public class NotaFiscalDeserializer extends AbstractDeserializer implements JsonDeserializer<NotaFiscal>{
 	private Ambiente ambiente;
 	
 	public NotaFiscalDeserializer(Ambiente ambiente){
@@ -51,7 +50,7 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 		final NotaFiscal nf = new NotaFiscal(
 				ambiente,
 				criarNotaFiscalId(s(j,"NotaFiscalId"), ambiente),
-				new FilialId("4007474000116"), //TODO Obter Filial
+				new FilialId("86675642000106"), //TODO Obter Filial
 				s(j,"naturezaOperacao"),
 				FormaPagamento.A_VISTA,//TODO forma pagamento
 				new Modelo(s(j,"modelo")),
@@ -83,10 +82,6 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 				null); //Contingência
 		
 		return nf;
-	}
-	
-	private NotaFiscalId criarNotaFiscalId(String guid,Ambiente ambiente){
-		return new NotaFiscalId(ambiente.sigla()+"-"+guid);
 	}
 	
 	private List<Item> itens(JsonObject j){

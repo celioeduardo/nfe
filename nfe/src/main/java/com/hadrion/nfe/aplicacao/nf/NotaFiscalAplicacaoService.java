@@ -56,13 +56,19 @@ public class NotaFiscalAplicacaoService {
 	@Autowired
 	private NotaFiscalRepositorio notaFiscalRepositorio;
 	
-	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(Double empresa,Double filial,
+	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(
+			Ambiente ambiente,
+			Double empresa,Double filial,
 			Date inicio,Date fim,String usuario,String notaFiscalId){
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 		NotaFiscalId notaFiscalIdFiltro = null;
+		
 		if (notaFiscalId!=null)
 			notaFiscalIdFiltro=new NotaFiscalId(notaFiscalId);
-		for (DescritorNotaFiscal nf : notaFiscalRepositorio.notasPendentesAutorizacaoResumo(empresa,filial,inicio,fim,usuario,notaFiscalIdFiltro)) {
+		
+		for (DescritorNotaFiscal nf : notaFiscalRepositorio.notasPendentesAutorizacaoResumo(
+				ambiente,
+				empresa,filial,inicio,fim,usuario,notaFiscalIdFiltro)) {
 			result.add(new NotaFiscalData(nf.notaFiscalId().id(),
 					nf.numero(),
 					String.valueOf(nf.serie().numero()),
@@ -132,9 +138,12 @@ public class NotaFiscalAplicacaoService {
 		else
 			lote =  geracaoLoteService.gerarLoteEmHomologacao(notas(comando.getIds(),ambiente));
 		
+		loteRepositorio.salvar(lote);
+		
 		enviarLoteService.enviar(lote);
 		
 		loteRepositorio.salvar(lote);
+		
 		return String.valueOf(lote.loteId());
 		
 	}

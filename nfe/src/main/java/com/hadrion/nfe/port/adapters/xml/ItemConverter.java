@@ -24,7 +24,7 @@ public class ItemConverter extends AbstractConverter implements Converter {
 		Item item = (Item) source;
 		convert("prod", item.produto(), writer, context);
 		convert("imposto", item.imposto(), writer, context);
-		convert("infAdProd", item.informacaoAdicional(), writer, context);
+		convertIf("infAdProd", item.informacaoAdicional(), writer, context);
 	}
 	
 	@Override

@@ -24,9 +24,9 @@ public class CobrancaConverter extends AbstractConverter{
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
 		Cobranca cob = (Cobranca) source;
-		convert("fat", cob.fatura(), writer, context);
+		convertIf("fat", cob.fatura(), writer, context);
 		for (Duplicata dup : cob.duplicatas()) 
-			convert("dup", dup, writer, context);
+			convertIf("dup", dup, writer, context);
 	}
 
 	@Override
