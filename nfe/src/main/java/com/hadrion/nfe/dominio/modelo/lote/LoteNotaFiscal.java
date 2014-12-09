@@ -3,9 +3,11 @@ package com.hadrion.nfe.dominio.modelo.lote;
 import java.util.Date;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,11 +33,11 @@ class LoteNotaFiscal {
 	@Embedded
 	private NotaFiscalId notaFiscalId;
 	
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	@Column(name="AMBIENTE")
 	private Ambiente ambiente;
 	
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	@Column(name="SITUACAO")
 	private SituacaoLoteNotaFiscal situacao;
 	
@@ -48,6 +50,10 @@ class LoteNotaFiscal {
 	private NumeroProtocolo numeroProtocolo;
 	
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="codigo", column=@Column(name="MSG_COD")),
+		@AttributeOverride(name="descricao", column=@Column(name="MSG_DSC"))
+	})
 	private Mensagem mensagem;
 	
 	@Id

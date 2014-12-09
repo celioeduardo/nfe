@@ -1,12 +1,12 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.springframework.context.annotation.Profile;
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
@@ -15,10 +15,11 @@ import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 
 @Repository("loteRepositorio")
-@Profile("teste")
-public class MockLoteRepositorio implements LoteRepositorio {
+@Transactional
+public class LoteRepositorioJpa implements LoteRepositorio {
 
-	private Map<String,Lote> store=new HashMap<String, Lote>();
+	@Autowired
+	private LoteRepositorioSpringData repositorio;
 	
 	@Override
 	public LoteId proximaIdentidade() {
@@ -27,13 +28,19 @@ public class MockLoteRepositorio implements LoteRepositorio {
 
 	@Override
 	public void salvar(Lote lote) {
-		store.put(lote.loteId().id(), lote);
+		repositorio.save(lote);
 	}
-
+	
+	//TODO melhorar algoritimo
 	@Override
 	public Set<Lote> lotesDaNota(NotaFiscalId notaFiscalId) {
 		Set<Lote> result = new HashSet<Lote>();
-		for (Lote lote : store.values()) {
+
+//		for (Lote lote : repositorio.findLotesDaNotaFiscal(notaFiscalId)) {
+//			result.add(lote);
+//		}
+		
+		for (Lote lote : repositorio.findAll()) {
 			if (lote.temNota(notaFiscalId))
 				result.add(lote);
 				
@@ -43,7 +50,6 @@ public class MockLoteRepositorio implements LoteRepositorio {
 
 	@Override
 	public void limpar() {
-		store.clear();
 	}
 
 } 

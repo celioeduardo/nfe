@@ -14,10 +14,10 @@ import javax.persistence.Embeddable;
 @Embeddable
 @Access(AccessType.FIELD)
 public class Mensagem {
-	@Column(name="CODIGO_MSG")
+	@Column(name="CODIGO")
 	private int codigo;
 	
-	@Column(name="DESCRICAO_MSG")
+	@Column(name="DESCRICAO")
 	private String descricao;
 	
 	public Mensagem(int codigo, String descricao) {

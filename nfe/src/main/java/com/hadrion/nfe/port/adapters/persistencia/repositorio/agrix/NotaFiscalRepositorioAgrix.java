@@ -30,8 +30,7 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
 			Double empresa, Double filial, Date inicio, Date fim,
 			String usuario, NotaFiscalId notaFiscalId) {
-		// TODO Auto-generated method stub
-		return null;
+		return agrixService.notasPendentesAutorizacaoResumo(empresa, filial, inicio, fim, usuario, notaFiscalId);
 	}
 
 	@Override

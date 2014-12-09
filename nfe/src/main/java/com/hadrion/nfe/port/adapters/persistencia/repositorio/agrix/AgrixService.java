@@ -4,6 +4,7 @@ import java.sql.Clob;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -79,6 +80,9 @@ public class AgrixService{
 		
 		if (j.size() == 0)
 			return null;*/
+		
+		if (conteudo == null || conteudo.isEmpty())
+			return Collections.emptyList();
 
 		NotaFiscalTradutorJson tradutor = new NotaFiscalTradutorJson(conteudo.substring(1, conteudo.length()-1));
 		NotaFiscal nf = tradutor.converterNotaFiscal();

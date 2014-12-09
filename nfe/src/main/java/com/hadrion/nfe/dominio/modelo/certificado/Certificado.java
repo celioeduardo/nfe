@@ -1,5 +1,6 @@
 package com.hadrion.nfe.dominio.modelo.certificado;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,16 +17,18 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Lob;
 import javax.persistence.Transient;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 @Embeddable
 @Access(AccessType.FIELD)
 public class Certificado {
 	
-	@Transient //TODO persistir como blob - usar byte array? 
-	private InputStream pkcs12;
+	@Lob
+	private byte[] pkcs12;
 	
 	@Column(name="SENHA")
 	private String senha;
@@ -37,14 +40,24 @@ public class Certificado {
 	
 	public Certificado(InputStream pkcs12, String senha) {
 		super();
-		this.pkcs12 = pkcs12;
+		this.pkcs12 = streamToByteArray(pkcs12);
 		this.senha = senha;
 	}
 	
 	public Certificado(File file, String senha){
 		try {
-			this.pkcs12 = FileUtils.openInputStream(file);
+			this.pkcs12 = streamToByteArray(FileUtils.openInputStream(file));
 			this.senha = senha;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private byte[] streamToByteArray(InputStream is){
+		if (is == null)
+			return null;
+		try {
+			return IOUtils.toByteArray(is);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -53,7 +66,7 @@ public class Certificado {
 		return senha;
 	}
 
-	private InputStream pkcs12() {
+	private byte[] pkcs12() {
 		return pkcs12;
 	}
 
@@ -78,7 +91,7 @@ public class Certificado {
 		if (ks == null){
 			try {
 				ks = KeyStore.getInstance("PKCS12");
-				ks.load(pkcs12(),senha().toCharArray());
+				ks.load(new ByteArrayInputStream(pkcs12()),senha().toCharArray());
 			} catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException e) {
 				throw new RuntimeException(e);
 			}

@@ -41,36 +41,35 @@ public class Lote {
 	@Embedded
 	private EmpresaId empresaId;
 	
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	@Column(name="SITUACAO")
 	private SituacaoLote situacao;
 	
 	@Embedded
-	@AttributeOverride(name="numero", column=@Column(name="RECIBO"))
 	private NumeroReciboLote numeroRecibo;
 	
 	@Embedded
 	@AttributeOverrides({
-		@AttributeOverride(name="codigo", column=@Column(name="CODIGO_MSG")),
-		@AttributeOverride(name="descricao", column=@Column(name="DESCRICAO_MSG"))
+		@AttributeOverride(name="codigo", column=@Column(name="MSG_ERRO_COD")),
+		@AttributeOverride(name="descricao", column=@Column(name="MSG_ERRO_DSC"))
 	})
 	private Mensagem mensagemErro;
 
 	@Embedded
 	@AttributeOverrides({
-		@AttributeOverride(name="codigo", column=@Column(name="CODIGO_MSG_PROC")),
-		@AttributeOverride(name="descricao", column=@Column(name="DESCRICAO_MSG_PROC"))
+		@AttributeOverride(name="codigo", column=@Column(name="MSG_PROC_COD")),
+		@AttributeOverride(name="descricao", column=@Column(name="MSG_PROC_DSC"))
 	})
 	private Mensagem mensagemProcessamento;
 	
 	@Embedded
 	@AttributeOverrides({
-		@AttributeOverride(name="codigo", column=@Column(name="CODIGO_MSG_SEFAZ")),
-		@AttributeOverride(name="descricao", column=@Column(name="DESCRICAO_MSG_SEFAZ"))
+		@AttributeOverride(name="codigo", column=@Column(name="MSG_SEFAZ_COD")),
+		@AttributeOverride(name="descricao", column=@Column(name="MSG_SEFAZ_DSC"))
 	})
 	private MensagemSefaz mensagemSefaz;
 
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	@Column(name="AMBIENTE")
 	private Ambiente ambiente;
 
@@ -78,7 +77,7 @@ public class Lote {
 	@Column(name="LOCAL")
 	private Local local;
 
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	@Column(name="UF")
 	private Uf uf;
 	

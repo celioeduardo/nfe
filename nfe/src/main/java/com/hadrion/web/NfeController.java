@@ -34,7 +34,8 @@ public class NfeController {
 			@RequestParam(value="fim",required=false)Date fim,
 			@RequestParam(value="usuario",required=false)String usuario,
 			@RequestParam(value="notafiscalid",required=false)String notaFiscalId){
-		
+		empresa = Double.parseDouble("86675642000106");
+		filial = Double.parseDouble("86675642000106");
 		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacaoResumo(empresa,filial,inicio,fim,usuario,notaFiscalId);
 	}
 	@RequestMapping("/notas_fiscais/pendentes_autorizacao")

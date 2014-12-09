@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Rollback;
 
 import com.hadrion.nfe.dominio.modelo.DominioTest;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.AgrixService;
@@ -53,7 +52,7 @@ public class NotaFiscalSincronizacaoTest extends DominioTest {
 	}
 	
 	@Test
-	@Rollback(false)
+	//@Rollback(false)
 	public void sincronizacao(){
 		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId("013924F3091F4CC4E050007F010060FB"));
 		//assertNull(nf);

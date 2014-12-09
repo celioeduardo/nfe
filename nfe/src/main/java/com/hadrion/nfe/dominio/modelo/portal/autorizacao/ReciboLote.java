@@ -39,7 +39,6 @@ public class ReciboLote {
 
 	@Override
 	public String toString() {
-		return "ReciboLote [numero=" + numero()
-				+ "]";
+		return String.valueOf(numero());
 	}
 }

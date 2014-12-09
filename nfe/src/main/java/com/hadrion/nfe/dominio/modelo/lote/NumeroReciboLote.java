@@ -26,7 +26,7 @@ import javax.persistence.Embeddable;
 @Access(AccessType.FIELD)
 public class NumeroReciboLote {
 	
-	@Column(name="NUMERO")
+	@Column(name="NUMERO_RECIBO")
 	private String numero;
 	
 	public NumeroReciboLote(String numero){
