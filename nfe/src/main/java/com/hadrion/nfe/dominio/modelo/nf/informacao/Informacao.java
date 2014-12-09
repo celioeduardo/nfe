@@ -20,7 +20,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Access(AccessType.FIELD)
 public class Informacao {
 	
-	@Column(name="TEXTO")
+	@Column(name="TEXTO",length=400)
 	private String texto;
 	
 	@OneToMany(orphanRemoval=true, cascade=CascadeType.ALL)
