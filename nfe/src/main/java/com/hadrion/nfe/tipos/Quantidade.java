@@ -11,6 +11,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Embeddable
 @Access(AccessType.FIELD)
 public class Quantidade {
+	public final static Quantidade ZERO = new Quantidade(0.0);
+	public final static Quantidade UM = new Quantidade(1.0);
 	
 	@Column(name="QUANTIDADE")
 	private Double quantidade;

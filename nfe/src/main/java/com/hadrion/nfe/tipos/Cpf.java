@@ -23,6 +23,14 @@ public class Cpf {
 	public Long numero(){
 		return numero;
 	}
+	/**
+	 * Tamanho fixado em 11 posições
+	 * preenchido com zeros à esquerda
+	 * @return
+	 */
+	public String fixo(){
+		return String.format("%011d", numero);
+	}
 
 	@Override
 	public boolean equals(Object objeto) {
