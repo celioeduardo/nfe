@@ -32,8 +32,8 @@ public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 	}
 
 	@Override
-	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas) {
-		return repositorio.findByNotaFiscalIdIn(notas);
+	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas, Ambiente ambiente) {
+		return repositorio.findByNotaFiscalIdInAndAmbiente(notas,ambiente);
 	}
 
 	@Override

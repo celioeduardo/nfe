@@ -15,6 +15,6 @@ public interface NotaFiscalRepositorioSpringData extends JpaRepository<NotaFisca
 
 	NotaFiscal findByChaveAcessoAndAmbiente(ChaveAcesso chave, Ambiente ambiente);
 
-	List<NotaFiscal> findByNotaFiscalIdIn(List<NotaFiscalId> notas);
+	List<NotaFiscal> findByNotaFiscalIdInAndAmbiente(List<NotaFiscalId> notas, Ambiente ambiente);
 
 }

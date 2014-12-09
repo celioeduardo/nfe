@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo.nf;
+package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -14,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioTest;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.AgrixService;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
 public class NotaFiscalSincronizacaoTest extends DominioTest {
 	
@@ -39,7 +42,9 @@ public class NotaFiscalSincronizacaoTest extends DominioTest {
 	
 	@Test
 	public void agrixService(){
-		List<NotaFiscal> notas = agrixService.obterNotas(Arrays.asList(new NotaFiscalId("013924F3091F4CC4E050007F010060FB")));
+		List<NotaFiscal> notas = agrixService.obterNotas(
+				Arrays.asList(new NotaFiscalId("H-013924F3091F4CC4E050007F010060FB")),
+				Ambiente.HOMOLOGACAO);
 		NotaFiscal nf = notas.get(0);
 		System.out.println(nf.emitente());
 		System.out.println(nf.destinatario());
@@ -54,16 +59,18 @@ public class NotaFiscalSincronizacaoTest extends DominioTest {
 	@Test
 	//@Rollback(false)
 	public void sincronizacao(){
-		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId("013924F3091F4CC4E050007F010060FB"));
+		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId("H-013924F3091F4CC4E050007F010060FB"));
 		//assertNull(nf);
 		
 		notaFiscalRepositorio
-				.notasPendentesAutorizacao(Arrays.asList(new NotaFiscalId("013924F3091F4CC4E050007F010060FB")));
+				.notasPendentesAutorizacao(
+						Arrays.asList(new NotaFiscalId("H-013924F3091F4CC4E050007F010060FB")),
+						Ambiente.HOMOLOGACAO);
 		
 		em.flush();
 		em.clear();
 		
-		nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId("013924F3091F4CC4E050007F010060FB"));
+		nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId("H-013924F3091F4CC4E050007F010060FB"));
 		assertNotNull(nf);
 		
 		

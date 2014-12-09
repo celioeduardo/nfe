@@ -20,12 +20,14 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
         if (choice === 'yes') {
             var s = this.getView().getSelection();
 
-            var temp = '';
+            var ids = [];
             for (var i = 0; i < s.length; i++) {
-                temp = temp + aspas(s[i].getId()) + ',';
-            };
-            temp = temp.substr(0,temp.length-1);
-            alert(temp);
+                ids.push(s[i].get('notaFiscalId'));
+            }
+            
+            var model = new nfe.model.NotaFiscal();
+            model.enviarNotas('HOMOLOGACAO',ids);
+
         }
     },
 

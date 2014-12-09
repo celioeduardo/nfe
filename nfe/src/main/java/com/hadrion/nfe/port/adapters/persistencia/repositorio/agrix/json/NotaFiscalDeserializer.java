@@ -36,8 +36,11 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 
 public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
+	private Ambiente ambiente;
 	
-	
+	public NotaFiscalDeserializer(Ambiente ambiente){
+		this.ambiente = ambiente;
+	}
 	
 	@Override
 	public NotaFiscal deserialize(JsonElement jsonSource, Type type,
@@ -46,8 +49,8 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 		final JsonObject j = jsonSource.getAsJsonObject();
 		
 		final NotaFiscal nf = new NotaFiscal(
-				Ambiente.PRODUCAO, //TODO Parametrizar ambiente
-				new NotaFiscalId(s(j,"NotaFiscalId")),
+				ambiente,
+				criarNotaFiscalId(s(j,"NotaFiscalId"), ambiente),
 				new FilialId("4007474000116"), //TODO Obter Filial
 				s(j,"naturezaOperacao"),
 				FormaPagamento.A_VISTA,//TODO forma pagamento
@@ -82,45 +85,49 @@ public class NotaFiscalDeserializer implements JsonDeserializer<NotaFiscal>{
 		return nf;
 	}
 	
+	private NotaFiscalId criarNotaFiscalId(String guid,Ambiente ambiente){
+		return new NotaFiscalId(ambiente.sigla()+"-"+guid);
+	}
+	
 	private List<Item> itens(JsonObject j){
-		return new NotaFiscalTradutorJson(j.get("itens").toString()).converterItens();
+		return new NotaFiscalTradutorJson(j.get("itens").toString(),ambiente).converterItens();
 	}
 	private List<Referencia> referencias(JsonObject j){
-		return new NotaFiscalTradutorJson(j.get("referencias").toString()).converterReferencias();
+		return new NotaFiscalTradutorJson(j.get("referencias").toString(),ambiente).converterReferencias();
 	}
 	private Emitente emitente(JsonObject j){
-		return new NotaFiscalTradutorJson(j.get("emitente").toString()).converterEmitente();
+		return new NotaFiscalTradutorJson(j.get("emitente").toString(),ambiente).converterEmitente();
 	}
 	private Transporte transporte(JsonObject j){
-		return new NotaFiscalTradutorJson(j.get("transporte").toString()).converterTransporte();
+		return new NotaFiscalTradutorJson(j.get("transporte").toString(),ambiente).converterTransporte();
 	}
 	private Destinatario destinatario(JsonObject j){
-		return new NotaFiscalTradutorJson(j.get("destinatario").toString()).converterDestinatario();
+		return new NotaFiscalTradutorJson(j.get("destinatario").toString(),ambiente).converterDestinatario();
 	}
 	private LocalEntrega localEntrega(JsonObject j){
-		return new NotaFiscalTradutorJson(j.get("localEntrega").toString()).converterLocalEntrega();
+		return new NotaFiscalTradutorJson(j.get("localEntrega").toString(),ambiente).converterLocalEntrega();
 	}
 	private LocalRetirada localRetirada(JsonObject j){
-		return new NotaFiscalTradutorJson(j.get("localRetirada").toString()).converterLocalRetirada();
+		return new NotaFiscalTradutorJson(j.get("localRetirada").toString(),ambiente).converterLocalRetirada();
 	}
 	private Cobranca cobranca(JsonObject j){
-		return new NotaFiscalTradutorJson(j.get("cobranca").toString()).converterCobranca();
+		return new NotaFiscalTradutorJson(j.get("cobranca").toString(),ambiente).converterCobranca();
 	}
 	private Informacao informacaoFisco(JsonObject j){
 		if (tem(j,"observacaoFisco")){
-			return new NotaFiscalTradutorJson(j.get("observacaoFisco").toString()).converterObservacao();
+			return new NotaFiscalTradutorJson(j.get("observacaoFisco").toString(),ambiente).converterObservacao();
 		}
 		return null;
 	}
 	private Informacao informacaoContribuinte(JsonObject j){
 		if (tem(j,"observacao")){
-			return new NotaFiscalTradutorJson(j.get("observacao").toString()).converterObservacao();
+			return new NotaFiscalTradutorJson(j.get("observacao").toString(),ambiente).converterObservacao();
 		}
 		return null;
 	}
 	private Exportacao exportacao(JsonObject j){
 		if (tem(j,"exportacao")){		
-			return new NotaFiscalTradutorJson(j.get("exportacao").toString()).converterExportacao();
+			return new NotaFiscalTradutorJson(j.get("exportacao").toString(),ambiente).converterExportacao();
 		}
 		return null;
 	}

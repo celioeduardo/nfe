@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -28,6 +30,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
+import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.lote.EnviarLoteService;
+import com.hadrion.nfe.dominio.modelo.lote.GeracaoLoteService;
+import com.hadrion.nfe.dominio.modelo.lote.Lote;
+import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
@@ -37,9 +44,17 @@ import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
 @Service
 @Transactional
 public class NotaFiscalAplicacaoService {
+	@Autowired
+	private GeracaoLoteService geracaoLoteService;
 	
 	@Autowired
-	private NotaFiscalRepositorio repositorio;
+	private EnviarLoteService enviarLoteService;
+	
+	@Autowired
+	private LoteRepositorio loteRepositorio;
+	
+	@Autowired
+	private NotaFiscalRepositorio notaFiscalRepositorio;
 	
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(Double empresa,Double filial,
 			Date inicio,Date fim,String usuario,String notaFiscalId){
@@ -47,7 +62,7 @@ public class NotaFiscalAplicacaoService {
 		NotaFiscalId notaFiscalIdFiltro = null;
 		if (notaFiscalId!=null)
 			notaFiscalIdFiltro=new NotaFiscalId(notaFiscalId);
-		for (DescritorNotaFiscal nf : repositorio.notasPendentesAutorizacaoResumo(empresa,filial,inicio,fim,usuario,notaFiscalIdFiltro)) {
+		for (DescritorNotaFiscal nf : notaFiscalRepositorio.notasPendentesAutorizacaoResumo(empresa,filial,inicio,fim,usuario,notaFiscalIdFiltro)) {
 			result.add(new NotaFiscalData(nf.notaFiscalId().id(),
 					nf.numero(),
 					String.valueOf(nf.serie().numero()),
@@ -61,10 +76,10 @@ public class NotaFiscalAplicacaoService {
 		
 		return result;
 	}
-	public List<NotaFiscalData> notasFicaisPendentesAutorizacao(){
+	public List<NotaFiscalData> notasFicaisPendentesAutorizacao(Ambiente ambiente){
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 		
-		for (NotaFiscal nf : repositorio.notasPendentesAutorizacao(null)) {
+		for (NotaFiscal nf : notaFiscalRepositorio.notasPendentesAutorizacao(null,ambiente)) {
 			result.add(new NotaFiscalData(nf.notaFiscalId().id(),
 					nf.numero(),
 					String.valueOf(nf.serie().numero()),
@@ -87,7 +102,7 @@ public class NotaFiscalAplicacaoService {
 		NotaFiscalSerializador serializador = new NotaFiscalSerializador();
 		InputStream xmlFile = IOUtils.toInputStream("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" + 
     			"<nfeProc>\r\n" +
-				serializador.serializar(repositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId))) +
+				serializador.serializar(notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId))) +
     			"</nfeProc>", "UTF-8");
 		
 		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/nfeProc/NFe/infNFe/det");		
@@ -106,4 +121,31 @@ public class NotaFiscalAplicacaoService {
 		
 		return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
 	}
+	
+	public String enviarNotas(EnviarNotasComando comando){
+		Ambiente ambiente = Ambiente.valueOf(comando.getAmbiente());
+		
+		Lote lote = null;
+		
+		if (ambiente == Ambiente.PRODUCAO)
+			lote =  geracaoLoteService.gerarLoteEmProducao(notas(comando.getIds(),ambiente));
+		else
+			lote =  geracaoLoteService.gerarLoteEmHomologacao(notas(comando.getIds(),ambiente));
+		
+		enviarLoteService.enviar(lote);
+		
+		loteRepositorio.salvar(lote);
+		return String.valueOf(lote.loteId());
+		
+	}
+	
+	private Set<NotaFiscal> notas(List<String> ids, Ambiente ambiente){
+		List<NotaFiscalId> listaId = new ArrayList<NotaFiscalId>();
+		
+		for (String notaFiscalId : ids) 
+			listaId.add(new NotaFiscalId(notaFiscalId));
+		
+		return new HashSet<NotaFiscal>(notaFiscalRepositorio.notasPendentesAutorizacao(listaId,ambiente));
+	}
+	
 }

@@ -214,6 +214,7 @@ public class NotaFiscalConverter extends AbstractConverter {
 				transporte, cobranca, 
 				new Informacao(informacao.getFisco()),
 				new Informacao(informacao.getContribuinte()),
-				exportacao,contingencia);
+				exportacao,
+				contingencia);
 	}
 }

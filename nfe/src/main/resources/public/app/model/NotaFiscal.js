@@ -9,8 +9,24 @@ Ext.define('nfe.model.NotaFiscal', {
 		    'publicoCodigo',
 		    'publicoNome',
 		    'tipo'],
+    
     proxy: {
         url : 'notas_fiscais/pendentes_autorizacao_resumo'
+    },
+
+    enviarNotas:function(ambiente,notas,success){
+        var data = {
+            "ambiente" : ambiente,
+            "ids":notas
+        };
+
+        Ext.Ajax.request({
+            url:'notas_fiscais/enviar',
+            method:'POST',
+            jsonData:Ext.encode([data]),
+            success:success
+        });
     }
+
 
 });

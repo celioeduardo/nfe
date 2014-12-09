@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.Referencia;
@@ -28,9 +29,9 @@ public class NotaFiscalTradutorJson {
 	final GsonBuilder gsonBuilder;
 	final Gson gson;
 	
-	public NotaFiscalTradutorJson(String json){
+	public NotaFiscalTradutorJson(String json, Ambiente ambiente){
 		gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(NotaFiscal.class, new NotaFiscalDeserializer());
+		gsonBuilder.registerTypeAdapter(NotaFiscal.class, new NotaFiscalDeserializer(ambiente));
 		gsonBuilder.registerTypeAdapter(Item.class, new ItemDeserializer());
 		gsonBuilder.registerTypeAdapter(Referencia.class, new ReferenciaDeserializer());
 		gsonBuilder.registerTypeAdapter(Emitente.class, new EmitenteDeserializer());

@@ -1,17 +1,23 @@
 package com.hadrion.nfe.dominio.modelo;
 
 public enum Ambiente {
-	PRODUCAO(1), 
-	HOMOLOGACAO(2);
+	PRODUCAO(1,"P"), 
+	HOMOLOGACAO(2,"H");
 	
 	int codigo;
+	String sigla;
 	
-	Ambiente(int codigo){
+	Ambiente(int codigo, String sigla){
 		this.codigo = codigo;
+		this.sigla = sigla;
 	}
 	
 	public int codigo(){
 		return codigo;
+	}
+	
+	public String sigla(){
+		return sigla;
 	}
 	
 	public static Ambiente obterPeloCodigo(int codigo){

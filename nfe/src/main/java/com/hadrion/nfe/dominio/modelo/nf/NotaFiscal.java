@@ -253,6 +253,7 @@ public class NotaFiscal {
 		this.tipoEmissao = tipoEmissao;
 		this.codigoNumerico = codigoNumerico == null ? randInt(1, 99999999) : codigoNumerico;
 		this.contingencia = contingencia;
+		
 		this.setChaveAcesso(gerarChaveAcesso());
 		for (Referencia referencia : referencias) 
 			referenciar(referencia);

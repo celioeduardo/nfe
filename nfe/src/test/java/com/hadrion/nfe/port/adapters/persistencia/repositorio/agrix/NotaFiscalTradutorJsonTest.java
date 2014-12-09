@@ -14,6 +14,7 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
 import com.hadrion.nfe.dominio.modelo.endereco.Cep;
@@ -67,10 +68,12 @@ public class NotaFiscalTradutorJsonTest {
 		
 		final File json =FileUtils.getFile("src","test", "resources", "nota.json");
 		
-		NotaFiscalTradutorJson tradutor = new NotaFiscalTradutorJson(FileUtils.readFileToString(json));
+		NotaFiscalTradutorJson tradutor = new NotaFiscalTradutorJson(
+				FileUtils.readFileToString(json),
+				Ambiente.HOMOLOGACAO);
 		NotaFiscal nf = tradutor.converterNotaFiscal();
 		
-		assertEquals("013924F30E424CC4E050007F010060FB",nf.notaFiscalId().id());
+		assertEquals("H-013924F30E424CC4E050007F010060FB",nf.notaFiscalId().id());
 		
 		assertEquals(new Long(618),nf.numero());
 		assertEquals(new Serie(2L),nf.serie());

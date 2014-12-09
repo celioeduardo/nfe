@@ -34,9 +34,9 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	}
 
 	@Override
-	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas) {
-		sincronizar(notas);
-		return repositorio.findByNotaFiscalIdIn(notas);
+	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas,Ambiente ambiente) {
+		sincronizar(notas,ambiente);
+		return repositorio.findByNotaFiscalIdInAndAmbiente(notas,ambiente);
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 		return repositorio.findByChaveAcessoAndAmbiente(chave,ambiente);
 	}
 	
-	private void sincronizar(List<NotaFiscalId> notas) {
-		List<NotaFiscal> notasAgrix = agrixService.obterNotas(notas);
+	private void sincronizar(List<NotaFiscalId> notas, Ambiente ambiente) {
+		List<NotaFiscal> notasAgrix = agrixService.obterNotas(notas,ambiente);
 		for (NotaFiscal nfAgrix : notasAgrix) {
 			mesclar(nfAgrix);
 		}

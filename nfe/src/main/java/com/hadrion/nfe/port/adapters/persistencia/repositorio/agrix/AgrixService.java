@@ -3,6 +3,7 @@ package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
@@ -48,9 +50,9 @@ public class AgrixService{
 		});
 	}*/
 	
-	public List<NotaFiscal> obterNotas(List<NotaFiscalId> notas) {
+	public List<NotaFiscal> obterNotas(List<NotaFiscalId> notas, Ambiente ambiente) {
 		
-		String in = "'" + StringUtils.join(notas, "','") + "'";
+		String in = "'" + StringUtils.join(notaFiscalIdToGuid(notas), "','") + "'";
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
 		.withCatalogName("pcg_nf_json_adapter")
@@ -84,10 +86,20 @@ public class AgrixService{
 		if (conteudo == null || conteudo.isEmpty())
 			return Collections.emptyList();
 
-		NotaFiscalTradutorJson tradutor = new NotaFiscalTradutorJson(conteudo.substring(1, conteudo.length()-1));
+		NotaFiscalTradutorJson tradutor = new NotaFiscalTradutorJson(
+				conteudo.substring(1, conteudo.length()-1),
+				ambiente);
 		NotaFiscal nf = tradutor.converterNotaFiscal();
 		
 		return Arrays.asList(nf);
+	}
+	
+	private List<String> notaFiscalIdToGuid(List<NotaFiscalId> ids){
+		List<String> result = new ArrayList<String>();
+		for (NotaFiscalId id : ids) {
+			result.add(id.id().substring(2));
+		}
+		return result;
 	}
 	
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(Double empresa,Double filial,Date inicio,Date fim,String usuario,NotaFiscalId notaFiscalId) {

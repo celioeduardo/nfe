@@ -11,22 +11,26 @@ import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hadrion.nfe.aplicacao.nf.EnviarNotasComando;
 import com.hadrion.nfe.aplicacao.nf.NotaFiscalAplicacaoService;
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/notas_fiscais")
 public class NfeController {
 
 	@Autowired
 	NotaFiscalAplicacaoService notaFiscalAplicacaoService; 
 	
-	@RequestMapping(value="/notas_fiscais/pendentes_autorizacao_resumo", method = RequestMethod.GET)
+	@RequestMapping(value="/pendentes_autorizacao_resumo", method = RequestMethod.GET)
 	public List<NotaFiscalData> pendentes_autorizacao_resumo(
 			@RequestParam(value="empresa",required=false)Double empresa,
 			@RequestParam(value="filial",required=false)Double filial,
@@ -38,11 +42,12 @@ public class NfeController {
 		filial = Double.parseDouble("86675642000106");
 		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacaoResumo(empresa,filial,inicio,fim,usuario,notaFiscalId);
 	}
-	@RequestMapping("/notas_fiscais/pendentes_autorizacao")
+	@RequestMapping("/pendentes_autorizacao")
 	public List<NotaFiscalData> pendentes_autorizacao(HttpServletRequest req){
-		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacao(); 
+		//TODO parametrizar Ambiente
+		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacao(Ambiente.HOMOLOGACAO); 
 	}
-	@RequestMapping("/notas_fiscais/configuracao")
+	@RequestMapping("/configuracao")
 	public String configuracao(HttpServletRequest req){
 		return "[{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"REGISTRO AUTOMATICO\"},"
 				+ "{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"CAFE\"},"
@@ -67,17 +72,16 @@ public class NfeController {
 //		return notaFiscalAplicacaoService.obterComboFilial(query); 
 //	}
 
-	@RequestMapping(value = "/notas_fiscais/danfe", method = RequestMethod.GET)
+	@RequestMapping(value = "/danfe", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> danfe(
 			@RequestParam(value="notafiscalid")String notaFiscalId) throws IOException, JRException{		
 		return notaFiscalAplicacaoService.obterDanfe(notaFiscalId);
 	}	
-	@RequestMapping("/barra")
-	public String index(HttpServletRequest req){
-		return "Uhuhuhuhuh - Spring Boot is ON id:"+req.getSession().getId();
-	}
-	@RequestMapping("/home")
-	public String home(HttpServletRequest req){
-		return "home";
-	}
+	
+	@RequestMapping(value = "/enviar", method = RequestMethod.POST)
+	@ResponseBody
+	public String enviarNotas(
+			@RequestBody List<EnviarNotasComando> comandos) throws IOException, JRException{		
+		return notaFiscalAplicacaoService.enviarNotas(comandos.get(0));
+	}	
 }
