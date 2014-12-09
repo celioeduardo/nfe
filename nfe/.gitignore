@@ -29,3 +29,5 @@ nfe/.gradle
 /gradlew.bat
 ##/gradle/
 ##/.gradle/
+/mem.lock.db
+/._mem.trace.db4672651351240552585.tmp
