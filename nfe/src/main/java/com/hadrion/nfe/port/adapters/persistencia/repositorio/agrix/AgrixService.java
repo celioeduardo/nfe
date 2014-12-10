@@ -87,9 +87,10 @@ public class AgrixService{
 			return Collections.emptyList();
 
 		NotaFiscalTradutorJson tradutor = new NotaFiscalTradutorJson(
-				conteudo.substring(1, conteudo.length()-1),
+//				conteudo.substring(1, conteudo.length()-1),
+				conteudo,
 				ambiente);
-		NotaFiscal nf = tradutor.converterNotaFiscal();
+		NotaFiscal[] nf = tradutor.converterNotaFiscal();
 		
 		return Arrays.asList(nf);
 	}

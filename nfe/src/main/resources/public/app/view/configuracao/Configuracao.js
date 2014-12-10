@@ -42,7 +42,6 @@ Ext.define('nfe.view.configuracao.Configuracao', {
         */
         me.items = [{
                 xtype: 'propertygrid',
-                id: 'propGrid',
                 source: data
             }
         ];

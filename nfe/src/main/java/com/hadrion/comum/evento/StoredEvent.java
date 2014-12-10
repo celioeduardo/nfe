@@ -16,10 +16,10 @@ package com.hadrion.comum.evento;
 
 import java.util.Date;
 
-import com.hadrion.comum.AssertionConcern;
+import com.hadrion.comum.Afirmacao;
 import com.hadrion.comum.dominio.modelo.EventoDominio;
 
-public class StoredEvent extends AssertionConcern {
+public class StoredEvent extends Afirmacao {
 
     private String eventBody;
     private long eventId;
@@ -53,7 +53,7 @@ public class StoredEvent extends AssertionConcern {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends EventoDominio> T toDomainEvent() {
+    public <T extends EventoDominio> T paraEventoDominio() {
         Class<T> domainEventClass = null;
 
         try {
@@ -110,8 +110,8 @@ public class StoredEvent extends AssertionConcern {
     }
 
     protected void setEventBody(String anEventBody) {
-        this.assertArgumentNotEmpty(anEventBody, "The event body is required.");
-        this.assertArgumentLength(anEventBody, 1, 65000, "The event body must be 65000 characters or less.");
+        this.assertArgumentoNaoVazio(anEventBody, "The event body is required.");
+        this.assertTamanhoArgumento(anEventBody, 1, 65000, "The event body must be 65000 characters or less.");
 
         this.eventBody = anEventBody;
     }
@@ -125,8 +125,8 @@ public class StoredEvent extends AssertionConcern {
     }
 
     protected void setTypeName(String aTypeName) {
-        this.assertArgumentNotEmpty(aTypeName, "The event type name is required.");
-        this.assertArgumentLength(aTypeName, 1, 100, "The event type name must be 100 characters or less.");
+        this.assertArgumentoNaoVazio(aTypeName, "The event type name is required.");
+        this.assertTamanhoArgumento(aTypeName, 1, 100, "The event type name must be 100 characters or less.");
 
         this.typeName = aTypeName;
     }

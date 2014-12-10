@@ -38,7 +38,6 @@ Ext.define('nfe.view.main.Main', {
             },   
             items:[{           
                 xtype: 'combobox',
-                id:'empresaFilial',
                 displayField: 'NOM_CURTO_FILIAL', 
                 //scope       : this,
                 editable: false, 
@@ -81,13 +80,50 @@ Ext.define('nfe.view.main.Main', {
             bodyPadding: 2
         },
         items:[{
-            title: 'Autorizadas',
-            xtype:'notas-pendentes',
+            title: 'Pendentes',
             glyph: 0xf064,
-            selModel: {
-                selType: 'checkboxmodel',
-                mode: 'MULTI'
-            }
+            layout:{
+                type:'border'
+            },
+            bodyPadding: 0,
+            items:[{
+                /*region:'center',
+                xtype:'notas-pendentes',
+                width: 250
+            },{
+                region:'east',
+                xtype:'notas-pendentes'
+            },{
+                region:'south',
+                xtype:'notas-pendentes',
+                heigth: 150*/
+                title: 'Pendentes',
+                collapsible: false,
+                xtype:'notas-pendentes',
+                selModel: {
+                    selType: 'checkboxmodel',
+                    mode: 'MULTI'
+                },
+                region: 'center',
+                margin: '5 0 0 0'
+                //html: '<h2>Main Page</h2><p>This is where the main content would go</p>'
+            },{
+                title: 'Lotes Pendentes',
+                region:'east',
+                xtype:'lotes-pendentes',
+                floatable: false,
+                margin: '5 0 0 0',
+                width: 500,
+                minWidth: 100,
+                maxWidth: 500
+            },{
+                title: 'Autorizadas',
+                region: 'south',
+                xtype:'notas-pendentes',
+                height: 300,
+                minHeight: 75,
+                maxHeight: 300
+            }]
         },
         /*{
             title: 'Pendentes',

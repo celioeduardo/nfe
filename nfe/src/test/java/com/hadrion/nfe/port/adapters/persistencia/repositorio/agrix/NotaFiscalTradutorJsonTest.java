@@ -71,7 +71,7 @@ public class NotaFiscalTradutorJsonTest {
 		NotaFiscalTradutorJson tradutor = new NotaFiscalTradutorJson(
 				FileUtils.readFileToString(json),
 				Ambiente.HOMOLOGACAO);
-		NotaFiscal nf = tradutor.converterNotaFiscal();
+		NotaFiscal nf = tradutor.converterNotaFiscal()[0];
 		
 		assertEquals("H-013924F30E424CC4E050007F010060FB",nf.notaFiscalId().id());
 		

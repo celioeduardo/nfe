@@ -3,32 +3,29 @@ Ext.define('nfe.view.nf.NotasPendentes', {
     requires:['Ext.grid.Panel','nfe.model.NotaFiscal'],
     xtype: 'notas-pendentes',
     controller: 'notas-pendentes',
-    id:'notas-pendentes',
     viewModel: {
         type: 'notas-pendentes'/*,
         session : true*/
     },
     tbar:[{
-            xtype:'button',
-            text:'Enviar',
-            handler: 'onClickEnviar'
-        },{
-            xtype:'button',
-            text:'Atualizar',
-            handler: 'onClickAtualizar'
-        },{
-            xtype:'textfield',
-            bind:{
-                value: '{titulo}'
-            }    
-        }],
-    reference: 'gridNf',
+        xtype:'button',
+        text:'Enviar',
+        handler: 'onClickEnviar'
+    },{
+        xtype:'button',
+        text:'Atualizar',
+        handler: 'onClickAtualizar'
+    }/*,{
+        xtype:'textfield',
+        bind:{
+            value: '{titulo}'
+        }    
+    }*/],
     bind:{
-        title: '{titulo}',
         store: '{notasPendentes}',
         selection: '{notasSelecionadas}'
     },
-
+    selType: 'checkboxmodel',
     hideHeaders: true,
     columns: [
         {

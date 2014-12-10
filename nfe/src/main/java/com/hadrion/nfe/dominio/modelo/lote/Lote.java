@@ -199,8 +199,7 @@ public class Lote {
 	}
 
 	public String numero() {
-		// TODO criar numero do lote
-		return loteId.id();
+		return String.valueOf(id);
 	}
 
 	private void processando() {

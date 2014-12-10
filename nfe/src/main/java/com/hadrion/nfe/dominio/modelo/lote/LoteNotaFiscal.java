@@ -17,8 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
@@ -117,7 +117,7 @@ class LoteNotaFiscal {
 		this.setMensagem(mensagem);
 		this.mudarParaAutorizada();
 		
-		EventoDominioPublicador.instancia().
+		DominioRegistro.eventoDominioPublicador().
 			publicar(new NotaFiscalAutorizada(
 					notaFiscalId(),
 					ambiente));
@@ -140,7 +140,7 @@ class LoteNotaFiscal {
 		this.setMensagem(mensagem);
 		this.mudarParaDenegada();
 		
-		EventoDominioPublicador.instancia().
+		DominioRegistro.eventoDominioPublicador().
 			publicar(new NotaFiscalDenegada(notaFiscalId(),ambiente));
 
 	}

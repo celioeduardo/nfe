@@ -2,8 +2,8 @@ package com.hadrion.nfe.dominio.modelo.cancelamento;
 
 import java.util.Date;
 
-import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
@@ -56,7 +56,8 @@ public class SolicitacaoCancelamento {
 		this.retorno = mensagem;
 		this.dataHoraProcessamento = dataHoraProcessamento;
 		
-		EventoDominioPublicador.instancia().publicar(
+		DominioRegistro.eventoDominioPublicador()
+			.publicar(
 				new CancelamentoHomologado(notaFiscalId, ambiente));
 	}
 	

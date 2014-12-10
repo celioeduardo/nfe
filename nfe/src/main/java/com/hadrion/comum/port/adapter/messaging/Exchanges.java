@@ -16,10 +16,7 @@ package com.hadrion.comum.port.adapter.messaging;
 
 public class Exchanges {
 
-    public static final String APPCC_EXCHANGE_NAME = "hadrionAPPCC";
+    public static final String NFE_EXCHANGE_NAME = "hadrionNFE";
 
-    //public static final String COLLABORATION_EXCHANGE_NAME = "saasovationCollaboration";
-
-    //public static final String IDENTITY_ACCESS_EXCHANGE_NAME = "saasovationIdentityAccess";
 
 }

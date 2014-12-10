@@ -1,6 +1,6 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
-enum SituacaoLote {
+public enum SituacaoLote {
 	NAO_ENVIADO,
 	FALHA_CONSISTENCIA,
 	ERRO_TRANSMISSAO,

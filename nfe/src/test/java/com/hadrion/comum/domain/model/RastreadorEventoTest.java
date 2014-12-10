@@ -10,11 +10,12 @@ import org.junit.Before;
 
 import com.hadrion.comum.dominio.modelo.EventoDominio;
 import com.hadrion.comum.dominio.modelo.EventoDominioAssinante;
-import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
 import com.hadrion.comum.notificacao.NotificationReader;
 import com.hadrion.comum.port.adapter.messaging.Exchanges;
+import com.hadrion.comum.port.adapter.messaging.slothmq.ExchangeListener;
 import com.hadrion.comum.port.adapter.messaging.slothmq.SlothClient;
 import com.hadrion.comum.port.adapter.messaging.slothmq.SlothServer;
+import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 
 public abstract class RastreadorEventoTest {
 	
@@ -124,9 +125,9 @@ public abstract class RastreadorEventoTest {
 			Thread.sleep(100L);
 		}
 
-		EventoDominioPublicador.instancia().reset();
+		DominioRegistro.eventoDominioPublicador().reset();
 
-		EventoDominioPublicador.instancia().assinar(new EventoDominioAssinante<EventoDominio>() {
+		DominioRegistro.eventoDominioPublicador().assinar(new EventoDominioAssinante<EventoDominio>() {
 			@Override
 			public void tratarEvento(EventoDominio eventoDominio) {
 				eventosTratados.add(eventoDominio.getClass());
@@ -180,7 +181,7 @@ public abstract class RastreadorEventoTest {
 		SlothClient.instance().closeAll();
 	}
 
-	private abstract class TestExchangeListener extends com.hadrion.comum.port.adapter.messaging.rabbitmq.ExchangeListener {
+	private abstract class TestExchangeListener extends ExchangeListener {
 
         public void clear() {
             eventosTratados.clear();
@@ -204,8 +205,13 @@ public abstract class RastreadorEventoTest {
 	protected class TestAppccRabbitMQExchangeListener extends TestExchangeListener {
         @Override
         protected String exchangeName() {
-            return Exchanges.APPCC_EXCHANGE_NAME;
+            return Exchanges.NFE_EXCHANGE_NAME;
         }
+
+		@Override
+		protected String name() {
+			return null;
+		}
     }
 	
 	protected class TestAppccSlothMQExchangeListener
@@ -218,7 +224,7 @@ public abstract class RastreadorEventoTest {
 
 		@Override
 		protected String exchangeName() {
-			return Exchanges.APPCC_EXCHANGE_NAME;
+			return Exchanges.NFE_EXCHANGE_NAME;
 		}
 
 		@Override

@@ -1,5 +1,6 @@
 package com.hadrion.comum;
 
+//TODO remover classe AssertionConcern
 public class AssertionConcern {
 
     protected AssertionConcern() {

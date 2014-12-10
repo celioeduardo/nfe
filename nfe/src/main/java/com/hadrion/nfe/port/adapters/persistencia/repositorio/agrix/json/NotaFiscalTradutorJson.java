@@ -49,8 +49,8 @@ public class NotaFiscalTradutorJson {
 		this.json = json;
 	}
 
-	public NotaFiscal converterNotaFiscal(){		
-		return fromJson(NotaFiscal.class);
+	public NotaFiscal[] converterNotaFiscal(){		
+		return fromJson(NotaFiscal[].class);
 	}
 	public Item converterItem(){		
 		return fromJson(Item.class);

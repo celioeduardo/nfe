@@ -21,7 +21,7 @@ import java.util.List;
 public class NotificationLog {
 
     private boolean archived;
-    private List<Notification> notifications;
+    private List<Notificacao> notifications;
     private String notificationLogId;
     private String nextNotificationLogId;
     private String previousNotificationLogId;
@@ -30,7 +30,7 @@ public class NotificationLog {
             String aNotificationLogId,
             String aNextNotificationLogId,
             String aPreviousNotificationLogId,
-            List<Notification> aNotifications,
+            List<Notificacao> aNotifications,
             boolean anArchivedIndicator) {
 
         super();
@@ -46,7 +46,7 @@ public class NotificationLog {
         return this.archived;
     }
 
-    public List<Notification> notifications() {
+    public List<Notificacao> notifications() {
         return Collections.unmodifiableList(this.notifications);
     }
 
@@ -89,10 +89,10 @@ public class NotificationLog {
     protected NotificationLog() {
         super();
 
-        this.setNotifications(new ArrayList<Notification>());
+        this.setNotifications(new ArrayList<Notificacao>());
     }
 
-    private void setNotifications(List<Notification> aNotifications) {
+    private void setNotifications(List<Notificacao> aNotifications) {
         this.notifications = aNotifications;
     }
 

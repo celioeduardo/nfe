@@ -16,39 +16,39 @@ package com.hadrion.comum.notificacao;
 
 import com.hadrion.comum.serializer.AbstractSerializer;
 
-public class NotificationSerializer extends AbstractSerializer {
+public class NotificacaoSerializer extends AbstractSerializer {
 
-    private static NotificationSerializer notificationSerializer;
+    private static NotificacaoSerializer notificacaoSerializer;
 
-    public static synchronized NotificationSerializer instance() {
-        if (NotificationSerializer.notificationSerializer == null) {
-            NotificationSerializer.notificationSerializer = new NotificationSerializer();
+    public static synchronized NotificacaoSerializer instance() {
+        if (NotificacaoSerializer.notificacaoSerializer == null) {
+            NotificacaoSerializer.notificacaoSerializer = new NotificacaoSerializer();
         }
 
-        return NotificationSerializer.notificationSerializer;
+        return NotificacaoSerializer.notificacaoSerializer;
     }
 
-    public NotificationSerializer(boolean isCompact) {
+    public NotificacaoSerializer(boolean isCompact) {
         this(false, isCompact);
     }
 
-    public NotificationSerializer(boolean isPretty, boolean isCompact) {
+    public NotificacaoSerializer(boolean isPretty, boolean isCompact) {
         super(isPretty, isCompact);
     }
 
-    public String serialize(Notification aNotification) {
+    public String serialize(Notificacao aNotification) {
         String serialization = this.gson().toJson(aNotification);
 
         return serialization;
     }
 
-    public <T extends Notification> T deserialize(String aSerialization, final Class<T> aType) {
+    public <T extends Notificacao> T deserialize(String aSerialization, final Class<T> aType) {
         T notification = this.gson().fromJson(aSerialization, aType);
 
         return notification;
     }
 
-    private NotificationSerializer() {
+    private NotificacaoSerializer() {
         this(false, false);
     }
 }

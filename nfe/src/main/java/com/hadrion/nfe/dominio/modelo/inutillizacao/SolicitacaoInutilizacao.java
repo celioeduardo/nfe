@@ -2,8 +2,8 @@ package com.hadrion.nfe.dominio.modelo.inutillizacao;
 
 import java.util.Date;
 
-import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 
@@ -47,7 +47,7 @@ public class SolicitacaoInutilizacao {
 		this.numeroProtocolo = numeroProtocolo;
 		this.retorno = mensagem;
 		this.dataHoraProcessamento = dataHoraProcessamento;
-		EventoDominioPublicador.instancia().publicar(
+		DominioRegistro.eventoDominioPublicador().publicar(
 				new InutilizacaoHomologada(this.ambiente()));
 	}
 	

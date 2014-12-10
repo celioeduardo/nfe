@@ -102,15 +102,15 @@ public class NotificationLogFactory {
         return notificationLog;
     }
 
-    private List<Notification> notificationsFrom(List<StoredEvent> aStoredEvents) {
-        List<Notification> notifications =
-            new ArrayList<Notification>(aStoredEvents.size());
+    private List<Notificacao> notificationsFrom(List<StoredEvent> aStoredEvents) {
+        List<Notificacao> notifications =
+            new ArrayList<Notificacao>(aStoredEvents.size());
 
         for (StoredEvent storedEvent : aStoredEvents) {
-            EventoDominio domainEvent = storedEvent.toDomainEvent();
+            EventoDominio domainEvent = storedEvent.paraEventoDominio();
 
-            Notification notification =
-                new Notification(storedEvent.eventId(), domainEvent);
+            Notificacao notification =
+                new Notificacao(storedEvent.eventId(), domainEvent);
 
             notifications.add(notification);
         }
