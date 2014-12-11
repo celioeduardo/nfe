@@ -34,7 +34,7 @@ public class DestinatarioDeserializer implements JsonDeserializer<Destinatario>{
 				s(j,"complemento"),
 				s(j,"bairro"),
 			    new Municipio(i(j,"codigoMunicipio"),s(j,"municipio"),Uf.valueOf(s(j,"uf"))),
-			    new Pais(1L,s(j,"pais")),
+			    new Pais(1058L,s(j,"pais")),
 			    new Cep(l(j,"cep")),
 			    telefone);
 		

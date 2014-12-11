@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -42,6 +43,7 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 @Entity
@@ -177,7 +179,14 @@ public class NotaFiscal {
 	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL)
 	@JoinColumn(name="ID_NF")
 	private List<Item> itens;
-
+	
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="codigo", column=@Column(name="MSG_COD")),
+		@AttributeOverride(name="descricao", column=@Column(name="MSG_DSC"))
+	})
+	private Mensagem mensagem;	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
 	@Column(name="ID")
@@ -318,6 +327,10 @@ public class NotaFiscal {
 	public void denegada() {
 		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.EMITIDA);
 		this.situacao=Situacao.DENEGADA;
+	}
+	
+	public void rejeitada(Mensagem mensagem){
+		this.mensagem = mensagem;
 	}
 	
 	public boolean estaEmitida() {
@@ -611,6 +624,10 @@ public class NotaFiscal {
 
 	public boolean formularioSegurancaImpresso() {
 		return formularioSegurancaImpresso;
+	}
+	
+	public Mensagem mensagem(){
+		return mensagem;
 	}
 	
 	//TODO Aprimorar Mesclagem

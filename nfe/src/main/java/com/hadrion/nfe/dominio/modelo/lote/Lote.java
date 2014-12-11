@@ -26,6 +26,7 @@ import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRejeitada;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ProtocoloNotaProcessada;
@@ -228,6 +229,7 @@ public class Lote {
 	public void inconsistente(Mensagem erro){
 		this.mensagemErro = erro;
 		this.falhaConsistencia();
+		dispararEventoNotasRejeitadas(erro);
 	}
 	
 	private void falhaConsistencia(){
@@ -337,6 +339,15 @@ public class Lote {
 					"Lote não pode ser definido para Erro de Transmissão."
 					+ "Situação é diferente de Não Enviado."); 
 		this.situacao = SituacaoLote.ERRO_TRANSMISSAO;
+		
+		dispararEventoNotasRejeitadas(erro);
+	}
+	
+	private void dispararEventoNotasRejeitadas(Mensagem mensagem){
+		for (LoteNotaFiscal nota : getNotas()) {
+			DominioRegistro.eventoDominioPublicador()
+				.publicar(new NotaFiscalRejeitada(nota.notaFiscalId(), mensagem));
+		}
 	}
 
 	public Local local() {

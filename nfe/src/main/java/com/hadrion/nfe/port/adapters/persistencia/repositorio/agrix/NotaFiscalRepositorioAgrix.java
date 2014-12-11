@@ -58,8 +58,10 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 				result.add(descritor);
 			else {
 				NotaFiscal nf = notas.get(descritor.notaFiscalId());
-				if (!nf.pendenteDeTransmissao() && notaNaoEstaEmLotePendente(nf))
+				if (nf.pendenteDeTransmissao() && !notaNaoEstaEmLotePendente(nf)){
 					result.add(descritor);
+					descritor.atualizarMensagem(nf.mensagem());
+				}
 			}
 		}
 		

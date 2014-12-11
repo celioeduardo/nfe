@@ -9,14 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hadrion.nfe.aplicacao.lote.data.LoteData;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
-import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.LoteId;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
-import com.hadrion.nfe.dominio.modelo.lote.NotaFiscalAutorizada;
 import com.hadrion.nfe.dominio.modelo.lote.ProcessarRetornoLoteService;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
 
@@ -37,9 +34,6 @@ public class LoteAplicacaoService {
 		
 		for (Lote lote : lotes) 
 			result.add(contruir(lote));
-		
-		DominioRegistro.eventoDominioPublicador().publicar(
-				new NotaFiscalAutorizada(new NotaFiscalId("ABCDEF"), ambiente));
 		
 		return result;
 		

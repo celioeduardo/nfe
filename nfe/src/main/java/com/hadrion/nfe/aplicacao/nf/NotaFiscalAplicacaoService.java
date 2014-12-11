@@ -39,6 +39,7 @@ import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
 
 @Service
@@ -77,7 +78,9 @@ public class NotaFiscalAplicacaoService {
 					nf.publicoTipo(),
 					nf.publicoCodigo(),
 					nf.publicoNome(),
-					nf.tipo()));
+					nf.tipo(),
+					nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,
+					nf.mensagem() != null ? nf.mensagem().descricao() : null));
 		}
 		
 		return result;
@@ -86,18 +89,22 @@ public class NotaFiscalAplicacaoService {
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 		
 		for (NotaFiscal nf : notaFiscalRepositorio.notasPendentesAutorizacao(null,ambiente)) {
-			result.add(new NotaFiscalData(nf.notaFiscalId().id(),
-					nf.numero(),
-					String.valueOf(nf.serie().numero()),
-					nf.emissao(),
-					nf.total().valor(),
-					"C",
-					1L,
-					nf.destinatario().razaoSocial(),
-					nf.tipoOperacao().toString()));
+			result.add(construir(nf));
 		}
 		
 		return result;
+	}
+	
+	private NotaFiscalData construir(NotaFiscal nf){
+		return new NotaFiscalData(nf.notaFiscalId().id(),
+				nf.numero(),
+				String.valueOf(nf.serie().numero()),
+				nf.emissao(),
+				nf.total().valor(),
+				nf.destinatario().razaoSocial(),
+				nf.tipoOperacao().toString(),
+				nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,
+				nf.mensagem() != null ? nf.mensagem().descricao() : null);
 	}
 	
 	public ResponseEntity<InputStreamResource> obterDanfe(String notaFiscalId) throws IOException,JRException{
@@ -146,6 +153,17 @@ public class NotaFiscalAplicacaoService {
 		
 		return String.valueOf(lote.loteId());
 		
+	}
+	
+	public void definirNotaComoRejeitada(DefinirNotaComoRejeitadaComando comando) {
+		NotaFiscal nota = nota(comando.getNotaFiscalId());
+		if (nota != null)
+			nota.rejeitada(new Mensagem(comando.getMsgCodigo(), comando.getMsgDescricao()));
+		notaFiscalRepositorio.salvar(nota);
+	}
+	
+	private NotaFiscal nota(String notaFiscalId){
+		return notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
 	}
 	
 	private Set<NotaFiscal> notas(List<String> ids, Ambiente ambiente){

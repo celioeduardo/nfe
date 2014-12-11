@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 
@@ -21,6 +22,7 @@ public class DescritorNotaFiscal {
 	private Long publicoCodigo;
 	private String publicoNome;
 	private Dinheiro valor;
+	private Mensagem mensagem;
 	
 	@SuppressWarnings("unused")
 	private DescritorNotaFiscal() {
@@ -38,7 +40,8 @@ public class DescritorNotaFiscal {
 			String publicoTipo,
 			Long publicoCodigo,
 			String publicoNome,
-			Dinheiro valor){
+			Dinheiro valor,
+			Mensagem mensagem){
 	
 		this.notaFiscalId = notaFiscalId;
 		this.tipo = tipo;
@@ -50,8 +53,26 @@ public class DescritorNotaFiscal {
 		this.dataHora = dataHora;
 		this.publicoTipo = publicoTipo;
 		this.publicoCodigo = publicoCodigo;
-		this.publicoNome = publicoNome;	
+		this.publicoNome = publicoNome;
 		this.valor = valor;
+		this.mensagem = mensagem;
+	}
+	public DescritorNotaFiscal(NotaFiscalId notaFiscalId,
+			String tipo,
+			Cnpj empresa,
+			Cnpj filial,
+			Long numero, 
+			Serie serie,
+			Date emissao, 
+			Date dataHora,
+			String publicoTipo,
+			Long publicoCodigo,
+			String publicoNome,
+			Dinheiro valor){
+		this(notaFiscalId, 
+				tipo, empresa, filial, numero, serie, emissao, dataHora, 
+				publicoTipo, publicoCodigo, publicoNome, valor, null);
+
 	}
 	
 	public NotaFiscalId notaFiscalId(){
@@ -145,5 +166,13 @@ public class DescritorNotaFiscal {
 
 	public Dinheiro valor() {
 		return valor;
+	}
+	
+	public Mensagem mensagem(){
+		return mensagem;
+	}
+
+	public void atualizarMensagem(Mensagem mensagem) {
+		this.mensagem = mensagem;
 	}
 }

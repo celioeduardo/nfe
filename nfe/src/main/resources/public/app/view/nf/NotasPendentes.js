@@ -46,6 +46,8 @@ Ext.define('nfe.view.nf.NotasPendentes', {
             align: 'right'
         },{
             text: 'Observação',
+            dataIndex: 'msgDescricao',
+            renderer: 'rendererObservacao',
             flex: 1
         }
     ]

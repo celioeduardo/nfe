@@ -12,13 +12,15 @@ public class NotaFiscalData {
 	private Long publicoCodigo;
 	private String publicoNome;
 	private String tipo;
-	
+	private Long msgCodigo;
+	private String msgDescricao;
 	
 	public NotaFiscalData(){}
 	
 	public NotaFiscalData(String notaFiscalId,Long numero, String serie, Date emissao,
 			Double valor, String tipoPublico,Long codigoPublico,
-			String nomePublico,String tipo) {
+			String nomePublico,String tipo,
+			Long msgCodigo, String msgDescricao) {
 		super();
 		this.notaFiscalId=notaFiscalId;
 		this.numero = numero;
@@ -29,7 +31,38 @@ public class NotaFiscalData {
 		this.publicoCodigo=codigoPublico;
 		this.publicoNome=nomePublico;
 		this.tipo=tipo;
-		
+		this.msgCodigo = msgCodigo;
+		this.msgDescricao = msgDescricao;
+	}
+	public NotaFiscalData(String notaFiscalId,Long numero, String serie, Date emissao,
+			Double valor, String nomePublico,String tipo,
+			Long msgCodigo, String msgDescricao) {
+		super();
+		this.notaFiscalId=notaFiscalId;
+		this.numero = numero;
+		this.serie = serie;
+		this.emissao = emissao;
+		this.valor = valor;
+		this.publicoNome=nomePublico;
+		this.tipo=tipo;
+		this.msgCodigo = msgCodigo;
+		this.msgDescricao = msgDescricao;
+	}
+
+	public Long getMsgCodigo() {
+		return msgCodigo;
+	}
+
+	public void setMsgCodigo(Long msgCodigo) {
+		this.msgCodigo = msgCodigo;
+	}
+
+	public String getMsgDescricao() {
+		return msgDescricao;
+	}
+
+	public void setMsgDescricao(String msgDescricao) {
+		this.msgDescricao = msgDescricao;
 	}
 
 	public Long getNumero() {

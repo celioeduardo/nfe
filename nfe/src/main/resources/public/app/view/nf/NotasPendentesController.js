@@ -66,6 +66,15 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
         return Ext.String.format(
             '<div style="font-size: large;font-weight: bold;font-style: italic;margin-top: 20px;">{0}</div>',
             "R$ " + Ext.util.Format.number(valor,'0,000.00'));
+    },
+
+    rendererObservacao: function(valor, metadata, rec){
+        if (rec.get('msgDescricao') == null) 
+            return '';
+        
+        return Ext.String.format(
+            '<div style="font-style: italic;font-color=red;margin-top: 20px;">{0} - {1}</div>',
+            rec.get('msgCodigo'), rec.get('msgDescricao'));
     }
 
 });
