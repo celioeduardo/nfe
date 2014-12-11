@@ -34,7 +34,7 @@ import com.hadrion.nfe.tipos.Cnpj;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={Application.class}, loader = SpringApplicationContextLoader.class)
-@ActiveProfiles("teste")
+@ActiveProfiles("test")
 @Transactional
 public abstract class DominioTest extends RastreadorEventoTest {
 	@Autowired

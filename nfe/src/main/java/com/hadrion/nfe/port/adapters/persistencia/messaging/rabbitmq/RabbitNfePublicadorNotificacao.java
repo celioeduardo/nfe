@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import com.hadrion.comum.port.adapter.messaging.rabbitmq.RabbitMQPublicadorNotificacao;
 
 @Component
-@Profile({"dev","prod"})
+@Profile({"!test"})
 public class RabbitNfePublicadorNotificacao extends
 		RabbitMQPublicadorNotificacao {
 

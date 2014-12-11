@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 import com.hadrion.nfe.dominio.modelo.lote.NotaFiscalAutorizada;
 
 @Component
-@Profile({"dev", "prod"})
+//@Profile({"dev", "prod"})
+@Profile({"!test"})
 public class RabbitMQNotaFiscalAutorizadaListener extends RabbitNfeEventoListener{
 
 //	@Autowired

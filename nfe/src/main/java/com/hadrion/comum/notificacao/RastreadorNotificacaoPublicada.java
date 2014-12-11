@@ -2,23 +2,45 @@ package com.hadrion.comum.notificacao;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
 import com.hadrion.comum.Afirmacao;
 
+@Entity
+@SequenceGenerator(name="SEQ", sequenceName="SQ_RASTREADOR_NOTIFICACAO")
+@Table(name="RASTREADOR_NOTIFICACAO")
 public class RastreadorNotificacaoPublicada extends Afirmacao implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
+    @Version
+    @Column(name="VERSAO")
     private int versaoConcorrencia;
+    
+    @Column(name="ID_MAIS_RECENTE_PUB")
     private long notificacaoIdMaisRecentePublicada;
-    private long rastreadorNotificacaoPublicadaId;
+    
+    @Column(name="NOME")
     private String nomeTipo;
-
+    
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
+	@Column(name="ID")
+    private long rastreadorNotificacaoPublicadaId;
+    
     public RastreadorNotificacaoPublicada(String nomeTipo) {
         this();
 
         this.setNomeTipo(nomeTipo);
     }
-
+    
     public void falhaQuandoViolarConcorrencia(int versao) {
         this.assertEstadoVerdadeiro(
                 versao == this.versaoConcorrencia(),

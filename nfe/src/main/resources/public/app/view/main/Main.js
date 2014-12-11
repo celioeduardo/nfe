@@ -70,7 +70,7 @@ Ext.define('nfe.view.main.Main', {
         },   
         region: 'center',
         xtype: 'tabpanel',
-        //ui: 'navigation',
+        ui: 'navigation',
         tabPosition: 'left',
         tabRotation: 0,
         tabBar: {

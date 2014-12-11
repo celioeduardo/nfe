@@ -16,14 +16,39 @@ package com.hadrion.comum.evento;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import com.hadrion.comum.Afirmacao;
 import com.hadrion.comum.dominio.modelo.EventoDominio;
 
+@Entity
+@SequenceGenerator(name="SEQ", sequenceName="SQ_STORED_EVENT")
+@Table(name="STORED_EVENT")
 public class StoredEvent extends Afirmacao {
-
-    private String eventBody;
-    private long eventId;
+	
+	@Lob
+	@Column(name="BODY")
+	private String eventBody;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
+	@Column(name="ID")
+	private long eventId;
+	
+	@Temporal(TemporalType.TIME)
+	@Column(name="OCCURRED_ON")
     private Date occurredOn;
+	
+	@Column(name="TYPE")
     private String typeName;
 
     public StoredEvent(String aTypeName, Date anOccurredOn, String anEventBody) {

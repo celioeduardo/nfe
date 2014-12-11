@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
@@ -89,6 +90,10 @@ public class Lote {
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
 	@Column(name="ID")
 	private Long id;
+	
+	@Version
+    @Column(name="VERSAO")
+    private int versaoConcorrencia;
 	
 	public int quantidadeNotas() {
 		return notas.size();

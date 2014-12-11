@@ -1,4 +1,4 @@
-{
+[{
   "NotaFiscalId" : "013924F30E424CC4E050007F010060FB",
   "chaveAcesso" : "31131016832651000420550010000199361002699180",
   "numero" : 618,
@@ -360,4 +360,4 @@
      "localEmbarque": "Local do Embarque",
      "localDespacho": "Despacho"
   }
-}
+}]

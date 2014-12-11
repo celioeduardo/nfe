@@ -27,6 +27,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
@@ -181,6 +182,10 @@ public class NotaFiscal {
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
 	@Column(name="ID")
 	private Long id;
+	
+	@Version
+    @Column(name="VERSAO")
+    private int versaoConcorrencia;
 	
 	@SuppressWarnings("unused")
 	private NotaFiscal() {

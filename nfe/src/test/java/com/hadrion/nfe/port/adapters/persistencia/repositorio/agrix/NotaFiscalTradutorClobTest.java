@@ -24,7 +24,7 @@ import com.hadrion.nfe.dominio.config.Application;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@ActiveProfiles("teste")
+@ActiveProfiles("test")
 public class NotaFiscalTradutorClobTest {
 
 	@Autowired

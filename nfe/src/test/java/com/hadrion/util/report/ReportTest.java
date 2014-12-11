@@ -39,7 +39,7 @@ import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@ActiveProfiles("teste")
+@ActiveProfiles("test")
 public class ReportTest {
 	@Autowired
 	private NotaFiscalRepositorio repositorio;

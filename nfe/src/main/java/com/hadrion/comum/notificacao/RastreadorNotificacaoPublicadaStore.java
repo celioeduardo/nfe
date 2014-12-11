@@ -9,7 +9,7 @@ public interface RastreadorNotificacaoPublicadaStore {
     public RastreadorNotificacaoPublicada rastreadorNotificacaoPublicada(String nomeTipo);
 
     public void rastrearNotificacaoMaisRecentePublicada(
-            RastreadorNotificacaoPublicada ratreadorNotificacaoPublicada,
+            RastreadorNotificacaoPublicada rastreadorNotificacaoPublicada,
             List<Notificacao> notificacoes);
 
     public String nomeTipo();

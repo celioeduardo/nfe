@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 import com.hadrion.comum.notificacao.PublicadorNotificacao;
 
 @Component
-@Profile({"dev", "prod"})
+//@Profile({"dev", "prod"})
+@Profile({"!test"})
 public class TemporizadorNotificacao {
 	
 	@Autowired

@@ -11,7 +11,7 @@ import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamento;
 import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamentoId;
 import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamentoRepositorio;
 
-@Profile("teste")
+@Profile("test")
 @Repository("solicitacaoCancelamentoRepositorio")
 public class MockSolicitacaoCancelamentoRepositorio  implements SolicitacaoCancelamentoRepositorio {
 

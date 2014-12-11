@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaRepositorio;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.AutorizacaoService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
 
@@ -24,9 +25,9 @@ public class EnviarLoteService {
 		try {
 			retorno = autorizacaoService.autorizar(lote,certificado);
 		} catch (Throwable t) {
-			throw new RuntimeException(t);
-			//lote.erroTransmissao(new Mensagem(-1, t.getMessage()));
-			//return;
+			//throw new RuntimeException(t);
+			lote.erroTransmissao(new Mensagem(-1, t.getMessage()));
+			return;
 		}
 		
 		if (retorno != null && retorno.sucesso())

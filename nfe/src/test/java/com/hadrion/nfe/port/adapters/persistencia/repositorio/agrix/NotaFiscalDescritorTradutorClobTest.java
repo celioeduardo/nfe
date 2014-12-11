@@ -41,7 +41,7 @@ import com.hadrion.nfe.tipos.Dinheiro;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@ActiveProfiles("teste")
+@ActiveProfiles("test")
 public class NotaFiscalDescritorTradutorClobTest {
 
 	@Autowired
