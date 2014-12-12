@@ -34,12 +34,15 @@ public class DestinatarioDeserializer implements JsonDeserializer<Destinatario>{
 				s(j,"complemento"),
 				s(j,"bairro"),
 			    new Municipio(i(j,"codigoMunicipio"),s(j,"municipio"),Uf.valueOf(s(j,"uf"))),
-			    new Pais(1058L,s(j,"pais")),
+			    new Pais(l(j,"pais"),s(j,"paisNome")),
 			    new Cep(l(j,"cep")),
 			    telefone);
 		
 		InscricaoEstadual ie = new InscricaoEstadual(s(j,"ie")); 
-		Email email = new Email(s(j,"email"));
+		Email email = null; 
+		if (tem(j,"email"))
+			email = new Email(s(j,"email"));
+		Long inscricaoSuframa = tem(j,"inscricaoSuframa") ? l(j,"inscricaoSuframa") : null;
 		Destinatario destinatario = new Destinatario(
 				cnpj(j), 
 			    cpf(j),
@@ -50,7 +53,7 @@ public class DestinatarioDeserializer implements JsonDeserializer<Destinatario>{
 				telefone,
 				IndicadorIe.obterPeloCodigo(i(j,"indicadorIe")),
 				ie, 
-				l(j,"inscricaoSuframa"),
+				inscricaoSuframa,
 				email);
 		
 		return destinatario;

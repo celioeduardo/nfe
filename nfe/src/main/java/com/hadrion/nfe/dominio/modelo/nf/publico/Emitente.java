@@ -10,6 +10,7 @@ import javax.persistence.Embedded;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -75,8 +76,8 @@ public class Emitente {
 		super();
 		this.cnpj = cnpj;
 		this.cpf = cpf;
-		this.razaoSocial = razaoSocial;
-		this.nomeFantasia = nomeFantasia;
+		this.razaoSocial = StringUtils.trim(razaoSocial);
+		this.nomeFantasia = StringUtils.trim(nomeFantasia);
 		this.endereco = endereco;
 		this.telefone = telefone;
 		this.ie = ie;

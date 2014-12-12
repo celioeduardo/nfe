@@ -58,7 +58,7 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 				result.add(descritor);
 			else {
 				NotaFiscal nf = notas.get(descritor.notaFiscalId());
-				if (nf.pendenteDeTransmissao() && !notaNaoEstaEmLotePendente(nf)){
+				if (nf.pendenteDeTransmissao() && notaNaoEstaEmLotePendente(nf)){
 					result.add(descritor);
 					descritor.atualizarMensagem(nf.mensagem());
 				}
@@ -69,7 +69,7 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	}
 	
 	private boolean notaNaoEstaEmLotePendente(NotaFiscal nf){
-		return loteRepositorio.lotesPendentesDaNota(nf.notaFiscalId()).size() > 0;
+		return loteRepositorio.lotesPendentesDaNota(nf.notaFiscalId()).size() == 0;
 	}
 	
 	private Map<NotaFiscalId, NotaFiscal> obterNotas(List<NotaFiscalId> ids){

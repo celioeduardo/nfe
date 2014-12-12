@@ -89,8 +89,10 @@ public class Item {
 	
 	public Item mesclar(Item item){
 		if (equals(item)) return this;
-
-		return new Item(item.produto, item.imposto, item.informacaoAdicional);
+		this.produto = item.produto;
+		this.imposto = item.imposto;
+		this.informacaoAdicional = item.informacaoAdicional;
+		return this;
 	}
 	
 	/**

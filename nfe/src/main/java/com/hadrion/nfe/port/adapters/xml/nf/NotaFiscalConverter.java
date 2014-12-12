@@ -5,6 +5,8 @@ import static org.apache.commons.lang.StringUtils.leftPad;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
@@ -118,19 +120,39 @@ public class NotaFiscalConverter extends AbstractConverter {
 		writer.endNode();
 
 		convertIf("cobr", nf.cobranca(), writer, context);
-
-		writer.startNode("infAdic");
-		if (nf.informacaoFisco() != null)
-			convertIf("infAdFisco", nf.informacaoFisco().texto(), writer,
-					context);
-		if (nf.informacaoContribuinte() != null)
-			convertIf("infCpl", nf.informacaoContribuinte().texto(), writer,
-					context);
-		writer.endNode();
-
+		
+		String infAdFisco = infAdFisco(nf);
+		String infCpl = infCpl(nf);
+		
+		if (infAdFisco != null || infCpl != null){
+			writer.startNode("infAdic");
+			if (infAdFisco != null)
+				convertIf("infAdFisco", infAdFisco,writer,context);
+			if (infCpl != null)
+				convertIf("infCpl", infCpl,writer,context);
+			writer.endNode();
+		}
+		
 		convertIf("exporta", nf.exportacao(), writer, context);
 	}
-
+	
+	private String infAdFisco(NotaFiscal nf){
+		if (nf.informacaoFisco() != null)
+			return limparInformacao(nf.informacaoFisco().texto());
+		return null;
+	}
+	private String infCpl(NotaFiscal nf){
+		if (nf.informacaoContribuinte() != null)
+			return limparInformacao(nf.informacaoContribuinte().texto());
+		return null;
+	}
+	
+	private String limparInformacao(String texto){
+		String result = StringUtils.replace(StringUtils.replace(texto,"\n"," "),"\r"," ");
+		result = StringUtils.replace(texto,"  "," ");
+		return StringUtils.trimToNull(result);
+	}
+	
 	private String versaoAplicativo() {
 		return versaoAplicativo;
 	}

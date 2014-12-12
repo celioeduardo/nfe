@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -103,8 +104,8 @@ public class DescritorProduto {
 		this.gtin = gtin;
 		this.descricao = descricao;
 		this.ncm = ncm;
-		this.nve = nve;
-		this.extipi = extipi;
+		this.nve = StringUtils.trimToNull(nve);
+		this.extipi = StringUtils.trimToNull(extipi);
 		this.cfop = cfop;	
 		this.unidadeComercial = unidadeComercial;
 		this.quantidadeComercial = quantidadeComercial;

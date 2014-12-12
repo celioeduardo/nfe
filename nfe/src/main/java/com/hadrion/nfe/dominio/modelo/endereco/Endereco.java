@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -43,10 +44,10 @@ public class Endereco {
 			String bairro, Municipio municipio, Pais pais, Cep cep,
 			Telefone telefone) {
 		super();
-		this.logradouro = logradouro;
-		this.numero = numero;
-		this.complemento = complemento;
-		this.bairro = bairro;
+		this.logradouro = StringUtils.trim(logradouro);
+		this.numero = StringUtils.trim(numero);
+		this.complemento = StringUtils.trim(complemento);
+		this.bairro = StringUtils.trim(bairro);
 		this.municipio = municipio;
 		this.pais = pais;
 		this.cep = cep;

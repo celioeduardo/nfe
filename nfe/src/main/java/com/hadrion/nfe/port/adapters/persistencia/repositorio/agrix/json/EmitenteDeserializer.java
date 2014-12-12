@@ -33,7 +33,7 @@ public class EmitenteDeserializer implements JsonDeserializer<Emitente>{
 				s(j,"complemento"),
 				s(j,"bairro"),
 			    new Municipio(i(j,"codigoMunicipio"),s(j,"municipio"),Uf.valueOf(s(j,"uf"))),
-			    new Pais(1058L,s(j,"pais")),
+			    new Pais(l(j,"pais"),s(j,"paisNome")),
 			    new Cep(l(j,"cep")),
 			    telefone);
 		
@@ -63,7 +63,7 @@ public class EmitenteDeserializer implements JsonDeserializer<Emitente>{
 	}
 	
 	private Crt crt(JsonObject j){
-		return tem(j,"crt")?Crt.valueOf(s(j,"crt")):null;
+		return tem(j,"crt")?Crt.obterPeloCodigo(i(j,"crt")):null;
 	}
 	
 	private Long l(JsonObject j, String propriedade){

@@ -14,6 +14,9 @@ public class GtinConverter extends AbstractSingleValueConverter{
 	@Override
 	public Object fromString(String str) {
 		return new Gtin(str);
+		/*if (str != null && !str.isEmpty())
+			return new Gtin(str);
+		return null;*/
 	}
 
 }

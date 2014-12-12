@@ -35,7 +35,7 @@ public class DestinatarioConverter extends AbstractConverter implements Converte
 		convert("enderDest", dest.endereco(), writer, context);
 		convert("indIEDest",dest.indicadorIe(),writer, context);
 		convertIf("IE",dest.ie(),writer, context);
-		convert("ISUF",dest.inscricaoSuframa(),writer, context);
+		convertIf("ISUF",dest.inscricaoSuframa(),writer, context);
 		convertIf("email",dest.email(),writer,context);
 	}
 	

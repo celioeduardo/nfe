@@ -26,7 +26,7 @@ public class DescritorProdutoConverter extends AbstractConverter{
 			MarshallingContext context) {
 		DescritorProduto produto = (DescritorProduto) source;
 		novoNo("cProd", produto.codigo(), writer);
-		convertIf("cEAN",produto.gtin(),writer,context);
+		convertVazio("cEAN",produto.gtin(),writer,context);
 		convert("xProd",produto.descricao(),writer,context);
 		convert("NCM",produto.ncm(),writer,context);
 		convertIf("NVE",produto.nve(),writer,context);
@@ -36,14 +36,14 @@ public class DescritorProdutoConverter extends AbstractConverter{
 		convert("qCom",produto.quantidadeComercial(),writer,context);
 		convert("vUnCom",produto.valorUnitarioComercializacao(),writer,context);
 		convert("vProd",produto.totalBruto(),writer,context);
-		convertIf("cEANTrib",produto.gtinTributavel(),writer,context);
+		convertVazio("cEANTrib",produto.gtinTributavel(),writer,context);
 		convert("uTrib",produto.unidadeTributavel(),writer,context);
 		convert("qTrib",produto.quantidadeTributavel(),writer,context);
 		convert("vUnTrib",produto.valorUnitarioTributacao(),writer,context);
-		convert("vFrete",produto.totalFrete(),writer,context);
-		convert("vSeg",produto.totalSeguro(),writer,context);
-		convert("vDesc",produto.valorDesconto(),writer,context);
-		convert("vOutro",produto.outrasDespesasAcessorias(),writer,context);
+		convertMaiorQueZero("vFrete",produto.totalFrete(),writer,context);
+		convertMaiorQueZero("vSeg",produto.totalSeguro(),writer,context);
+		convertMaiorQueZero("vDesc",produto.valorDesconto(),writer,context);
+		convertMaiorQueZero("vOutro",produto.outrasDespesasAcessorias(),writer,context);
 		convert("indTot",1,writer,context);
 		convertIf("detExport",produto.exportacao(),writer,context);
 		convertIf("comb",produto.combustivel(),writer,context);

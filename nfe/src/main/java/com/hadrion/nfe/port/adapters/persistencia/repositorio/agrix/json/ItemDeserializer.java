@@ -49,8 +49,8 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 
 		codigo=s(j,"codigo");
 		descricao = s(j,"descricao");
-		nve=s(j,"nve");
-		extipi=s(j,"extIpi");
+		nve=tem(j,"nve") ? s(j,"nve") : null;
+		extipi= tem(j,"extIpi") ? s(j,"extIpi") : null;
 		unidadeComercial=s(j,"unidade");
 		unidadeTributavel=s(j,"unidadeTributavel");
 		gtin = gtin(j,"gtin");

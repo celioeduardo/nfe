@@ -11,6 +11,7 @@ import com.hadrion.nfe.dominio.modelo.lote.SituacaoLote;
 public interface LoteRepositorioSpringData extends JpaRepository<Lote, Long>{
 
 	List<Lote> findBySituacao(SituacaoLote situacao);
+	List<Lote> findBySituacaoIn(List<SituacaoLote> situacoes);
 
 	Lote findByLoteId(LoteId loteId);
 	

@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -29,7 +30,7 @@ public class Municipio {
 	public Municipio(int codigo, String nome, Uf uf) {
 		super();
 		this.codigo = codigo;
-		this.nome = nome;
+		this.nome = StringUtils.trim(nome);
 		this.uf = uf;
 	}
 	

@@ -22,7 +22,7 @@ public class FaturaConverter extends AbstractConverter{
 		Fatura fatura = (Fatura) source;
 		convert("nFat", fatura.numero(), writer, context);
 		convert("vOrig", fatura.valor(), writer, context);
-		convertIf("vDesc", fatura.desconto(), writer, context);
+		convertMaiorQueZero("vDesc", fatura.desconto(), writer, context);
 		convert("vLiq", fatura.liquido(), writer, context);
 	}
 

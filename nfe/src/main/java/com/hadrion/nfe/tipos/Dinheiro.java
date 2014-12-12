@@ -77,6 +77,9 @@ public class Dinheiro {
 	public boolean menorQueZero(){
 		return quantia < 0L;
 	}
+	public boolean maiorQueZero(){
+		return quantia > 0L;
+	}
 	
 	@Override
 	public boolean equals(Object objeto) {

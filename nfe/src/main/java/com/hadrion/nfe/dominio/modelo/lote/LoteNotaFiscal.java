@@ -21,6 +21,7 @@ import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRejeitada;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ProtocoloNotaProcessada;
@@ -130,6 +131,9 @@ class LoteNotaFiscal {
 		this.setDataHoraProcessamento(dataHoraProcessamento);
 		this.setMensagem(mensagem);
 		this.mudarParaRejeitada();
+		
+		DominioRegistro.eventoDominioPublicador().
+			publicar(new NotaFiscalRejeitada(notaFiscalId(),mensagem));
 	}
 	
 	void denegada(

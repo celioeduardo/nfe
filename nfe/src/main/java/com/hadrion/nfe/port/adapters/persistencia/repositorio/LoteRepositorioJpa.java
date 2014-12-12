@@ -1,6 +1,7 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,7 +61,12 @@ public class LoteRepositorioJpa implements LoteRepositorio {
 	public List<Lote> lotesPendentesDaNota(NotaFiscalId notaFiscalId) {
 		List<Lote> result = new ArrayList<Lote>(); 
 		
-		List<Lote> lotesPendentes = repositorio.findBySituacao(SituacaoLote.NAO_ENVIADO);
+		List<SituacaoLote> situacoesPendentes = Arrays.asList(
+				SituacaoLote.NAO_ENVIADO,
+				SituacaoLote.PROCESSANDO); 
+		
+		List<Lote> lotesPendentes = repositorio
+				.findBySituacaoIn(situacoesPendentes);
 
 		for (Lote lote : lotesPendentes) 
 			if (lote.temNota(notaFiscalId))

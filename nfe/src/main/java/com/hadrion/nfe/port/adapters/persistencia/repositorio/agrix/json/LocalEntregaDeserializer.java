@@ -30,7 +30,7 @@ public class LocalEntregaDeserializer implements JsonDeserializer<LocalEntrega>{
 				s(j,"complemento"),
 				s(j,"bairro"),
 			    new Municipio(i(j,"codigoMunicipio"),s(j,"municipio"),Uf.valueOf(s(j,"uf"))),
-			    new Pais(1L,s(j,"pais")),
+			    new Pais(l(j,"pais"),s(j,"paisNome")),
 			    new Cep(l(j,"cep")),
 			    telefone(j));
 		

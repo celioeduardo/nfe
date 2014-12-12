@@ -25,7 +25,7 @@ public class EnviarLoteService {
 		try {
 			retorno = autorizacaoService.autorizar(lote,certificado);
 		} catch (Throwable t) {
-			//throw new RuntimeException(t);
+			t.printStackTrace();
 			lote.erroTransmissao(new Mensagem(-1, t.getMessage()));
 			return;
 		}

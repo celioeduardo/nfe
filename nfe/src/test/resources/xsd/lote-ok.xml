@@ -1,250 +1,49 @@
-<enviNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="3.10">
-	<idLote>123456</idLote>
-	<indSinc>0</indSinc>
-	<NFe>
-		<infNFe Id="NFe31141086675642000106550020002048561000000015"
-			versao="3.10">
-			<ide>
-				<cUF>31</cUF>
-				<cNF>00000001</cNF>
-				<natOp>VDA.MER.ADQ.REC.TER.ENTR.FUTUR</natOp>
-				<indPag>0</indPag>
-				<mod>55</mod>
-				<serie>2</serie>
-				<nNF>204856</nNF>
-				<dhEmi>2014-10-27T00:00:00-02:00</dhEmi>
-				<dhSaiEnt>2014-10-27T00:00:00-02:00</dhSaiEnt>
-				<tpNF>1</tpNF>
-				<idDest>1</idDest>
-				<cMunFG>3162104</cMunFG>
-				<tpImp>1</tpImp>
-				<tpEmis>1</tpEmis>
-				<cDV>5</cDV>
-				<tpAmb>2</tpAmb>
-				<finNFe>1</finNFe>
-				<indFinal>0</indFinal>
-				<indPres>9</indPres>
-				<procEmi>0</procEmi>
-				<verProc>1.0</verProc>
-			</ide>
-			<emit>
-				<CNPJ>86675642000106</CNPJ>
-				<xNome>COOPERATIVA AGROPECUARIA ALTO PARANAIBA</xNome>
-				<xFant>COOPERATIVA AGROPECUARIA ALTO PARANAIBA</xFant>
-				<enderEmit>
-					<xLgr>ROD. MG 235 KM 89</xLgr>
-					<nro>443</nro>
-					<xCpl>CX P 37</xCpl>
-					<xBairro>GUARDA DOS FERREIROS</xBairro>
-					<cMun>3162104</cMun>
-					<xMun>SAO GOTARDO - MG</xMun>
-					<UF>MG</UF>
-					<CEP>38800000</CEP>
-					<cPais>1058</cPais>
-					<xPais>BRASIL</xPais>
-					<fone>3436161200</fone>
-				</enderEmit>
-				<IE>6219059370082</IE>
-				<IEST>6219059370082</IEST>
-			</emit>
-			<dest>
-				<CNPJ>00019142340659</CNPJ>
-				<xNome>CARLOS BERNARDES RODRIGUES              </xNome>
-				<enderDest>
-					<xLgr>R. TAB. ANTONIO MELGACO, 05              </xLgr>
-					<nro>null</nro>
-					<xBairro>
-					</xBairro>
-					<cMun>3162104</cMun>
-					<xMun>SAO GOTARDO</xMun>
-					<UF>MG</UF>
-					<CEP>38800000</CEP>
-					<cPais>1058</cPais>
-					<xPais>BRASIL</xPais>
-					<fone>
-					</fone>
-				</enderDest>
-				<indIEDest>1</indIEDest>
-				<IE>1</IE>
-				<ISUF>0</ISUF>
-				<email>
-				</email>
-			</dest>
-			<retirada>
-				<CNPJ>00019142340659</CNPJ>
-				<xLgr>R. TAB. ANTONIO MELGACO, 05              </xLgr>
-				<nro>null</nro>
-				<xBairro>
-				</xBairro>
-				<cMun>3162104</cMun>
-				<xMun>SAO GOTARDO - MG</xMun>
-				<UF>MG</UF>
-			</retirada>
-			<entrega>
-				<CNPJ>00019142340659</CNPJ>
-				<xLgr>R. TAB. ANTONIO MELGACO, 05              </xLgr>
-				<nro>null</nro>
-				<xBairro>
-				</xBairro>
-				<cMun>3162104</cMun>
-				<xMun>SAO GOTARDO - MG</xMun>
-				<UF>MG</UF>
-			</entrega>
-			<det nItem="1">
-				<prod>
-					<cProd>9004</cProd>
-					<xProd>SOJA CONSUMO</xProd>
-					<NCM>12019000</NCM>
-					<NVE>9004</NVE>
-					<EXTIPI>1</EXTIPI>
-					<CFOP>5117</CFOP>
-					<uCom>KG</uCom>
-					<qCom>100.0000</qCom>
-					<vUnCom>20.0</vUnCom>
-					<vProd>2000.00</vProd>
-					<uTrib>KG</uTrib>
-					<qTrib>100.0000</qTrib>
-					<vUnTrib>20.0</vUnTrib>
-					<vFrete>0.00</vFrete>
-					<vSeg>0.00</vSeg>
-					<vDesc>0.00</vDesc>
-					<vOutro>0.00</vOutro>
-					<indTot>1</indTot>
-				</prod>
-				<imposto>
-					<vTotTrib>0.00</vTotTrib>
-					<ICMS>
-						<ICMS00>
-							<orig>0</orig>
-							<CST>00</CST>
-							<modBC>3</modBC>
-							<vBC>0.00</vBC>
-							<pICMS>0.0000</pICMS>
-							<vICMS>0.00</vICMS>
-						</ICMS00>
-					</ICMS>
-					<PIS>
-						<PISOutr>
-							<CST>99</CST>
-							<vBC>0.00</vBC>
-							<pPIS>0.00</pPIS>
-							<vPIS>0.00</vPIS>
-						</PISOutr>
-					</PIS>
-					<COFINS>
-						<COFINSOutr>
-							<CST>99</CST>
-							<vBC>0.00</vBC>
-							<pCOFINS>0.00</pCOFINS>
-							<vCOFINS>0.00</vCOFINS>
-						</COFINSOutr>
-					</COFINS>
-				</imposto>
-			</det>
-			<total>
-				<ICMSTot>
-					<vBC>0.00</vBC>
-					<vICMS>0.00</vICMS>
-					<vICMSDeson>0.00</vICMSDeson>
-					<vBCST>0.00</vBCST>
-					<vST>0.00</vST>
-					<vProd>2000.00</vProd>
-					<vFrete>0.00</vFrete>
-					<vSeg>0.00</vSeg>
-					<vDesc>0.00</vDesc>
-					<vII>0.00</vII>
-					<vIPI>0.00</vIPI>
-					<vPIS>0.00</vPIS>
-					<vCOFINS>0.00</vCOFINS>
-					<vOutro>0.00</vOutro>
-					<vNF>2000.00</vNF>
-					<vTotTrib>0.00</vTotTrib>
-				</ICMSTot>
-			</total>
-			<transp>
-				<modFrete>0</modFrete>
-				<transporta>
-					<xNome>CARLOS BERNARDES RODRIGUES</xNome>
-					<xEnder>R. TAB. ANTONIO MELGACO, 05 ,</xEnder>
-					<xMun>SAO GOTARDO - MG</xMun>
-					<UF>MG</UF>
-				</transporta>
-				<veicTransp>
-					<placa>GMH1014</placa>
-					<UF>MG</UF>
-				</veicTransp>
-			</transp>
-			<cobr />
-			<infAdic>
-				<infAdFisco>ICMS DIFERIDO CONF. ITEM 1, PARTE 1 DO ANEXO II, ART. 7
-					E 8 DO DECRETO 43080/2002 - RICMS/MG. - N.FISCAL EMITIDA NOS TERMOS
-					DO INCISO I, PARAG. 1, ARTIGO 20, PARTE 1, ANEXO V, DO RICMS/MG -
-				</infAdFisco>
-				<infCpl>OPERADOR: COOPADAP</infCpl>
-			</infAdic>
-		</infNFe>
-		<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-			<SignedInfo>
-				<CanonicalizationMethod
-					Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-				<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-				<Reference URI="#NFe31141086675642000106550020002048561000000015">
-					<Transforms>
-						<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-						<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-					</Transforms>
-					<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-					<DigestValue>zut4jnK3G6I1ouXSnpRH7joZqT4=</DigestValue>
-				</Reference>
-			</SignedInfo>
-			<SignatureValue>OdnxDETOw11FYUGECTIBVotK4FEV83OPFzeZH+3XgbdFwTtJQTFH1HuymCAnroNAgmadbrJbEHPJ
-				dVH7EVvBuf6AE9eLQSin/d9dcnu5VPUh4h9FyxOL/6QXtlrDOWrmREwHSFa85WVgy0s+TwhN7J7g
-				yPQi6hyilqFc7A/Jml024uOhSMX/FDtmsOJTUnly2+kW9c5oMXdwVuyDNRpXUmYU0RUOwHoq1sD9
-				nQ/8mVMBmjbY6tcVaQUKvB3D24XYjEYx5YyM1lFavcG/TJfHrUVXWV4LkxS38iuzlCXIXwcNXdat
-				E9BzR7FyXCQgZwAzGpAtv1EeZ1iIQfRMUXS63A==
-			</SignatureValue>
-			<KeyInfo>
-				<X509Data>
-					<X509Certificate>MIIIDDCCBfSgAwIBAgIINjt3COjyYVUwDQYJKoZIhvcNAQELBQAwdTELMAkGA1UEBhMCQlIxEzAR
-						BgNVBAoTCklDUC1CcmFzaWwxNjA0BgNVBAsTLVNlY3JldGFyaWEgZGEgUmVjZWl0YSBGZWRlcmFs
-						IGRvIEJyYXNpbCAtIFJGQjEZMBcGA1UEAxMQQUMgU0VSQVNBIFJGQiB2MjAeFw0xNDA0MTUxNzIy
-						MDBaFw0xNTA0MTUxNzIyMDBaMIHvMQswCQYDVQQGEwJCUjELMAkGA1UECBMCTUcxFTATBgNVBAcT
-						DFNBIE8gR09UQVJETzETMBEGA1UEChMKSUNQLUJyYXNpbDE2MDQGA1UECxMtU2VjcmV0YXJpYSBk
-						YSBSZWNlaXRhIEZlZGVyYWwgZG8gQnJhc2lsIC0gUkZCMRYwFAYDVQQLEw1SRkIgZS1DTlBKIEEx
-						MRMwEQYDVQQLEwpBUiBLUllQVE9OMUIwQAYDVQQDEzlDT09QRVJBVElWQSBBR1JPUEVDVUFSSUEg
-						RE8gQUxUTyBQQVJBTkFJQkE6ODY2NzU2NDIwMDAxMDYwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
-						ggEKAoIBAQCKVvSWPy4I1f1K1WhyZxK6sLPPCWU3Uz4KiwKtUdh0gJro/UWzK/EkgmKaUOp1T0+L
-						5gBzFpSKYrbxiHesbNfUbrqSqo0gbvepW/mkayWQ1KnIvv9M5OqS/K3ahACGn8dUGqaquZPCYiVP
-						70u1Dm7emY8avxQguMAKles4su/6Zh6gNpQGFpBErsW+bMPpRVWKEuhDk1vfJgY+wpYnMoS5cQH0
-						0QuLrULH6B48DpGmE7dT2RAhsELxFJAVe2PGLWLS+XWlfxb127ZUShbwUStk60odg4RXSwPg6NOg
-						8MmKnf7ZeLA2Cpu4eY9POirENGWb2+0PGj+0l3rR52iti8WTAgMBAAGjggMjMIIDHzCBmQYIKwYB
-						BQUHAQEEgYwwgYkwSAYIKwYBBQUHMAKGPGh0dHA6Ly93d3cuY2VydGlmaWNhZG9kaWdpdGFsLmNv
-						bS5ici9jYWRlaWFzL3NlcmFzYXJmYnYyLnA3YjA9BggrBgEFBQcwAYYxaHR0cDovL29jc3AuY2Vy
-						dGlmaWNhZG9kaWdpdGFsLmNvbS5ici9zZXJhc2FyZmJ2MjAJBgNVHRMEAjAAMB8GA1UdIwQYMBaA
-						FLKgxD1GnnzIhWwIHhAylGVGcEFzMHEGA1UdIARqMGgwZgYGYEwBAgENMFwwWgYIKwYBBQUHAgEW
-						Tmh0dHA6Ly9wdWJsaWNhY2FvLmNlcnRpZmljYWRvZGlnaXRhbC5jb20uYnIvcmVwb3NpdG9yaW8v
-						ZHBjL2RlY2xhcmFjYW8tcmZiLnBkZjCB8wYDVR0fBIHrMIHoMEqgSKBGhkRodHRwOi8vd3d3LmNl
-						cnRpZmljYWRvZGlnaXRhbC5jb20uYnIvcmVwb3NpdG9yaW8vbGNyL3NlcmFzYXJmYnYyLmNybDBE
-						oEKgQIY+aHR0cDovL2xjci5jZXJ0aWZpY2Fkb3MuY29tLmJyL3JlcG9zaXRvcmlvL2xjci9zZXJh
-						c2FyZmJ2Mi5jcmwwVKBSoFCGTmh0dHA6Ly9yZXBvc2l0b3Jpby5pY3BicmFzaWwuZ292LmJyL2xj
-						ci9TZXJhc2EvcmVwb3NpdG9yaW8vbGNyL3NlcmFzYXJmYnYyLmNybDAOBgNVHQ8BAf8EBAMCBeAw
-						HQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMIG8BgNVHREEgbQwgbGBGURJUkVUT1JJQUBD
-						T09QQURBUC5DT00uQlKgIQYFYEwBAwKgGBMWTUFSQ0VMTyBBS0lISVJPIE1PUklUQaAZBgVgTAED
-						A6AQEw44NjY3NTY0MjAwMDEwNqA9BgVgTAEDBKA0EzIzMTAxMTk3Mzk3MzIyMzkzNjAwMDAwMDAw
-						MDAwMDAwMDAwMDAyMjgzNDA4NDZTU1BTUKAXBgVgTAEDB6AOEwwwMDAwMDAwMDAwMDAwDQYJKoZI
-						hvcNAQELBQADggIBAK7DiLbmqOhdflZK/XykK1VfDFBE4Qed//idl/TtXm6CNT2CY2G5WTUKU619
-						mc53Q80ANzu41GV4QW9JHxwURpsignUnEkFZIhWRowNdU1Ru075ujW593yeyiS7QPKZqykfOEh7G
-						+nk355nEeOfsM0EbjFp8D21a3puoLJZpvAMBLX7qBUtEkdZug/186vDy+RV0dQJprabap9w5p+vT
-						2OmbzWFZ5IF4SYlZEh6yd9Oh9oB8AaTxs94nQid/WJqaGs1566WOhzaRvWoqBM6yQVNy4TedF57s
-						m8lV1hQHkZg84MvQRjtpb/e/ldnMDCV4QGPwsAOLo2zF+d9kbpJCqALv085D8vYhaEW1+ItDRJlh
-						/kK3yfTgUQj0ShVPcST+FeNOw9Ugcf+bWSrCd4i2pS9wbwa36HEI6Fauq5M1dk/BqqbnGHb1m1dd
-						raT5vgaVp/pwO47OPUSIvdPGbzfbAicZ+E+RtU14zmgjhSuWkyMXEjhhV2/WatLGAEDDnTBQWDLx
-						RwwAD7tEILwkwY33zOSdpxYAgtT0ipHRZXZyid86YR5STdCq5EcHiKkDRJQMKg58f3gx7v7rjzIE
-						dTOO5zqKFdFU5aw1gbgExRD/p0vlFO+VkR+sJI6O1Y2eiOT7r7vX//PxbzOe95fnmb7uixaf8t74
-						V2EmfPv1II/j3NfJ
-					</X509Certificate>
-				</X509Data>
-			</KeyInfo>
-		</Signature>
-	</NFe>
-</enviNFe>
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope"><env:Header><nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao">
+  <cUF>31</cUF>
+  <versaoDados>3.10</versaoDados>
+</nfeCabecMsg></env:Header><env:Body><nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao">
+  <enviNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="3.10">
+    <idLote>123456</idLote>
+    <indSinc>0</indSinc>
+  <NFe><infNFe Id="NFe31141086675642000106550020002048531000000013" versao="3.10"><ide><cUF>31</cUF><cNF>00000001</cNF><natOp>VENDA DE MERC. ADQ. OU REC TER</natOp><indPag>0</indPag><mod>55</mod><serie>2</serie><nNF>204853</nNF><dhEmi>2014-10-21T00:00:00-02:00</dhEmi><dhSaiEnt>2014-10-21T00:00:00-02:00</dhSaiEnt><tpNF>1</tpNF><idDest>1</idDest><cMunFG>3162104</cMunFG><tpImp>1</tpImp><tpEmis>1</tpEmis><cDV>3</cDV><tpAmb>2</tpAmb><finNFe>1</finNFe><indFinal>0</indFinal><indPres>9</indPres><procEmi>0</procEmi><verProc>1.0</verProc></ide><emit><CNPJ>86675642000106</CNPJ><xNome>COOPERATIVA AGROPECUARIA ALTO PARANAIBA</xNome><xFant>COOPERATIVA AGROPECUARIA ALTO PARANAIBA</xFant><enderEmit><xLgr>ROD. MG 235 KM 89</xLgr><nro>443</nro><xCpl>CX P 37</xCpl><xBairro>GUARDA DOS FERREIROS</xBairro><cMun>3162104</cMun><xMun>SAO GOTARDO - MG</xMun><UF>MG</UF><CEP>38800000</CEP><cPais>1058</cPais><xPais>BRASIL</xPais><fone>3436161200</fone></enderEmit><IE>6219059370082</IE><IEST>6219059370082</IEST><CRT>3</CRT></emit><dest><CNPJ>00005860981600</CNPJ><xNome>WALTER SEITI MINAMI</xNome><enderDest><xLgr>FAZ. FAZENDA LOTE 90 A PADAP</xLgr><nro>0</nro><xBairro>ZONA RURAL</xBairro><cMun>3162104</cMun><xMun>RIO PARANAIBA</xMun><UF>MG</UF><CEP>38810000</CEP><cPais>1058</cPais><xPais>BRASIL</xPais></enderDest><indIEDest>1</indIEDest><email>AGROCONTABIL.MARAILDA@GMAIL.COM</email></dest><retirada><CNPJ>00005860981600</CNPJ><xLgr>AV. TABELIAO JOAO LOPES 880</xLgr><nro>880</nro><xBairro>CAMPESTRE</xBairro><cMun>3162104</cMun><xMun>SAO GOTARDO - MG</xMun><UF>MG</UF></retirada><entrega><CNPJ>00005860981600</CNPJ><xLgr>AV. TABELIAO JOAO LOPES 880</xLgr><nro>880</nro><xBairro>CAMPESTRE</xBairro><cMun>3162104</cMun><xMun>SAO GOTARDO - MG</xMun><UF>MG</UF></entrega><det nItem="1"><prod><cProd>8456</cProd><cEAN/><xProd>ORTHOCIDE 500 20 KG</xProd><NCM>38089299</NCM><CFOP>5102</CFOP><uCom>SC</uCom><qCom>2.0000</qCom><vUnCom>335.37</vUnCom><vProd>670.74</vProd><cEANTrib/><uTrib>SC</uTrib><qTrib>2.0000</qTrib><vUnTrib>335.37</vUnTrib><indTot>1</indTot></prod><imposto><vTotTrib>0.00</vTotTrib><ICMS><ICMS00><orig>0</orig><CST>00</CST><modBC>3</modBC><vBC>0.00</vBC><pICMS>0.0000</pICMS><vICMS>0.00</vICMS></ICMS00></ICMS><PIS><PISNT><CST>06</CST></PISNT></PIS><COFINS><COFINSNT><CST>06</CST></COFINSNT></COFINS></imposto></det><total><ICMSTot><vBC>0.00</vBC><vICMS>0.00</vICMS><vICMSDeson>0.00</vICMSDeson><vBCST>0.00</vBCST><vST>0.00</vST><vProd>670.74</vProd><vFrete>0.00</vFrete><vSeg>0.00</vSeg><vDesc>0.00</vDesc><vII>0.00</vII><vIPI>0.00</vIPI><vPIS>0.00</vPIS><vCOFINS>0.00</vCOFINS><vOutro>0.00</vOutro><vNF>670.74</vNF><vTotTrib>0.00</vTotTrib></ICMSTot></total><transp><modFrete>9</modFrete></transp><cobr><fat><nFat>DMV-204853</nFat><vOrig>670.74</vOrig><vLiq>670.74</vLiq></fat><dup><nDup>DMV-204853/01</nDup><dVenc>2014-10-21</dVenc><vDup>670.74</vDup></dup></cobr><infAdic/></infNFe><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><Reference URI="#NFe31141086675642000106550020002048531000000013"><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><DigestValue>KwHiioPyXk0LNE8p1cFh9UcYYjU=</DigestValue></Reference></SignedInfo><SignatureValue>A3+aVes9YreKpX0vZ/sWJV8WxJKSDfdxH8jGjBatYxb+BnIEWxviIZ1hA2XX3h7lrp3GXSbdV07o
+vH4Myqb4ZjCvvDaThvveLQ54s8kclyrtk7Fbo80Z5lCau9o8BzmxCvICTwahE74WM5Hoctq9dIM0
+vjHyqmCUGJuCVfkAtJn6F+91Zm1iV7d/uqaEXoS93lfvOt6yxFRGvAd6m1Gz1RIGiF/ulQydI2Wt
+FY//2VqKqvo/NlDqS3PjTd5KbifrZFl+mfdig80Z05ct0RySN0ShYqTgDWTRS9CJfm7CMu0wZK8W
+RvtHQ63d727IXuYqStvjASME7l7isPNe8jm9DA==</SignatureValue><KeyInfo><X509Data><X509Certificate>MIIIDDCCBfSgAwIBAgIINjt3COjyYVUwDQYJKoZIhvcNAQELBQAwdTELMAkGA1UEBhMCQlIxEzAR
+BgNVBAoTCklDUC1CcmFzaWwxNjA0BgNVBAsTLVNlY3JldGFyaWEgZGEgUmVjZWl0YSBGZWRlcmFs
+IGRvIEJyYXNpbCAtIFJGQjEZMBcGA1UEAxMQQUMgU0VSQVNBIFJGQiB2MjAeFw0xNDA0MTUxNzIy
+MDBaFw0xNTA0MTUxNzIyMDBaMIHvMQswCQYDVQQGEwJCUjELMAkGA1UECBMCTUcxFTATBgNVBAcT
+DFNBIE8gR09UQVJETzETMBEGA1UEChMKSUNQLUJyYXNpbDE2MDQGA1UECxMtU2VjcmV0YXJpYSBk
+YSBSZWNlaXRhIEZlZGVyYWwgZG8gQnJhc2lsIC0gUkZCMRYwFAYDVQQLEw1SRkIgZS1DTlBKIEEx
+MRMwEQYDVQQLEwpBUiBLUllQVE9OMUIwQAYDVQQDEzlDT09QRVJBVElWQSBBR1JPUEVDVUFSSUEg
+RE8gQUxUTyBQQVJBTkFJQkE6ODY2NzU2NDIwMDAxMDYwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
+ggEKAoIBAQCKVvSWPy4I1f1K1WhyZxK6sLPPCWU3Uz4KiwKtUdh0gJro/UWzK/EkgmKaUOp1T0+L
+5gBzFpSKYrbxiHesbNfUbrqSqo0gbvepW/mkayWQ1KnIvv9M5OqS/K3ahACGn8dUGqaquZPCYiVP
+70u1Dm7emY8avxQguMAKles4su/6Zh6gNpQGFpBErsW+bMPpRVWKEuhDk1vfJgY+wpYnMoS5cQH0
+0QuLrULH6B48DpGmE7dT2RAhsELxFJAVe2PGLWLS+XWlfxb127ZUShbwUStk60odg4RXSwPg6NOg
+8MmKnf7ZeLA2Cpu4eY9POirENGWb2+0PGj+0l3rR52iti8WTAgMBAAGjggMjMIIDHzCBmQYIKwYB
+BQUHAQEEgYwwgYkwSAYIKwYBBQUHMAKGPGh0dHA6Ly93d3cuY2VydGlmaWNhZG9kaWdpdGFsLmNv
+bS5ici9jYWRlaWFzL3NlcmFzYXJmYnYyLnA3YjA9BggrBgEFBQcwAYYxaHR0cDovL29jc3AuY2Vy
+dGlmaWNhZG9kaWdpdGFsLmNvbS5ici9zZXJhc2FyZmJ2MjAJBgNVHRMEAjAAMB8GA1UdIwQYMBaA
+FLKgxD1GnnzIhWwIHhAylGVGcEFzMHEGA1UdIARqMGgwZgYGYEwBAgENMFwwWgYIKwYBBQUHAgEW
+Tmh0dHA6Ly9wdWJsaWNhY2FvLmNlcnRpZmljYWRvZGlnaXRhbC5jb20uYnIvcmVwb3NpdG9yaW8v
+ZHBjL2RlY2xhcmFjYW8tcmZiLnBkZjCB8wYDVR0fBIHrMIHoMEqgSKBGhkRodHRwOi8vd3d3LmNl
+cnRpZmljYWRvZGlnaXRhbC5jb20uYnIvcmVwb3NpdG9yaW8vbGNyL3NlcmFzYXJmYnYyLmNybDBE
+oEKgQIY+aHR0cDovL2xjci5jZXJ0aWZpY2Fkb3MuY29tLmJyL3JlcG9zaXRvcmlvL2xjci9zZXJh
+c2FyZmJ2Mi5jcmwwVKBSoFCGTmh0dHA6Ly9yZXBvc2l0b3Jpby5pY3BicmFzaWwuZ292LmJyL2xj
+ci9TZXJhc2EvcmVwb3NpdG9yaW8vbGNyL3NlcmFzYXJmYnYyLmNybDAOBgNVHQ8BAf8EBAMCBeAw
+HQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMIG8BgNVHREEgbQwgbGBGURJUkVUT1JJQUBD
+T09QQURBUC5DT00uQlKgIQYFYEwBAwKgGBMWTUFSQ0VMTyBBS0lISVJPIE1PUklUQaAZBgVgTAED
+A6AQEw44NjY3NTY0MjAwMDEwNqA9BgVgTAEDBKA0EzIzMTAxMTk3Mzk3MzIyMzkzNjAwMDAwMDAw
+MDAwMDAwMDAwMDAyMjgzNDA4NDZTU1BTUKAXBgVgTAEDB6AOEwwwMDAwMDAwMDAwMDAwDQYJKoZI
+hvcNAQELBQADggIBAK7DiLbmqOhdflZK/XykK1VfDFBE4Qed//idl/TtXm6CNT2CY2G5WTUKU619
+mc53Q80ANzu41GV4QW9JHxwURpsignUnEkFZIhWRowNdU1Ru075ujW593yeyiS7QPKZqykfOEh7G
++nk355nEeOfsM0EbjFp8D21a3puoLJZpvAMBLX7qBUtEkdZug/186vDy+RV0dQJprabap9w5p+vT
+2OmbzWFZ5IF4SYlZEh6yd9Oh9oB8AaTxs94nQid/WJqaGs1566WOhzaRvWoqBM6yQVNy4TedF57s
+m8lV1hQHkZg84MvQRjtpb/e/ldnMDCV4QGPwsAOLo2zF+d9kbpJCqALv085D8vYhaEW1+ItDRJlh
+/kK3yfTgUQj0ShVPcST+FeNOw9Ugcf+bWSrCd4i2pS9wbwa36HEI6Fauq5M1dk/BqqbnGHb1m1dd
+raT5vgaVp/pwO47OPUSIvdPGbzfbAicZ+E+RtU14zmgjhSuWkyMXEjhhV2/WatLGAEDDnTBQWDLx
+RwwAD7tEILwkwY33zOSdpxYAgtT0ipHRZXZyid86YR5STdCq5EcHiKkDRJQMKg58f3gx7v7rjzIE
+dTOO5zqKFdFU5aw1gbgExRD/p0vlFO+VkR+sJI6O1Y2eiOT7r7vX//PxbzOe95fnmb7uixaf8t74
+V2EmfPv1II/j3NfJ</X509Certificate></X509Data></KeyInfo></Signature></NFe></enviNFe>
+</nfeDadosMsg></env:Body></env:Envelope>

@@ -5,6 +5,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -23,7 +24,7 @@ public class Pais {
 	public Pais(Long codigo, String nome) {
 		super();
 		this.codigo = codigo;
-		this.nome = nome;
+		this.nome = StringUtils.trim(nome);
 	}
 	
 	public Long codigo(){

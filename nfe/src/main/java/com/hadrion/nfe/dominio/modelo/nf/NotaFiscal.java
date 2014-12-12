@@ -677,8 +677,8 @@ public class NotaFiscal {
 	
 	private void mesclarItem(Item item, List<Item> itens){
 		for (Item outro : itens) {
-			if (item.getId().equals(outro.getId()))
-				item = item.mesclar(outro);
+			if (item.produto().codigo().equals(outro.produto().codigo()))
+				item.mesclar(outro);
 		}
 	}
 
