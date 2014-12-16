@@ -82,8 +82,8 @@ public class NotaFiscalConverter extends AbstractConverter {
 
 		convert("emit", nf.emitente(), writer, context);
 		convert("dest", nf.destinatario(), writer, context);
-		convert("retirada", nf.localRetirada(), writer, context);
-		convert("entrega", nf.localEntrega(), writer, context);
+		convertIf("retirada", nf.localRetirada(), writer, context);
+		convertIf("entrega", nf.localEntrega(), writer, context);
 
 		int i = 1;
 		for (Item item : nf.itens()) {

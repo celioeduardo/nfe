@@ -20,6 +20,7 @@ public class ValidadorLoteTest {
 	public void validarOk() throws SAXException, IOException{
 		Source source = new StreamSource(arquivoXmlOk());
 		validador = new Validador(arquivoXsd(),source);
+		System.out.println(validador.errosComoTexto());
 		assertFalse(validador.temErros());
 		assertEquals(0,validador.quantidadeErros());
 	}

@@ -2,8 +2,10 @@ package com.hadrion.nfe.port.adapters.xml.nf;
 
 import java.io.StringWriter;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
+import com.hadrion.nfe.port.adapters.xml.DestinatarioConverter;
 import com.hadrion.nfe.port.adapters.xml.XStreamFabrica;
 import com.hadrion.nfe.port.adapters.xml.assinatura.Assinador;
 import com.thoughtworks.xstream.XStream;
@@ -23,7 +25,7 @@ public class NotaFiscalSerializador {
 
 	public String serializar(NotaFiscal nf){
 		//String xml = xstream().toXML(new Nfe(nf)); 
-		String xml =  xmlCompacto(xstream(), new Nfe(nf));
+		String xml =  xmlCompacto(xstream(nf.ambiente()), new Nfe(nf));
 		if (certificado != null)
 			xml = Assinador.assinarNfe(xml, certificado);
 		return xml;
@@ -40,7 +42,7 @@ public class NotaFiscalSerializador {
 		return "1.0";
 	}
 	
-	private XStream xstream(){
+	private XStream xstream(Ambiente ambiente){
 		if (xstream == null)
 			xstream = XStreamFabrica.criar();
 		xstream.processAnnotations(Nfe.class);
@@ -48,6 +50,7 @@ public class NotaFiscalSerializador {
 		xstream.registerConverter(
 				new NotaFiscalConverter(versaoAplicativo()));
 		xstream.registerConverter(new NfeConverter());
+		xstream.registerConverter(new DestinatarioConverter(ambiente));
 		return xstream;
 	}
 	

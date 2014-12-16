@@ -69,14 +69,18 @@ public class SoapConsultaProcessamentoLoteServiceAdapter implements ConsultaProc
 						Transformer transformer = TransformerFactory.newInstance().newTransformer();
 						transformer.transform(ss, soapHeader.getResult());
 						//BUG - Precisa dessa chamada aqui para atualizar o Header do Envelope SOAP.
+						//TODO remover Sys.out
 						arg.writeTo(System.out);
 						//arg.writeTo(new NullOutputStream());
 					}
 				},
 				result);
 		
+		//TODO remover Sys.out
+		System.out.println("\n"+writerResult.toString());
+		
 		return new RetornoConsultaProcessamentoLoteDeserializador(
-				writerResult.toString()).deserializar();
+				writerResult.toString(),lote.ambiente()).deserializar();
 
 	}
 		

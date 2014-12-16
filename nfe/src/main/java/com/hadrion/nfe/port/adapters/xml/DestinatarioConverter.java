@@ -1,5 +1,6 @@
 package com.hadrion.nfe.port.adapters.xml;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.IndicadorIe;
@@ -14,7 +15,13 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class DestinatarioConverter extends AbstractConverter implements Converter {
-
+	
+	private Ambiente ambiente;
+	
+	public DestinatarioConverter(Ambiente ambiente){
+		this.ambiente = ambiente;
+	}
+	
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean canConvert(Class type) {
@@ -26,17 +33,58 @@ public class DestinatarioConverter extends AbstractConverter implements Converte
 			MarshallingContext context) {
 		Destinatario dest = (Destinatario) source;
 		if (dest.cnpj() != null)
-			convert("CNPJ", dest.cnpj(), writer, context);
+			convert("CNPJ", cnpj(dest), writer, context);
 		
 		if (dest.cpf() != null)
-			convert("CPF", dest.cpf(), writer, context);
+			convert("CPF", cpf(dest), writer, context);
 		
-		novoNo("xNome", dest.razaoSocial(), writer);
+		novoNo("xNome", razaoSocial(dest), writer);
 		convert("enderDest", dest.endereco(), writer, context);
-		convert("indIEDest",dest.indicadorIe(),writer, context);
-		convertIf("IE",dest.ie(),writer, context);
+		convert("indIEDest",indicadorIe(dest),writer, context);
+		convertIf("IE",ie(dest),writer, context);
 		convertIf("ISUF",dest.inscricaoSuframa(),writer, context);
 		convertIf("email",dest.email(),writer,context);
+	}
+	
+	private String razaoSocial(Destinatario destinatario){
+		if (ambiente == Ambiente.HOMOLOGACAO)
+			return "NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
+		return destinatario.razaoSocial();
+	}
+	
+	private Cpf cpf(Destinatario dest){
+		if (ambiente == Ambiente.HOMOLOGACAO)
+			return new Cpf(99999999000191L);
+		return dest.cpf();
+	} 
+	
+	private Cnpj cnpj(Destinatario dest){
+		if (ambiente == Ambiente.HOMOLOGACAO)
+			return new Cnpj(99999999000191L);
+		return dest.cnpj();
+	}
+	
+	private InscricaoEstadual ie(Destinatario dest){
+		if (ambiente == Ambiente.HOMOLOGACAO)
+			return null;
+		if (indicadorIe(dest) != IndicadorIe.CONTRIBUINTE)
+			return null;
+		
+		return dest.ie();
+	} 
+	
+	private IndicadorIe indicadorIe(Destinatario dest){
+		if (ambiente == Ambiente.HOMOLOGACAO)
+			return IndicadorIe.NAO_CONTRIBUINTE;
+		
+		if (operacaoNoExterior(dest))
+			return IndicadorIe.NAO_CONTRIBUINTE;
+		
+		return dest.indicadorIe();
+	}
+	
+	private boolean operacaoNoExterior(Destinatario dest){
+		return dest.estrangeiro();
 	}
 	
 	@Override

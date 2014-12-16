@@ -100,9 +100,13 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 		return new NotaFiscalTradutorJson(j.get("destinatario").toString(),ambiente).converterDestinatario();
 	}
 	private LocalEntrega localEntrega(JsonObject j){
+		if (!tem(j,"localEntrega"))
+			return null;
 		return new NotaFiscalTradutorJson(j.get("localEntrega").toString(),ambiente).converterLocalEntrega();
 	}
 	private LocalRetirada localRetirada(JsonObject j){
+		if (!tem(j,"localRetirada"))
+			return null;
 		return new NotaFiscalTradutorJson(j.get("localRetirada").toString(),ambiente).converterLocalRetirada();
 	}
 	private Cobranca cobranca(JsonObject j){

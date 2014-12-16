@@ -18,6 +18,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class XStreamFabrica {
+	
 	public static XStream criar(){
 		XStream xstream = new XStream(new DomDriver("UTF-8"));
 		xstream.setMode(XStream.NO_REFERENCES);
@@ -39,9 +40,8 @@ public class XStreamFabrica {
 		xstream.registerConverter(new PaisConverter());
 		xstream.registerConverter(new MunicipioConverter());
 		xstream.registerConverter(new EnderecoConverter());
-		xstream.registerConverter(new EmitenteConverter());
 		xstream.registerConverter(new EmailConverter());
-		xstream.registerConverter(new DestinatarioConverter());
+		xstream.registerConverter(new EmitenteConverter());
 		xstream.registerConverter(new IndicadorIeConverter());
 		xstream.registerConverter(new LocalRetiradaConverter());
 		xstream.registerConverter(new LocalEntregaConverter());

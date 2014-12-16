@@ -3,7 +3,6 @@ package com.hadrion.nfe.port.adapters.portal.ws;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
-import com.hadrion.nfe.port.adapters.portal.ws.Cabecalho;
 import com.hadrion.nfe.port.adapters.xml.AbstractXmlTest;
 
 public class CabecalhoTest extends AbstractXmlTest {

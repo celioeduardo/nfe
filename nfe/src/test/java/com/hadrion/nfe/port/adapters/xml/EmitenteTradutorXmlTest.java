@@ -1,6 +1,6 @@
 package com.hadrion.nfe.port.adapters.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +21,7 @@ public class EmitenteTradutorXmlTest extends AbstractXmlTest{
 	private static final String XML = 
 			"<emit>\r\n" + 
 			"	<CNPJ>00891206000310</CNPJ>\r\n" + 
-			"	<xNome>COOP. AGROP. OESTE BAHIA - RODA VELHA</xNome>\r\n" + 
+			"	<xNome>NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL</xNome>\r\n" + 
 			"	<xFant>COOPROESTE</xFant>\r\n" + 
 			"	<enderEmit>\r\n" + 
 			"		<xLgr>RODOVIA BR 020 KM 449</xLgr>\r\n" + 
@@ -46,10 +46,12 @@ public class EmitenteTradutorXmlTest extends AbstractXmlTest{
 	public void setUp() {
 		super.setUp();
 		xstream.alias("emit", Emitente.class);
+		xstream.registerConverter(new EmitenteConverter());
+		
 		emitente = new Emitente(
 			new Cnpj(891206000310L),
 			null,
-			"COOP. AGROP. OESTE BAHIA - RODA VELHA",
+			"NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL",
 			"COOPROESTE",
 			new Endereco(
 				"RODOVIA BR 020 KM 449", 

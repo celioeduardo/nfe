@@ -99,7 +99,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 
 	@Test
 	public void deserializar(){
-		NotaFiscalDeserializador deserializador = new NotaFiscalDeserializador();
+		NotaFiscalDeserializador deserializador = new NotaFiscalDeserializador(Ambiente.HOMOLOGACAO);
 		NotaFiscal nfDeserializada = deserializador.deserializar(XML);
 		NotaFiscal nf = nf();
 		assertEquals(nf.chaveAcesso(),nfDeserializada.chaveAcesso());
@@ -173,7 +173,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 		return new Emitente(
 			new Cnpj(16832651000420L),
 			null,
-			"COOPERATIVA DOS CAF. DE CAMPOS GERAIS E CAMPO DO MEIO LTDA",
+			"NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL",
 			"COOPERCAM",
 			new Endereco(
 				"R JOSE PEDRO DE ARAUJO", 

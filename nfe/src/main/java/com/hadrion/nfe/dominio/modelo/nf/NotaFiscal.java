@@ -666,6 +666,8 @@ public class NotaFiscal {
 		for (Item item : itens()) 
 			mesclarItem(item,nf.itens());
 		
+		atualizarChaveAcesso();
+		
 	}
 	
 	private void mesclarInformacaoFisco(Informacao outra){

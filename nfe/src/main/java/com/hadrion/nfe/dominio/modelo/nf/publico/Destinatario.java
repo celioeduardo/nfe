@@ -7,6 +7,7 @@ import javax.persistence.Embedded;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -196,4 +197,8 @@ public class Destinatario {
 	 */
 	@SuppressWarnings("unused")
 	private Destinatario(){}
+
+	public boolean estrangeiro() {
+		return StringUtils.isNotEmpty(idEstrangeiro);
+	}
 }

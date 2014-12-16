@@ -161,6 +161,12 @@ public class NotaFiscalAplicacaoService {
 			nota.rejeitada(new Mensagem(comando.getMsgCodigo(), comando.getMsgDescricao()));
 		notaFiscalRepositorio.salvar(nota);
 	}
+	public void definirNotaComoAutorizada(DefinirNotaComoAutorizadaComando comando) {
+		NotaFiscal nota = nota(comando.getNotaFiscalId());
+		if (nota != null)
+			nota.autorizada();
+		notaFiscalRepositorio.salvar(nota);
+	}
 	
 	private NotaFiscal nota(String notaFiscalId){
 		return notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));

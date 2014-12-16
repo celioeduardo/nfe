@@ -24,7 +24,7 @@ public class LocalRetiradaDeserializer implements JsonDeserializer<LocalRetirada
 			JsonDeserializationContext arg2) throws JsonParseException {
 		
 		final JsonObject j = jsonSource.getAsJsonObject();
-
+		
 		Endereco endereco = new Endereco(s(j,"logradouro"), 
 				s(j,"numero"),
 				s(j,"complemento"),
