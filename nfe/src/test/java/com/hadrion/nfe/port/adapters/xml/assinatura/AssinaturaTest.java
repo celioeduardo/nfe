@@ -84,7 +84,7 @@ public class AssinaturaTest {
 		
 		NodeList elements = xml.getElementsByTagName(tagParaAssinar);  
 		Element el = (Element) elements.item(0);
-		//el.setIdAttribute("Id", true);
+		el.setIdAttribute("Id", true);
 		String id = el.getAttribute("Id");
 		
 		Reference ref = fac.newReference
@@ -127,6 +127,9 @@ public class AssinaturaTest {
 		X509Certificate cert = certificado.x509Certificate();
 		
 		xml = carregarXmlAssinado();
+		
+		Element infNfe = (Element)xml.getElementsByTagName("infNFe").item(0);
+		infNfe.setIdAttribute("Id", true);
 		
 		NodeList nl=xml.getElementsByTagNameNS(XMLSignature.XMLNS,"Signature");
 		
