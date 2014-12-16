@@ -3,6 +3,8 @@ package com.hadrion.nfe.port.adapters.xml.assinatura;
 import static com.hadrion.util.xml.XmlTestUtil.assertXMLEquals;
 import static com.hadrion.util.xml.XmlUtil.parseXml;
 import static com.hadrion.util.xml.XmlUtil.xmlParaString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import javax.xml.crypto.dsig.Transform;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.keyinfo.X509Data;
@@ -29,6 +32,7 @@ import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -44,7 +48,7 @@ public class AssinaturaTest {
 	private Document xml;
 	
 	@Before
-	public void setUp(){
+	public void setUp() throws Exception{
 		certificado = new Certificado(
 				FileUtils.getFile("src","test","resources","assinatura","certificado.pfx"), 
 				"12345678");
@@ -54,14 +58,18 @@ public class AssinaturaTest {
 	@Test
 	public void assinador() throws Exception{
 		Assinador.assinarNfe(xml,certificado);
-		assertXMLEquals(xmlParaString(carregarXmlAssinado()), xmlParaString(xml));
+		assertXMLEquals(xmlParaString(
+				carregarXmlAssinado()), 
+				limparInformacao(xmlParaString(xml)));
 	}
 	
 	@Test
 	public void assinarXml() throws Exception{
 		String tagParaAssinar = "infNFe";
-		Node noPaiAssinatura = xml.getDocumentElement(); 
+
 		xml.normalizeDocument();
+		
+		Node noPaiAssinatura = xml.getElementsByTagName("NFe").item(0);
 		
 		XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
 		
@@ -76,7 +84,7 @@ public class AssinaturaTest {
 		
 		NodeList elements = xml.getElementsByTagName(tagParaAssinar);  
 		Element el = (Element) elements.item(0);
-		el.setIdAttribute("Id", true);
+		//el.setIdAttribute("Id", true);
 		String id = el.getAttribute("Id");
 		
 		Reference ref = fac.newReference
@@ -107,15 +115,46 @@ public class AssinaturaTest {
 		XMLSignature signature = fac.newXMLSignature(si, ki);
 		signature.sign(dsc);
 		
-		assertXMLEquals(xmlParaString(carregarXmlAssinado()), xmlParaString(xml));
+		String atual = limparInformacao(xmlParaString(xml));
+		
+		assertXMLEquals(
+				xmlParaString(carregarXmlAssinado()), 
+				atual);
 	}
 	
-	private Document carregarXml(){
+	@Test
+	public void validarAssinatura() throws Exception{
+		X509Certificate cert = certificado.x509Certificate();
+		
+		xml = carregarXmlAssinado();
+		
+		NodeList nl=xml.getElementsByTagNameNS(XMLSignature.XMLNS,"Signature");
+		
+		DOMValidateContext valContext=new DOMValidateContext(cert.getPublicKey(),nl.item(0));
+		XMLSignatureFactory factory=XMLSignatureFactory.getInstance("DOM");
+		XMLSignature s=factory.unmarshalXMLSignature(valContext);
+		assertTrue(s.validate(valContext));
+
+		@SuppressWarnings("unchecked")
+		List<Reference> references= s.getSignedInfo().getReferences();
+		assertEquals(1, references.size());
+
+		Reference ref = references.get(0);
+		assertEquals(
+				"Problema ao validar assinatura pela Referência: [Ref id=" + ref.getId() + ":uri="+ ref.getURI()+ "] validity status:"+ ref.validate(valContext),
+				"#NFe31141086675642000106550020002048531000000013",ref.getURI());
+		assertTrue(ref.validate(valContext));
+		
+	}
+	
+	private Document carregarXml() throws Exception{
+
 		final File arquivoXml = FileUtils.getFile("src","test","resources","assinatura","nfe.xml");
 		
 		String xml; 
 		try {
 			xml = FileUtils.readFileToString(arquivoXml,Charset.forName("UTF-8")); 
+			//xml = FileUtils.readFileToString(arquivoXml); 
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -128,11 +167,17 @@ public class AssinaturaTest {
 		
 		String xml; 
 		try {
-			xml = FileUtils.readFileToString(arquivoXml,Charset.forName("UTF-8")); 
+			xml = FileUtils.readFileToString(arquivoXml,Charset.forName("UTF-8"));
+			//xml = FileUtils.readFileToString(arquivoXml);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		
 		return parseXml(xml);
+	}
+	
+	private String limparInformacao(String texto){
+		String result = StringUtils.replace(StringUtils.replace(texto,"\n",""),"\r","");
+		return result;
 	}
 }

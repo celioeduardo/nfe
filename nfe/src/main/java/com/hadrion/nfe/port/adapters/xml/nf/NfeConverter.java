@@ -1,7 +1,6 @@
 package com.hadrion.nfe.port.adapters.xml.nf;
 
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador.Nfe;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -20,6 +19,8 @@ class NfeConverter implements Converter{
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
 		Nfe nfe = (Nfe) source;
+		
+		writer.addAttribute("xmlns", nfe.uriPortal());
 		
 		writer.startNode("infNFe");
 		writer.addAttribute("Id", nfe.id());

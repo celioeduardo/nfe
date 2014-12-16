@@ -3,6 +3,8 @@ package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -23,8 +25,12 @@ public class TransporteDeserializer implements JsonDeserializer<Transporte>{
 		
 		final JsonObject j = jsonSource.getAsJsonObject();
 		
+		ModalidadeFrete modalidadeFrete = tem(j,"tipoFrete") && 
+				StringUtils.isNotEmpty(j.get("tipoFrete").getAsString()) ? 
+						ModalidadeFrete.obterPeloCodigo(j.get("tipoFrete").getAsInt()) : null;
+						
 		final Transporte transporte = new Transporte(
-				ModalidadeFrete.obterPeloCodigo(j.get("tipoFrete").getAsInt()),
+				modalidadeFrete,
 				transportador(j),
 				retencao(j),
 				veiculo(j),

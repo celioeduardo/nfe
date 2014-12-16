@@ -7,7 +7,6 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.port.adapters.xml.XStreamFabrica;
 import com.hadrion.nfe.port.adapters.xml.assinatura.Assinador;
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.io.xml.CompactWriter;
 
 public class NotaFiscalSerializador {
@@ -45,37 +44,11 @@ public class NotaFiscalSerializador {
 		if (xstream == null)
 			xstream = XStreamFabrica.criar();
 		xstream.processAnnotations(Nfe.class);
+		xstream.autodetectAnnotations(true);
 		xstream.registerConverter(
 				new NotaFiscalConverter(versaoAplicativo()));
 		xstream.registerConverter(new NfeConverter());
 		return xstream;
-	}
-	
-	@XStreamAlias("NFe")
-	static class Nfe {
-		
-		protected NotaFiscal notaFiscal;
-		
-		Nfe(NotaFiscal nf){
-			this.notaFiscal = nf;
-		}
-
-		String uriPortal() {
-			return "http://www.portalfiscal.inf.br/nfe";
-		}
-
-		String id() {
-			return "NFe" + notaFiscal.chaveAcesso();
-		}
-
-		String versaoLayout() {
-			return "3.10";
-		}
-
-		NotaFiscal notaFiscal() {
-			return notaFiscal;
-		}
-		
 	}
 	
 }

@@ -131,7 +131,7 @@ public class NotaFiscalTradutorJsonTest {
 								"CX P 37",
 								"GUARDA DOS FERREIROS",
 							    new Municipio(0,"SAO GOTARDO - MG",Uf.MG),
-							    new Pais(1L,"BRASIL"),
+							    new Pais(1058L,"BRASIL"),
 							    new Cep(38800000L),
 							    new Telefone("3436161200")),
 						new Telefone("3436161200"), 
@@ -151,7 +151,7 @@ public class NotaFiscalTradutorJsonTest {
 								"",
 								"ZONA RURAL",
 							    new Municipio(0,"NOVA SERRANA - MG",Uf.MG),
-							    new Pais(1L,"BRASIL"),
+							    new Pais(1058L,"BRASIL"),
 							    new Cep(35519000L),
 							    new Telefone("3732322434")),
 						new Telefone("3732322434"), 
@@ -169,7 +169,7 @@ public class NotaFiscalTradutorJsonTest {
 							    "",
 							    "ZONA RURAL",
 							    new Municipio(0,"NOVA SERRANA - MG",Uf.MG),
-							    new Pais(1L,"BRASIL"),
+							    new Pais(1058L,"BRASIL"),
 							    new Cep(35519000L),
 							    null))	
 						,nf.localEntrega());
@@ -182,7 +182,7 @@ public class NotaFiscalTradutorJsonTest {
 						"CX P 37",
 						"GUARDA DOS FERREIROS",
 						new Municipio(0,"SAO GOTARDO - MG",Uf.MG),
-						new Pais(1L,"BRASIL"),
+						new Pais(1058L,"BRASIL"),
 						new Cep(38800000L),
 					    null))	
 		,nf.localRetirada());

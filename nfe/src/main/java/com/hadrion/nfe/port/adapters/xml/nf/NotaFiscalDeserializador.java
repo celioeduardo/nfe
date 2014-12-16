@@ -2,7 +2,6 @@ package com.hadrion.nfe.port.adapters.xml.nf;
 
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.port.adapters.xml.XStreamFabrica;
-import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador.Nfe;
 import com.thoughtworks.xstream.XStream;
 
 public class NotaFiscalDeserializador {

@@ -1,7 +1,7 @@
 package com.hadrion.util.xml;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -17,7 +17,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.thoughtworks.xstream.XStream;
@@ -49,25 +48,43 @@ public class XmlUtil {
 	}
 	
 	public static Document parseXml(String xml){
-		InputSource is =  new InputSource();
-		is.setCharacterStream(new StringReader(xml));
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder;
 		
+		//InputSource is =  new InputSource(new StringReader(xml));
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		DocumentBuilder builder = null;
+		Document doc = null;
 		try {
 			builder = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			throw new RuntimeException(e);
 		}
 		
-		Document doc;
 		try {
-			doc = builder.parse(is);
+			doc = builder.parse(new ByteArrayInputStream(xml.getBytes()));
 		} catch (SAXException | IOException e) {
-			throw new RuntimeException(e);
 		}
-
+		
 		return doc;
+		
+//		InputSource is =  new InputSource();
+//		is.setCharacterStream(new StringReader(xml));
+//		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//		DocumentBuilder builder;
+//		
+//		try {
+//			builder = dbf.newDocumentBuilder();
+//		} catch (ParserConfigurationException e) {
+//			throw new RuntimeException(e);
+//		}
+//		
+//		Document doc;
+//		try {
+//			doc = builder.parse(is);
+//		} catch (SAXException | IOException e) {
+//			throw new RuntimeException(e);
+//		}
+//
+//		return doc;
 	} 
 	
 	

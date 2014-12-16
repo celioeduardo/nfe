@@ -45,13 +45,13 @@ public class NotaFiscalSincronizacaoTest extends DominioTest {
 		List<NotaFiscal> notas = agrixService.obterNotas(
 				Arrays.asList(new NotaFiscalId("H-013924F3091F4CC4E050007F010060FB")),
 				Ambiente.HOMOLOGACAO);
-		NotaFiscal nf = notas.get(0);
-		System.out.println(nf.emitente());
-		System.out.println(nf.destinatario());
-		System.out.println(nf.localRetirada());
-		System.out.println(nf.localEntrega());
-		System.out.println(nf.localDestino());
-		System.out.println(nf.itens());
+//		NotaFiscal nf = notas.get(0);
+//		System.out.println(nf.emitente());
+//		System.out.println(nf.destinatario());
+//		System.out.println(nf.localRetirada());
+//		System.out.println(nf.localEntrega());
+//		System.out.println(nf.localDestino());
+//		System.out.println(nf.itens());
 		assertEquals(1, notas.size());
 		//System.out.println("\n\nNFE_SAIDA: "+jdbc.queryForObject("Select Count(*) From NFE_SAIDA",Integer.class));
 	}
