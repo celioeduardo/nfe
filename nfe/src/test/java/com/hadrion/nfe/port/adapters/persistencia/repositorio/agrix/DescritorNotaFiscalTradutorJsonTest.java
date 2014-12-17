@@ -57,6 +57,7 @@ public class DescritorNotaFiscalTradutorJsonTest {
 				new Cnpj(86675642000700L),
 				2121L,
 				new Serie(1L),
+				null,
 				data("02/09/14"),
 				data("02/09/14"),
 				"C",

@@ -252,7 +252,7 @@ public class DescritorProduto {
 		return "DescritorProduto [codigo=" + codigo
 				+ ",gtin=" + gtin
 				+ ",descricao=" + descricao
-				+ ",nvm=" + ncm
+				+ ",ncm=" + ncm
 				+ ",nve=" + nve
 				+ ",extipin=" + extipi
 				+ ",cfop=" + cfop

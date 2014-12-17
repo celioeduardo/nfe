@@ -36,6 +36,7 @@ public class DescritorNotaFiscalDeserializer extends AbstractDeserializer
 				new Cnpj(l(j,"filial")),
 				l(j,"numero"), 
 				new Serie(i(j,"serie")),
+				null,
 				DataUtil.data(j.get("emissao").getAsString()), 
 				DataUtil.data(j.get("movimentacao").getAsString()),
 				s(j,"publicoTipo"),

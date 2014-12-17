@@ -36,6 +36,7 @@ import com.hadrion.nfe.port.adapters.portal.ws.EndPoints;
 import com.hadrion.nfe.port.adapters.portal.ws.Servico;
 import com.hadrion.nfe.port.adapters.portal.ws.Versao;
 import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
+import com.hadrion.nfe.port.adapters.xml.nf.ValidadorLote;
 
 @Service
 public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
@@ -58,8 +59,18 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 				Versao.V3_10, 
 				Servico.AUTORIZACAO);
 		
+		String xml = nfeDadosMsg(lote,notasDoLote(lote),certificado);
+		
 		StreamSource source = new StreamSource(
-				new StringReader(nfeDadosMsg(lote,notasDoLote(lote),certificado)));
+				new StringReader(xml));
+		
+		ValidadorLote validador = new ValidadorLote(source);
+		if (validador.temErros()){
+			//TODO Remover System.out.println
+			System.out.println(xml);
+			throw new RuntimeException(validador.errosComoTexto());
+		}
+		
 		StringWriter writerResult = new StringWriter();
 		StreamResult result = new StreamResult(writerResult);
 

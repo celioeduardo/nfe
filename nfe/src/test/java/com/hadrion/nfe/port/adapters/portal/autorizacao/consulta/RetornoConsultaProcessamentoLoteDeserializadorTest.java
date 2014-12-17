@@ -59,7 +59,7 @@ public class RetornoConsultaProcessamentoLoteDeserializadorTest {
 	
 	@Test
 	public void deserializarOk(){
-		deserializador = new RetornoConsultaProcessamentoLoteDeserializador(XML_OK,Ambiente.HOMOLOGACAO);
+		deserializador = new RetornoConsultaProcessamentoLoteDeserializador(XML_OK);
 		
 		assertEquals(new RetornoConsultaProcessamentoLote(
 				Ambiente.HOMOLOGACAO,

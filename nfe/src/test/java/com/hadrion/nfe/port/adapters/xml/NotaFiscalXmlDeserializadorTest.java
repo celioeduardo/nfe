@@ -173,7 +173,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 		return new Emitente(
 			new Cnpj(16832651000420L),
 			null,
-			"NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL",
+			"COOPERATIVA DOS CAF. DE CAMPOS GERAIS E CAMPO DO MEIO LTDA",
 			"COOPERCAM",
 			new Endereco(
 				"R JOSE PEDRO DE ARAUJO", 
@@ -205,9 +205,9 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 	private Destinatario destinatario(){
 		return new Destinatario(
 			null,
-			new Cpf(72014253668L),
+			new Cpf(99999999000191L),
 			null,
-			"DENISIO DONIZETE TEODORO",
+			"NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL",
 			null,
 			new Endereco(
 				"ESTRADA CORREGO DO OURO PARA FAMA KM 02", 
@@ -219,8 +219,8 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 			    new Cep(37160000),
 			    new Telefone("3599716587")),
 			null,
-			IndicadorIe.CONTRIBUINTE,
-			new InscricaoEstadual("0012134380047"),
+			IndicadorIe.NAO_CONTRIBUINTE,
+			null,//new InscricaoEstadual("0012134380047"),
 			12345678L, //Inscrição Suframa
 			new Email("hadrion@hadrion.com.br"));
 	}
@@ -261,7 +261,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 					"00000000000000006152",
 					new Gtin(12345678L),
 					"SOJA EM GRAOS DEPOSITO",
-					new Ncm(31052000L),
+					new Ncm("31052000"),
 					"AB1234",
 					"123",
 					new Cfop(5102L),

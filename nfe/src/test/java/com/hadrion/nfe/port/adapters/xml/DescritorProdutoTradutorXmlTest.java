@@ -73,7 +73,7 @@ public class DescritorProdutoTradutorXmlTest extends AbstractXmlTest{
 			"00000000000000009001",
 			new Gtin(12345678L),
 			"SOJA EM GRAOS DEPOSITO",
-			new Ncm(12010010L),
+			new Ncm("12010010"),
 			"ABCDEF",
 			"123",
 			new Cfop(5906L),

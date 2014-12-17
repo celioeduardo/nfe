@@ -23,11 +23,9 @@ class RetornoConsultaProcessamentoLoteDeserializador extends AbstractConverter{
 	
 	private String xml;
 	private XStream xstream;
-	private Ambiente ambiente;
 	
-	RetornoConsultaProcessamentoLoteDeserializador(String xml, Ambiente ambiente){
+	RetornoConsultaProcessamentoLoteDeserializador(String xml){
 		this.xml = xml; 
-		this.ambiente = ambiente;
 	}
 
 	RetornoConsultaProcessamentoLote deserializar() {

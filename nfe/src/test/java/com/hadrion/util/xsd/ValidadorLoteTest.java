@@ -13,6 +13,8 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import com.hadrion.nfe.port.adapters.xml.nf.ValidadorLote;
+
 public class ValidadorLoteTest {
 	private Validador validador;
 	
@@ -20,6 +22,14 @@ public class ValidadorLoteTest {
 	public void validarOk() throws SAXException, IOException{
 		Source source = new StreamSource(arquivoXmlOk());
 		validador = new Validador(arquivoXsd(),source);
+		System.out.println(validador.errosComoTexto());
+		assertFalse(validador.temErros());
+		assertEquals(0,validador.quantidadeErros());
+	}
+	@Test
+	public void validarLoteOk() throws SAXException, IOException{
+		Source source = new StreamSource(arquivoXmlOk());
+		ValidadorLote validador = new ValidadorLote(source);
 		System.out.println(validador.errosComoTexto());
 		assertFalse(validador.temErros());
 		assertEquals(0,validador.quantidadeErros());

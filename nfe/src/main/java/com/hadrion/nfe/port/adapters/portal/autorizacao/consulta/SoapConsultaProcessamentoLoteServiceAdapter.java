@@ -80,7 +80,7 @@ public class SoapConsultaProcessamentoLoteServiceAdapter implements ConsultaProc
 		System.out.println("\n"+writerResult.toString());
 		
 		return new RetornoConsultaProcessamentoLoteDeserializador(
-				writerResult.toString(),lote.ambiente()).deserializar();
+				writerResult.toString()).deserializar();
 
 	}
 		

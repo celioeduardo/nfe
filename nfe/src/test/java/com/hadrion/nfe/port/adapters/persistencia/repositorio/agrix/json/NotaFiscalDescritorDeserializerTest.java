@@ -57,6 +57,7 @@ public class NotaFiscalDescritorDeserializerTest {
 				new Cnpj(86675642000106L),
 				204818L,
 				new Serie(2L),
+				null,
 				data("22/09/14"),
 				data("22/09/14"),
 				"A",

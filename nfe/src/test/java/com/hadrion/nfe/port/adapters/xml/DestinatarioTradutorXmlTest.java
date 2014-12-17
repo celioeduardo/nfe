@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.endereco.Cep;
 import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
@@ -35,7 +36,7 @@ public class DestinatarioTradutorXmlTest extends AbstractXmlTest{
 			"		<xPais>BRASIL</xPais>\r\n" + 
 			"		<fone>1639164500</fone>\r\n" + 
 			"	</enderDest>\r\n" + 
-			"	<indIEDest>2</indIEDest>\r\n" + 
+			"	<indIEDest>1</indIEDest>\r\n" + 
 			"	<IE>123456</IE>\r\n" +
 			"	<ISUF>12345678</ISUF>\r\n" + 
 			"	<email>hadrion@hadrion.com.br</email>\r\n" + 
@@ -47,6 +48,7 @@ public class DestinatarioTradutorXmlTest extends AbstractXmlTest{
 	public void setUp() {
 		super.setUp();
 		xstream.alias("dest", Destinatario.class);
+		xstream.registerConverter(new DestinatarioConverter(Ambiente.PRODUCAO));
 		destinatario = new Destinatario(
 			new Cnpj(99999999000191L),
 			null,
@@ -63,7 +65,7 @@ public class DestinatarioTradutorXmlTest extends AbstractXmlTest{
 			    new Cep(14020060),
 			    new Telefone("1639164500")),
 			null,
-			IndicadorIe.ISENTO,
+			IndicadorIe.CONTRIBUINTE,
 			new InscricaoEstadual("123456"),
 			12345678L,
 			new Email("hadrion@hadrion.com.br"));
