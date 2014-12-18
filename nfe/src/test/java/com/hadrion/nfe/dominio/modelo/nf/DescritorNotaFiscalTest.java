@@ -5,36 +5,40 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 public class DescritorNotaFiscalTest {
 	@Test
 	public void equalsModelo(){
-		assertEquals(new DescritorNotaFiscal(new NotaFiscalId("0215C27A36D5B0E0E050007F01004D45"),
-				"E",
-				new Cnpj(86675642000106L),
-				new Cnpj(86675642000700L),
-				2121L,
-				new Serie(1L),
-				data("02/09/14"),
-				data("02/09/14"),
-				"C",
-				56L,
-				"CEREALISTA SIQUEIRANDRADE LTDA.         ",
-				new Dinheiro(1000.)),
+		assertEquals(
 				new DescritorNotaFiscal(new NotaFiscalId("0215C27A36D5B0E0E050007F01004D45"),
-						"E",
-						new Cnpj(86675642000106L),
-						new Cnpj(86675642000700L),
-						2121L,
-						new Serie(1L),
-						data("02/09/14"),
-						data("02/09/14"),
-						"C",
-						56L,
-						"CEREALISTA SIQUEIRANDRADE LTDA.         ",
-						new Dinheiro(1000.)));
+					"E",
+					new Cnpj(86675642000106L),
+					new Cnpj(86675642000700L),
+					2121L,
+					new Serie(1L),
+					new ChaveAcesso("31141286675642000106550020002048531000000010"),
+					data("02/09/14"),
+					data("02/09/14"),
+					"C",
+					56L,
+					"CEREALISTA SIQUEIRANDRADE LTDA.         ",
+					new Dinheiro(1000.)),
+				new DescritorNotaFiscal(new NotaFiscalId("0215C27A36D5B0E0E050007F01004D45"),
+					"E",
+					new Cnpj(86675642000106L),
+					new Cnpj(86675642000700L),
+					2121L,
+					new Serie(1L),
+					new ChaveAcesso("31141286675642000106550020002048531000000010"),
+					data("02/09/14"),
+					data("02/09/14"),
+					"C",
+					56L,
+					"CEREALISTA SIQUEIRANDRADE LTDA.         ",
+					new Dinheiro(1000.)));
 	}
 
 }

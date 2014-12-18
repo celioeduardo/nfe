@@ -105,7 +105,10 @@ Ext.define('nfe.view.main.Main', {
                     mode: 'MULTI'
                 },
                 region: 'center',
-                margin: '5 0 0 0'
+                margin: '5 0 0 0',
+                listeners:{
+					notasPendentesEnviadas: 'notasPendentesEnviadas'
+				}
                 //html: '<h2>Main Page</h2><p>This is where the main content would go</p>'
             },{
                 title: 'Lotes Pendentes',
@@ -115,13 +118,16 @@ Ext.define('nfe.view.main.Main', {
                 margin: '5 0 0 0',
                 width: 500,
                 minWidth: 100,
-                maxWidth: 500
+                maxWidth: 500,
+                listeners:{
+                	obtidoRetornoLotes: 'obtidoRetornoLotes'
+				}
             },{
                 title: 'Autorizadas',
                 region: 'south',
                 xtype:'notas-pendentes',
-                height: 300,
-                minHeight: 75,
+                height: '50%',
+                minHeight: 20,
                 maxHeight: 300
             }]
         },

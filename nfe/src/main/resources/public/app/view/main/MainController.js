@@ -33,6 +33,18 @@ Ext.define('nfe.view.main.MainController', {
             width:350
         });
 
+    },
+    
+    notasPendentesEnviadas: function(){
+    	this.getView().down('lotes-pendentes')
+    		.getViewModel().getStore('lotesPendentes')
+    		.reload();
+    },
+    
+    obtidoRetornoLotes: function(){
+    	this.getView().down('notas-pendentes')
+	    	.getViewModel().getStore('notasPendentes')
+	    	.reload();
     }
 
 /*

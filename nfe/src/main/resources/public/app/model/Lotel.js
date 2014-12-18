@@ -6,13 +6,16 @@ Ext.define('nfe.model.Lote', {
         url : 'lote/pendentes'
     },
 
-    obterRetorno:function(ids,success){
+    obterRetorno:function(ids,success,failure,callback,scope){
         
         Ext.Ajax.request({
             url:'lotes/processar_retorno',
             method:'POST',
             jsonData:Ext.encode(ids),
-            success:success
+            success:success,
+            failure:failure,
+            callback:callback,
+            scope:scope
         });
     }
 

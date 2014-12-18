@@ -3,6 +3,9 @@ Ext.define('nfe.view.nf.NotasPendentes', {
     requires:['Ext.grid.Panel','nfe.model.NotaFiscal'],
     xtype: 'notas-pendentes',
     controller: 'notas-pendentes',
+    viewConfig: {
+        enableTextSelection: true
+    },
     viewModel: {
         type: 'notas-pendentes'/*,
         session : true*/
@@ -30,7 +33,7 @@ Ext.define('nfe.view.nf.NotasPendentes', {
     columns: [
         {
             text: 'Número',
-            width: 300,
+            width: 310,
             sortable: false,
             hideable: false,
             renderer: 'rendererNumero',
@@ -48,6 +51,7 @@ Ext.define('nfe.view.nf.NotasPendentes', {
             text: 'Observação',
             dataIndex: 'msgDescricao',
             renderer: 'rendererObservacao',
+            cellWrap: true,
             flex: 1
         }
     ]

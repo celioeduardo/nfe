@@ -93,7 +93,7 @@ public class NotaFiscalTradutorJsonTest {
 				"9001", 
 				new Gtin("1"), 
 				"MILHO",
-				new Ncm(38089329L),
+				new Ncm("38089329"),
 				"", 
 				"", 
 				new Cfop(5102L),				

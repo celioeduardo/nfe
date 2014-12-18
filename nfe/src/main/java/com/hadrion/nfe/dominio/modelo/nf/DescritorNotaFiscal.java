@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
@@ -16,6 +17,7 @@ public class DescritorNotaFiscal {
 	private Cnpj filial;
 	private Long numero; 
 	private Serie serie;
+	private ChaveAcesso chave;
 	private Date emissao; 
 	private Date dataHora;
 	private String publicoTipo;
@@ -35,6 +37,7 @@ public class DescritorNotaFiscal {
 			Cnpj filial,
 			Long numero, 
 			Serie serie,
+			ChaveAcesso chave,
 			Date emissao, 
 			Date dataHora,
 			String publicoTipo,
@@ -49,6 +52,7 @@ public class DescritorNotaFiscal {
 		this.filial = filial;
 		this.numero = numero;
 		this.serie = serie;
+		this.chave = chave;
 		this.emissao = emissao;
 		this.dataHora = dataHora;
 		this.publicoTipo = publicoTipo;
@@ -63,6 +67,7 @@ public class DescritorNotaFiscal {
 			Cnpj filial,
 			Long numero, 
 			Serie serie,
+			ChaveAcesso chave,
 			Date emissao, 
 			Date dataHora,
 			String publicoTipo,
@@ -70,7 +75,7 @@ public class DescritorNotaFiscal {
 			String publicoNome,
 			Dinheiro valor){
 		this(notaFiscalId, 
-				tipo, empresa, filial, numero, serie, emissao, dataHora, 
+				tipo, empresa, filial, numero, serie, chave, emissao, dataHora, 
 				publicoTipo, publicoCodigo, publicoNome, valor, null);
 
 	}
@@ -115,6 +120,7 @@ public class DescritorNotaFiscal {
 			.append(serie, objetoTipado.serie)
 			.append(numero,  objetoTipado.numero)
 			.append(emissao, objetoTipado.emissao)
+			.append(chave, objetoTipado.chave)
 			.append(dataHora, objetoTipado.dataHora)
 			.append(tipo, objetoTipado.tipo)
 			.append(empresa, objetoTipado.empresa)
@@ -135,6 +141,7 @@ public class DescritorNotaFiscal {
 				.append(notaFiscalId)
 				.append(serie)
 				.append(numero)
+				.append(chave)
 				.append(emissao)
 				.append(dataHora)			
 				.append(tipo)
@@ -153,6 +160,7 @@ public class DescritorNotaFiscal {
 				+ ",serie=" + serie
 				+ ",numero=" + numero
 				+ ",emissao=" + emissao
+				+ ",chave=" + chave
 				+ ",dataHora=" + dataHora 
 				+ ",tipo=" + tipo 
 				+ ",empresa=" + empresa 
@@ -174,5 +182,13 @@ public class DescritorNotaFiscal {
 
 	public void atualizarMensagem(Mensagem mensagem) {
 		this.mensagem = mensagem;
+	}
+
+	public ChaveAcesso chave() {
+		return chave;
+	}
+
+	public void setChave(ChaveAcesso chaveAcesso) {
+		this.chave = chaveAcesso;
 	}
 }

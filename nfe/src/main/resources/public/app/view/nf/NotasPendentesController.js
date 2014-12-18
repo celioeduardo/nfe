@@ -26,7 +26,18 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
             }
             
             var model = new nfe.model.NotaFiscal();
-            model.enviarNotas('HOMOLOGACAO',ids);
+            var grid = this.getView();
+            grid.getView().mask('Enviando...');
+            var me = this;
+            model.enviarNotas('HOMOLOGACAO',ids,function(){
+            	me.getViewModel().getStore('notasPendentes').reload();
+            	me.fireViewEvent('notasPendentesEnviadas');
+            	console.log('sucesso!');
+            },
+            null,
+            function(){
+            	grid.unmask();
+            });
 
         }
     },
@@ -53,13 +64,15 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
 
         return Ext.String.format(
             '<div style="font-size:x-large;font-weight: bold;">{0}</div>'+
+            '<div style="padding: 2px 0px 0px 0px; font-size: 12px;font-color=gray;color: gray;font-style: italic;">{4}</div>'+
             '<div style="padding: 2px 0px 0px 0px; font-weight: 400;font-size: 18px;line-height: 22px; font-family:Arial">{1}</div>'+
             '<hr style="margin: 2px">'+
             '<div style="font-size: small;font-color=gray;color: gray;font-style: italic;">{2} - emitida em {3}</div>',
             nf,
             rec.get('publicoNome'),
             es,
-            Ext.util.Format.date(rec.get('emissao'),'d/m/Y'));
+            Ext.util.Format.date(rec.get('emissao'),'d/m/Y'),
+            rec.get('chave'));
     },
 
     rendererValor: function(valor, metadata, rec){
@@ -72,9 +85,12 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
         if (rec.get('msgDescricao') == null) 
             return '';
         
+        var descricao = rec.get('msgDescricao');
+        descricao = descricao.replace(/[\n\r]/g,"<br>");
+        
         return Ext.String.format(
             '<div style="font-style: italic;font-color=red;margin-top: 20px;">{0} - {1}</div>',
-            rec.get('msgCodigo'), rec.get('msgDescricao'));
+            rec.get('msgCodigo'), descricao);
     }
 
 });

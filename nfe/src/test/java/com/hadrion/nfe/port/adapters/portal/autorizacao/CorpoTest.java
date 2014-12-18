@@ -45,7 +45,7 @@ public class CorpoTest extends DominioTest {
 	@Test
 	public void corpoAutorizacao(){
 		Corpo corpo = new Corpo(lote,Collections.singleton(nf),certificado);
-		assertXMLEquals(XML, corpo.gerar());
+		assertXMLEquals(XML, corpo.gerarComoString());
 	}
 	
 	private String xml(){

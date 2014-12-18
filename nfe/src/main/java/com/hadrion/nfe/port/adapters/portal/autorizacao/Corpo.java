@@ -1,7 +1,6 @@
 package com.hadrion.nfe.port.adapters.portal.autorizacao;
 
 import static com.hadrion.util.xml.XmlUtil.parseXml;
-import static com.hadrion.util.xml.XmlUtil.xmlParaString;
 
 import java.util.Set;
 
@@ -15,6 +14,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.port.adapters.xml.XStreamFabrica;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalConverter;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
+import com.hadrion.util.xml.XmlUtil;
 import com.thoughtworks.xstream.XStream;
 
 public class Corpo {
@@ -32,7 +32,7 @@ public class Corpo {
 		serializador =  new NotaFiscalSerializador(certificado());
 	}
 
-	public String gerar() {
+	public Document gerar() {
 		Document doc = parseXml(xstream().toXML(this));
 		Node enviNfe = doc.getElementsByTagName("enviNFe").item(0);
 		
@@ -40,9 +40,13 @@ public class Corpo {
 			Document notaXml = parseXml(serializador.serializar(nf));
 			enviNfe.appendChild(doc.importNode(notaXml.getFirstChild(), true));
 		}
-		return xmlParaString(doc);
+		return doc;
+		
 	}
 	
+	public String gerarComoString(){
+		return XmlUtil.xmlParaString (gerar());
+	}
 	
 	protected Set<NotaFiscal> notas(){
 		return notas;

@@ -14,10 +14,13 @@ public class NotaFiscalData {
 	private String tipo;
 	private Long msgCodigo;
 	private String msgDescricao;
+	private String chave;
 	
 	public NotaFiscalData(){}
 	
-	public NotaFiscalData(String notaFiscalId,Long numero, String serie, Date emissao,
+	public NotaFiscalData(String notaFiscalId,Long numero, String serie, 
+			String chave,
+			Date emissao,
 			Double valor, String tipoPublico,Long codigoPublico,
 			String nomePublico,String tipo,
 			Long msgCodigo, String msgDescricao) {
@@ -25,6 +28,7 @@ public class NotaFiscalData {
 		this.notaFiscalId=notaFiscalId;
 		this.numero = numero;
 		this.serie = serie;
+		this.chave = chave;
 		this.emissao = emissao;
 		this.valor = valor;
 		this.publicoTipo=tipoPublico;
@@ -34,6 +38,14 @@ public class NotaFiscalData {
 		this.msgCodigo = msgCodigo;
 		this.msgDescricao = msgDescricao;
 	}
+	public String getChave() {
+		return chave;
+	}
+
+	public void setChave(String chave) {
+		this.chave = chave;
+	}
+
 	public NotaFiscalData(String notaFiscalId,Long numero, String serie, Date emissao,
 			Double valor, String nomePublico,String tipo,
 			Long msgCodigo, String msgDescricao) {

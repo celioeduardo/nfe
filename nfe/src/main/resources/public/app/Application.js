@@ -22,7 +22,41 @@ Ext.define('nfe.Application', {
     ],
     
     launch: function () {
-        // TODO - Launch the application
+        Ext.Ajax.on("requestexception", this.tratarErroGlobal, this);
     },
+
+    tratarErroGlobal: function(conn, response, opt, opt2) {
+    	
+        if (response.timedout)
+            Ext.Msg.show({
+                title: 'Atenção',
+                msg: 'Tempo de espera esgotado',
+                icon: Ext.Msg.ERROR,
+                buttons: Ext.Msg.OK
+            });
+        else {
+            this.tratarErro(response);
+        }
+    },
+    
+    tratarErro: function(response){
+    	var resTxt = Ext.decode(response.responseText);
+        if (response.status == 404){
+        	Ext.Msg.show({
+	            title: 'Recurso não encontado. (404)',
+	            msg:resTxt.path,
+	            icon: Ext.Msg.ERROR,
+	            buttons: Ext.Msg.OK
+	        });
+        } else {
+	        Ext.Msg.show({
+	            title: 'Atenção',
+	            msg:resTxt.erro,
+	            icon: Ext.Msg.WARNING,
+	            buttons: Ext.Msg.OK
+	        });
+        }
+    },
+    
     glyphFontFamily: 'font-awesome'
 });

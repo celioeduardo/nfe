@@ -13,21 +13,15 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class Ncm {
 	
 	@Column(name="NCM")
-	private Long numero;
+	private String numero;
 
-	public Ncm(Long numero) {
+	public Ncm(String numero) {
 		super();
-		if (numero.equals(0L))
-			throw new IllegalArgumentException("N.C.M. não pode ser zero.");
 		
 		this.numero = numero;
 	}
 	
-	public Ncm(String numero) {
-		this(Long.parseLong(numero));
-	}
-
-	public Long numero(){
+	public String numero(){
 		return numero;
 	}
 	

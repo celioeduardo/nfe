@@ -116,7 +116,7 @@ public class ItemTradutorJsonTest {
 				"74", 
 				new Gtin("1"), 
 				"TOTRIL 1 LT",
-				new Ncm(38089329L),
+				new Ncm("38089329"),
 				"", 
 				"", 
 				new Cfop(5102L),				

@@ -8,12 +8,9 @@ public class NcmTest {
 	@Test
 	public void novo(){
 		assertEquals(
-				new Ncm(12345678L),
-				new Ncm(12345678L)
+				new Ncm("12345678"),
+				new Ncm("12345678")
 		);
 	}
-	@Test(expected=IllegalArgumentException.class)
-	public void naoPodeSerZero(){
-		new Ncm(0L);
-	}
+	
 }

@@ -244,7 +244,7 @@ public class NotaFiscalFixture {
 					"00000000000000006152",
 					new Gtin(12345678L),
 					"SOJA EM GRAOS DEPOSITO",
-					new Ncm(31052000L),
+					new Ncm("31052000"),
 					"AB1234",
 					"123",
 					new Cfop(5102L),

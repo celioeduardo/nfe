@@ -73,6 +73,7 @@ public class NotaFiscalAplicacaoService {
 			result.add(new NotaFiscalData(nf.notaFiscalId().id(),
 					nf.numero(),
 					String.valueOf(nf.serie().numero()),
+					nf.chave() != null ? String.valueOf(nf.chave()) : null,
 					nf.emissao(),
 					nf.valor().valor(),
 					nf.publicoTipo(),
