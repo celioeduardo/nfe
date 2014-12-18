@@ -31,9 +31,19 @@ public class EnderecoConverter extends AbstractConverter{
 		novoNoIf("CEP",String.valueOf(end.cep().numero()),writer);
 		if (end.pais() != null)
 			context.convertAnother(end.pais());
-		novoNoIf("fone", end.telefone(), writer);
+		novoNoIf("fone", fone(end), writer);
 	}
-
+	
+	private Telefone fone(Endereco endereco){
+		if (endereco.telefone() == null) 
+			return null;
+		
+		if (endereco.telefone().obterDigitos().length() < 6)
+			return null;
+		
+		return endereco.telefone(); 
+	}
+	
 	@Override
 	public Object unmarshal(HierarchicalStreamReader reader,
 			UnmarshallingContext context) {

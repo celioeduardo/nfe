@@ -17,8 +17,16 @@ Ext.define('nfe.view.lote.LotesPendentesController', {
         }
         
         var model = new nfe.model.Lote();
+        var me = this;
+        var grid = this.getView();
+        grid.getView().mask('Obtendo Retorno...');
         model.obterRetorno(ids,function(){
-            this.getViewModel().getStore('lotesPendentes').reload();    
+            me.getViewModel().getStore('lotesPendentes').reload();
+            me.fireViewEvent('obtidoRetornoLotes');
+        },
+        null,
+        function(){
+        	grid.unmask();
         });
 
     },

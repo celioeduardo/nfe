@@ -12,17 +12,17 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Access(AccessType.FIELD)
 public class Cep {
 	@Column(name="CEP")
-	private Long numero;
+	private String numero;
 
 	public Cep(Long numero) {
 		super();
-		this.numero = numero;
+		this.numero = String.valueOf(numero);
 	}
 	public Cep(int numero) {
 		super();
-		this.numero = (long)numero;
+		this.numero = String.valueOf(numero);
 	}
-	public Long numero(){
+	public String numero(){
 		return numero;
 	}
 	

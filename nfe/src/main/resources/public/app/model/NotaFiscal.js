@@ -14,7 +14,7 @@ Ext.define('nfe.model.NotaFiscal', {
         url : 'notas_fiscais/pendentes_autorizacao_resumo'
     },
 
-    enviarNotas:function(ambiente,notas,success){
+    enviarNotas:function(ambiente,notas,success,failure,callback,scope){
         var data = {
             "ambiente" : ambiente,
             "ids":notas
@@ -24,7 +24,10 @@ Ext.define('nfe.model.NotaFiscal', {
             url:'notas_fiscais/enviar',
             method:'POST',
             jsonData:Ext.encode([data]),
-            success:success
+            success:success,
+            failure:failure,
+            callback:callback,
+            scope:scope
         });
     }
 

@@ -204,8 +204,8 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 	}
 	private Destinatario destinatario(){
 		return new Destinatario(
+			new Cnpj(99999999000191L),
 			null,
-			new Cpf(99999999000191L),
 			null,
 			"NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL",
 			null,

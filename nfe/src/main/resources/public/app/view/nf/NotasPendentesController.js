@@ -26,7 +26,18 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
             }
             
             var model = new nfe.model.NotaFiscal();
-            model.enviarNotas('HOMOLOGACAO',ids);
+            var grid = this.getView();
+            grid.getView().mask('Enviando...');
+            var me = this;
+            model.enviarNotas('HOMOLOGACAO',ids,function(){
+            	me.getViewModel().getStore('notasPendentes').reload();
+            	me.fireViewEvent('notasPendentesEnviadas');
+            	console.log('sucesso!');
+            },
+            null,
+            function(){
+            	grid.unmask();
+            });
 
         }
     },

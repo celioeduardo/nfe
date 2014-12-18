@@ -32,11 +32,15 @@ public class DestinatarioConverter extends AbstractConverter implements Converte
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
 		Destinatario dest = (Destinatario) source;
-		if (dest.cnpj() != null)
-			convert("CNPJ", cnpj(dest), writer, context);
 		
-		if (dest.cpf() != null)
-			convert("CPF", cpf(dest), writer, context);
+		if (ambiente == Ambiente.HOMOLOGACAO){
+			convert("CNPJ", new Cnpj(99999999000191L), writer, context);
+		} else {
+			if (dest.cnpj() != null)
+				convert("CNPJ", cnpj(dest), writer, context);
+			else if (dest.cpf() != null)
+				convert("CPF", cpf(dest), writer, context);
+		}
 		
 		novoNo("xNome", razaoSocial(dest), writer);
 		convert("enderDest", dest.endereco(), writer, context);
@@ -53,14 +57,10 @@ public class DestinatarioConverter extends AbstractConverter implements Converte
 	}
 	
 	private Cpf cpf(Destinatario dest){
-		if (ambiente == Ambiente.HOMOLOGACAO)
-			return new Cpf(99999999000191L);
 		return dest.cpf();
 	} 
 	
 	private Cnpj cnpj(Destinatario dest){
-		if (ambiente == Ambiente.HOMOLOGACAO)
-			return new Cnpj(99999999000191L);
 		return dest.cnpj();
 	}
 	

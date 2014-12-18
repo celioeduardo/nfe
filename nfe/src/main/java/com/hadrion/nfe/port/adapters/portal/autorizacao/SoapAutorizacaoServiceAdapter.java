@@ -1,7 +1,6 @@
 package com.hadrion.nfe.port.adapters.portal.autorizacao;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,8 +10,8 @@ import java.util.Set;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,9 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapMessage;
 import org.springframework.xml.transform.StringSource;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
@@ -37,6 +39,7 @@ import com.hadrion.nfe.port.adapters.portal.ws.Servico;
 import com.hadrion.nfe.port.adapters.portal.ws.Versao;
 import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 import com.hadrion.nfe.port.adapters.xml.nf.ValidadorLote;
+import com.hadrion.util.xml.XmlUtil;
 
 @Service
 public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
@@ -59,17 +62,22 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 				Versao.V3_10, 
 				Servico.AUTORIZACAO);
 		
-		String xml = nfeDadosMsg(lote,notasDoLote(lote),certificado);
+		Document xml = nfeDadosMsg(lote,notasDoLote(lote),certificado);
 		
-		StreamSource source = new StreamSource(
-				new StringReader(xml));
+		NodeList nl = xml.getElementsByTagName("enviNFe");
 		
-		ValidadorLote validador = new ValidadorLote(source);
+		if (nl.getLength() == 0)
+			throw new RuntimeException("Nó infNFe não encontado.");
+		Node infNfe = nl.item(0);
+		
+		ValidadorLote validador = new ValidadorLote(infNfe);
 		if (validador.temErros()){
 			//TODO Remover System.out.println
-			System.out.println(xml);
+			System.out.println(XmlUtil.xmlParaString(infNfe));
 			throw new RuntimeException(validador.errosComoTexto());
 		}
+		
+		DOMSource source = new DOMSource(xml);
 		
 		StringWriter writerResult = new StringWriter();
 		StreamResult result = new StreamResult(writerResult);
@@ -114,18 +122,10 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 		return cabecalho.autorizacao();
 	}
 	
-	private String nfeDadosMsg(Lote lote, Set<NotaFiscal> notas, 
+	private Document nfeDadosMsg(Lote lote, Set<NotaFiscal> notas, 
 			Certificado certificado){
 		Corpo corpo = new Corpo(lote, notas, certificado);
 		return corpo.gerar();
-		
-//		final File xml = FileUtils.getFile("src","test","resources","ws","Autorizacao-nfeDadosMsg.xml");
-//		
-//		try {
-//			return FileUtils.readFileToString(xml);
-//		} catch (IOException e) {
-//			throw new RuntimeException(e);
-//		}
 	}
 	
 }
