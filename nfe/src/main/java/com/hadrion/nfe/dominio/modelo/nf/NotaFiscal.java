@@ -663,6 +663,14 @@ public class NotaFiscal {
 		return mensagem;
 	}
 	
+	public String xmlProtocolo(){
+		return xmlProtocolo;
+	}
+	
+	public NumeroProtocolo numeroProtocolo(){
+		return numeroProtocolo;
+	}
+	
 	//TODO Aprimorar Mesclagem
 	public void mesclar(NotaFiscal nf) {
 		this.naturezaOperacao = nf.naturezaOperacao;
