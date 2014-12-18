@@ -14,11 +14,11 @@ Ext.define('nfe.view.main.MainModel', {
     },
     stores:{
     	empresaFilial:{
-    		fields: ['NUM_CNPJ','NOM_CURTO_FILIAL'],		
+    		fields: ['cnpj','nome'],		
     		//model: 'NotaFiscal',
     		autoLoad: true,
             proxy:{
-                url : 'notas_fiscais/combofilial',
+                url : 'filial/obter',
                 type: 'rest',
                 reader: {
                     type: 'json',

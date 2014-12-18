@@ -25,7 +25,7 @@ public class VeiculoConverter extends AbstractConverter{
 			convert("placa", veic.placa().numero(), writer, context);
 			convert("UF", String.valueOf(veic.placa().uf()), writer, context);
 		}
-		//convertIf("RNTC", veic.registroAntt(), writer, context); TODO rntc bug, esta gerando somente tag de fechamento
+		convertIf("RNTC", veic.registroAntt(), writer, context);
 	}
 
 	@Override

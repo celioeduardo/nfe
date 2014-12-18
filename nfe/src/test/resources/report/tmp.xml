@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<nfeProc>
-	<NFe>
-		<infNFe Id="NFe31130486675642000106559000000041951000000018" versao="3.10">
+<?xml version="1.0" encoding="UTF-8"?>
+<nfeProc xmlns="http://www.portalfiscal.inf.br/nfe">
+	<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+		<infNFe Id="NFe31141286675642000106550020002048191000000019" versao="3.10">
 			<ide>
 				<cUF>31</cUF>
 				<cNF>00000001</cNF>
@@ -9,15 +9,15 @@
 				<indPag>0</indPag>
 				<mod>55</mod>
 				<serie>2</serie>
-				<nNF>204817</nNF>
-				<dhEmi>2014-09-22T00:00:00-03:00</dhEmi>
-				<dhSaiEnt>2014-09-22T00:00:00-03:00</dhSaiEnt>
+				<nNF>204819</nNF>
+				<dhEmi>2014-12-18T00:00:00-02:00</dhEmi>
+				<dhSaiEnt>2014-12-18T00:00:00-02:00</dhSaiEnt>
 				<tpNF>0</tpNF>
 				<idDest>1</idDest>
 				<cMunFG>3162104</cMunFG>
 				<tpImp>1</tpImp>
 				<tpEmis>1</tpEmis>
-				<cDV>7</cDV>
+				<cDV>9</cDV>
 				<tpAmb>2</tpAmb>
 				<finNFe>1</finNFe>
 				<indFinal>0</indFinal>
@@ -49,13 +49,13 @@
 				<CNPJ>99999999000191</CNPJ>
 				<xNome>NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL</xNome>
 				<enderDest>
-					<xLgr>FAZ. FAZ. FACA</xLgr>
+					<xLgr>FAZ. LOTE 74</xLgr>
 					<nro>0</nro>
 					<xBairro>ZONA RURAL</xBairro>
 					<cMun>3162104</cMun>
-					<xMun>CAMPOS ALTOS</xMun>
+					<xMun>RIO PARANAIBA</xMun>
 					<UF>MG</UF>
-					<CEP>38970000</CEP>
+					<CEP>38810000</CEP>
 					<cPais>1058</cPais>
 					<xPais>BRASIL</xPais>
 				</enderDest>
@@ -64,23 +64,19 @@
 			</dest>
 			<det nItem="1">
 				<prod>
-					<cProd>3130</cProd>
-					<xProd>BATATA AGATA EXTRA</xProd>
-					<NCM>7019000</NCM>
-					<NVE>3130</NVE>
-					<EXTIPI>1</EXTIPI>
+					<cProd>941</cProd>
+					<cEAN/>
+					<xProd>CENOURA 1A - C</xProd>
+					<NCM>07061000</NCM>
 					<CFOP>1102</CFOP>
-					<uCom>SC</uCom>
-					<qCom>153.0000</qCom>
-					<vUnCom>0.6666666666666666</vUnCom>
-					<vProd>15300.00</vProd>
-					<uTrib>SC</uTrib>
-					<qTrib>153.0000</qTrib>
-					<vUnTrib>0.6666666666666666</vUnTrib>
-					<vFrete>0.00</vFrete>
-					<vSeg>0.00</vSeg>
-					<vDesc>0.00</vDesc>
-					<vOutro>0.00</vOutro>
+					<uCom>KG</uCom>
+					<qCom>4500.0000</qCom>
+					<vUnCom>0.6666666667</vUnCom>
+					<vProd>3000.00</vProd>
+					<cEANTrib/>
+					<uTrib>KG</uTrib>
+					<qTrib>4500.0000</qTrib>
+					<vUnTrib>0.6666666667</vUnTrib>
 					<indTot>1</indTot>
 				</prod>
 				<imposto>
@@ -112,7 +108,6 @@
 						</COFINSOutr>
 					</COFINS>
 				</imposto>
-				<infAdProd/>
 			</det>
 			<total>
 				<ICMSTot>
@@ -121,7 +116,7 @@
 					<vICMSDeson>0.00</vICMSDeson>
 					<vBCST>0.00</vBCST>
 					<vST>0.00</vST>
-					<vProd>15300.00</vProd>
+					<vProd>3000.00</vProd>
 					<vFrete>0.00</vFrete>
 					<vSeg>0.00</vSeg>
 					<vDesc>0.00</vDesc>
@@ -130,28 +125,39 @@
 					<vPIS>0.00</vPIS>
 					<vCOFINS>0.00</vCOFINS>
 					<vOutro>0.00</vOutro>
-					<vNF>15300.00</vNF>
+					<vNF>3000.00</vNF>
 					<vTotTrib>0.00</vTotTrib>
 				</ICMSTot>
 			</total>
 			<transp>
 				<modFrete>9</modFrete>
 				<transporta>
-					<xNome>ELIENE PAULINO DE MELO</xNome>
-					<IE>2425822</IE>
-					<xEnder>AV N SRA DE FATIMA, 107</xEnder>
+					<xNome>JOSE ANTONIO DE OLIVEIRA</xNome>
+					<xEnder>RUA TUPINANBAS, 63</xEnder>
 					<xMun>SAO GOTARDO - MG</xMun>
 					<UF>MG</UF>
 				</transporta>
 				<veicTransp>
-					<placa>HBN5217</placa>
-					<UF>MG</UF>
+					<placa>AEW4545</placa>
+					<UF>SC</UF>
 				</veicTransp>
 			</transp>
 			<cobr/>
 			<infAdic>
-				<infCpl>PEDIDO: 53107 ROMANEIO BENEFICIO: 4712/9571 </infCpl>
+				<infCpl>ICMS ISENTO CONF. ART. 459 DO ANEXO IX RICMS/MG DECRETO 43.080/02. ICMS S/FRETE ISENTO CONF.ITEM 144 DA PARTE 1, ANEXO I, DEC.43080/2002 DO RICMS/MG VENDA EFETUADA COM REDUÇÃO A ZERO DA ALIQUOTA DE PIS E COFINS CONF. ART. 1º DA LEI 10925/2004. PEDIDO: 67990 ROMANEIO BENEFICIO:</infCpl>
 			</infAdic>
 		</infNFe>
 	</NFe>
+	<protNFe versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">
+		<infProt>
+			<tpAmb>2</tpAmb>
+			<verAplic>13_2_54</verAplic>
+			<chNFe>31141286675642000106550020002048191000000019</chNFe>
+			<dhRecbto>2014-12-18T15:45:26-02:00</dhRecbto>
+			<nProt>131140043852461</nProt>
+			<digVal>wNxk6L99qw9ev/wHADpE96b3W5Y=</digVal>
+			<cStat>100</cStat>
+			<xMotivo>Autorizado o uso da NF-e</xMotivo>
+		</infProt>
+	</protNFe>
 </nfeProc>

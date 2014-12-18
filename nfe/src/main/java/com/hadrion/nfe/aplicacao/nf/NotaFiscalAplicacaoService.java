@@ -1,9 +1,9 @@
 package com.hadrion.nfe.aplicacao.nf;
 
-import java.io.File;
-import java.io.FileInputStream;
+import static com.hadrion.util.xml.XmlUtil.xmlParaInpuStream;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -20,7 +20,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +27,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
@@ -42,6 +43,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
+import com.hadrion.util.xml.XmlUtil;
 
 @Service
 @Transactional
@@ -109,31 +111,53 @@ public class NotaFiscalAplicacaoService {
 				nf.mensagem() != null ? nf.mensagem().descricao() : null);
 	}
 	
+//	public Document gerar() {
+//		Document doc = parseXml(xstream().toXML(this));
+//		Node enviNfe = doc.getElementsByTagName("enviNFe").item(0);
+//		
+//		for (NotaFiscal nf: notas) {
+//			Document notaXml = parseXml(serializador.serializar(nf));
+//			enviNfe.appendChild(doc.importNode(notaXml.getFirstChild(), true));
+//		}
+//		return doc;
+//		
+//	}
+//	
+	
 	public ResponseEntity<InputStreamResource> obterDanfe(String notaFiscalId) throws IOException,JRException{
 		
 		JasperReport jasperReport;
 		JasperPrint jasperPrint;
-
-		NotaFiscalSerializador serializador = new NotaFiscalSerializador();
-		InputStream xmlFile = IOUtils.toInputStream("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" + 
-    			"<nfeProc>\r\n" +
-				serializador.serializar(notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId))) +
-    			"</nfeProc>", "UTF-8");
 		
-		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/nfeProc/NFe/infNFe/det");		
+		NotaFiscalSerializador serializador = new NotaFiscalSerializador();
+		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
+		
+		Document nfeProc = XmlUtil.novoDocument();
+		nfeProc.normalizeDocument();
+		Element root = nfeProc.createElementNS("http://www.portalfiscal.inf.br/nfe", "nfeProc");
+		nfeProc.appendChild(root);
+		
+		Document nfe = XmlUtil.parseXml(serializador.serializar(nf));
+		Document prot = null;
+		if (nf.xmlProtocolo() != null)
+			prot = XmlUtil.parseXml(nf.xmlProtocolo());
+		
+		nfeProc.getDocumentElement().appendChild(nfeProc.importNode(nfe.getFirstChild(), true));
+		if (prot != null)
+			nfeProc.getDocumentElement().appendChild(nfeProc.importNode(prot.getFirstChild(), true));
+		
+		nfeProc.normalizeDocument();
+		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");		
 		jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
 		jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
-		JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
 		
+		byte[] pdf =  JasperExportManager.exportReportToPdf(jasperPrint);
 		
 		HttpHeaders respHeaders = new HttpHeaders();
 		respHeaders.setContentType(new MediaType("application", "pdf"));
-		respHeaders.setContentDispositionFormData("attachment", "danfe.pdf");		
-		
-		
-		File result = new File("src/test/resources/report/danfe.pdf");		
-		InputStreamResource isr = new InputStreamResource(new FileInputStream(result));
-		
+		respHeaders.set("Cache-Control", "no-cache");
+		respHeaders.set("Content-Disposition", "inline; filename=pre-" + nf.chaveAcesso() +".pdf");
+		InputStreamResource isr = new InputStreamResource(new ByteArrayInputStream(pdf));		
 		return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
 	}
 	
@@ -184,6 +208,10 @@ public class NotaFiscalAplicacaoService {
 			listaId.add(new NotaFiscalId(notaFiscalId));
 		
 		return new HashSet<NotaFiscal>(notaFiscalRepositorio.notasPendentesAutorizacao(listaId,ambiente));
+	}
+	public String obterEmpresaFilial() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

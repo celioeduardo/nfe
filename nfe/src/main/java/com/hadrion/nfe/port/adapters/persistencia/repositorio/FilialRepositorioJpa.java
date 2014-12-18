@@ -1,5 +1,7 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,11 @@ public class FilialRepositorioJpa implements FilialRepositorio {
 	public void salvar(Filial filial) {
 		repositorio.save(filial);
 	}
-	
-	
+
+
+	@Override
+	public List<Filial> obterTodas() {
+		return repositorio.findAll();
+	}
+
 }

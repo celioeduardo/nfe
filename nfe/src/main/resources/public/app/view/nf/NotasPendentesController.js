@@ -81,6 +81,10 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
             "R$ " + Ext.util.Format.number(valor,'0,000.00'));
     },
 
+    rendererDanfe: function (val, meta, record) {
+        return '<a href="notas_fiscais/danfe?notafiscalid=' + val + '" target="_blank" >pré-visualizar</a>';
+    },
+    
     rendererObservacao: function(valor, metadata, rec){
         if (rec.get('msgDescricao') == null) 
             return '';

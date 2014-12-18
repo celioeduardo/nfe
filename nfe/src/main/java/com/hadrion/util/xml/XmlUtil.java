@@ -27,6 +27,18 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.CompactWriter;
 
 public class XmlUtil {
+	public static Document novoDocument(){
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		DocumentBuilder builder = null;
+		try {
+			builder = dbf.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
+		}
+		
+		return builder.newDocument();
+	}
 	
 	public static boolean xmlEquals(String arg1, String arg2){
 		XMLUnit.setIgnoreWhitespace(true);

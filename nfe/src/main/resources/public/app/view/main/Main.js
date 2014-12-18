@@ -38,7 +38,7 @@ Ext.define('nfe.view.main.Main', {
             },   
             items:[{           
                 xtype: 'combobox',
-                displayField: 'NOM_CURTO_FILIAL', 
+                displayField: 'nome', 
                 //scope       : this,
                 editable: false, 
                 //queryMode: 'local', 
@@ -47,7 +47,7 @@ Ext.define('nfe.view.main.Main', {
                 emptyText: 'Selecione uma Empresa/Filial...',
                 //selectOnFocus: true,                
                 width:350,
-                valueField: 'NUM_CNPJ', 
+                valueField: 'cnpj', 
                 bind:{
                     store: '{empresaFilial}'
                 },

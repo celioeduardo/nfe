@@ -48,6 +48,11 @@ Ext.define('nfe.view.nf.NotasPendentes', {
             renderer: 'rendererValor',
             align: 'right'
         },{
+            text:'Danfe',
+            width: 150,
+            dataIndex: 'notaFiscalId',
+            renderer: 'rendererDanfe'
+        },{
             text: 'Observação',
             dataIndex: 'msgDescricao',
             renderer: 'rendererObservacao',
