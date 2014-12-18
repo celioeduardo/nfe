@@ -58,10 +58,8 @@ public class ProcessarRetornoLoteService {
 		for (ProtocoloNotaProcessada protocolo : protocolos) {
 			NotaFiscal nf = nf(protocolo.chaveAcesso(),ambiente);
 			
-			if (nf == null)
-				throw new RuntimeException("Nota Fical não encontrada. Chave: "+protocolo.chaveAcesso());
-			
-			lote.processarNotaPeloProtocolo(nf.notaFiscalId(), protocolo);
+			if (nf != null)
+				lote.processarNotaPeloProtocolo(nf.notaFiscalId(), protocolo);
 		}
 	}
 	

@@ -12,17 +12,20 @@ import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -44,6 +47,7 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 @Entity
@@ -187,6 +191,13 @@ public class NotaFiscal {
 	})
 	private Mensagem mensagem;	
 	
+	@Embedded
+	private NumeroProtocolo numeroProtocolo;
+	
+	@Lob
+	@Basic(fetch=FetchType.LAZY)
+	private String xmlProtocolo;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
 	@Column(name="ID")
@@ -312,9 +323,20 @@ public class NotaFiscal {
 		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.INDEFINIDA);
 		this.situacao=Situacao.EMITIDA;
 	}
-	public void autorizada() {
-		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.EMITIDA);
+	public void autorizada(NumeroProtocolo numeroProtocolo,Mensagem mensagem,String xmlProtocolo) {
+		String msg = "Nota Fiscal está %s e não pode ser definida como Autorizada";
+		
+		if (situacao == Situacao.CANCELADA)
+			throw new RuntimeException(String.format(msg, "Cancelada"));
+		if (situacao == Situacao.DENEGADA)
+			throw new RuntimeException(String.format(msg, "Denegada"));
+		if (situacao == Situacao.INUTILIZADA)
+			throw new RuntimeException(String.format(msg, "Inutilizada"));
+		
 		this.situacao=Situacao.AUTORIZADA;
+		this.mensagem = mensagem;
+		this.numeroProtocolo = numeroProtocolo;
+		this.xmlProtocolo = xmlProtocolo;
 	}
 	public void cancelada() {
 		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.AUTORIZADA);
@@ -330,6 +352,17 @@ public class NotaFiscal {
 	}
 	
 	public void rejeitada(Mensagem mensagem){
+		String msg = "Nota Fiscal está %s e não pode ser definida como Rejeitada";
+		
+		if (situacao == Situacao.AUTORIZADA)
+			throw new RuntimeException(String.format(msg, "Autorizada"));
+		if (situacao == Situacao.CANCELADA)
+			throw new RuntimeException(String.format(msg, "Cancelada"));
+		if (situacao == Situacao.DENEGADA)
+			throw new RuntimeException(String.format(msg, "Denegada"));
+		if (situacao == Situacao.INUTILIZADA)
+			throw new RuntimeException(String.format(msg, "Inutilizada"));
+		
 		this.mensagem = mensagem;
 	}
 	

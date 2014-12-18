@@ -51,6 +51,8 @@ import com.hadrion.nfe.dominio.modelo.nf.transporte.Volume;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Cpf;
@@ -316,7 +318,7 @@ public class NotaFiscalFixture {
 	public static NotaFiscal nfEmProducaoAutorizada() {
 		NotaFiscal nf = nfEmProducao();
 		nf.emitida();
-		nf.autorizada();
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
 		return nf;
 	}
 }

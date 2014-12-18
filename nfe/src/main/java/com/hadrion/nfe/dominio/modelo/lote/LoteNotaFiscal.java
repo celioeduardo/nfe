@@ -47,7 +47,6 @@ class LoteNotaFiscal {
 	private Date dataHoraProcessamento;
 	
 	@Embedded
-	@AttributeOverride(name="numero", column=@Column(name="NUMERO_PROTOCOLO"))
 	private NumeroProtocolo numeroProtocolo;
 	
 	@Embedded
@@ -90,11 +89,19 @@ class LoteNotaFiscal {
 
 	public void processar(ProtocoloNotaProcessada protocolo) {
 		if (protocolo.notaAutorizada())
-			this.autorizada(protocolo.dataHoraProcessamento(), protocolo.numero(), protocolo.mensagem());
+			this.autorizada(
+					protocolo.dataHoraProcessamento(), 
+					protocolo.numero(), 
+					protocolo.mensagem(),
+					protocolo.xml());
 		else if(protocolo.notaDenegada())
-			this.denegada(protocolo.dataHoraProcessamento(), protocolo.mensagem());
+			this.denegada(
+					protocolo.dataHoraProcessamento(), 
+					protocolo.mensagem());
 		else
-			this.rejeitada(protocolo.dataHoraProcessamento(), protocolo.mensagem());
+			this.rejeitada(
+					protocolo.dataHoraProcessamento(), 
+					protocolo.mensagem());
 	}
 	
 	public boolean estaAutorizada(){
@@ -112,7 +119,9 @@ class LoteNotaFiscal {
 	void autorizada(
 			Date dataHoraProcessamento,
 			NumeroProtocolo numeroProtocolo,
-			Mensagem mensagem){
+			Mensagem mensagem,
+			String xml){
+		
 		this.setDataHoraProcessamento(dataHoraProcessamento);
 		this.setNumeroProtocolo(numeroProtocolo);
 		this.setMensagem(mensagem);
@@ -120,8 +129,11 @@ class LoteNotaFiscal {
 		
 		DominioRegistro.eventoDominioPublicador().
 			publicar(new NotaFiscalAutorizada(
+					ambiente,
 					notaFiscalId(),
-					ambiente));
+					numeroProtocolo,
+					mensagem,
+					xml));
 	}
 	
 	void rejeitada(

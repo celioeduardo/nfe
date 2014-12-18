@@ -15,15 +15,23 @@ public class ProtocoloNotaProcessada {
 	private NumeroProtocolo numero;
 	private Mensagem mensagem;
 	private ChaveAcesso chaveAcesso;
+	private String xml;
 	
 	public ProtocoloNotaProcessada(Date dataHoraProcessamento,
 			NumeroProtocolo numero, Mensagem mensagem,
-			ChaveAcesso chaveAcesso) {
+			ChaveAcesso chaveAcesso,String xml) {
 		super();
 		this.dataHoraProcessamento = dataHoraProcessamento;
 		this.numero = numero;
 		this.mensagem = mensagem;
 		this.chaveAcesso = chaveAcesso;
+		this.xml = xml;
+	}
+	
+	public ProtocoloNotaProcessada(Date dataHoraProcessamento,
+			NumeroProtocolo numero, Mensagem mensagem,
+			ChaveAcesso chaveAcesso) {
+		this(dataHoraProcessamento, numero, mensagem, chaveAcesso, null);
 	}
 	
 	public boolean notaAutorizada(){
@@ -62,6 +70,7 @@ public class ProtocoloNotaProcessada {
 				.append(numero(),objetoTipado.numero())
 				.append(mensagem(),objetoTipado.mensagem())
 				.append(chaveAcesso(),objetoTipado.chaveAcesso())
+				.append(xml(),objetoTipado.xml())
 				.isEquals();
 		}
 
@@ -75,6 +84,7 @@ public class ProtocoloNotaProcessada {
 			.append(numero())
 			.append(mensagem())
 			.append(chaveAcesso())
+			.append(xml())
 			.toHashCode();
 	}
 
@@ -84,7 +94,16 @@ public class ProtocoloNotaProcessada {
 				+",numero=" + numero()
 				+",mensagem=" + mensagem()
 				+",chaveAcesso=" + chaveAcesso()
+				+",xml=" + xml()
 				+ "]";
+	}
+	
+	public ProtocoloNotaProcessada definirXml(String xml){
+		return new ProtocoloNotaProcessada(dataHoraProcessamento, numero, mensagem, chaveAcesso,xml);
+	}
+	
+	public String xml() {
+		return xml;
 	}
 	
 }

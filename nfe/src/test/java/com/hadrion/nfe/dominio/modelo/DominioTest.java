@@ -30,6 +30,8 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.tipos.Cnpj;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -89,14 +91,14 @@ public abstract class DominioTest extends RastreadorEventoTest {
 	protected NotaFiscal notaAutorizadaHomologacaoPersistidaParaTest(String id) {
 		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));
 		nf.emitida();
-		nf.autorizada();
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaCanceladaHomologacaoPersistidaParaTest(String id) {
 		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));
 		nf.emitida();
-		nf.autorizada();
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
 		nf.cancelada();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
@@ -130,14 +132,14 @@ public abstract class DominioTest extends RastreadorEventoTest {
 	protected NotaFiscal notaAutorizadaProducaoPersistidaParaTest(String id) {
 		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id));
 		nf.emitida();
-		nf.autorizada();
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaCanceladaProducaoPersistidaParaTest(String id) {
 		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id));
 		nf.emitida();
-		nf.autorizada();
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
 		nf.cancelada();
 		notaFiscalRepositorio.salvar(nf);
 		return nf;

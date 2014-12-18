@@ -3,15 +3,31 @@ package com.hadrion.nfe.aplicacao.nf;
 public class DefinirNotaComoAutorizadaComando {
 	
 	private String notaFiscalId;
+	private String numeroProtocolo;
 	private int msgCodigo;
 	private String msgDescricao;
+	private String xmlProtocolo;
 	
-	public DefinirNotaComoAutorizadaComando(String notaFiscalId, int msgCodigo,
-			String msgDescricao) {
+	public DefinirNotaComoAutorizadaComando(String notaFiscalId, String numeroProtocolo,
+			int msgCodigo,String msgDescricao, String xmlProtocolo) {
 		super();
 		this.notaFiscalId = notaFiscalId;
+		this.numeroProtocolo = numeroProtocolo;
 		this.msgCodigo = msgCodigo;
 		this.msgDescricao = msgDescricao;
+		this.xmlProtocolo = xmlProtocolo;
+	}
+	public String getNumeroProtocolo() {
+		return numeroProtocolo;
+	}
+	public void setNumeroProtocolo(String numeroProtocolo) {
+		this.numeroProtocolo = numeroProtocolo;
+	}
+	public String getXmlProtocolo() {
+		return xmlProtocolo;
+	}
+	public void setXmlProtocolo(String xml) {
+		this.xmlProtocolo = xml;
 	}
 	public DefinirNotaComoAutorizadaComando() {
 		super();

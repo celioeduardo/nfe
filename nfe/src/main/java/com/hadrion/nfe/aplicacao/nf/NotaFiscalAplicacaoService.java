@@ -40,6 +40,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
+import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
 
 @Service
@@ -165,7 +166,10 @@ public class NotaFiscalAplicacaoService {
 	public void definirNotaComoAutorizada(DefinirNotaComoAutorizadaComando comando) {
 		NotaFiscal nota = nota(comando.getNotaFiscalId());
 		if (nota != null)
-			nota.autorizada();
+			nota.autorizada(
+					new NumeroProtocolo(comando.getNumeroProtocolo()),
+					new Mensagem(comando.getMsgCodigo(), comando.getMsgDescricao()),
+					comando.getXmlProtocolo());
 		notaFiscalRepositorio.salvar(nota);
 	}
 	

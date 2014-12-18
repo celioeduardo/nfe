@@ -10,7 +10,7 @@ import javax.persistence.Embeddable;
 @Access(AccessType.FIELD)
 public class NumeroProtocolo {
 	
-	@Column(name="NUMERO")
+	@Column(name="NUMERO_PROTOCOLO")
 	private String numero;
 
 	public NumeroProtocolo(String numero) {

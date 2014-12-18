@@ -50,6 +50,10 @@ public class Mensagem {
 		return codigo() == 102;
 	}
 	
+	public static Mensagem autorizadoUsoDaNFe(){
+		return new Mensagem(100,"Autorizado o uso da NF-e");
+	}
+	
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;
