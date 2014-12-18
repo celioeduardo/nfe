@@ -954,7 +954,7 @@ $F{Dest_Telefone}.substring(2,6) + "-" + $F{Dest_Telefone}.substring(6,10)]]></t
 					<reportElement style="dados" x="2" y="40" width="274" height="16" uuid="071e8e29-1b67-47f9-a6b7-9170ef0b1461"/>
 					<textFieldExpression><![CDATA[$F{Dest_Logradouro} + ", " + $F{Dest_Numero} + " " + ($F{Dest_Complemento} != null ? $F{Dest_Complemento} : "" )]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true">
+				<textField>
 					<reportElement style="dados" x="2" y="16" width="343" height="16" uuid="9b11e360-c81a-434f-96dc-abf6546182bd"/>
 					<textFieldExpression><![CDATA[$F{Dest_Nome}]]></textFieldExpression>
 				</textField>
