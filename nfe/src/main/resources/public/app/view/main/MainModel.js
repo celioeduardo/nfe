@@ -10,11 +10,12 @@ Ext.define('nfe.view.main.MainModel', {
         name: 'nfe',
         titulo: 'Nota Fiscal Eletrônica - 3.10',
         empresa: 86675642000106,
-        filial: -1
+        filial: '97-86675642000700',
+        ambiente: 'HOMOLOGACAO'
     },
     stores:{
     	empresaFilial:{
-    		fields: ['cnpj','nome'],		
+    		fields: ['filialId','cnpj','nome'],	
     		//model: 'NotaFiscal',
     		autoLoad: true,
             proxy:{

@@ -29,20 +29,25 @@ public class DescritorNotaFiscalDeserializer extends AbstractDeserializer
 		
 		final JsonObject j = jsonSource.getAsJsonObject();
 		
-		DescritorNotaFiscal descritor = new DescritorNotaFiscal(
-				criarNotaFiscalId(s(j,"id"), ambiente),
-				s(j,"tipo"),
-				new Cnpj(l(j,"empresa")),
-				new Cnpj(l(j,"filial")),
-				l(j,"numero"), 
-				new Serie(i(j,"serie")),
-				null,
-				DataUtil.data(j.get("emissao").getAsString()), 
-				DataUtil.data(j.get("movimentacao").getAsString()),
-				s(j,"publicoTipo"),
-				l(j,"publicoCodigo"),
-				s(j,"publicoNome"),
-				new Dinheiro(d(j,"valor")));		
+		DescritorNotaFiscal descritor = null;
+		try {
+			descritor = new DescritorNotaFiscal(
+					criarNotaFiscalId(s(j,"id"), ambiente),
+					s(j,"tipo"),
+					new Cnpj(l(j,"empresa")),
+					new Cnpj(l(j,"filial")),
+					l(j,"numero"), 
+					new Serie(i(j,"serie")),
+					null,
+					DataUtil.data(j.get("emissao").getAsString()), 
+					DataUtil.data(j.get("movimentacao").getAsString()),
+					s(j,"publicoTipo"),
+					l(j,"publicoCodigo"),
+					s(j,"publicoNome"),
+					new Dinheiro(d(j,"valor")));		
+		} catch (Exception e) {
+			throw new RuntimeException(j.toString(),e);
+		}
 		
 		return descritor;
 	}

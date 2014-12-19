@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
@@ -27,7 +28,7 @@ public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 	@Override
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
 			Ambiente ambiente,
-			Double empresa, Double filial, Date inicio, Date fim,
+			Double empresa, FilialId filial, Date inicio, Date fim,
 			String usuario, NotaFiscalId notaFiscalId) {
 		return null;
 	}
@@ -57,13 +58,20 @@ public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 	}
 
 	@Override
-	public List<NotaFiscal> notasAutorizadas(Ambiente ambiente) {
+	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<NotaFiscal> notasAutorizadasNaoImpressas(Ambiente ambiente) {
+	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<NotaFiscal> notasPendentesAutorizacao(FilialId filialId,
+			Ambiente ambiente) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,20 +1,14 @@
 package com.hadrion.nfe.aplicacao.filial.data;
 
-import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
-import com.hadrion.nfe.dominio.modelo.filial.FilialId;
-import com.hadrion.nfe.tipos.Cnpj;
 
 public class FilialData {
-	private FilialId filialId;
+	private String filialId;
 	private String nome;
-	private Cnpj cnpj;
-	private EmpresaId empresaId;
+	private String cnpj;
+	private String empresaId;
 
-		
-	
-
-	public FilialData(FilialId filialId, String nome, Cnpj cnpj,
-			EmpresaId empresaId) {
+	public FilialData(String filialId, String nome, String cnpj,
+			String empresaId) {
 		super();
 		this.filialId = filialId;
 		this.nome = nome;
@@ -22,65 +16,37 @@ public class FilialData {
 		this.empresaId = empresaId;
 	}
 
-
-
-
-	public FilialId getFilialId() {
+	public String getFilialId() {
 		return filialId;
 	}
 
-
-
-
-	public void setFilialId(FilialId filialId) {
+	public void setFilialId(String filialId) {
 		this.filialId = filialId;
 	}
-
-
-
 
 	public String getNome() {
 		return nome;
 	}
 
-
-
-
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
-
-
-
-	public Cnpj getCnpj() {
+	public String getCnpj() {
 		return cnpj;
 	}
 
-
-
-
-	public void setCnpj(Cnpj cnpj) {
+	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
 
-
-
-
-	public EmpresaId getEmpresaId() {
+	public String getEmpresaId() {
 		return empresaId;
 	}
 
-
-
-
-	public void setEmpresaId(EmpresaId empresaId) {
+	public void setEmpresaId(String empresaId) {
 		this.empresaId = empresaId;
 	}
-
-
-
-
-	public FilialData(){}
+	
 
 }

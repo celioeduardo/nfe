@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import com.hadrion.nfe.dominio.modelo.filial.Filial;
@@ -34,7 +35,7 @@ public class FilialRepositorioJpa implements FilialRepositorio {
 
 	@Override
 	public List<Filial> obterTodas() {
-		return repositorio.findAll();
+		return repositorio.findAll(new Sort("nome"));
 	}
 
 }

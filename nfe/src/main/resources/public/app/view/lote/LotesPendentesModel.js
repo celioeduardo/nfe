@@ -11,23 +11,13 @@ Ext.define('nfe.view.lote.LotesPendentesModel', {
     	lotesPendentes:{
     		model: 'Lote',
     		autoLoad: true,
-            // data:[{
-            //     "numeroRecibo" : 1,
-            //     "ambiente": 'HOMOLOGACAO'
-            // },{
-            //     "numeroRecibo" : 123456,
-            //     "ambiente": 'HOMOLOGACAO'
-            // },{
-            //     "numeroRecibo" : 987654321,
-            //     "ambiente": 'HOMOLOGACAO'
-            // }]
             proxy:{
                 url:'lotes/pendentes',
                 type: 'rest',
                 extraParams:{
+                	"ambiente": "{ambiente}",
                     "empresa":"{empresa}",
-                    "filial":"{filial}",
-                    "ambiente": "HOMOLOGACAO"
+                    "filial":"{filial}"
                 },
                 reader: {
                     type: 'json',

@@ -38,18 +38,16 @@ Ext.define('nfe.view.main.Main', {
             },   
             items:[{           
                 xtype: 'combobox',
+                queryMode: 'local',
+                forceSelection: true, 
+                autoLoadOnValue: true,
+                valueField: 'filialId', 
                 displayField: 'nome', 
-                //scope       : this,
-                editable: false, 
-                //queryMode: 'local', 
-                //flex: 1,
-                //forceSelection: true,
                 emptyText: 'Selecione uma Empresa/Filial...',
-                //selectOnFocus: true,                
                 width:350,
-                valueField: 'cnpj', 
                 bind:{
-                    store: '{empresaFilial}'
+                    store: '{empresaFilial}',
+                    value: '{filial}'
                 },
                 //handler: 'onClickEnviar',
                 listeners: {

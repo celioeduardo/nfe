@@ -105,7 +105,7 @@ public class AgrixService{
 	
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
 			Ambiente ambiente,
-			Double empresa,Double filial,Date inicio,Date fim,String usuario,
+			Double empresa,String filial,Date inicio,Date fim,String usuario,
 			NotaFiscalId notaFiscalId) {
 		
 		gsonBuilder = new GsonBuilder();
@@ -117,7 +117,7 @@ public class AgrixService{
 		.withFunctionName("obterPendentes")
 		//.withoutProcedureColumnMetaDataAccess()
 		.declareParameters(new SqlParameter("empresa", Types.DOUBLE))
-		.declareParameters(new SqlParameter("filial", Types.DOUBLE))
+		.declareParameters(new SqlParameter("filial", Types.VARCHAR))
 		.declareParameters(new SqlParameter("inicio", Types.DATE))
 		.declareParameters(new SqlParameter("fim", Types.DATE))
 		.declareParameters(new SqlParameter("usuario", Types.VARCHAR))
@@ -127,7 +127,7 @@ public class AgrixService{
 		
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("empresa",empresa, Types.DOUBLE);	
-		params.addValue("filial", filial, Types.DOUBLE);		
+		params.addValue("filial", filial, Types.VARCHAR);		
 		params.addValue("inicio", inicio, Types.DATE);		
 		params.addValue("fim", fim, Types.DATE);		
 		params.addValue("usuario", usuario, Types.VARCHAR);		

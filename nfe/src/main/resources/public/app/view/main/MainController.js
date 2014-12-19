@@ -19,19 +19,21 @@ Ext.define('nfe.view.main.MainController', {
         //me.getViewModel().getData().filial=combo.getValue();
         //this.getViewModel().setData({filial:combo.getValue()});
         //Ext.getCmp('notas-pendentes').getStore('notasPendentes').load();
-        Ext.getCmp('notas-pendentes').getStore('notasPendentes').load({
-            params:{
-                'filial': combo.getValue()
-            } 
-        });
+//        Ext.getCmp('notas-pendentes').getStore('notasPendentes').load({
+//            params:{
+//                'filial': combo.getValue()
+//            } 
+//        });
         Ext.toast({
-            title: 'Trocando Empresa...aguarde',
+            title: 'Troca de Filial',
             //ui: 'navigation',
             html: combo.getValue() + ' - ' + combo.getRawValue(),
             align: 't',
             bodyPadding: 10,
             width:350
         });
+        
+        //this.getViewModel().set('filial',)
 
     },
     

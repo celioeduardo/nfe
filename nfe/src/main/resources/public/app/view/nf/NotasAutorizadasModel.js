@@ -11,6 +11,7 @@ Ext.define('nfe.view.nf.NotasAutorizadasModel', {
                 url:'notas_fiscais/autorizadas_resumo',
                 type: 'rest',
                 extraParams:{
+                	"ambiente":"{ambiente}",
                 	"nao_impressa":"{nao_impressa}",
                     "empresa":"{empresa}",
                     "filial":"{filial}"

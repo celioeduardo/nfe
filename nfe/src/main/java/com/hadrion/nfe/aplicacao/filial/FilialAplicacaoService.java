@@ -30,10 +30,11 @@ public class FilialAplicacaoService {
 	}
 	
 	private FilialData construir(Filial filial){
-		return new FilialData(filial.filialId(),
+		return new FilialData(
+				String.valueOf(filial.filialId()),
 				filial.nome(),
-				filial.cnpj(),
-				filial.empresaId());
+				String.valueOf(filial.cnpj()),
+				String.valueOf(filial.empresaId()));
 	}
 	
 }

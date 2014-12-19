@@ -15,6 +15,7 @@ Ext.define('nfe.view.nf.NotasPendentesModel', {
                 url:'notas_fiscais/pendentes_autorizacao_resumo',
                 type: 'rest',
                 extraParams:{
+                	"ambiente":"{ambiente}",
                     "empresa":"{empresa}",
                     "filial":"{filial}"
                 },

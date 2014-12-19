@@ -22,9 +22,9 @@ public class LoteController {
 	
 	@RequestMapping(value="/pendentes", method = RequestMethod.GET)
 	public List<LoteData> pendentes(
-			@RequestParam(value="ambiente",required=false)Ambiente ambiente,
+			@RequestParam(value="ambiente")Ambiente ambiente,
 			@RequestParam(value="empresa",required=false)Double empresa,
-			@RequestParam(value="filial",required=false)Double filial){
+			@RequestParam(value="filial",required=false) String filial){
 		
 		return loteAplicacaoService.obterLotesPendentes(ambiente, null);
 	}
