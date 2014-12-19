@@ -92,45 +92,70 @@ public class NotaFiscalAplicacaoService {
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacao(Ambiente ambiente){
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 		
-		for (NotaFiscal nf : notaFiscalRepositorio.notasPendentesAutorizacao(null,ambiente)) {
+		for (NotaFiscal nf : notaFiscalRepositorio.notasPendentesAutorizacao(null,ambiente)) 
 			result.add(construir(nf));
-		}
 		
 		return result;
 	}
 	
+	public List<NotaFiscalData> notasFicaisAutorizadasResumo(Ambiente ambiente,
+			Double empresa, Double filial, Date inicio, Date fim,
+			String usuario, String notaFiscalId) {
+
+		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
+
+		for (NotaFiscal nf : notaFiscalRepositorio.notasAutorizadas(ambiente)) {
+			result.add(construir(nf));
+		}
+		
+		return result;
+		
+	}
+	public List<NotaFiscalData> notasFicaisAutorizadasNaoImpressasResumo(
+			Ambiente ambiente, Double empresa, Double filial, Date inicio,
+			Date fim, String usuario, String notaFiscalId) {
+	
+		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
+
+		for (NotaFiscal nf : notaFiscalRepositorio.notasAutorizadasNaoImpressas(ambiente)) 
+			result.add(construir(nf));
+		
+		return result;
+	
+	}
 	private NotaFiscalData construir(NotaFiscal nf){
-		return new NotaFiscalData(nf.notaFiscalId().id(),
+		return new NotaFiscalData(
+				nf.notaFiscalId().id(),
 				nf.numero(),
 				String.valueOf(nf.serie().numero()),
+				nf.chaveAcesso() != null ? String.valueOf(nf.chaveAcesso()) : null,
 				nf.emissao(),
 				nf.total().valor(),
+				null,null,
 				nf.destinatario().razaoSocial(),
 				nf.tipoOperacao().toString(),
 				nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,
 				nf.mensagem() != null ? nf.mensagem().descricao() : null);
 	}
 	
-//	public Document gerar() {
-//		Document doc = parseXml(xstream().toXML(this));
-//		Node enviNfe = doc.getElementsByTagName("enviNFe").item(0);
-//		
-//		for (NotaFiscal nf: notas) {
-//			Document notaXml = parseXml(serializador.serializar(nf));
-//			enviNfe.appendChild(doc.importNode(notaXml.getFirstChild(), true));
-//		}
-//		return doc;
-//		
-//	}
-//	
+	public ResponseEntity<InputStreamResource> imprimirDanfe(String notaFiscalId) throws IOException,JRException{
+		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
+		nf.definirDanfeComoImpresso();
+		notaFiscalRepositorio.salvar(nf);
+		return preVisualizarDanfe(notaFiscalId);
+	}
 	
-	public ResponseEntity<InputStreamResource> obterDanfe(String notaFiscalId) throws IOException,JRException{
+	public ResponseEntity<InputStreamResource> preVisualizarDanfe(String notaFiscalId) throws IOException,JRException{
+		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
+		return obterDanfe(nf);
+	}
+	
+	public ResponseEntity<InputStreamResource> obterDanfe(NotaFiscal nf) throws IOException,JRException{
 		
 		JasperReport jasperReport;
 		JasperPrint jasperPrint;
 		
 		NotaFiscalSerializador serializador = new NotaFiscalSerializador();
-		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
 		
 		Document nfeProc = XmlUtil.novoDocument();
 		nfeProc.normalizeDocument();

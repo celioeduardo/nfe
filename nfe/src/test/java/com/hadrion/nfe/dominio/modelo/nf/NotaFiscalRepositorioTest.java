@@ -63,7 +63,7 @@ public class NotaFiscalRepositorioTest extends DominioTest {
 		assertEquals(Finalidade.NORMAL,nf.finalidade()); 
 		assertEquals(Presenca.OUTROS,nf.presenca()); 
 		assertEquals(Processo.APLICATIVO_CONTRIBUINTE,nf.processo());
-		assertFalse(nf.formularioSegurancaImpresso());
+		assertFalse(nf.danfeImpresso());
 		
 		assertEquals(new FilialId("4007474000116"),nf.filialId());
 		

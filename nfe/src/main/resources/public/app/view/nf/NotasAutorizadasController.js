@@ -1,61 +1,19 @@
-Ext.define('nfe.view.nf.NotasPendentesController', {
+Ext.define('nfe.view.nf.NotasAutorizadasController', {
     extend: 'Ext.app.ViewController',
 
     requires: [
         'Ext.MessageBox'
     ],
 
-    alias: 'controller.notas-pendentes',
-
-    onClickEnviar: function () {
-
-        if (this.getView().getSelection().length==0){
-            Ext.Msg.alert('Selecionar','Nenhum item selecionado!');
-        } else {
-            Ext.Msg.confirm('Confirmar', 'Enviar Notas?', 'enviarNotas', this);
-        }
-    },
-
-    enviarNotas: function (choice) {
-        if (choice === 'yes') {
-            var s = this.getView().getSelection();
-
-            var ids = [];
-            for (var i = 0; i < s.length; i++) {
-                ids.push(s[i].get('notaFiscalId'));
-            }
-            
-            var model = new nfe.model.NotaFiscal();
-            var grid = this.getView();
-            grid.getView().mask('Enviando...');
-            var me = this;
-            model.enviarNotas('HOMOLOGACAO',ids,function(){
-            	me.getViewModel().getStore('notasPendentes').reload();
-            	me.fireViewEvent('notasPendentesEnviadas');
-            	console.log('sucesso!');
-            },
-            null,
-            function(){
-            	grid.unmask();
-            });
-
-        }
-    },
-
-    aspas: function (s) {
-        return "'" + s + "'";
-    },
+    alias: 'controller.notas-autorizadas',
 
     onClickAtualizar: function (){
-        //console.log("url proxy:" + this.getStore().load({url:'newUrl'});
-            //pendentes_autorizacao_selecionadas
-        //    console.log("url proxy:" + JSON.stringify(this.getStore().getProxy()));
-        this.getViewModel().getStore('notasPendentes').load(
+        this.getViewModel().getStore('notasAutorizadas').load(
             {"params":{
                 "notafiscalid":"03F79B1D8D397592E050007F01005CC8"
             }
         });
-        //this.getViewModel().getStore('notasPendentes').reload();
+        //this.getViewModel().getStore('notasAutorizadas').reload();
     },
 
     rendererNumero: function(numero, metadata, rec){
@@ -82,7 +40,7 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
     },
 
     rendererDanfe: function (val, meta, record) {
-        return '<a href="notas_fiscais/pre_visualizar_danfe?notafiscalid=' + val + '" target="_blank" >pré-visualizar</a>';
+        return '<a href="notas_fiscais/imprimir_danfe?notafiscalid=' + val + '" target="_blank" >imprimir DANFE</a>';
     },
     
     rendererObservacao: function(valor, metadata, rec){

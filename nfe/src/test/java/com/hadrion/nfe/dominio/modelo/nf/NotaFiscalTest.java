@@ -134,7 +134,7 @@ public class NotaFiscalTest {
 	public void trocaTipoEmissaoDeFsdaParaOutroTipoNaoPermitidoSeFormularioSegurancaFoiImpresso(){
 		nf = NotaFiscalFixture.nfEmProducao();
 		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
-		nf.definirFormularioSegurancaoComoImpresso();
+		nf.definirDanfeComoImpresso();
 		nf.alterarTipoEmissao(TipoEmissao.NORMAL);
 	}
 	
@@ -142,7 +142,7 @@ public class NotaFiscalTest {
 	public void trocaTipoEmissaoDeFsiaParaOutroTipoNaoPermitidoSeFormularioSegurancaFoiImpresso(){
 		nf = NotaFiscalFixture.nfEmProducao();
 		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
-		nf.definirFormularioSegurancaoComoImpresso();
+		nf.definirDanfeComoImpresso();
 		nf.alterarTipoEmissao(TipoEmissao.NORMAL);
 	}
 	
@@ -150,22 +150,16 @@ public class NotaFiscalTest {
 	public void definirFormularioDeSegurancaFsdaComoImpresso(){
 		nf = NotaFiscalFixture.nfEmProducao();
 		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
-		nf.definirFormularioSegurancaoComoImpresso();
-		assertTrue(nf.formularioSegurancaImpresso());
+		nf.definirDanfeComoImpresso();
+		assertTrue(nf.danfeImpresso());
 	}
 	
 	@Test
 	public void definirFormularioDeSegurancaFsiaComoImpresso(){
 		nf = NotaFiscalFixture.nfEmProducao();
 		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
-		nf.definirFormularioSegurancaoComoImpresso();
-		assertTrue(nf.formularioSegurancaImpresso());
-	}
-	
-	@Test(expected=RuntimeException.class)
-	public void definirFormularioDeSegurancaComoImpressoSomenteTipoEmissaoForFsdaOuFsia(){
-		nf = NotaFiscalFixture.nfEmProducao();
-		nf.definirFormularioSegurancaoComoImpresso();
+		nf.definirDanfeComoImpresso();
+		assertTrue(nf.danfeImpresso());
 	}
 	
 }

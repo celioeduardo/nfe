@@ -56,4 +56,16 @@ public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 		return repositorio.findByChaveAcessoAndAmbiente(chave,ambiente);
 	}
 
+	@Override
+	public List<NotaFiscal> notasAutorizadas(Ambiente ambiente) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<NotaFiscal> notasAutorizadasNaoImpressas(Ambiente ambiente) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

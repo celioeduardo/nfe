@@ -125,37 +125,28 @@ Ext.define('nfe.view.main.Main', {
             },{
                 title: 'Autorizadas',
                 region: 'south',
-                xtype:'notas-pendentes',
+                xtype:'notas-autorizadas',
                 height: '50%',
                 minHeight: 20,
-                maxHeight: 300
+                maxHeight: 300,
+                viewModel:{
+                    data:{
+                        nao_impressa: true
+                    }
+                }
             }]
-        },
-        /*{
-            title: 'Pendentes',
-            xtype:'notas-pendentes-teste',
-            glyph: 0xf064,
-            reference: 'gridPendentes',
-            hideHeaders: true,
-            selModel: {
-                selType: 'checkboxmodel',
-                mode: 'MULTI'
-            },            
-            bind:{
-                store: '{notasPendentes}'
+        },{
+        	glyph: 0xf087,
+        	title: 'Autorizadas',
+            layout: 'fit',
+            xtype:'notas-autorizadas',
+            margin: '5 0 0 0',
+            viewModel:{
+                data:{
+                    nao_impressa: false
+                }
             }
-        },*/{
-            title: 'Autorizadas old',
-            xtype:'notas-pendentes-teste',
-            glyph: 0xf087,
-            reference: 'gridAutorizada',
-            selModel: {
-                selType: 'checkboxmodel',
-                mode: 'SINGLE'
-            },            
-            bind:{
-                store: '{notasAutorizadas}'
-            }
+            
         },{
             title: 'Cancelamento',
             xtype: 'tela-cancelamento',

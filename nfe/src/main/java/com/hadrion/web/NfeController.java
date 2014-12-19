@@ -31,7 +31,7 @@ public class NfeController {
 	NotaFiscalAplicacaoService notaFiscalAplicacaoService; 
 	
 	@RequestMapping(value="/pendentes_autorizacao_resumo", method = RequestMethod.GET)
-	public List<NotaFiscalData> pendentes_autorizacao_resumo(
+	public List<NotaFiscalData> pendentesAutorizacaoResumo(
 			@RequestParam(value="ambiente",required=false)Ambiente ambiente ,
 			@RequestParam(value="empresa",required=false)Double empresa,
 			@RequestParam(value="filial",required=false)Double filial,
@@ -47,8 +47,50 @@ public class NfeController {
 		
 		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacaoResumo(ambiente,empresa,filial,inicio,fim,usuario,notaFiscalId);
 	}
+	
+	@RequestMapping(value="/autorizadas_resumo", method = RequestMethod.GET)
+	public List<NotaFiscalData> autorizadasResumo(
+			@RequestParam(value="ambiente",required=false)Ambiente ambiente ,
+			@RequestParam(value="empresa",required=false)Double empresa,
+			@RequestParam(value="filial",required=false)Double filial,
+			@RequestParam(value="inicio",required=false)Date inicio,
+			@RequestParam(value="fim",required=false)Date fim,
+			@RequestParam(value="usuario",required=false)String usuario,
+			@RequestParam(value="notafiscalid",required=false)String notaFiscalId,
+			@RequestParam(value="nao_impressa",required=false)boolean naoImpressa){
+		
+		empresa = Double.parseDouble("86675642000106");
+		filial = Double.parseDouble("86675642000106");
+		
+		//TODO passar ambiente na chamada da IU
+		ambiente = Ambiente.HOMOLOGACAO;
+		
+		if (naoImpressa)
+			return notaFiscalAplicacaoService.notasFicaisAutorizadasNaoImpressasResumo(ambiente,empresa,filial,inicio,fim,usuario,notaFiscalId);
+		else
+			return notaFiscalAplicacaoService.notasFicaisAutorizadasResumo(ambiente,empresa,filial,inicio,fim,usuario,notaFiscalId);
+	}
+	
+	@RequestMapping(value="/autorizadas_nao_impressas_resumo", method = RequestMethod.GET)
+	public List<NotaFiscalData> autorizadasNaoImpressasResumo(
+			@RequestParam(value="ambiente",required=false)Ambiente ambiente ,
+			@RequestParam(value="empresa",required=false)Double empresa,
+			@RequestParam(value="filial",required=false)Double filial,
+			@RequestParam(value="inicio",required=false)Date inicio,
+			@RequestParam(value="fim",required=false)Date fim,
+			@RequestParam(value="usuario",required=false)String usuario,
+			@RequestParam(value="notafiscalid",required=false)String notaFiscalId){
+		empresa = Double.parseDouble("86675642000106");
+		filial = Double.parseDouble("86675642000106");
+		
+		//TODO passar ambiente na chamada da IU
+		ambiente = Ambiente.HOMOLOGACAO;
+		
+		return notaFiscalAplicacaoService.notasFicaisAutorizadasNaoImpressasResumo(ambiente,empresa,filial,inicio,fim,usuario,notaFiscalId);
+	}
+	
 	@RequestMapping("/pendentes_autorizacao")
-	public List<NotaFiscalData> pendentes_autorizacao(HttpServletRequest req){
+	public List<NotaFiscalData> pendentesAutorizacao(HttpServletRequest req){
 		//TODO parametrizar Ambiente
 		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacao(Ambiente.HOMOLOGACAO); 
 	}
@@ -68,10 +110,16 @@ public class NfeController {
 				+ "{\"NUM_CNPJ\":86675642000106,\"NOM_CURTO_FILIAL\":\"LOJA INSUMOS\"}]"; 
 	}
 	
-	@RequestMapping(value = "/danfe", method = RequestMethod.GET)
-	public ResponseEntity<InputStreamResource> danfe(
+	@RequestMapping(value = "/pre_visualizar_danfe", method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> preVisualizarDanfe(
 			@RequestParam(value="notafiscalid")String notaFiscalId) throws IOException, JRException{		
-		return notaFiscalAplicacaoService.obterDanfe(notaFiscalId);
+		return notaFiscalAplicacaoService.preVisualizarDanfe(notaFiscalId);
+	}	
+	
+	@RequestMapping(value = "/imprimir_danfe", method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> imprimirDanfe(
+			@RequestParam(value="notafiscalid")String notaFiscalId) throws IOException, JRException{		
+		return notaFiscalAplicacaoService.imprimirDanfe(notaFiscalId);
 	}	
 	
 	@RequestMapping(value = "/enviar", method = RequestMethod.POST)

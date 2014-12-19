@@ -168,8 +168,8 @@ public class NotaFiscal {
 	@Embedded
 	private Contingencia contingencia;
 	
-	@Column(name="FS_IMPRESSO")
-	private boolean formularioSegurancaImpresso = false;
+	@Column(name="DANFE_IMPRESSO")
+	private boolean danfeImpresso = false;
 	
 	@Embedded
 	private FilialId filialId;
@@ -626,7 +626,7 @@ public class NotaFiscal {
 			throw new RuntimeException(
 					"Nota já transmitida. Não é possível alterar o Tipo de Emissão");
 		
-		if (formularioSegurancaImpresso)
+		if (danfeImpresso && (tipoEmissao == TipoEmissao.FS_DA || tipoEmissao == TipoEmissao.FS_IA))
 			throw new RuntimeException(
 					"Tipo de Emissão não pode ser alterado. Formulário de Segurança já foi impresso.");
 		
@@ -647,16 +647,12 @@ public class NotaFiscal {
 		setTipoEmissao(novoTipoEmissao);
 	}
 
-	public void definirFormularioSegurancaoComoImpresso() {
-		if (tipoEmissao != TipoEmissao.FS_DA && tipoEmissao != TipoEmissao.FS_IA)
-			throw new RuntimeException(
-					"Formulário de Segurança não pode ser definido como impresso quando "
-					+ "o Tipo de Emissão for diferente de FS-DA ou FS-IA");
-		formularioSegurancaImpresso = true;
+	public void definirDanfeComoImpresso() {
+		danfeImpresso = true;
 	}
 
-	public boolean formularioSegurancaImpresso() {
-		return formularioSegurancaImpresso;
+	public boolean danfeImpresso() {
+		return danfeImpresso;
 	}
 	
 	public Mensagem mensagem(){

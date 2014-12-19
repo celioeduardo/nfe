@@ -16,6 +16,7 @@ import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+import com.hadrion.nfe.dominio.modelo.nf.Situacao;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.NotaFiscalRepositorioSpringData;
 
@@ -115,6 +116,16 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	@Override
 	public NotaFiscal notaFiscalPelaChave(ChaveAcesso chave, Ambiente ambiente) {
 		return repositorio.findByChaveAcessoAndAmbiente(chave,ambiente);
+	}
+
+	@Override
+	public List<NotaFiscal> notasAutorizadas(Ambiente ambiente) {
+		return repositorio.findBySituacaoAndAmbiente(Situacao.AUTORIZADA,ambiente);
+	}
+
+	@Override
+	public List<NotaFiscal> notasAutorizadasNaoImpressas(Ambiente ambiente) {
+		return repositorio.findBySituacaoAndAmbienteAndDanfeImpresso(Situacao.AUTORIZADA,ambiente,false);
 	}
 	
 	

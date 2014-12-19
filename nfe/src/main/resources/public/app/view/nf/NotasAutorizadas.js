@@ -1,13 +1,13 @@
-Ext.define('nfe.view.nf.NotasPendentes', {
+Ext.define('nfe.view.nf.NotasAutorizadas', {
     extend: 'Ext.grid.Panel',
-    requires:['Ext.grid.Panel','nfe.model.NotaFiscal'],
-    xtype: 'notas-pendentes',
-    controller: 'notas-pendentes',
+    //requires:['Ext.grid.Panel','nfe.model.NotaFiscal'],
+    xtype: 'notas-autorizadas',
+    controller: 'notas-autorizadas',
     viewConfig: {
         enableTextSelection: true
     },
     viewModel: {
-        type: 'notas-pendentes'/*,
+        type: 'notas-autorizadas'/*,
         session : true*/
     },
     tbar:[{
@@ -20,7 +20,7 @@ Ext.define('nfe.view.nf.NotasPendentes', {
         handler: 'onClickAtualizar'
     }],
     bind:{
-        store: '{notasPendentes}',
+        store: '{notasAutorizadas}',
         selection: '{notasSelecionadas}'
     },
     selType: 'checkboxmodel',

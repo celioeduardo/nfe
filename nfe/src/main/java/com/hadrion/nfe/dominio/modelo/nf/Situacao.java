@@ -1,6 +1,6 @@
 package com.hadrion.nfe.dominio.modelo.nf;
 
-enum Situacao {
+public enum Situacao {
 	INDEFINIDA,
 	EMITIDA,
 	AUTORIZADA,

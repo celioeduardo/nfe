@@ -19,4 +19,6 @@ public interface NotaFiscalRepositorio {
 	public void limpar();
 	public void salvar(NotaFiscal notaFiscal);
 	public NotaFiscal notaFiscalPelaChave(ChaveAcesso chave, Ambiente ambiente);
+	public List<NotaFiscal> notasAutorizadas(Ambiente ambiente);
+	public List<NotaFiscal> notasAutorizadasNaoImpressas(Ambiente ambiente);
 }

@@ -45,6 +45,10 @@ Ext.define('nfe.view.main.MainController', {
     	this.getView().down('notas-pendentes')
 	    	.getViewModel().getStore('notasPendentes')
 	    	.reload();
+    	
+    	this.getView().down('notas-autorizadas')
+	    	.getViewModel().getStore('notasAutorizadas')
+	    	.reload();
     }
 
 /*
