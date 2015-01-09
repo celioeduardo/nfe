@@ -132,7 +132,6 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 		assertEquals(nf.informacaoContribuinte(),nfDeserializada.informacaoContribuinte());
 		assertEquals(nf.exportacao(),nfDeserializada.exportacao());
 		assertEquals(nf.contingencia(),nfDeserializada.contingencia());
-		assertEquals(nf.notistaId(),nfDeserializada.notistaId());
 	}
 	
 	private NotaFiscal nf(){

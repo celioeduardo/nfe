@@ -61,34 +61,6 @@ public class RetornoConsultaProcessamentoLoteDeserializadorTest {
 	public void deserializarOk(){
 		deserializador = new RetornoConsultaProcessamentoLoteDeserializador(XML_OK);
 		
-		RetornoConsultaProcessamentoLote r =  deserializador.deserializar();
-		
-		System.out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?><protNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"3.10\">\n" + 
-				"      <infProt>\n" + 
-				"        <tpAmb>2</tpAmb>\n" + 
-				"        <verAplic>13_2_51</verAplic>\n" + 
-				"        <chNFe>31131016832651000420550010000199361002699180</chNFe>\n" + 
-				"        <dhRecbto>2014-12-04T17:27:22-02:00</dhRecbto>\n" + 
-				"        <digVal>M8De8U+VYtAbxqIATq06Ao9OEBs=</digVal>\n" + 
-				"        <cStat>297</cStat>\n" + 
-				"        <xMotivo>Rejeicao: Assinatura difere do calculado</xMotivo>\n" + 
-				"      </infProt>\n" + 
-				"    </protNFe>");
-				System.out.println(r.protocolos().get(0).xml());
-		
-		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><protNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"3.10\">\n" + 
-				"      <infProt>\n" + 
-				"        <tpAmb>2</tpAmb>\n" + 
-				"        <verAplic>13_2_51</verAplic>\n" + 
-				"        <chNFe>31131016832651000420550010000199361002699180</chNFe>\n" + 
-				"        <dhRecbto>2014-12-04T17:27:22-02:00</dhRecbto>\n" + 
-				"        <digVal>M8De8U+VYtAbxqIATq06Ao9OEBs=</digVal>\n" + 
-				"        <cStat>297</cStat>\n" + 
-				"        <xMotivo>Rejeicao: Assinatura difere do calculado</xMotivo>\n" + 
-				"      </infProt>\n" + 
-				"    </protNFe>",
-				r.protocolos().get(0).xml());
-		
 		assertEquals(new RetornoConsultaProcessamentoLote(
 				Ambiente.HOMOLOGACAO,
 				new Mensagem(104, "Lote processado"),

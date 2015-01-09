@@ -2,12 +2,14 @@ package com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
+import com.hadrion.util.xml.XmlUtil;
 
 public class ProtocoloNotaProcessada {
 	
@@ -70,8 +72,9 @@ public class ProtocoloNotaProcessada {
 				.append(numero(),objetoTipado.numero())
 				.append(mensagem(),objetoTipado.mensagem())
 				.append(chaveAcesso(),objetoTipado.chaveAcesso())
-				.append(xml(),objetoTipado.xml())
 				.isEquals();
+			
+			objetosIguais = XmlUtil.xmlEquals(xml(), objetoTipado.xml()) && objetosIguais;
 		}
 
 		return objetosIguais;
@@ -84,10 +87,16 @@ public class ProtocoloNotaProcessada {
 			.append(numero())
 			.append(mensagem())
 			.append(chaveAcesso())
-			.append(xml())
+			.append(xmlLimpo())
 			.toHashCode();
 	}
-
+	
+	private String xmlLimpo(){
+		String aux = StringUtils.replace(xml(), "\n", "");
+		aux = StringUtils.replace(xml(), "\r", "");
+		return aux;
+	}
+	
 	@Override
 	public String toString() {
 		return "ProtocoloNotaProcessada [dataHoraProcessamento=" + dataHoraProcessamento()
