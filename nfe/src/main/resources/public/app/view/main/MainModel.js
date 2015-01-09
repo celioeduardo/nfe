@@ -11,7 +11,8 @@ Ext.define('nfe.view.main.MainModel', {
         titulo: 'Nota Fiscal Eletrônica - 3.10',
         empresa: 86675642000106,
         filial: '97-86675642000700',
-        ambiente: 'HOMOLOGACAO'
+        ambiente: 'HOMOLOGACAO',
+        notista:null
     },
     stores:{
     	empresaFilial:{

@@ -17,7 +17,8 @@ Ext.define('nfe.view.lote.LotesPendentesModel', {
                 extraParams:{
                 	"ambiente": "{ambiente}",
                     "empresa":"{empresa}",
-                    "filial":"{filial}"
+                    "filial":"{filial}",
+                    "notista":"{notista}"
                 },
                 reader: {
                     type: 'json',

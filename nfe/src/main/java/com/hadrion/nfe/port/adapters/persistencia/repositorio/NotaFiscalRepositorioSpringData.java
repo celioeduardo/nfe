@@ -9,6 +9,7 @@ import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.Situacao;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 
 public interface NotaFiscalRepositorioSpringData extends JpaRepository<NotaFiscal, Long>{
@@ -22,11 +23,18 @@ public interface NotaFiscalRepositorioSpringData extends JpaRepository<NotaFisca
 
 	List<NotaFiscal> findByFilialIdAndSituacaoAndAmbiente(FilialId filialId, Situacao autorizada,
 			Ambiente ambiente);
-
+	
+	List<NotaFiscal> findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(
+			FilialId filialId, NotistaId notistaId, Situacao autorizada,
+			Ambiente ambiente);
+	
 	List<NotaFiscal> findByFilialIdAndSituacaoAndAmbienteAndDanfeImpresso(FilialId filialId,
 			Situacao autorizada, Ambiente ambiente, boolean danfeImpresso);
 
 	List<NotaFiscal> findByFilialIdInAndAmbiente(FilialId filialId,
 			Ambiente ambiente);
 
+	List<NotaFiscal> findByFilialIdAndNotistaIdAndSituacaoAndAmbienteAndDanfeImpresso(
+			FilialId filialId, NotistaId notistaId, Situacao autorizada,
+			Ambiente ambiente, boolean danfeImpresso);
 }

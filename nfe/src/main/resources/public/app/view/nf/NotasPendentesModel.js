@@ -17,7 +17,8 @@ Ext.define('nfe.view.nf.NotasPendentesModel', {
                 extraParams:{
                 	"ambiente":"{ambiente}",
                     "empresa":"{empresa}",
-                    "filial":"{filial}"
+                    "filial":"{filial}",
+                    "notista":"{notista}"
                 },
                 reader: {
                     type: 'json',

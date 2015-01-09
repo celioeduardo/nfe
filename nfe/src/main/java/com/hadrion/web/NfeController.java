@@ -37,11 +37,11 @@ public class NfeController {
 			@RequestParam(value="filial")String filial,
 			@RequestParam(value="inicio",required=false)Date inicio,
 			@RequestParam(value="fim",required=false)Date fim,
-			@RequestParam(value="usuario",required=false)String usuario,
-			@RequestParam(value="notafiscalid",required=false)String notaFiscalId){
+			@RequestParam(value="notista",required=false)String notista,
+			@RequestParam(value="notafiscalId",required=false)String notaFiscalId){
 
 		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacaoResumo(
-				ambiente,empresa,filial,inicio,fim,usuario,notaFiscalId);
+				ambiente,empresa,filial,inicio,fim,notista,notaFiscalId);
 		
 	}
 	
@@ -52,16 +52,16 @@ public class NfeController {
 			@RequestParam(value="filial")String filial,
 			@RequestParam(value="inicio",required=false)Date inicio,
 			@RequestParam(value="fim",required=false)Date fim,
-			@RequestParam(value="usuario",required=false)String usuario,
+			@RequestParam(value="notista",required=false)String notista,
 			@RequestParam(value="notafiscalid",required=false)String notaFiscalId,
 			@RequestParam(value="nao_impressa",required=false)boolean naoImpressa){
 		
 		if (naoImpressa)
 			return notaFiscalAplicacaoService.notasFicaisAutorizadasNaoImpressasResumo(
-					ambiente,empresa,filial,inicio,fim,usuario,notaFiscalId);
+					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId);
 		else
 			return notaFiscalAplicacaoService.notasFicaisAutorizadasResumo(
-					ambiente,empresa,filial,inicio,fim,usuario,notaFiscalId);
+					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId);
 	}
 	
 	@RequestMapping("/pendentes_autorizacao")

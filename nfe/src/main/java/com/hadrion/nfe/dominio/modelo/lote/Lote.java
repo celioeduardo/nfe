@@ -28,6 +28,7 @@ import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRejeitada;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ProtocoloNotaProcessada;
@@ -45,6 +46,9 @@ public class Lote {
 	
 	@Embedded
 	private FilialId filialId;
+	
+	@Embedded
+	private NotistaId notistaId;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="SITUACAO")
@@ -148,6 +152,7 @@ public class Lote {
 		this.ambiente = ambiente;
 		this.empresaId = empresaId;
 		this.filialId = definirFilial(notas);
+		this.notistaId = definirNotista(notas);
 		this.local = definirLocal(notas);
 		this.uf = definirUf(notas);
 		for (NotaFiscal notaFiscal : notas)
@@ -176,6 +181,16 @@ public class Lote {
 				return null;
 		}
 		return filialId;
+	}
+	private NotistaId definirNotista(Set<NotaFiscal> notas){
+		NotistaId notistaId = null;
+		for (NotaFiscal nf : notas) {
+			if (notistaId == null)
+				notistaId = nf.notistaId();
+			else if (!notistaId.equals(nf.notistaId()))
+				return null;
+		}
+		return notistaId;
 	}
 	
 	private Uf definirUf(Set<NotaFiscal> notas){

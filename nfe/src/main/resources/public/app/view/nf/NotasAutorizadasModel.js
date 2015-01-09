@@ -14,7 +14,8 @@ Ext.define('nfe.view.nf.NotasAutorizadasModel', {
                 	"ambiente":"{ambiente}",
                 	"nao_impressa":"{nao_impressa}",
                     "empresa":"{empresa}",
-                    "filial":"{filial}"
+                    "filial":"{filial}",
+                    "notista":"{notista}"
                 },
                 reader: {
                     type: 'json',

@@ -14,6 +14,7 @@ import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.LoteId;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
 import com.hadrion.nfe.dominio.modelo.lote.ProcessarRetornoLoteService;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
 
@@ -27,8 +28,12 @@ public class LoteAplicacaoService {
 	@Autowired
 	private ProcessarRetornoLoteService processarRetornoLoteService;
 	
-	public List<LoteData> obterLotesPendentes(Ambiente ambiente, String filialId){
-		List<Lote> lotes = loteRepositorio.lotesEmProcessamento(ambiente,new FilialId(filialId));
+	public List<LoteData> obterLotesPendentes(Ambiente ambiente, String filialId, String notistaId){
+		List<Lote> lotes = null;
+		if (notistaId != null && !notistaId.isEmpty())
+			lotes = loteRepositorio.lotesEmProcessamento(ambiente,new FilialId(filialId),new NotistaId(notistaId));
+		else
+			lotes = loteRepositorio.lotesEmProcessamento(ambiente,new FilialId(filialId));
 		
 		List<LoteData> result = new ArrayList<LoteData>();
 		

@@ -19,6 +19,7 @@ import com.hadrion.nfe.dominio.modelo.lote.LoteId;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
 import com.hadrion.nfe.dominio.modelo.lote.SituacaoLote;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 
 @Repository("loteRepositorio")
 @Transactional
@@ -84,6 +85,12 @@ public class LoteRepositorioJpa implements LoteRepositorio {
 	@Override
 	public Lote obterLote(LoteId loteId) {
 		return repositorio.findByLoteId(loteId);
+	}
+
+	@Override
+	public List<Lote> lotesEmProcessamento(Ambiente ambiente,
+			FilialId filialId, NotistaId notistaId) {
+		return repositorio.findBySituacaoAndFilialIdAndNotistaId(SituacaoLote.PROCESSANDO,filialId,notistaId);
 	}
 
 } 

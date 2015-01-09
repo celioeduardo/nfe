@@ -41,6 +41,7 @@ import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
@@ -65,7 +66,7 @@ public class NotaFiscalAplicacaoService {
 			Ambiente ambiente,
 			Double empresa,
 			String filial,
-			Date inicio,Date fim,String usuario,String notaFiscalId){
+			Date inicio,Date fim,String notistaId,String notaFiscalId){
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 		NotaFiscalId notaFiscalIdFiltro = null;
 		
@@ -74,7 +75,7 @@ public class NotaFiscalAplicacaoService {
 		
 		for (DescritorNotaFiscal nf : notaFiscalRepositorio.notasPendentesAutorizacaoResumo(
 				ambiente,
-				empresa,new FilialId(filial),inicio,fim,usuario,notaFiscalIdFiltro)) {
+				empresa,new FilialId(filial),inicio,fim,notistaId,notaFiscalIdFiltro)) {
 			result.add(new NotaFiscalData(
 					nf.notaFiscalId().id(),
 					nf.numero(),
@@ -104,27 +105,40 @@ public class NotaFiscalAplicacaoService {
 	
 	public List<NotaFiscalData> notasFicaisAutorizadasResumo(Ambiente ambiente,
 			Double empresa, String filial, Date inicio, Date fim,
-			String usuario, String notaFiscalId) {
+			String notistaId, String notaFiscalId) {
 
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 
-		for (NotaFiscal nf : notaFiscalRepositorio.notasAutorizadas(
-				new FilialId(filial),
-				ambiente)) {
+		List<NotaFiscal> notas = null;
+		if (notistaId != null && !notistaId.isEmpty())
+			notas = notaFiscalRepositorio.notasAutorizadas(
+					new FilialId(filial),ambiente,new NotistaId(notistaId));
+		else
+			notas = notaFiscalRepositorio.notasAutorizadas(
+					new FilialId(filial),ambiente);
+		
+		for (NotaFiscal nf : notas) 
 			result.add(construir(nf));
-		}
 		
 		return result;
 		
 	}
 	public List<NotaFiscalData> notasFicaisAutorizadasNaoImpressasResumo(
 			Ambiente ambiente, Double empresa, String filial, Date inicio,
-			Date fim, String usuario, String notaFiscalId) {
+			Date fim, String notistaId, String notaFiscalId) {
 	
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
-
-		for (NotaFiscal nf : notaFiscalRepositorio.notasAutorizadasNaoImpressas(
-				new FilialId(filial), ambiente)) 
+		
+		List<NotaFiscal> notas = null;
+		
+		if (notistaId != null && !notistaId.isEmpty())
+			notas = notaFiscalRepositorio.notasAutorizadasNaoImpressas(
+					new FilialId(filial), ambiente,new NotistaId(notistaId));
+		else
+			notas = notaFiscalRepositorio.notasAutorizadasNaoImpressas(
+					new FilialId(filial), ambiente);
+		
+		for (NotaFiscal nf : notas) 
 			result.add(construir(nf));
 		
 		return result;

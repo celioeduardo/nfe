@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 
 
@@ -21,5 +22,7 @@ public interface NotaFiscalRepositorio {
 	public void salvar(NotaFiscal notaFiscal);
 	public NotaFiscal notaFiscalPelaChave(ChaveAcesso chave, Ambiente ambiente);
 	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente);
+	public List<NotaFiscal> notasAutorizadas(FilialId filialId, Ambiente ambiente,NotistaId notistaId);
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente);
+	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente, NotistaId notistaId);
 }

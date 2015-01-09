@@ -6,6 +6,7 @@ import java.util.Set;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 
 public interface LoteRepositorio {
 	
@@ -16,6 +17,7 @@ public interface LoteRepositorio {
 	
 	public void limpar();
 	public List<Lote> lotesEmProcessamento(Ambiente ambiente, FilialId filialId);
+	public List<Lote> lotesEmProcessamento(Ambiente ambiente, FilialId filialId,NotistaId notistaId);
 	public Lote obterLote(LoteId loteId);
 	
 }

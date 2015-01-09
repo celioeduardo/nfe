@@ -15,6 +15,7 @@ import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 
 @Repository
@@ -72,6 +73,20 @@ public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 	@Override
 	public List<NotaFiscal> notasPendentesAutorizacao(FilialId filialId,
 			Ambiente ambiente) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,
+			Ambiente ambiente, NotistaId notistaId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<NotaFiscal> notasAutorizadas(FilialId filialId,
+			Ambiente ambiente, NotistaId notistaId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

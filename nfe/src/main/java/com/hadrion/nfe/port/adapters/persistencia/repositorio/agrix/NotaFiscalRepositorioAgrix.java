@@ -19,6 +19,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.Situacao;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.NotaFiscalRepositorioSpringData;
 
@@ -43,12 +44,12 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
 			Ambiente ambiente,
 			Double empresa, FilialId filial, Date inicio, Date fim,
-			String usuario, NotaFiscalId notaFiscalId) {
+			String notistaId, NotaFiscalId notaFiscalId) {
 		
 		List<DescritorNotaFiscal> descritores = agrixService
 				.notasPendentesAutorizacaoResumo(ambiente,empresa, 
 						filial != null ? String.valueOf(filial) : null, 
-						inicio, fim, usuario, notaFiscalId);
+						inicio, fim, notistaId, notaFiscalId);
 		
 		return filtrarDescritoresPendentes(descritores);
 	}
@@ -137,9 +138,23 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	}
 
 	@Override
+	public List<NotaFiscal> notasAutorizadas(FilialId filialId,
+			Ambiente ambiente, NotistaId notistaId) {
+		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(filialId, notistaId, 
+				Situacao.AUTORIZADA,ambiente);
+	}
+
+	@Override
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente) {
 		return repositorio.findByFilialIdAndSituacaoAndAmbienteAndDanfeImpresso(
 				filialId, Situacao.AUTORIZADA,ambiente,false);
+	}
+
+	@Override
+	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,
+			Ambiente ambiente, NotistaId notistaId) {
+		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbienteAndDanfeImpresso(
+				filialId, notistaId, Situacao.AUTORIZADA,ambiente,false);
 	}
 	
 	
