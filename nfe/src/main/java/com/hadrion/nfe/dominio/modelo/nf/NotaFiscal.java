@@ -45,6 +45,7 @@ import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
@@ -193,6 +194,9 @@ public class NotaFiscal {
 	
 	@Embedded
 	private NumeroProtocolo numeroProtocolo;
+
+	@Embedded
+	private NotistaId notistaId;
 	
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
@@ -244,7 +248,8 @@ public class NotaFiscal {
 			Informacao informacaoFisco,
 			Informacao informacaoContribuinte,
 			Exportacao exportacao,
-			Contingencia contingencia) {
+			Contingencia contingencia,
+			NotistaId notistaId) {
 		
 		this.ambiente = ambiente;
 		this.notaFiscalId = notaFiscalId;
@@ -278,7 +283,7 @@ public class NotaFiscal {
 		this.tipoEmissao = tipoEmissao;
 		this.codigoNumerico = codigoNumerico == null ? randInt(1, 99999999) : codigoNumerico;
 		this.contingencia = contingencia;
-		
+		this.notistaId = notistaId;
 		this.setChaveAcesso(gerarChaveAcesso());
 		for (Referencia referencia : referencias) 
 			referenciar(referencia);
@@ -303,6 +308,10 @@ public class NotaFiscal {
 	
 	public FilialId filialId(){
 		return filialId;
+	}
+	
+	public NotistaId notistaId(){
+		return notistaId;
 	}
 	
 	private void consistirNotasReferencia(){
@@ -689,6 +698,7 @@ public class NotaFiscal {
 		this.localEntrega = nf.localEntrega;
 		this.transporte = this.transporte.mesclar(nf.transporte);
 		this.cobranca = nf.cobranca;
+		this.notistaId = nf.notistaId;
 		
 		mesclarInformacaoFisco(informacaoFisco);
 		

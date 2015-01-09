@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hadrion.nfe.aplicacao.filial.data.FilialData;
+import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
 import com.hadrion.nfe.dominio.modelo.filial.Filial;
 import com.hadrion.nfe.dominio.modelo.filial.FilialRepositorio;
 
@@ -35,6 +36,17 @@ public class FilialAplicacaoService {
 				filial.nome(),
 				String.valueOf(filial.cnpj()),
 				String.valueOf(filial.empresaId()));
+	}
+
+	public List<FilialData> filiaisDaEmpresa(String id) {
+		
+		List<FilialData> result = new ArrayList<FilialData>();
+		
+		for (Filial filial : filialRepositorio.filiaisDaEmpresa(new EmpresaId(id))) {
+			result.add(construir(filial));
+		}
+		
+		return result;
 	}
 	
 }

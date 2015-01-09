@@ -20,6 +20,7 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transportador;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Veiculo;
+import com.hadrion.nfe.dominio.modelo.notista.Notista;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 
@@ -45,6 +46,7 @@ public class NotaFiscalTradutorJson {
 		gsonBuilder.registerTypeAdapter(Transportador.class, new TransportadorDeserializer());
 		gsonBuilder.registerTypeAdapter(Veiculo.class, new VeiculoDeserializer());
 		gsonBuilder.registerTypeAdapter(Transporte.class, new TransporteDeserializer());
+		gsonBuilder.registerTypeAdapter(Notista.class, new NotistaDeserializer());
 		gson = gsonBuilder.create();
 		this.json = json;
 	}
@@ -83,6 +85,9 @@ public class NotaFiscalTradutorJson {
 	}
 	public Exportacao converterExportacao(){
 		return fromJson(Exportacao.class);
+	}
+	public Notista converterNotista(){
+		return fromJson(Notista.class);
 	}
 	public Transporte converterTransporte(){
 		return fromJson(Transporte.class);

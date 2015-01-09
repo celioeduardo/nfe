@@ -26,8 +26,18 @@ Ext.define('nfe.view.main.MainModel', {
                     rootProperty: 'rows'
                 }
             }
+    	},
+    	notistas:{
+    		model: 'Notista',
+    		autoLoad: true/*,
+            proxy:{
+                url : 'filial/obter',
+                type: 'rest',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'rows'
+                }
+            }*/
     	}
     }
-
-    //TODO - add data, formulas and/or methods to support your view
 });

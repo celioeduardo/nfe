@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.LoteId;
 import com.hadrion.nfe.dominio.modelo.lote.SituacaoLote;
 
 public interface LoteRepositorioSpringData extends JpaRepository<Lote, Long>{
 
-	List<Lote> findBySituacao(SituacaoLote situacao);
+	List<Lote> findBySituacaoAndFilialId(SituacaoLote situacao, FilialId filialId);
 	List<Lote> findBySituacaoIn(List<SituacaoLote> situacoes);
 
 	Lote findByLoteId(LoteId loteId);

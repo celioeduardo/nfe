@@ -2,7 +2,7 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
     extend: 'Ext.app.ViewController',
 
     requires: [
-        'Ext.MessageBox'
+	    'Ext.window.MessageBox'
     ],
 
     alias: 'controller.notas-pendentes',
@@ -36,7 +36,7 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
             },
             null,
             function(){
-            	grid.unmask();
+            	grid.getView().unmask();
             });
 
         }

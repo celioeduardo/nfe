@@ -33,6 +33,7 @@ import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
+import com.hadrion.nfe.dominio.modelo.notista.Notista;
 
 public class NotaFiscalDeserializer extends AbstractDeserializer implements JsonDeserializer<NotaFiscal>{
 	private Ambiente ambiente;
@@ -79,7 +80,8 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 				informacaoFisco(j),
 				informacaoContribuinte(j),
 				exportacao(j),
-				null); //Contingência
+				null,//Contingência
+				notista(j) != null ? notista(j).notistaId() : null); 
 		
 		return nf;
 	}
@@ -108,6 +110,11 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 		if (!tem(j,"localRetirada"))
 			return null;
 		return new NotaFiscalTradutorJson(j.get("localRetirada").toString(),ambiente).converterLocalRetirada();
+	}
+	private Notista notista(JsonObject j){
+		if (!tem(j,"notista"))
+			return null;
+		return new NotaFiscalTradutorJson(j.get("notista").toString(),ambiente).converterNotista();
 	}
 	private Cobranca cobranca(JsonObject j){
 		return new NotaFiscalTradutorJson(j.get("cobranca").toString(),ambiente).converterCobranca();

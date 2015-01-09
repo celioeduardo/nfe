@@ -2,7 +2,7 @@ Ext.define('nfe.view.lote.LotesPendentesController', {
     extend: 'Ext.app.ViewController',
 
     requires: [
-        'Ext.MessageBox'
+        'Ext.window.MessageBox'
     ],
 
     alias: 'controller.lotes-pendentes',
@@ -28,7 +28,7 @@ Ext.define('nfe.view.lote.LotesPendentesController', {
         },
         null,
         function(){
-        	grid.unmask();
+        	grid.getView().unmask();
         });
 
     },

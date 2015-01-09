@@ -47,8 +47,8 @@ import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cide;
 import com.hadrion.nfe.dominio.modelo.nf.item.Combustivel;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
-import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
@@ -65,6 +65,7 @@ import com.hadrion.nfe.dominio.modelo.nf.transporte.Transportador;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Veiculo;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Volume;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalDeserializador;
@@ -131,6 +132,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 		assertEquals(nf.informacaoContribuinte(),nfDeserializada.informacaoContribuinte());
 		assertEquals(nf.exportacao(),nfDeserializada.exportacao());
 		assertEquals(nf.contingencia(),nfDeserializada.contingencia());
+		assertEquals(nf.notistaId(),nfDeserializada.notistaId());
 	}
 	
 	private NotaFiscal nf(){
@@ -166,7 +168,8 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 				informacaoFisco(), 
 				informacaoContribuinte(), 
 				exportacao(),
-				contingencia());
+				contingencia(),
+				new NotistaId("COOPADAP"));
 		
 	}
 	private Emitente emitente(){

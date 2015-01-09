@@ -1,8 +1,11 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
@@ -29,6 +32,11 @@ public class EmpresaRepositorioJpa implements EmpresaRepositorio {
 	@Override
 	public void salvar(Empresa empresa) {
 		repositorio.save(empresa);
+	}
+
+	@Override
+	public List<Empresa> obterTodas() {
+		return repositorio.findAll(new Sort("nome"));
 	}
 
 }

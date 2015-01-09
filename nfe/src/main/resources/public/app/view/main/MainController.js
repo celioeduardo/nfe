@@ -9,11 +9,23 @@ Ext.define('nfe.view.main.MainController', {
     extend: 'Ext.app.ViewController',
 
     requires: [
-        'Ext.MessageBox'
+        'Ext.window.MessageBox'
     ],
 
     alias: 'controller.main',
 
+    onSelectFilial: function (combo, record){
+    	this.getViewModel().setData({filial:record.get('id')});
+    	Ext.toast({
+    		title: 'Troca de Filial',
+    		//ui: 'navigation',
+    		html: record.get('id') + ' - ' + record.get('nome'),
+    		align: 't',
+    		bodyPadding: 10,
+    		width:350
+    	});
+    },
+    
     onChangeFilial: function (combo) {
         //Ext.Msg.alert('empresa',this.getViewModel().getData().empresa);
         //me.getViewModel().getData().filial=combo.getValue();

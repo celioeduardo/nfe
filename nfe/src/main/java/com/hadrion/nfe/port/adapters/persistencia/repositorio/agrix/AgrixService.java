@@ -120,7 +120,7 @@ public class AgrixService{
 		.declareParameters(new SqlParameter("filial", Types.VARCHAR))
 		.declareParameters(new SqlParameter("inicio", Types.DATE))
 		.declareParameters(new SqlParameter("fim", Types.DATE))
-		.declareParameters(new SqlParameter("usuario", Types.VARCHAR))
+		.declareParameters(new SqlParameter("notista", Types.VARCHAR))
 		.declareParameters(new SqlParameter("notafiscalid", Types.VARCHAR))
 		.declareParameters(
 				new SqlOutParameter("RETURN_VALUE", Types.CLOB));
@@ -130,7 +130,7 @@ public class AgrixService{
 		params.addValue("filial", filial, Types.VARCHAR);		
 		params.addValue("inicio", inicio, Types.DATE);		
 		params.addValue("fim", fim, Types.DATE);		
-		params.addValue("usuario", usuario, Types.VARCHAR);		
+		params.addValue("notista", usuario, Types.VARCHAR);		
 		if (notaFiscalId==null)
 			params.addValue("notafiscalid", "", Types.VARCHAR);
 		else

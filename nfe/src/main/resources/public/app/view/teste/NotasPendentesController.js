@@ -2,7 +2,7 @@ Ext.define('nfe.view.teste.NotasPendentesController', {
     extend: 'Ext.app.ViewController',
 
     requires: [
-        'Ext.MessageBox'
+	    'Ext.window.MessageBox'
     ],
 
     alias: 'controller.notas-pendentes-teste',

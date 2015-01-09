@@ -27,8 +27,8 @@ public class LoteAplicacaoService {
 	@Autowired
 	private ProcessarRetornoLoteService processarRetornoLoteService;
 	
-	public List<LoteData> obterLotesPendentes(Ambiente ambiente, FilialId filialId){
-		List<Lote> lotes = loteRepositorio.lotesEmProcessamento(ambiente);
+	public List<LoteData> obterLotesPendentes(Ambiente ambiente, String filialId){
+		List<Lote> lotes = loteRepositorio.lotesEmProcessamento(ambiente,new FilialId(filialId));
 		
 		List<LoteData> result = new ArrayList<LoteData>();
 		

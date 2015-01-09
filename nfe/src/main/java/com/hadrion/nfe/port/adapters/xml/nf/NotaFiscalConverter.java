@@ -21,6 +21,7 @@ import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.port.adapters.xml.AbstractConverter;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -173,6 +174,7 @@ public class NotaFiscalConverter extends AbstractConverter {
 		InformacaoAdicional informacao = null;
 		Exportacao exportacao = null;
 		Contingencia contingencia = null;
+		NotistaId notistaId = null;
 		
 		while (reader.hasMoreChildren()) {
 			reader.moveDown();
@@ -237,6 +239,7 @@ public class NotaFiscalConverter extends AbstractConverter {
 				new Informacao(informacao.getFisco()),
 				new Informacao(informacao.getContribuinte()),
 				exportacao,
-				contingencia);
+				contingencia,
+				notistaId);
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
 import com.hadrion.nfe.dominio.modelo.filial.Filial;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.filial.FilialRepositorio;
@@ -36,6 +37,12 @@ public class FilialRepositorioJpa implements FilialRepositorio {
 	@Override
 	public List<Filial> obterTodas() {
 		return repositorio.findAll(new Sort("nome"));
+	}
+
+
+	@Override
+	public List<Filial> filiaisDaEmpresa(EmpresaId empresaId) {
+		return repositorio.findByEmpresaId(empresaId,new Sort("nome"));
 	}
 
 }

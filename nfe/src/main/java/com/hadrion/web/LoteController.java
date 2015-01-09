@@ -26,7 +26,7 @@ public class LoteController {
 			@RequestParam(value="empresa",required=false)Double empresa,
 			@RequestParam(value="filial",required=false) String filial){
 		
-		return loteAplicacaoService.obterLotesPendentes(ambiente, null);
+		return loteAplicacaoService.obterLotesPendentes(ambiente, filial);
 	}
 	
 	@RequestMapping(value="/processar_retorno", method = RequestMethod.POST)

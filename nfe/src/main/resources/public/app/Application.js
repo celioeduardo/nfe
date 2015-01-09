@@ -18,7 +18,6 @@ Ext.define('nfe.Application', {
     ],
 
     stores: [
-        // TODO: add stores here
     ],
     
     launch: function () {

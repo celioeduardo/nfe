@@ -48,6 +48,7 @@ import com.hadrion.nfe.dominio.modelo.nf.transporte.Transportador;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Veiculo;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Volume;
+import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
@@ -105,7 +106,8 @@ public class NotaFiscalFixture {
 				informacaoFisco(), 
 				informacaoContribuinte(), 
 				exportacao(),
-				contingencia());
+				contingencia(),
+				new NotistaId("COOPADAP"));
 		
 	}
 	
@@ -150,7 +152,8 @@ public class NotaFiscalFixture {
 				informacaoFisco(), 
 				informacaoContribuinte(), 
 				exportacao(),
-				contingencia());
+				contingencia(),
+				new NotistaId("COOPADAP"));
 	}
 	
 	static Emitente emitente(){

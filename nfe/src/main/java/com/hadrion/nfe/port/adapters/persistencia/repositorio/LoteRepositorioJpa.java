@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.LoteId;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
@@ -76,8 +77,8 @@ public class LoteRepositorioJpa implements LoteRepositorio {
 	}
 
 	@Override
-	public List<Lote> lotesEmProcessamento(Ambiente ambiente) {
-		return repositorio.findBySituacao(SituacaoLote.PROCESSANDO);
+	public List<Lote> lotesEmProcessamento(Ambiente ambiente, FilialId filialId) {
+		return repositorio.findBySituacaoAndFilialId(SituacaoLote.PROCESSANDO,filialId);
 	}
 
 	@Override

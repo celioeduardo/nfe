@@ -23,6 +23,7 @@ import javax.persistence.Version;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
+import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
@@ -31,7 +32,6 @@ import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.MensagemSefaz;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.consulta.ProtocoloNotaProcessada;
 import com.hadrion.nfe.port.adapters.portal.ws.Local;
-
 
 @Entity
 @SequenceGenerator(name="SEQ", sequenceName="SQ_LOTE")
@@ -42,6 +42,9 @@ public class Lote {
 	
 	@Embedded
 	private EmpresaId empresaId;
+	
+	@Embedded
+	private FilialId filialId;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="SITUACAO")
@@ -144,6 +147,7 @@ public class Lote {
 		this.notas = new HashSet<LoteNotaFiscal>();
 		this.ambiente = ambiente;
 		this.empresaId = empresaId;
+		this.filialId = definirFilial(notas);
 		this.local = definirLocal(notas);
 		this.uf = definirUf(notas);
 		for (NotaFiscal notaFiscal : notas)
@@ -161,6 +165,17 @@ public class Lote {
 						"Todas as Notas Fiscais tem que ter como destino o mesmo local.");
 		}
 		return local;
+	}
+	
+	private FilialId definirFilial(Set<NotaFiscal> notas){
+		FilialId filialId = null;
+		for (NotaFiscal nf : notas) {
+			if (filialId == null)
+				filialId = nf.filialId();
+			else if (!filialId.equals(nf.filialId()))
+				return null;
+		}
+		return filialId;
 	}
 	
 	private Uf definirUf(Set<NotaFiscal> notas){

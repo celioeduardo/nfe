@@ -1,18 +1,14 @@
-/**
- * This class is the main view for the application. It is specified in app.js as the
- * "autoCreateViewport" property. That setting automatically applies the "viewport"
- * plugin to promote that instance of this class to the body element.
- *
- * TODO - Replace this content of this view to suite the needs of your application.
- */
 Ext.define('nfe.view.main.Main', {
     extend: 'Ext.container.Container',
     requires:['Ext.grid.Panel',
+              'nfe.store.EmpresaFilialStore',
         'nfe.model.NotaFiscal',
+        'nfe.model.Notista',
         'nfe.view.cancelamento.CancelamentoModel',
         'Ext.layout.container.Border',
         'nfe.view.main.Header',
-        'nfe.view.configuracao.Configuracao'
+        'nfe.view.configuracao.Configuracao',
+        'nfe.view.main.FilialCombo'
     ],
     xtype: 'app-main',
     
@@ -32,41 +28,39 @@ Ext.define('nfe.view.main.Main', {
     },{
         header: {
             heigth:2000,
+            layout: 'hbox',
             title: {
                     text: 'Empresa/Filial: ',
                     textAlign: 'right'
             },   
-            items:[{           
+            items:[{
+        		xtype:'filialcombo',
+        		store:Ext.create('nfe.store.EmpresaFilialStore', {storeId: 'EmpresaFilialStore' }),
+        		bind:{
+        			value: '{filial}'
+        		},
+        		listeners: {
+        			select: 'onSelectFilial'
+        		},
+                width:350,
+                emptyText: 'Selecione uma Empresa/Filial...'
+            },{           
                 xtype: 'combobox',
                 queryMode: 'local',
                 forceSelection: true, 
                 autoLoadOnValue: true,
-                valueField: 'filialId', 
+                valueField: 'notistaId', 
                 displayField: 'nome', 
-                emptyText: 'Selecione uma Empresa/Filial...',
+                emptyText: 'Selecione Notista...',
                 width:350,
                 bind:{
-                    store: '{empresaFilial}',
-                    value: '{filial}'
-                },
-                //handler: 'onClickEnviar',
-                listeners: {
-                    select: 'onChangeFilial'/*function(combo, record, index) {
-                        onChangeFilial();
-
-                        Ext.toast({
-                            title: 'Trocando Empresa...aguarde',
-                            ui: 'navigation',
-                            html: combo.getValue() + ' - ' + combo.getRawValue(),
-                            align: 't',
-                            bodyPadding: 10,
-                            width:350
-                        });
-                    }*/
+                    store: '{notistas}',
+                    value: '{notista}'
                 }
             }]        
-        },   
-        region: 'center',
+        },    
+
+        region: 'center' ,
         xtype: 'tabpanel',
         ui: 'navigation',
         tabPosition: 'left',
@@ -147,16 +141,33 @@ Ext.define('nfe.view.main.Main', {
             
         },{
             title: 'Cancelamento',
-            xtype: 'tela-cancelamento',
-            glyph: 0xf00d
+            //xtype: 'panel',
+            glyph: 0xf00d,
+            layout: 'hbox',
+            xtype: 'panel',
+            width:100
         },{
             title: 'Inutilização',
+            width:'500',
+            heigth:'100',
+            //layout: 'fit',
+        	items:[{
+        		xtype:'filialcombo',
+        		bind:{
+        			value: '{filial}'
+        		},
+        		store:Ext.create('nfe.store.EmpresaFilialStore', {storeId: 'EmpresaFilialStore' }),
+        		listeners: {
+        			select: 'onSelectFilial'
+        		}
+        	}], 
             glyph: 0xf088
         },{
             title: 'CC-e',
             glyph: 0xf003
         },{
             xtype:'tela-configuracao'
+        
         }]
     }]
 });
