@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="danfe" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="14" rightMargin="16" topMargin="14" bottomMargin="14" uuid="3a66161b-c318-4cff-ae2a-897307b5d628">
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
-	<property name="ireport.zoom" value="2.9230756500000017"/>
+	<property name="ireport.zoom" value="1.0245201830476065"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="101"/>
+	<property name="ireport.y" value="766"/>
 	<style name="campoPequeno" hAlign="Left" vAlign="Top" markup="styled" pattern="" fontName="DejaVu Serif" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="DejaVu Serif" isPdfEmbedded="true"/>
 	<style name="borda" mode="Transparent" forecolor="#000000" fill="Solid" radius="3" scaleImage="Clip" hAlign="Left" vAlign="Top" markup="none" pattern="" fontName="DejaVu Serif" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="true" pdfFontName="DejaVu Serif" isPdfEmbedded="true">
 		<pen lineWidth="0.25"/>
@@ -307,14 +307,17 @@
 	<field name="InfoFisco" class="java.lang.String">
 		<fieldDescription><![CDATA[../infAdic/infAdFisco]]></fieldDescription>
 	</field>
+	<field name="Emissao" class="java.lang.String">
+		<fieldDescription><![CDATA[../ide/tpEmis]]></fieldDescription>
+	</field>
 	<background>
 		<band height="814" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="2" y="15" width="559" height="786" forecolor="#CCCCCC" uuid="0741b434-1541-4a9f-9719-ecf3743f260b"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="2" y="4" width="559" height="678" forecolor="#CCCCCC" uuid="0741b434-1541-4a9f-9719-ecf3743f260b"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom" rotation="None" markup="none">
 					<font size="50" isBold="true" isItalic="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Ambiente}.equals( "0" ) || $F{Protocolo} == null ? "SEM VALOR FISCAL" : ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Emissao}.equals( "5" ) ? "DANFE em Contingência – impresso em decorrência de problemas técnicos" : $F{Ambiente}.equals( "2" ) || ($F{Ambiente}.equals( "1" ) && $F{Protocolo} == null) ? "SEM VALOR FISCAL" : ""]]></textFieldExpression>
 			</textField>
 		</band>
 	</background>
