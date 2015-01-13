@@ -2,6 +2,8 @@ Ext.define('nfe.view.main.Main', {
     extend: 'Ext.container.Container',
     requires:['Ext.grid.Panel',
               'nfe.store.EmpresaFilialStore',
+        'Ext.form.Label',
+        'nfe.model.Filial',
         'nfe.model.NotaFiscal',
         'nfe.model.Notista',
         'nfe.view.cancelamento.CancelamentoModel',
@@ -30,10 +32,27 @@ Ext.define('nfe.view.main.Main', {
             heigth:2000,
             layout: 'hbox',
             title: {
-                    text: 'Empresa/Filial: ',
-                    textAlign: 'right'
+                    //text: 'Empresa/Filial: ',
+                    textAlign: 'left'
             },   
             items:[{
+                xtype: 'displayfield',
+                fieldLabel: 'Ambiente',
+                labelAlign: 'right',
+                bind:{
+                	value: '{ambiente}'
+                },
+                renderer:'rendererAmbiente',
+                margin: '10 10 10 10'
+            },{
+            	xtype: 'displayfield',
+            	fieldLabel: 'Modo Operação',
+            	labelAlign: 'right',
+            	bind:{
+            		value: '{modoOperacao}'
+            	},
+            	margin: '10 10 10 10'
+            },{
         		xtype:'filialcombo',
         		store:Ext.create('nfe.store.EmpresaFilialStore', {storeId: 'EmpresaFilialStore' }),
         		bind:{

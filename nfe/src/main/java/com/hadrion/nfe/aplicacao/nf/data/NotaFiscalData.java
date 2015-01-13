@@ -15,11 +15,13 @@ public class NotaFiscalData {
 	private Long msgCodigo;
 	private String msgDescricao;
 	private String chave;
+	private String tipoEmissao;
 	
 	public NotaFiscalData(){}
 	
 	public NotaFiscalData(String notaFiscalId,Long numero, String serie, 
 			String chave,
+			String tipoEmissao,
 			Date emissao,
 			Double valor, String tipoPublico,Long codigoPublico,
 			String nomePublico,String tipo,
@@ -29,6 +31,7 @@ public class NotaFiscalData {
 		this.numero = numero;
 		this.serie = serie;
 		this.chave = chave;
+		this.tipoEmissao = tipoEmissao;
 		this.emissao = emissao;
 		this.valor = valor;
 		this.publicoTipo=tipoPublico;
@@ -44,21 +47,6 @@ public class NotaFiscalData {
 
 	public void setChave(String chave) {
 		this.chave = chave;
-	}
-
-	public NotaFiscalData(String notaFiscalId,Long numero, String serie, Date emissao,
-			Double valor, String nomePublico,String tipo,
-			Long msgCodigo, String msgDescricao) {
-		super();
-		this.notaFiscalId=notaFiscalId;
-		this.numero = numero;
-		this.serie = serie;
-		this.emissao = emissao;
-		this.valor = valor;
-		this.publicoNome=nomePublico;
-		this.tipo=tipo;
-		this.msgCodigo = msgCodigo;
-		this.msgDescricao = msgDescricao;
 	}
 
 	public Long getMsgCodigo() {
@@ -79,6 +67,14 @@ public class NotaFiscalData {
 
 	public Long getNumero() {
 		return numero;
+	}
+
+	public String getTipoEmissao() {
+		return tipoEmissao;
+	}
+
+	public void setTipoEmissao(String tipoEmissao) {
+		this.tipoEmissao = tipoEmissao;
 	}
 
 	public void setNumero(Long numero) {

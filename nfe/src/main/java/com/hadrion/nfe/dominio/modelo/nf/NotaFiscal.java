@@ -36,6 +36,7 @@ import javax.persistence.Version;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
+import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
@@ -623,25 +624,50 @@ public class NotaFiscal {
 	}
 	
 	
-	public void alterarTipoEmissaoParaContingencia() {
+	public void alterarTipoEmissaoParaContingencia(Contingencia contingencia) {
 		setTipoEmissao(TipoEmissao.contingenciaPelaUf(
 				ufEmitente()));
+		this.contingencia = contingencia;
+	}
+	
+	public void alterarTipoEmissaoParaFsDa(Contingencia contingencia) {
+		setTipoEmissao(TipoEmissao.FS_DA);
+		this.contingencia = contingencia;
+	}
+	public void alterarTipoEmissaoParaFsIa(Contingencia contingencia) {
+		setTipoEmissao(TipoEmissao.FS_IA);
+		this.contingencia = contingencia;
+	}
+	
+	public void alterarTipoEmissaoParaNormal() {
+		setTipoEmissao(TipoEmissao.NORMAL);
+		this.contingencia = null;
 	}
 	
 	private void setTipoEmissao(TipoEmissao novoTipoEmissao){
 		if (tipoEmissao == novoTipoEmissao) return;
 		
-		if (!pendenteDeTransmissao())
-			throw new RuntimeException(
-					"Nota já transmitida. Não é possível alterar o Tipo de Emissão");
-		
-		if (danfeImpresso && (tipoEmissao == TipoEmissao.FS_DA || tipoEmissao == TipoEmissao.FS_IA))
-			throw new RuntimeException(
-					"Tipo de Emissão não pode ser alterado. Formulário de Segurança já foi impresso.");
-		
+		String mensagem = consisteTrocaTipoEmissao(novoTipoEmissao);
+		if (mensagem != null)
+			throw new RuntimeException(mensagem);
+
 		tipoEmissao = novoTipoEmissao;
 		
 		this.atualizarChaveAcesso();
+	}
+	
+	private String consisteTrocaTipoEmissao(TipoEmissao novoTipoEmissao){
+		if (!pendenteDeTransmissao())
+			return "Nota já transmitida. Não é possível alterar o Tipo de Emissão";
+		
+		if (danfeImpresso && (tipoEmissao == TipoEmissao.FS_DA || tipoEmissao == TipoEmissao.FS_IA))
+			return "Tipo de Emissão não pode ser alterado. Formulário de Segurança já foi impresso.";
+		
+		return null;
+	}
+	
+	public boolean permiteAlterarTipoEmissao(TipoEmissao novoTipoEmissao){
+		return consisteTrocaTipoEmissao(novoTipoEmissao) != null;
 	}
 	
 	private void atualizarChaveAcesso(){
@@ -650,10 +676,6 @@ public class NotaFiscal {
 
 	public Uf ufEmitente() {
 		return emitente().endereco().municipio().uf();
-	}
-
-	public void alterarTipoEmissao(TipoEmissao novoTipoEmissao) {
-		setTipoEmissao(novoTipoEmissao);
 	}
 
 	public void definirDanfeComoImpresso() {
@@ -728,6 +750,27 @@ public class NotaFiscal {
 		for (Item outro : itens) {
 			if (item.produto().codigo().equals(outro.produto().codigo()))
 				item.mesclar(outro);
+		}
+	}
+
+	public void alterarModoOperacao(ModoOperacao modoOperacao, 
+			Contingencia contingencia) {
+		switch (modoOperacao) {
+		case NORMAL:
+			if (permiteAlterarTipoEmissao(TipoEmissao.NORMAL))
+				alterarTipoEmissaoParaNormal();
+			break;
+		case FS_DA:
+			if (permiteAlterarTipoEmissao(TipoEmissao.FS_DA))
+				alterarTipoEmissaoParaFsDa(contingencia);
+			break;
+		case SVC:
+			TipoEmissao tipoEmissao = TipoEmissao.contingenciaPelaUf(ufEmitente());
+			if (permiteAlterarTipoEmissao(tipoEmissao))
+				alterarTipoEmissaoParaContingencia(contingencia);
+			break;
+		default:
+			break;
 		}
 	}
 

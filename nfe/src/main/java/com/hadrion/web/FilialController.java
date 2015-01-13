@@ -32,6 +32,12 @@ public class FilialController {
 		return filialAplicacaoService.obterTodas(); 
 	}
 	
+	@RequestMapping(value="/obter",params={"id"})
+	public FilialData obter(HttpServletRequest req,
+			@RequestParam String id){
+		return filialAplicacaoService.obterPeloId(id); 
+	}
+	
 	@RequestMapping("/empresa_filial")
 	public EmpresaFilialData obterEmpresas(){
 		return new EmpresaFilialData();

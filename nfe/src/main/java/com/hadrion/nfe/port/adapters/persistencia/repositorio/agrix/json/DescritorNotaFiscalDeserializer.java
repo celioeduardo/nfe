@@ -10,6 +10,7 @@ import com.google.gson.JsonParseException;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
+import com.hadrion.nfe.dominio.modelo.nf.TipoEmissao;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.util.DataUtil;
@@ -39,6 +40,7 @@ public class DescritorNotaFiscalDeserializer extends AbstractDeserializer
 					l(j,"numero"), 
 					new Serie(i(j,"serie")),
 					null,
+					TipoEmissao.NORMAL,
 					DataUtil.data(j.get("emissao").getAsString()), 
 					DataUtil.data(j.get("movimentacao").getAsString()),
 					s(j,"publicoTipo"),

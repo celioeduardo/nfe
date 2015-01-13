@@ -32,11 +32,15 @@ import org.w3c.dom.Element;
 
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.filial.Filial;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
+import com.hadrion.nfe.dominio.modelo.filial.FilialRepositorio;
+import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 import com.hadrion.nfe.dominio.modelo.lote.EnviarLoteService;
 import com.hadrion.nfe.dominio.modelo.lote.GeracaoLoteService;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
+import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
@@ -62,6 +66,9 @@ public class NotaFiscalAplicacaoService {
 	@Autowired
 	private NotaFiscalRepositorio notaFiscalRepositorio;
 	
+	@Autowired
+	private FilialRepositorio filialRepositorio;
+	
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(
 			Ambiente ambiente,
 			Double empresa,
@@ -81,6 +88,7 @@ public class NotaFiscalAplicacaoService {
 					nf.numero(),
 					String.valueOf(nf.serie().numero()),
 					nf.chave() != null ? String.valueOf(nf.chave()) : null,
+					String.valueOf(nf.tipoEmissao()),
 					nf.emissao(),
 					nf.valor().valor(),
 					nf.publicoTipo(),
@@ -144,21 +152,6 @@ public class NotaFiscalAplicacaoService {
 		return result;
 	
 	}
-	private NotaFiscalData construir(NotaFiscal nf){
-		return new NotaFiscalData(
-				nf.notaFiscalId().id(),
-				nf.numero(),
-				String.valueOf(nf.serie().numero()),
-				nf.chaveAcesso() != null ? String.valueOf(nf.chaveAcesso()) : null,
-				nf.emissao(),
-				nf.total().valor(),
-				null,null,
-				nf.destinatario().razaoSocial(),
-				nf.tipoOperacao().toString(),
-				nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,
-				nf.mensagem() != null ? nf.mensagem().descricao() : null);
-	}
-	
 	public ResponseEntity<InputStreamResource> imprimirDanfe(String notaFiscalId) throws IOException,JRException{
 		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
 		nf.definirDanfeComoImpresso();
@@ -243,6 +236,22 @@ public class NotaFiscalAplicacaoService {
 		notaFiscalRepositorio.salvar(nota);
 	}
 	
+	public void atualizarModoOperacao(AtualizarModoOperacaoComando comando){
+		Filial filial = filialRepositorio.obterFilial(new FilialId(comando.getFilialId()));
+		
+		ModoOperacao modoOperacao = filial.modoOperacao();
+		
+		List<NotaFiscal> notas = notaFiscalRepositorio.notasPendentesAutorizacao(
+				filial.filialId(), filial.ambiente());
+		
+		for (NotaFiscal nf : notas) {
+			nf.alterarModoOperacao(modoOperacao, 
+					new Contingencia(comando.getDataHoraContingencia(), comando.getJustificativaContingencia()));
+			
+			notaFiscalRepositorio.salvar(nf);
+		}
+	}
+	
 	private NotaFiscal nota(String notaFiscalId){
 		return notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
 	}
@@ -255,9 +264,20 @@ public class NotaFiscalAplicacaoService {
 		
 		return new HashSet<NotaFiscal>(notaFiscalRepositorio.notasPendentesAutorizacao(listaId,ambiente));
 	}
-	public String obterEmpresaFilial() {
-		// TODO Auto-generated method stub
-		return null;
+	private NotaFiscalData construir(NotaFiscal nf){
+		return new NotaFiscalData(
+				nf.notaFiscalId().id(),
+				nf.numero(),
+				String.valueOf(nf.serie().numero()),
+				nf.chaveAcesso() != null ? String.valueOf(nf.chaveAcesso()) : null,
+				String.valueOf(nf.tipoEmissao()),
+				nf.emissao(),
+				nf.total().valor(),
+				null,null,
+				nf.destinatario().razaoSocial(),
+				nf.tipoOperacao().toString(),
+				nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,
+				nf.mensagem() != null ? nf.mensagem().descricao() : null);
 	}
 	
 }

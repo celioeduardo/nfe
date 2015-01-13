@@ -14,6 +14,7 @@ import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
+import com.hadrion.nfe.dominio.modelo.nf.TipoEmissao;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.DescritorNotaFiscalDeserializer;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
@@ -58,6 +59,7 @@ public class DescritorNotaFiscalTradutorJsonTest {
 				2121L,
 				new Serie(1L),
 				null,
+				TipoEmissao.NORMAL,
 				data("02/09/14"),
 				data("02/09/14"),
 				"C",

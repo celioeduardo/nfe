@@ -71,7 +71,8 @@ public abstract class DominioTest extends RastreadorEventoTest {
 				new FilialId("4007474000116"),
 				"Hadrion",
 				new Cnpj(4007474000116L),
-				empresa.empresaId());
+				empresa.empresaId(),
+				Ambiente.HOMOLOGACAO);
 		
 		filialRepositorio.salvar(filial);
 		

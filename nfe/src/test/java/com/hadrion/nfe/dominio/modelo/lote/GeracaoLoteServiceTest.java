@@ -2,6 +2,7 @@ package com.hadrion.nfe.dominio.modelo.lote;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
 
@@ -58,7 +60,8 @@ public class GeracaoLoteServiceTest extends AbstractLoteServiceTest {
 		
 		NotaFiscal nfContingencia = NotaFiscalFixture.nfEmProducao();
 		nfContingencia.emitida();
-		nfContingencia.alterarTipoEmissaoParaContingencia();
+		nfContingencia.alterarTipoEmissaoParaContingencia(
+				new Contingencia(new Date(), "Servidor da Sefaz fora do ar"));
 		
 		geracaoLoteService.gerarLoteEmProducao(notas(nfNormal,nfContingencia));
 		

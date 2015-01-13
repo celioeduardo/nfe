@@ -3,13 +3,18 @@ package com.hadrion.nfe.dominio.modelo.filial;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
+import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
 import com.hadrion.nfe.tipos.Cnpj;
 
 @Entity
@@ -29,17 +34,28 @@ public class Filial {
 	@Embedded
 	private EmpresaId empresaId;
 	
+	@Enumerated(EnumType.STRING)
+	private Ambiente ambiente;
+	
+	@Enumerated(EnumType.STRING)
+	private ModoOperacao modoOperacao;
+	
+	@Embedded
+	private Contingencia contingencia;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
 	@Column(name="ID")
 	private Long id;
 
 	public Filial(FilialId filialId, String nome, Cnpj cnpj,
-			EmpresaId empresaId) {
+			EmpresaId empresaId, Ambiente ambiente) {
 		this.filialId = filialId;
 		this.nome = nome;
 		this.cnpj = cnpj;
 		this.empresaId = empresaId;
+		this.ambiente = ambiente;
+		this.modoOperacao = ModoOperacao.NORMAL;
 	}
 	
 	public FilialId filialId(){
@@ -62,10 +78,66 @@ public class Filial {
 		this.nome = novoNome;
 	}
 	
+	public Ambiente ambiente(){
+		return this.ambiente;
+	}
+	
 	/**
 	 * Somente para JPA
 	 */
 	@SuppressWarnings("unused")
 	private Filial(){}
+
+	public void operarEmProducao() {
+		this.ambiente = Ambiente.PRODUCAO;
+	}
+	
+	public void operarEmHomologacao() {
+		this.ambiente = Ambiente.HOMOLOGACAO;
+	}
+
+	public ModoOperacao modoOperacao() {
+		return modoOperacao;
+	}
+
+	public void operarEmFsDa(Contingencia contingencia) {
+		
+		if (modoOperacao() == ModoOperacao.FS_DA) return;
+		
+		if (contingencia == null)
+			throw new RuntimeException("Informação de contingência é obrigatória");
+		
+		this.setModoOperacao(ModoOperacao.FS_DA,contingencia);
+	}
+	
+	public void operarEmSvc(Contingencia contingencia) {
+		if (modoOperacao() == ModoOperacao.SVC) return;
+		
+		if (contingencia == null)
+			throw new RuntimeException("Informação de contingência é obrigatória");
+		
+		this.setModoOperacao(ModoOperacao.SVC,contingencia);
+	}
+	
+	public void operarEmModoNormal() {
+		if (modoOperacao() == ModoOperacao.NORMAL) return;
+		this.setModoOperacao(ModoOperacao.NORMAL,null);
+	}
+	
+	private void setModoOperacao(ModoOperacao modoOperacao, Contingencia contingencia){
+		this.modoOperacao = modoOperacao;
+		this.contingencia = contingencia;
+		
+		DominioRegistro.eventoDominioPublicador().publicar(
+				new ModoOperacaoAlterado(
+						filialId().id(), 
+						modoOperacao(), 
+						contingencia != null ? contingencia.dataHora() : null, 
+						contingencia != null ? contingencia.justificativa() : null));
+	}
+
+	public Contingencia contingencia() {
+		return contingencia;
+	}
 	
 }

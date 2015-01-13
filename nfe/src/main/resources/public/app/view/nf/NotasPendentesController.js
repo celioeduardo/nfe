@@ -67,14 +67,15 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
             '<div style="padding: 2px 0px 0px 0px; font-size: 12px;font-color=gray;color: gray;font-style: italic;">{4}</div>'+
             '<div style="padding: 2px 0px 0px 0px; font-weight: 400;font-size: 18px;line-height: 22px; font-family:Arial">{1}</div>'+
             '<hr style="margin: 2px">'+
-            '<div style="font-size: small;font-color=gray;color: gray;font-style: italic;">{2} - emitida em {3}</div>',
+            '<div style="font-size: small;font-color=gray;color: gray;font-style: italic;">{2} - emitida em {3} - ({5})</div>',
             nf,
             rec.get('publicoNome'),
             es,
             Ext.util.Format.date(rec.get('emissao'),'d/m/Y'),
-            rec.get('chave'));
+            rec.get('chave'),
+            nfe.model.NotaFiscal.getTipoEmissao(rec.get('tipoEmissao')));
     },
-
+    
     rendererValor: function(valor, metadata, rec){
         return Ext.String.format(
             '<div style="font-size: large;font-weight: bold;font-style: italic;margin-top: 20px;">{0}</div>',

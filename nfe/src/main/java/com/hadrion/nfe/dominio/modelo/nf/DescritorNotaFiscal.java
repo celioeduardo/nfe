@@ -18,6 +18,7 @@ public class DescritorNotaFiscal {
 	private Long numero; 
 	private Serie serie;
 	private ChaveAcesso chave;
+	private TipoEmissao tipoEmissao;
 	private Date emissao; 
 	private Date dataHora;
 	private String publicoTipo;
@@ -38,6 +39,7 @@ public class DescritorNotaFiscal {
 			Long numero, 
 			Serie serie,
 			ChaveAcesso chave,
+			TipoEmissao tipoEmissao,
 			Date emissao, 
 			Date dataHora,
 			String publicoTipo,
@@ -53,6 +55,7 @@ public class DescritorNotaFiscal {
 		this.numero = numero;
 		this.serie = serie;
 		this.chave = chave;
+		this.tipoEmissao = tipoEmissao;
 		this.emissao = emissao;
 		this.dataHora = dataHora;
 		this.publicoTipo = publicoTipo;
@@ -68,6 +71,7 @@ public class DescritorNotaFiscal {
 			Long numero, 
 			Serie serie,
 			ChaveAcesso chave,
+			TipoEmissao tipoEmissao,
 			Date emissao, 
 			Date dataHora,
 			String publicoTipo,
@@ -75,7 +79,7 @@ public class DescritorNotaFiscal {
 			String publicoNome,
 			Dinheiro valor){
 		this(notaFiscalId, 
-				tipo, empresa, filial, numero, serie, chave, emissao, dataHora, 
+				tipo, empresa, filial, numero, serie, chave, tipoEmissao, emissao, dataHora, 
 				publicoTipo, publicoCodigo, publicoNome, valor, null);
 
 	}
@@ -190,5 +194,9 @@ public class DescritorNotaFiscal {
 
 	public void setChave(ChaveAcesso chaveAcesso) {
 		this.chave = chaveAcesso;
+	}
+
+	public TipoEmissao tipoEmissao() {
+		return tipoEmissao;
 	}
 }

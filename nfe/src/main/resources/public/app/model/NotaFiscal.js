@@ -8,7 +8,8 @@ Ext.define('nfe.model.NotaFiscal', {
 		    'publicoTipo',
 		    'publicoCodigo',
 		    'publicoNome',
-		    'tipo'],
+		    'tipo',
+		    'tipoEmissao'],
     
     proxy: {
         url : 'notas_fiscais/pendentes_autorizacao_resumo'
@@ -29,7 +30,19 @@ Ext.define('nfe.model.NotaFiscal', {
             callback:callback,
             scope:scope
         });
+    },
+    
+    statics: {
+        getTipoEmissao: function(tipoEmissao) {
+            return this.prototype.tipos[tipoEmissao];
+        }
+    },
+    
+    tipos: {
+        'NORMAL': 'Normal',
+        'FS_DA': 'FS-DA',
+        'SVN_RS': 'SVN-RS',
+        'SVN_AN': 'SVN-AN'
     }
-
 
 });

@@ -3,6 +3,8 @@ package com.hadrion.nfe.dominio.modelo.nf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,10 +46,10 @@ public class NotaFiscalTest {
 	public void trocaTipoEmissaoDeNormalParaFsdaPermitida(){
 		assertEquals(TipoEmissao.NORMAL,nf.tipoEmissao());
 		
-		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
+		nf.alterarTipoEmissaoParaFsDa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		assertEquals(TipoEmissao.FS_DA,nf.tipoEmissao());
 		
-		nf.alterarTipoEmissao(TipoEmissao.NORMAL);
+		nf.alterarTipoEmissaoParaNormal();
 		assertEquals(TipoEmissao.NORMAL,nf.tipoEmissao());
 	} 
 	
@@ -55,13 +57,13 @@ public class NotaFiscalTest {
 	public void trocaTipoEmissaoDeNormalParaFsiaPermitida(){
 		assertEquals(TipoEmissao.NORMAL,nf.tipoEmissao());
 		
-		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
+		nf.alterarTipoEmissaoParaFsIa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		assertEquals(TipoEmissao.FS_IA,nf.tipoEmissao());
 		
-		nf.alterarTipoEmissao(TipoEmissao.NORMAL);
+		nf.alterarTipoEmissaoParaNormal();
 		assertEquals(TipoEmissao.NORMAL,nf.tipoEmissao());
 		
-		nf.alterarTipoEmissaoParaContingencia();
+		nf.alterarTipoEmissaoParaContingencia(new Contingencia(new Date(), "Servidor da SEFAZ fora do ar"));
 		assertTrue(nf.tipoEmissao().contingencia());
 	}
 	
@@ -69,87 +71,87 @@ public class NotaFiscalTest {
 	public void trocaTipoEmissaoDeNormalParaContingenciaPermitida(){
 		assertEquals(TipoEmissao.NORMAL,nf.tipoEmissao());
 		
-		nf.alterarTipoEmissaoParaContingencia();
+		nf.alterarTipoEmissaoParaContingencia(new Contingencia(new Date(), "Servidor da SEFAZ fora do ar"));
 		assertTrue(nf.tipoEmissao().contingencia());
 		
-		nf.alterarTipoEmissao(TipoEmissao.NORMAL);
+		nf.alterarTipoEmissaoParaNormal();
 		assertEquals(TipoEmissao.NORMAL,nf.tipoEmissao());
 	}
 
 	@Test
 	public void trocaTipoEmissaoEntreFsda_e_FsiaPermitida(){
-		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
+		nf.alterarTipoEmissaoParaFsDa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		assertEquals(TipoEmissao.FS_DA,nf.tipoEmissao());
 		
-		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
+		nf.alterarTipoEmissaoParaFsIa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		assertEquals(TipoEmissao.FS_IA,nf.tipoEmissao());
 		
-		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
+		nf.alterarTipoEmissaoParaFsDa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		assertEquals(TipoEmissao.FS_DA,nf.tipoEmissao());
 	}
 	
 	@Test
 	public void trocaTipoEmissaoEntreFsda_e_ContingenciaPermitida(){
-		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
+		nf.alterarTipoEmissaoParaFsDa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		assertEquals(TipoEmissao.FS_DA,nf.tipoEmissao());
 		
-		nf.alterarTipoEmissaoParaContingencia();
+		nf.alterarTipoEmissaoParaContingencia(new Contingencia(new Date(), "Servidor da SEFAZ fora do ar"));
 		assertTrue(nf.tipoEmissao().contingencia());
 		
-		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
+		nf.alterarTipoEmissaoParaFsDa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		assertEquals(TipoEmissao.FS_DA,nf.tipoEmissao());
 	}
 	
 	@Test
 	public void trocaTipoEmissaoEntreFsia_e_ContingenciaPermitida(){
-		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
+		nf.alterarTipoEmissaoParaFsIa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		assertEquals(TipoEmissao.FS_IA,nf.tipoEmissao());
 		
-		nf.alterarTipoEmissaoParaContingencia();
+		nf.alterarTipoEmissaoParaContingencia(new Contingencia(new Date(), "Servidor da SEFAZ fora do ar"));
 		assertTrue(nf.tipoEmissao().contingencia());
 		
-		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
+		nf.alterarTipoEmissaoParaFsIa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		assertEquals(TipoEmissao.FS_IA,nf.tipoEmissao());
 	}
 	
 	@Test(expected=RuntimeException.class)
 	public void trocaTipoEmissaoDeNormalParaFsdaNaoPermitida(){
 		nf = NotaFiscalFixture.nfEmProducaoAutorizada();
-		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
+		nf.alterarTipoEmissaoParaFsDa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 	}
 	
 	@Test(expected=RuntimeException.class)
 	public void trocaTipoEmissaoDeNormalParaFsiaNaoPermitida(){
 		nf = NotaFiscalFixture.nfEmProducaoAutorizada();
-		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
+		nf.alterarTipoEmissaoParaFsIa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 	}
 	
 	@Test(expected=RuntimeException.class)
 	public void trocaTipoEmissaoDeNormalParaContingenciaNaoPermitida(){
 		nf = NotaFiscalFixture.nfEmProducaoAutorizada();
-		nf.alterarTipoEmissaoParaContingencia();
+		nf.alterarTipoEmissaoParaContingencia(new Contingencia(new Date(), "Servidor da SEFAZ fora do ar"));
 	}
 	
 	@Test(expected=RuntimeException.class)
 	public void trocaTipoEmissaoDeFsdaParaOutroTipoNaoPermitidoSeFormularioSegurancaFoiImpresso(){
 		nf = NotaFiscalFixture.nfEmProducao();
-		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
+		nf.alterarTipoEmissaoParaFsDa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		nf.definirDanfeComoImpresso();
-		nf.alterarTipoEmissao(TipoEmissao.NORMAL);
+		nf.alterarTipoEmissaoParaNormal();
 	}
 	
 	@Test(expected=RuntimeException.class)
 	public void trocaTipoEmissaoDeFsiaParaOutroTipoNaoPermitidoSeFormularioSegurancaFoiImpresso(){
 		nf = NotaFiscalFixture.nfEmProducao();
-		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
+		nf.alterarTipoEmissaoParaFsIa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		nf.definirDanfeComoImpresso();
-		nf.alterarTipoEmissao(TipoEmissao.NORMAL);
+		nf.alterarTipoEmissaoParaNormal();
 	}
 	
 	@Test
 	public void definirFormularioDeSegurancaFsdaComoImpresso(){
 		nf = NotaFiscalFixture.nfEmProducao();
-		nf.alterarTipoEmissao(TipoEmissao.FS_DA);
+		nf.alterarTipoEmissaoParaFsDa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		nf.definirDanfeComoImpresso();
 		assertTrue(nf.danfeImpresso());
 	}
@@ -157,7 +159,7 @@ public class NotaFiscalTest {
 	@Test
 	public void definirFormularioDeSegurancaFsiaComoImpresso(){
 		nf = NotaFiscalFixture.nfEmProducao();
-		nf.alterarTipoEmissao(TipoEmissao.FS_IA);
+		nf.alterarTipoEmissaoParaFsIa(new Contingencia(new Date(), "Conexão com a Internet com problema"));
 		nf.definirDanfeComoImpresso();
 		assertTrue(nf.danfeImpresso());
 	}
