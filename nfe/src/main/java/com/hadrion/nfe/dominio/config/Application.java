@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -143,6 +144,12 @@ public abstract class Application extends WebMvcConfigurerAdapter {
 		return factory;
 	}
 
+	
+//	@Bean
+//	JavaMailSender mailSender(){
+//		return new MailSenderAutoConfiguration().mailSender();
+//	}
+//	
 	public static void main(String[] args) {
 
 		ApplicationContext ctx = SpringApplication.run(Application.class, args);

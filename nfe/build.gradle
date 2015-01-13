@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.7.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE")
     }
 }
 
@@ -37,6 +37,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-tomcat")
     compile("org.springframework.boot:spring-boot-starter-amqp")
     compile("org.springframework.boot:spring-boot-starter-ws")
+    compile("org.springframework.boot:spring-boot-starter-mail")
+
     compile group: 'com.google.code.gson', name: 'gson', version:'2.1'
     compile group: 'commons-io', name: 'commons-io', version:'2.3'
     compile group: 'commons-lang', name: 'commons-lang', version:'2.3'
@@ -45,7 +47,6 @@ dependencies {
 	compile("org.apache.httpcomponents:httpclient:4.3.5")
 	compile("org.springframework:springloaded:1.2.1.RELEASE")
 	
-	
     compile('net.sf.jasperreports:jasperreports:5.6.1')
 	compile('com.lowagie:itext:4.2.1')
 	compile('xalan:xalan:2.7.2')
@@ -53,6 +54,7 @@ dependencies {
 	compile "net.sf.jasperreports:jasperreports-fonts:5.6.1"
 	
     compile("com.h2database:h2")
+
 	testCompile('xmlunit:xmlunit:1.4')
     testCompile("org.springframework.boot:spring-boot-starter-test")
   
