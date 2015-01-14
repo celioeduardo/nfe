@@ -1,8 +1,11 @@
 package com.hadrion.util.email;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.activation.DataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -11,19 +14,23 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.util.ByteArrayDataSource;
 
-import org.apache.catalina.core.ApplicationContext;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRXmlDataSource;
+
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.SpringApplicationContextLoader;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,16 +38,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.hadrion.nfe.dominio.config.Application;
 import com.hadrion.nfe.dominio.config.MailSenderAutoConfiguration;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={Application.class}, loader = SpringApplicationContextLoader.class)
 @SpringApplicationConfiguration(classes = Application.class)
 public class EmailTest {
 
-	@Autowired 	MailSenderAutoConfiguration bean;
+	@Autowired 	
+	MailSenderAutoConfiguration bean;
+	@Autowired	
+	private NotaFiscalRepositorio repositorio;
+
+	private JasperReport jasperReport;
+	private JasperPrint jasperPrint;
 
 	@Test @Ignore
-	public void enviar() {
+	public void enviarEmail() {
 		bean.mailSender().send(new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage)
                     throws Exception {
@@ -52,6 +66,62 @@ public class EmailTest {
                 message.setText("Teste via bean!.", true);
             }
         });
+	}
+	
+	SimpleMailMessage smm(){
+		
+		SimpleMailMessage ssimpleMailMessagemm = new SimpleMailMessage();
+		
+		ssimpleMailMessagemm.setFrom("teste@hadrion.com.br");
+		ssimpleMailMessagemm.setTo("hdr_ricardo@hotmail.com");
+		ssimpleMailMessagemm.setSubject("NOTA FISCAL 3.1");
+		ssimpleMailMessagemm.setText("TDD via MailSender.MimeMessageHelper.SimpleMailMessage");
+		
+		return ssimpleMailMessagemm;
+	}
+	
+	DataSource danfe() throws JRException{
+		File xmlFile = new File("src/test/resources/report/nfe.xml");
+    	
+    	JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/nfeProc/NFe/infNFe/det");    	
+    	jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
+    	jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
+
+    	return new ByteArrayDataSource(JasperExportManager.exportReportToPdf(jasperPrint), "application/xml");
+	}
+	
+	@Test @Ignore
+	public void enviarEmailXmlEDanfe() throws IOException, MessagingException, JRException {
+		MimeMessage mm = bean.mailSender().createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mm, true);
+		
+		String filename = "H-03F79B1D8D397592E050007F01005CC8";
+		File xml = new File("src/test/resources/report/nfe.xml");		
+		
+		helper.setFrom(smm().getFrom());
+		helper.setTo(smm().getTo());
+		helper.setSubject(smm().getSubject());
+		helper.setText(smm().getText());		
+		helper.addAttachment(filename + ".xml", xml);		
+		helper.addAttachment(filename + ".pdf", danfe());
+	
+		bean.mailSender().send(mm);
+	}
+	@Test @Ignore
+	public void enviarEmailComAnexoXml() throws IOException, MessagingException {
+		
+		File xml = new File("src/test/resources/report/nfe.xml");
+		
+		MimeMessage mm = bean.mailSender().createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mm, true);
+		
+		helper.setFrom(smm().getFrom());
+		helper.setTo(smm().getTo());
+		helper.setSubject(smm().getSubject());
+		helper.setText(smm().getText());		
+		helper.addAttachment("H-03F79B1D8D397592E050007F01005CC8" + ".xml", xml);
+		
+		bean.mailSender().send(mm);
 	}
 
 	@Test @Ignore
