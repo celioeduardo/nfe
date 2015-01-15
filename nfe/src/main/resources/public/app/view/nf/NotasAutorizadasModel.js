@@ -7,9 +7,10 @@ Ext.define('nfe.view.nf.NotasAutorizadasModel', {
     	notasAutorizadas:{
     		model: 'NotaFiscal',
     		autoLoad: true,
+            autoSync:true,
             proxy:{
                 url:'notas_fiscais/autorizadas_resumo',
-                type: 'rest',
+                type: 'ajax',
                 extraParams:{
                 	"ambiente":"{ambiente}",
                 	"nao_impressa":"{nao_impressa}",

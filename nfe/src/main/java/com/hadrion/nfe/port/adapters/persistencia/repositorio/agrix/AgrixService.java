@@ -51,10 +51,10 @@ public class AgrixService{
 	}*/
 	
 	public List<NotaFiscal> obterNotas(List<NotaFiscalId> notas, Ambiente ambiente) {
-		
 		String in = "'" + StringUtils.join(notaFiscalIdToGuid(notas), "','") + "'";
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
+		.withSchemaName(schema())
 		.withCatalogName("pcg_nf_json_adapter")
 		.withFunctionName("obterNotas")
 		.declareParameters(new SqlParameter("vc", Types.CLOB))
@@ -113,6 +113,7 @@ public class AgrixService{
 		gson = gsonBuilder.create();
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
+		.withSchemaName(schema())
 		.withCatalogName("pcg_nf_json_adapter")
 		.withFunctionName("obterPendentes")
 		//.withoutProcedureColumnMetaDataAccess()
@@ -148,6 +149,10 @@ public class AgrixService{
 		
 		return Arrays.asList(gson.fromJson(conteudo, DescritorNotaFiscal[].class));
 		
+	}
+
+	private String schema() {
+		return null;
 	}
 
 	/*

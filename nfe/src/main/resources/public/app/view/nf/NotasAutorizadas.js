@@ -10,11 +10,11 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
         type: 'notas-autorizadas'/*,
         session : true*/
     },
-    tbar:[{
+    tbar:[/*{
         xtype:'button',
         text:'Enviar',
         handler: 'onClickEnviar'
-    },{
+    },*/{
         xtype:'button',
         text:'Atualizar',
         handler: 'onClickAtualizar'

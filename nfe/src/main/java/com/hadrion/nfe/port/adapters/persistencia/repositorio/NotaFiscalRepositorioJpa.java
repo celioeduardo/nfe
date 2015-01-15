@@ -60,7 +60,6 @@ public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 
 	@Override
 	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

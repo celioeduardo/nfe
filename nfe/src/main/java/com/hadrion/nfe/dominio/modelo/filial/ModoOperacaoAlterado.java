@@ -9,7 +9,7 @@ public class ModoOperacaoAlterado implements EventoDominio {
 	private String filialId;
 	private ModoOperacao modoOperacao;
 	private Date dataHoraContingencia;
-	private String justificativaContingecia;
+	private String justificativaContingencia;
 	
 	private int versaoEvento;
 	private Date ocorridoEm;
@@ -26,7 +26,7 @@ public class ModoOperacaoAlterado implements EventoDominio {
 		this.filialId = filialId;
 		this.modoOperacao = modoOperacao;
 		this.dataHoraContingencia = dataHoraContingencia;
-		this.justificativaContingecia = justificativaContingencia;
+		this.justificativaContingencia = justificativaContingencia;
 		this.versaoEvento = 1;
 		this.ocorridoEm = new Date();
 	}
@@ -43,8 +43,8 @@ public class ModoOperacaoAlterado implements EventoDominio {
 		return dataHoraContingencia;
 	}
 
-	public String justificativaContingecia() {
-		return justificativaContingecia;
+	public String justificativaContingencia() {
+		return justificativaContingencia;
 	}
 
 	@Override

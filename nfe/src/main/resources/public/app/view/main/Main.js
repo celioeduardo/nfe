@@ -31,27 +31,52 @@ Ext.define('nfe.view.main.Main', {
         header: {
             heigth:2000,
             layout: 'hbox',
-            title: {
+            //title: {
                     //text: 'Empresa/Filial: ',
-                    textAlign: 'left'
-            },   
+            //        textAlign: 'left'
+            //},   
             items:[{
                 xtype: 'displayfield',
                 fieldLabel: 'Ambiente',
                 labelAlign: 'right',
+                reference: 'labelAmbiente'/*,
                 bind:{
                 	value: '{ambiente}'
-                },
-                renderer:'rendererAmbiente',
-                margin: '10 10 10 10'
-            },{
+                }*/
+                /*,
+                renderer : function(value, x) {
+                    if (x.value == 'HOMOLOGACAO')
+                        result = 'Homologação';
+                    else if (x.value == 'PRODUCAO')
+                        result = 'Produção';
+                    else
+                        result = '';
+                    var html = [
+                        '<tbody>',
+                            '<tr class="x-form-item-input-row">',
+                                '<td style="" valign="top" halign="left" width="' + x.labelWidth + '" class="x-field-label-cell">',
+                                    '<label class="x-form-item-label x-unselectable x-form-item-label-left" style="width:' + x.labelWidth + 'px;margin-right:5px;" unselectable="on">' + x.getFieldLabel() +':</label>',
+                                '</td>',
+                                '<td class="x-form-item-body x-form-display-field-body " colspan="2">',
+                                    '<div class="x-form-display-field" aria-invalid="false" data-errorqtip="">',
+                                        result,
+                                    '</div>',
+                                '</td>',
+                            '</tr>',
+                        '</tbody>'
+                    ];
+                    x.on('afterrender',function(){
+                         x.update(html.join(''));
+                    });
+                    return '';
+                }//,                margin: '10 10 10 10'
+            */},{
             	xtype: 'displayfield',
             	fieldLabel: 'Modo Operação',
             	labelAlign: 'right',
             	bind:{
             		value: '{modoOperacao}'
-            	},
-            	margin: '10 10 10 10'
+            	}//,            	margin: '10 10 10 10'
             },{
         		xtype:'filialcombo',
         		store:Ext.create('nfe.store.EmpresaFilialStore', {storeId: 'EmpresaFilialStore' }),

@@ -15,31 +15,33 @@ Ext.define('nfe.view.main.MainController', {
     alias: 'controller.main',
 
     onSelectFilial: function (combo, record){
-    	var vm = this.getViewModel();
+    	var me = this,
+            vm = this.getViewModel();
     	
     	vm.setData({filial:record.get('id')});
-    	
-    	Ext.toast({
-    		title: 'Troca de Filial',
-    		//ui: 'navigation',
-    		html: record.get('id') + ' - ' + record.get('nome'),
-    		align: 't',
-    		bodyPadding: 10,
-    		width:350
-    	});
     	
     	nfe.model.Filial.load(record.get('id'),{
     		success: function(r, operation) {
     	        vm.set('modoOperacao',r.get('modoOperacao'));
     	        vm.set('ambiente',r.get('ambiente'));
+                me.atualizarTela();
+                me.rendererAmbiente(r.get('ambiente'));
     	    }
     	});
+        
+        /*Ext.toast({
+            title: 'Troca de Filial',
+            html: record.get('id') + ' - ' + record.get('nome'),
+            align: 't',
+            bodyPadding: 10,
+            width:350
+        });*/
     },
     
     notasPendentesEnviadas: function(){
     	this.getView().down('lotes-pendentes')
     		.getViewModel().getStore('lotesPendentes')
-    		.reload();
+            .reload();
     },
     
     obtidoRetornoLotes: function(){
@@ -52,14 +54,20 @@ Ext.define('nfe.view.main.MainController', {
 	    	.reload();
     },
     
-    rendererAmbiente: function(ambiente, metadata, rec){
-    	console.log(ambiente);
-    	return 'teste';
-        if (ambiente == 'HOMOLOGACAO')
-        	return 'Homologação';
-        else if (ambiente == 'PRODUCAO')
-        	return 'Produção';
-        else return '';
+    atualizarTela: function(){
+        this.notasPendentesEnviadas();
+        this.obtidoRetornoLotes();
+    },
+
+    rendererAmbiente: function(value){
+        var me = this.lookupReference('labelAmbiente');
+
+        if (value == 'HOMOLOGACAO')
+        	me.setValue('Homologação');
+        else if (value == 'PRODUCAO')
+            me.setValue('Produção');
+        else 
+            me.setValue('SEM AMBIENTE');
     }
 
 });

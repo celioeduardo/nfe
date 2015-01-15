@@ -11,9 +11,10 @@ Ext.define('nfe.view.lote.LotesPendentesModel', {
     	lotesPendentes:{
     		model: 'Lote',
     		autoLoad: true,
+            autoSync: true,
             proxy:{
                 url:'lotes/pendentes',
-                type: 'rest',
+                type: 'ajax',
                 extraParams:{
                 	"ambiente": "{ambiente}",
                     "empresa":"{empresa}",

@@ -4,8 +4,15 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
     requires: [
 	    'Ext.window.MessageBox'
     ],
-
     alias: 'controller.notas-pendentes',
+    
+/*    config: {
+         control: {
+             'app-main': {
+                 filialtrocada: 'TROCAR'
+             }
+          }
+     },*/
 
     onClickEnviar: function () {
 
@@ -56,6 +63,11 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
             }
         });
         //this.getViewModel().getStore('notasPendentes').reload();
+    },
+
+    TROCAR: function(){
+        console.log('trocando filial TROCAR');
+        this.onClickAtualizar();
     },
 
     rendererNumero: function(numero, metadata, rec){

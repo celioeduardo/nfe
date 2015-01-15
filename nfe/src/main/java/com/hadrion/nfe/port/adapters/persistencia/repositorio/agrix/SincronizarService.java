@@ -25,9 +25,6 @@ public class SincronizarService {
 	public void sincronizar(List<NotaFiscalId> notas, Ambiente ambiente) {
 		List<NotaFiscal> notasAgrix = agrixService.obterNotas(notas,ambiente);
 		for (NotaFiscal nfAgrix : notasAgrix) {
-			//TODO Remover 
-			if (nfAgrix.notaFiscalId().equals("H-05EF60F0EA9FFA7EE050007F01004CE2"))
-				System.out.println("H-05EF60F0EA9FFA7EE050007F01004CE2");
 			mesclar(nfAgrix);
 		}
 	}

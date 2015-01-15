@@ -10,19 +10,18 @@ Ext.define('nfe.view.main.MainModel', {
         name: 'nfe',
         titulo: 'Nota Fiscal Eletrônica - 3.10',
         empresa: 86675642000106,
-        //filial: '21-86675642000106',
+        filial: '-1',
         ambiente: 'HOMOLOGACAO',
-        modoOperacao: 'NORMAL',
-        notista:null
+        modoOperacao: 'NORMAL',        
+        notista: '-1'
     },
     stores:{
     	empresaFilial:{
     		fields: ['filialId','cnpj','nome'],	
-    		//model: 'NotaFiscal',
     		autoLoad: true,
             proxy:{
                 url : 'filial/obter',
-                type: 'rest',
+                type: 'ajax',
                 reader: {
                     type: 'json',
                     rootProperty: 'rows'
@@ -31,15 +30,7 @@ Ext.define('nfe.view.main.MainModel', {
     	},
     	notistas:{
     		model: 'Notista',
-    		autoLoad: true/*,
-            proxy:{
-                url : 'filial/obter',
-                type: 'rest',
-                reader: {
-                    type: 'json',
-                    rootProperty: 'rows'
-                }
-            }*/
+    		autoLoad: true
     	}
     }
 });

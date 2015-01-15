@@ -5,7 +5,7 @@ Ext.define('nfe.model.Base', {
         namespace: 'nfe.model',  // generate auto entityName
 
         proxy: {     // Ext.util.ObjectTemplate
-            type: 'rest',
+            type: 'ajax',
             reader: {
                 type: 'json',
                 rootProperty: 'rows'

@@ -3,15 +3,24 @@ package com.hadrion.nfe.dominio.modelo.filial;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.annotation.Profile;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.DominioTest;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
 import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.util.DataUtil;
 
-public class FilialTest {
+@Profile("test")
+public class FilialTest extends DominioTest{
+	
+	@Before
+	public void setUp() throws Exception{
+		super.setUp();
+	}
 	
 	
 	@Test

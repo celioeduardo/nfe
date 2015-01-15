@@ -32,7 +32,7 @@ public class RabbitMQModoOperacaoAlteradoListener extends RabbitNfeEventoListene
 		
 		NotificationReader reader = new NotificationReader(mensagemTexto);
 		
-		String filialId = reader.eventStringValue("notaFiscalId");
+		String filialId = reader.eventStringValue("filialId");
 		ModoOperacao modoOperacao = ModoOperacao.valueOf(reader.eventStringValue("modoOperacao"));
 		Date dataHoraContingencia = reader.eventDateValue("dataHoraContingencia");
 		String justificativaContingencia = reader.eventStringValue("justificativaContingencia");

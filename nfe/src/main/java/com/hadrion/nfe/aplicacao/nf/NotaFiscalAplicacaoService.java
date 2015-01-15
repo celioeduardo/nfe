@@ -56,61 +56,57 @@ import com.hadrion.util.xml.XmlUtil;
 public class NotaFiscalAplicacaoService {
 	@Autowired
 	private GeracaoLoteService geracaoLoteService;
-	
+
 	@Autowired
 	private EnviarLoteService enviarLoteService;
-	
+
 	@Autowired
 	private LoteRepositorio loteRepositorio;
-	
+
 	@Autowired
 	private NotaFiscalRepositorio notaFiscalRepositorio;
-	
+
 	@Autowired
 	private FilialRepositorio filialRepositorio;
-	
+
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(
-			Ambiente ambiente,
-			Double empresa,
-			String filial,
-			Date inicio,Date fim,String notistaId,String notaFiscalId){
+			Ambiente ambiente, Double empresa, String filial, Date inicio,
+			Date fim, String notistaId, String notaFiscalId) {
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 		NotaFiscalId notaFiscalIdFiltro = null;
-		
-		if (notaFiscalId!=null)
-			notaFiscalIdFiltro=new NotaFiscalId(notaFiscalId);
-		
-		for (DescritorNotaFiscal nf : notaFiscalRepositorio.notasPendentesAutorizacaoResumo(
-				ambiente,
-				empresa,new FilialId(filial),inicio,fim,notistaId,notaFiscalIdFiltro)) {
-			result.add(new NotaFiscalData(
-					nf.notaFiscalId().id(),
-					nf.numero(),
+
+		if (notaFiscalId != null)
+			notaFiscalIdFiltro = new NotaFiscalId(notaFiscalId);
+
+		for (DescritorNotaFiscal nf : notaFiscalRepositorio
+				.notasPendentesAutorizacaoResumo(ambiente, empresa,
+						new FilialId(filial), inicio, fim, notistaId,
+						notaFiscalIdFiltro)) {
+			result.add(new NotaFiscalData(nf.notaFiscalId().id(), nf.numero(),
 					String.valueOf(nf.serie().numero()),
 					nf.chave() != null ? String.valueOf(nf.chave()) : null,
-					String.valueOf(nf.tipoEmissao()),
-					nf.emissao(),
-					nf.valor().valor(),
-					nf.publicoTipo(),
-					nf.publicoCodigo(),
-					nf.publicoNome(),
-					nf.tipo(),
-					nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,
-					nf.mensagem() != null ? nf.mensagem().descricao() : null));
+					String.valueOf(nf.tipoEmissao()), nf.emissao(), nf.valor()
+							.valor(), nf.publicoTipo(), nf.publicoCodigo(), nf
+							.publicoNome(), nf.tipo(),
+					nf.mensagem() != null ? new Long(nf.mensagem().codigo())
+							: null, nf.mensagem() != null ? nf.mensagem()
+							.descricao() : null));
 		}
-		
+
 		return result;
 	}
-	public List<NotaFiscalData> notasFicaisPendentesAutorizacao(Ambiente ambiente, String filial){
+
+	public List<NotaFiscalData> notasFicaisPendentesAutorizacao(
+			Ambiente ambiente, String filial) {
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
-		
+
 		for (NotaFiscal nf : notaFiscalRepositorio.notasPendentesAutorizacao(
-				new FilialId(filial),ambiente)) 
+				new FilialId(filial), ambiente))
 			result.add(construir(nf));
-		
+
 		return result;
 	}
-	
+
 	public List<NotaFiscalData> notasFicaisAutorizadasResumo(Ambiente ambiente,
 			Double empresa, String filial, Date inicio, Date fim,
 			String notistaId, String notaFiscalId) {
@@ -120,164 +116,194 @@ public class NotaFiscalAplicacaoService {
 		List<NotaFiscal> notas = null;
 		if (notistaId != null && !notistaId.isEmpty())
 			notas = notaFiscalRepositorio.notasAutorizadas(
-					new FilialId(filial),ambiente,new NotistaId(notistaId));
+					new FilialId(filial), ambiente, new NotistaId(notistaId));
 		else
 			notas = notaFiscalRepositorio.notasAutorizadas(
-					new FilialId(filial),ambiente);
-		
-		for (NotaFiscal nf : notas) 
+					new FilialId(filial), ambiente);
+
+		for (NotaFiscal nf : notas)
 			result.add(construir(nf));
-		
+
 		return result;
-		
+
 	}
+
 	public List<NotaFiscalData> notasFicaisAutorizadasNaoImpressasResumo(
 			Ambiente ambiente, Double empresa, String filial, Date inicio,
 			Date fim, String notistaId, String notaFiscalId) {
-	
+
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
-		
+
 		List<NotaFiscal> notas = null;
-		
+
 		if (notistaId != null && !notistaId.isEmpty())
 			notas = notaFiscalRepositorio.notasAutorizadasNaoImpressas(
-					new FilialId(filial), ambiente,new NotistaId(notistaId));
+					new FilialId(filial), ambiente, new NotistaId(notistaId));
 		else
 			notas = notaFiscalRepositorio.notasAutorizadasNaoImpressas(
 					new FilialId(filial), ambiente);
-		
-		for (NotaFiscal nf : notas) 
+
+		for (NotaFiscal nf : notas)
 			result.add(construir(nf));
-		
+
 		return result;
-	
+
 	}
-	public ResponseEntity<InputStreamResource> imprimirDanfe(String notaFiscalId) throws IOException,JRException{
-		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
+
+	public ResponseEntity<InputStreamResource> imprimirDanfe(String notaFiscalId)
+			throws IOException, JRException {
+		NotaFiscal nf = notaFiscalRepositorio
+				.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
 		nf.definirDanfeComoImpresso();
 		notaFiscalRepositorio.salvar(nf);
 		return preVisualizarDanfe(notaFiscalId);
 	}
-	
-	public ResponseEntity<InputStreamResource> preVisualizarDanfe(String notaFiscalId) throws IOException,JRException{
-		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
+
+	public ResponseEntity<InputStreamResource> preVisualizarDanfe(
+			String notaFiscalId) throws IOException, JRException {
+		NotaFiscal nf = notaFiscalRepositorio
+				.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
 		return obterDanfe(nf);
 	}
-	
-	public ResponseEntity<InputStreamResource> obterDanfe(NotaFiscal nf) throws IOException,JRException{
-		
+
+	public ResponseEntity<InputStreamResource> obterDanfe(NotaFiscal nf)
+			throws IOException, JRException {
+
 		JasperReport jasperReport;
 		JasperPrint jasperPrint;
-		
+
 		NotaFiscalSerializador serializador = new NotaFiscalSerializador();
-		
+
 		Document nfeProc = XmlUtil.novoDocument();
 		nfeProc.normalizeDocument();
-		Element root = nfeProc.createElementNS("http://www.portalfiscal.inf.br/nfe", "nfeProc");
+		Element root = nfeProc.createElementNS(
+				"http://www.portalfiscal.inf.br/nfe", "nfeProc");
 		nfeProc.appendChild(root);
-		
+
 		Document nfe = XmlUtil.parseXml(serializador.serializar(nf));
 		Document prot = null;
 		if (nf.xmlProtocolo() != null)
 			prot = XmlUtil.parseXml(nf.xmlProtocolo());
-		
-		nfeProc.getDocumentElement().appendChild(nfeProc.importNode(nfe.getFirstChild(), true));
+
+		nfeProc.getDocumentElement().appendChild(
+				nfeProc.importNode(nfe.getFirstChild(), true));
 		if (prot != null)
-			nfeProc.getDocumentElement().appendChild(nfeProc.importNode(prot.getFirstChild(), true));
-		
+			nfeProc.getDocumentElement().appendChild(
+					nfeProc.importNode(prot.getFirstChild(), true));
+
 		nfeProc.normalizeDocument();
-		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");		
-		jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
-		jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
-		
-		byte[] pdf =  JasperExportManager.exportReportToPdf(jasperPrint);
-		
+		JRXmlDataSource xmlDataSource = new JRXmlDataSource(
+				xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");
+		jasperReport = JasperCompileManager
+				.compileReport("src/test/resources/report/danfe.jrxml");
+		jasperPrint = JasperFillManager.fillReport(jasperReport, null,
+				xmlDataSource);
+
+		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
+
 		HttpHeaders respHeaders = new HttpHeaders();
 		respHeaders.setContentType(new MediaType("application", "pdf"));
 		respHeaders.set("Cache-Control", "no-cache");
-		respHeaders.set("Content-Disposition", "inline; filename=pre-" + nf.chaveAcesso() +".pdf");
-		InputStreamResource isr = new InputStreamResource(new ByteArrayInputStream(pdf));		
-		return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
+		respHeaders.set("Content-Disposition",
+				"inline; filename=pre-" + nf.chaveAcesso() + ".pdf");
+		InputStreamResource isr = new InputStreamResource(
+				new ByteArrayInputStream(pdf));
+		return new ResponseEntity<InputStreamResource>(isr, respHeaders,
+				HttpStatus.OK);
 	}
-	
-	public String enviarNotas(EnviarNotasComando comando){
+
+	public String enviarNotas(EnviarNotasComando comando) {
 		Ambiente ambiente = Ambiente.valueOf(comando.getAmbiente());
-		
+
 		Lote lote = null;
-		
+
 		if (ambiente == Ambiente.PRODUCAO)
-			lote =  geracaoLoteService.gerarLoteEmProducao(notas(comando.getIds(),ambiente));
+			lote = geracaoLoteService.gerarLoteEmProducao(notas(
+					comando.getIds(), ambiente));
 		else
-			lote =  geracaoLoteService.gerarLoteEmHomologacao(notas(comando.getIds(),ambiente));
-		
+			lote = geracaoLoteService.gerarLoteEmHomologacao(notas(
+					comando.getIds(), ambiente));
+
 		loteRepositorio.salvar(lote);
-		
+
 		enviarLoteService.enviar(lote);
-		
+
 		loteRepositorio.salvar(lote);
-		
+
 		return String.valueOf(lote.loteId());
-		
+
 	}
-	
+
 	public void definirNotaComoRejeitada(DefinirNotaComoRejeitadaComando comando) {
 		NotaFiscal nota = nota(comando.getNotaFiscalId());
 		if (nota != null)
-			nota.rejeitada(new Mensagem(comando.getMsgCodigo(), comando.getMsgDescricao()));
+			nota.rejeitada(new Mensagem(comando.getMsgCodigo(), comando
+					.getMsgDescricao()));
 		notaFiscalRepositorio.salvar(nota);
 	}
-	public void definirNotaComoAutorizada(DefinirNotaComoAutorizadaComando comando) {
+
+	public void definirNotaComoAutorizada(
+			DefinirNotaComoAutorizadaComando comando) {
 		NotaFiscal nota = nota(comando.getNotaFiscalId());
 		if (nota != null)
 			nota.autorizada(
 					new NumeroProtocolo(comando.getNumeroProtocolo()),
-					new Mensagem(comando.getMsgCodigo(), comando.getMsgDescricao()),
-					comando.getXmlProtocolo());
+					new Mensagem(comando.getMsgCodigo(), comando
+							.getMsgDescricao()), comando.getXmlProtocolo());
 		notaFiscalRepositorio.salvar(nota);
 	}
-	
-	public void atualizarModoOperacao(AtualizarModoOperacaoComando comando){
-		Filial filial = filialRepositorio.obterFilial(new FilialId(comando.getFilialId()));
-		
+
+	public void atualizarModoOperacao(AtualizarModoOperacaoComando comando) {
+		Filial filial = filialRepositorio.obterFilial(new FilialId(comando
+				.getFilialId()));
+
 		ModoOperacao modoOperacao = filial.modoOperacao();
-		
-		List<NotaFiscal> notas = notaFiscalRepositorio.notasPendentesAutorizacao(
-				filial.filialId(), filial.ambiente());
-		
+
+		List<NotaFiscal> notas = notaFiscalRepositorio
+				.notasPendentesAutorizacao(filial.filialId(), filial.ambiente());
+
 		for (NotaFiscal nf : notas) {
-			nf.alterarModoOperacao(modoOperacao, 
-					new Contingencia(comando.getDataHoraContingencia(), comando.getJustificativaContingencia()));
-			
+			nf.alterarModoOperacao(
+					modoOperacao,
+					new Contingencia(comando.getDataHoraContingencia(), comando
+							.getJustificativaContingencia()));
+
 			notaFiscalRepositorio.salvar(nf);
 		}
 	}
-	
-	private NotaFiscal nota(String notaFiscalId){
-		return notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
+
+	private NotaFiscal nota(String notaFiscalId) {
+		return notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(
+				notaFiscalId));
 	}
-	
-	private Set<NotaFiscal> notas(List<String> ids, Ambiente ambiente){
+
+	private Set<NotaFiscal> notas(List<String> ids, Ambiente ambiente) {
 		List<NotaFiscalId> listaId = new ArrayList<NotaFiscalId>();
-		
-		for (String notaFiscalId : ids) 
+
+		for (String notaFiscalId : ids)
 			listaId.add(new NotaFiscalId(notaFiscalId));
-		
-		return new HashSet<NotaFiscal>(notaFiscalRepositorio.notasPendentesAutorizacao(listaId,ambiente));
+
+		return new HashSet<NotaFiscal>(
+				notaFiscalRepositorio.notasPendentesAutorizacao(listaId,
+						ambiente));
 	}
-	private NotaFiscalData construir(NotaFiscal nf){
+
+	private NotaFiscalData construir(NotaFiscal nf) {
 		return new NotaFiscalData(
 				nf.notaFiscalId().id(),
 				nf.numero(),
 				String.valueOf(nf.serie().numero()),
-				nf.chaveAcesso() != null ? String.valueOf(nf.chaveAcesso()) : null,
+				nf.chaveAcesso() != null ? String.valueOf(nf.chaveAcesso())
+						: null,
 				String.valueOf(nf.tipoEmissao()),
 				nf.emissao(),
 				nf.total().valor(),
-				null,null,
+				null,
+				null,
 				nf.destinatario().razaoSocial(),
 				nf.tipoOperacao().toString(),
 				nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,
 				nf.mensagem() != null ? nf.mensagem().descricao() : null);
 	}
-	
+
 }
