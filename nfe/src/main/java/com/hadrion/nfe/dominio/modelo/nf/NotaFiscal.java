@@ -765,12 +765,25 @@ public class NotaFiscal {
 				alterarTipoEmissaoParaFsDa(contingencia);
 			break;
 		case SVC:
-			TipoEmissao tipoEmissao = TipoEmissao.contingenciaPelaUf(ufEmitente());
+			TipoEmissao tipoEmissao = tipoEmissaoPeloModoOperacao(modoOperacao, ufEmitente());
 			if (permiteAlterarTipoEmissao(tipoEmissao))
 				alterarTipoEmissaoParaContingencia(contingencia);
 			break;
 		default:
 			break;
+		}
+	}
+	
+	static TipoEmissao tipoEmissaoPeloModoOperacao(ModoOperacao modoOperacao, Uf ufEmitente){
+		switch (modoOperacao) {
+		case NORMAL:
+			return TipoEmissao.NORMAL;
+		case FS_DA:
+			return TipoEmissao.FS_DA;
+		case SVC:
+			return TipoEmissao.contingenciaPelaUf(ufEmitente);
+		default:
+			return null;
 		}
 	}
 
