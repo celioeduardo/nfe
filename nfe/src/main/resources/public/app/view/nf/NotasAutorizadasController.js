@@ -70,10 +70,9 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
     },
 
     rendererDanfe: function (val, meta, record) {
-    	var me = this.getViewModel();
-    	if (!me.get('nao_impressa'))
-    		return '<div style="padding: 0px 0px 0px 0px; text-align: center"><a href="notas_fiscais/imprimir_danfe?notafiscalid=' + val + '" target="_blank"><img src="resources/images/danfe.jpg" height="100%" width="100%"/></a></div>'+
-    			        '<div style="padding: 0px 0px 0px 0px; text-align: center"><a href="notas_fiscais/imprimir_danfe?notafiscalid=' + val + '" target="_blank"><img src="resources/images/email.jpg" height="100%" width="100%"/></a></div>';
+//    	var me = this.getViewModel();
+//    	if (!me.get('nao_impressa'))
+//    		return '<div style="padding: 0px 0px 0px 0px; text-align: center"><a href="notas_fiscais/imprimir_danfe?notafiscalid=' + val + '" target="_blank"><img src="resources/images/danfe.jpg" height="100%" width="100%"/></a></div>';
     	
     	return '<div style="padding: 0px 0px 0px 0px; font-size:x-large;line-height: 22px; text-align: center"><a href="notas_fiscais/imprimir_danfe?notafiscalid=' + val + '" target="_blank"><img src="resources/images/danfe.jpg" height="100%" width="100%"/></a></div>';
     },
@@ -88,5 +87,19 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
         return Ext.String.format(
             '<div style="font-style: italic;font-color=red;margin-top: 20px;">{0} - {1}</div>',
             rec.get('msgCodigo'), descricao);
-    }    
+    },
+    enviarEmail: function(btn) {
+        var rec = btn.getWidgetRecord();
+        
+        nfe.model.NotaFiscal.enviarEmail(rec.get('notaFiscalId'),
+        		function(){
+		            Ext.toast({
+		                title: 'Enviando e-mail...',
+		                html: record.get('numero') + '/' + record.get('serie'),
+		                align: 't',
+		                bodyPadding: 10,
+		                width:350
+		            });
+        });
+    }
 });

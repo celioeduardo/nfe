@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import net.sf.jasperreports.engine.JRException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hadrion.nfe.aplicacao.nf.EnviarEmailComando;
 import com.hadrion.nfe.aplicacao.nf.EnviarNotasComando;
 import com.hadrion.nfe.aplicacao.nf.NotaFiscalAplicacaoService;
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
@@ -79,5 +82,10 @@ public class NfeController {
 	public String enviarNotas(
 			@RequestBody List<EnviarNotasComando> comandos) throws IOException, JRException{		
 		return notaFiscalAplicacaoService.enviarNotas(comandos.get(0));
+	}	
+	@RequestMapping(value = "/enviar_email", method = RequestMethod.GET)
+	public String enviarEmail(
+			@RequestParam String notaFiscalId) throws IOException, MessagingException, JRException{		
+		return notaFiscalAplicacaoService.enviarEmail(new EnviarEmailComando(notaFiscalId));
 	}	
 }

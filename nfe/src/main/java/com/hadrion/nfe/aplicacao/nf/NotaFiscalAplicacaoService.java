@@ -4,12 +4,16 @@ import static com.hadrion.util.xml.XmlUtil.xmlParaInpuStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.mail.util.ByteArrayDataSource;
 import javax.transaction.Transactional;
 
 import net.sf.jasperreports.engine.JRException;
@@ -20,13 +24,19 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -70,6 +80,9 @@ public class NotaFiscalAplicacaoService {
 	@Autowired
 	private FilialRepositorio filialRepositorio;
 
+	@Autowired
+	private JavaMailSender envioEmail;	
+	
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(
 			Ambiente ambiente, Double empresa, String filial, Date inicio,
 			Date fim, String notistaId, String notaFiscalId) {
@@ -167,51 +180,6 @@ public class NotaFiscalAplicacaoService {
 		return obterDanfe(nf);
 	}
 
-	public ResponseEntity<InputStreamResource> obterDanfe(NotaFiscal nf)
-			throws IOException, JRException {
-
-		JasperReport jasperReport;
-		JasperPrint jasperPrint;
-
-		NotaFiscalSerializador serializador = new NotaFiscalSerializador();
-
-		Document nfeProc = XmlUtil.novoDocument();
-		nfeProc.normalizeDocument();
-		Element root = nfeProc.createElementNS(
-				"http://www.portalfiscal.inf.br/nfe", "nfeProc");
-		nfeProc.appendChild(root);
-
-		Document nfe = XmlUtil.parseXml(serializador.serializar(nf));
-		Document prot = null;
-		if (nf.xmlProtocolo() != null)
-			prot = XmlUtil.parseXml(nf.xmlProtocolo());
-
-		nfeProc.getDocumentElement().appendChild(
-				nfeProc.importNode(nfe.getFirstChild(), true));
-		if (prot != null)
-			nfeProc.getDocumentElement().appendChild(
-					nfeProc.importNode(prot.getFirstChild(), true));
-
-		nfeProc.normalizeDocument();
-		JRXmlDataSource xmlDataSource = new JRXmlDataSource(
-				xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");
-		jasperReport = JasperCompileManager
-				.compileReport("src/test/resources/report/danfe.jrxml");
-		jasperPrint = JasperFillManager.fillReport(jasperReport, null,
-				xmlDataSource);
-
-		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
-
-		HttpHeaders respHeaders = new HttpHeaders();
-		respHeaders.setContentType(new MediaType("application", "pdf"));
-		respHeaders.set("Cache-Control", "no-cache");
-		respHeaders.set("Content-Disposition",
-				"inline; filename=pre-" + nf.chaveAcesso() + ".pdf");
-		InputStreamResource isr = new InputStreamResource(
-				new ByteArrayInputStream(pdf));
-		return new ResponseEntity<InputStreamResource>(isr, respHeaders,
-				HttpStatus.OK);
-	}
 
 	public String enviarNotas(EnviarNotasComando comando) {
 		Ambiente ambiente = Ambiente.valueOf(comando.getAmbiente());
@@ -309,4 +277,93 @@ public class NotaFiscalAplicacaoService {
 				nf.mensagem() != null ? nf.mensagem().descricao() : null);
 	}
 
+	
+	public byte[] gerarDanfe(Document nfeProc) throws JRException{
+		JasperReport jasperReport;
+		JasperPrint jasperPrint;
+		
+		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");
+		jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
+		jasperPrint = JasperFillManager.fillReport(jasperReport, null,xmlDataSource);		
+		return JasperExportManager.exportReportToPdf(jasperPrint);		
+	}
+	
+	public Document gerarXml(NotaFiscal nf) throws JRException{
+		
+		NotaFiscalSerializador serializador = new NotaFiscalSerializador();
+		
+		Document nfeProc = XmlUtil.novoDocument();
+		nfeProc.normalizeDocument();
+		Element root = nfeProc.createElementNS(
+				"http://www.portalfiscal.inf.br/nfe", "nfeProc");
+		nfeProc.appendChild(root);
+		
+		Document nfe = XmlUtil.parseXml(serializador.serializar(nf));
+		Document prot = null;
+		if (nf.xmlProtocolo() != null)
+			prot = XmlUtil.parseXml(nf.xmlProtocolo());
+		
+		nfeProc.getDocumentElement().appendChild(
+				nfeProc.importNode(nfe.getFirstChild(), true));
+		if (prot != null)
+			nfeProc.getDocumentElement().appendChild(
+					nfeProc.importNode(prot.getFirstChild(), true));
+		
+		nfeProc.normalizeDocument();
+		
+		return nfeProc;
+	}
+	
+	public void enviarEmailXmlEDanfe(NotaFiscal nf) throws IOException, MessagingException, JRException {
+		
+		MimeMessage mm = envioEmail.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mm, true);
+		
+		String filename = nf.chaveAcesso().toString();
+		
+		Document xml = gerarXml(nf);		
+		byte[] pdf = gerarDanfe(xml);
+		
+		helper.setFrom(smm().getFrom());
+		helper.setTo(smm().getTo());
+		helper.setSubject(smm().getSubject());
+		helper.setText(smm().getText());		
+		helper.addAttachment(filename + ".xml", new ByteArrayResource(IOUtils.toByteArray(XmlUtil.xmlParaInpuStream(xml))) , "application/xml");		
+		helper.addAttachment(filename + ".pdf", new ByteArrayDataSource(pdf, "application/pdf"));
+	
+		envioEmail.send(mm);
+	}
+	public String enviarEmail(EnviarEmailComando comando) throws IOException, MessagingException, JRException {
+		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(comando.getIds().get(0)));
+		
+		enviarEmailXmlEDanfe(nf);
+			
+		return String.valueOf("");
+
+	}
+	SimpleMailMessage smm(){
+		
+		SimpleMailMessage ssimpleMailMessagemm = new SimpleMailMessage();
+		
+		ssimpleMailMessagemm.setFrom("teste@hadrion.com.br");
+		ssimpleMailMessagemm.setTo("hdr_ricardo@hotmail.com");
+		ssimpleMailMessagemm.setSubject("NOTA FISCAL 3.1");
+		ssimpleMailMessagemm.setText("TDD via MailSender.MimeMessageHelper.SimpleMailMessage");
+		
+		return ssimpleMailMessagemm;
+	}
+	public ResponseEntity<InputStreamResource> obterDanfe(NotaFiscal nf) throws JRException{
+		
+		byte[] pdf = gerarDanfe(gerarXml(nf));
+		
+		HttpHeaders respHeaders = new HttpHeaders();
+		respHeaders.setContentType(new MediaType("application", "pdf"));
+		respHeaders.set("Cache-Control", "no-cache");
+		respHeaders.set("Content-Disposition",
+				"inline; filename=pre-" + nf.chaveAcesso() + ".pdf");
+		InputStreamResource isr = new InputStreamResource(
+				new ByteArrayInputStream(pdf));
+		return new ResponseEntity<InputStreamResource>(isr, respHeaders,
+				HttpStatus.OK);
+	}
 }

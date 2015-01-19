@@ -45,10 +45,22 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
           },{
               text:'Danfe',
               width: 50,
-              //dataIndex: 'notaFiscalId',
+              dataIndex: 'notaFiscalId',
               //flex: 1,
               renderer: 'rendererDanfe',
               align: 'center'
+          },{
+              //text: 'e-mail',
+              width: 105,
+              xtype: 'widgetcolumn',
+              //dataIndex: 'notaFiscalId',
+              widget: {
+            	  text:'e-mail',
+                  width: 90,
+                  xtype: 'button',
+                  //icon: '../shared/icons/fam/feed_add.png',
+                  handler: 'enviarEmail'
+              }
           },{
               text: 'Observação',
               dataIndex: 'msgDescricao',

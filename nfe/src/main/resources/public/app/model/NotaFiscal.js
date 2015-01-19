@@ -33,24 +33,19 @@ Ext.define('nfe.model.NotaFiscal', {
         });
     },
     
-    enviarEmails:function(ambiente,notas,success,failure,callback,scope){
-    	var data = {
-    			"ambiente" : ambiente,
-    			"ids":notas
-    	};
-    	
-    	Ext.Ajax.request({
-    		url:'notas_fiscais/enviar_emails',
-    		method:'POST',
-    		jsonData:Ext.encode([data]),
-    		success:success,
-    		failure:failure,
-    		callback:callback,
-    		scope:scope
-    	});
-    },
     
     statics: {
+    	enviarEmail:function(notaFiscalId,success,failure,callback,scope){
+    		Ext.Ajax.request({
+    			url:'notas_fiscais/enviar_email',
+    			method:'GET',
+    			params:{'notaFiscalId':notaFiscalId},
+    			success:success,
+    			failure:failure,
+    			callback:callback,
+    			scope:scope
+    		});
+    	},
         getTipoEmissao: function(tipoEmissao) {
             return this.prototype.tipos[tipoEmissao];
         }

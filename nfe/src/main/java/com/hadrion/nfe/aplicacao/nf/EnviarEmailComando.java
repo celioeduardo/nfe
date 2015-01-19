@@ -1,20 +1,24 @@
 package com.hadrion.nfe.aplicacao.nf;
 
+import java.util.Collections;
 import java.util.List;
+
 
 public class EnviarEmailComando {
 	
 	private List<String> ids;
-	private String ambiente;
 	
 	
 	public EnviarEmailComando() {
 	}
 
-	public EnviarEmailComando(List<String> ids, String ambiente) {
+	public EnviarEmailComando(List<String> ids) {
 		super();
 		this.ids = ids;
-		this.ambiente = ambiente;
+	}
+	public EnviarEmailComando(String notaFiscalId) {
+		super();
+		this.ids = Collections.singletonList(notaFiscalId);
 	}
 
 	public List<String> getIds() {
@@ -23,14 +27,6 @@ public class EnviarEmailComando {
 
 	public void setIds(List<String> ids) {
 		this.ids = ids;
-	}
-
-	public String getAmbiente() {
-		return ambiente;
-	}
-
-	public void setAmbiente(String ambiente) {
-		this.ambiente = ambiente;
 	}
 
 }
