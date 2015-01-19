@@ -24,35 +24,37 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
         selection: '{notasSelecionadas}'
     },
     selType: 'checkboxmodel',
-    hideHeaders: true,
+    //hideHeaders: true,
     columns: [
-        {
-            text: 'Número',
-            width: 310,
-            sortable: false,
-            hideable: false,
-            renderer: 'rendererNumero',
-            dataIndex: 'numero'
+          {
+              text: 'Número',
+              width: 310,
+              sortable: false,
+              hideable: false,
+              renderer: 'rendererNumero',
+              dataIndex: 'numero'
 
-        },{
-            text: 'Valor',
-            xtype:'numbercolumn',
-            width: 150,                
-            format:'0.00',
-            dataIndex: 'valor',
-            renderer: 'rendererValor',
-            align: 'right'
-        },{
-            text:'Danfe',
-            width: 150,
-            dataIndex: 'notaFiscalId',
-            renderer: 'rendererDanfe'
-        },{
-            text: 'Observação',
-            dataIndex: 'msgDescricao',
-            renderer: 'rendererObservacao',
-            cellWrap: true,
-            flex: 1
-        }
+          },{
+              text: 'Valor',
+              xtype:'numbercolumn',
+              width: 150,                
+              format:'0.00',
+              dataIndex: 'valor',
+              renderer: 'rendererValor',
+              align: 'right'
+          },{
+              text:'Danfe',
+              width: 50,
+              //dataIndex: 'notaFiscalId',
+              //flex: 1,
+              renderer: 'rendererDanfe',
+              align: 'center'
+          },{
+              text: 'Observação',
+              dataIndex: 'msgDescricao',
+              renderer: 'rendererObservacao',
+              cellWrap: true,
+              flex: 2
+          }
     ]
 });

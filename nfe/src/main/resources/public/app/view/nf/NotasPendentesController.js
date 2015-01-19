@@ -6,14 +6,6 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
     ],
     alias: 'controller.notas-pendentes',
     
-/*    config: {
-         control: {
-             'app-main': {
-                 filialtrocada: 'TROCAR'
-             }
-          }
-     },*/
-
     onClickEnviar: function () {
 
         if (this.getView().getSelection().length==0){
@@ -49,25 +41,8 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
         }
     },
 
-    aspas: function (s) {
-        return "'" + s + "'";
-    },
-
     onClickAtualizar: function (){
-        //console.log("url proxy:" + this.getStore().load({url:'newUrl'});
-            //pendentes_autorizacao_selecionadas
-        //    console.log("url proxy:" + JSON.stringify(this.getStore().getProxy()));
-        this.getViewModel().getStore('notasPendentes').load(
-            {"params":{
-                "notafiscalid":"03F79B1D8D397592E050007F01005CC8"
-            }
-        });
-        //this.getViewModel().getStore('notasPendentes').reload();
-    },
-
-    TROCAR: function(){
-        console.log('trocando filial TROCAR');
-        this.onClickAtualizar();
+        this.getViewModel().getStore('notasPendentes').load();
     },
 
     rendererNumero: function(numero, metadata, rec){
@@ -95,8 +70,9 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
     },
 
     rendererDanfe: function (val, meta, record) {
-        return '<a href="notas_fiscais/pre_visualizar_danfe?notafiscalid=' + val + '" target="_blank" >pré-visualizar</a>';
+        return '<div style="padding: 0px 0px 0px 0px; font-size:x-large;line-height: 22px; text-align: center"><a href="notas_fiscais/pre_visualizar_danfe?notafiscalid=' + val + '" target="_blank"><img src="resources/images/danfe.jpg" height="100%" width="100%"/></a></div>';
     },
+
     
     rendererObservacao: function(valor, metadata, rec){
         if (rec.get('msgDescricao') == null) 

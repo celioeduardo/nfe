@@ -24,7 +24,7 @@ Ext.define('nfe.view.nf.NotasPendentes', {
         selection: '{notasSelecionadas}'
     },
     selType: 'checkboxmodel',
-    hideHeaders: true,
+    //hideHeaders: true,
     columns: [
         {
             text: 'Número',
@@ -44,15 +44,17 @@ Ext.define('nfe.view.nf.NotasPendentes', {
             align: 'right'
         },{
             text:'Danfe',
-            width: 150,
+            width: 50,
             dataIndex: 'notaFiscalId',
-            renderer: 'rendererDanfe'
+            //flex: 1,
+            renderer: 'rendererDanfe',
+            align: 'center'
         },{
             text: 'Observação',
             dataIndex: 'msgDescricao',
             renderer: 'rendererObservacao',
             cellWrap: true,
-            flex: 1
+            flex: 2
         }
     ]
 });

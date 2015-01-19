@@ -45,10 +45,8 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 @SpringApplicationConfiguration(classes = Application.class)
 public class EmailTest {
 
-	@Autowired 	
-	MailSenderAutoConfiguration bean;
-	@Autowired	
-	private NotaFiscalRepositorio repositorio;
+	@Autowired MailSenderAutoConfiguration bean;
+	@Autowired private NotaFiscalRepositorio repositorio;
 
 	private JasperReport jasperReport;
 	private JasperPrint jasperPrint;

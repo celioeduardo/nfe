@@ -24,18 +24,19 @@ Ext.define('nfe.view.main.MainController', {
     		success: function(r, operation) {
     	        vm.set('modoOperacao',r.get('modoOperacao'));
     	        vm.set('ambiente',r.get('ambiente'));
+    	        vm.set('empresa',r.get('empresaId'));
                 me.atualizarTela();
                 me.rendererAmbiente(r.get('ambiente'));
     	    }
     	});
         
-        /*Ext.toast({
+        Ext.toast({
             title: 'Troca de Filial',
             html: record.get('id') + ' - ' + record.get('nome'),
             align: 't',
             bodyPadding: 10,
             width:350
-        });*/
+        });
     },
     
     notasPendentesEnviadas: function(){

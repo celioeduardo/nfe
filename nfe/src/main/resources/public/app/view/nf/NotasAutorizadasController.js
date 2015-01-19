@@ -8,13 +8,43 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
     alias: 'controller.notas-autorizadas',
 
     onClickAtualizar: function (){
-        this.getViewModel().getStore('notasAutorizadas').load(
-            {"params":{
-                "notafiscalid":"03F79B1D8D397592E050007F01005CC8"
-            }
-        });
-        //this.getViewModel().getStore('notasAutorizadas').reload();
+        this.getViewModel().getStore('notasAutorizadas').load();
     },
+    onClickEnviar: function () {
+
+        if (this.getView().getSelection().length==0){
+            Ext.Msg.alert('Selecionar','Nenhum item selecionado!');
+        } else {
+            Ext.Msg.confirm('Confirmar', 'Enviar Emails?', 'enviarEmails', this);
+        }
+    },
+
+    enviarEmails: function (choice) {
+        if (choice === 'yes') {
+            var s = this.getView().getSelection();
+
+            var ids = [];
+            for (var i = 0; i < s.length; i++) {
+                ids.push(s[i].get('notaFiscalId'));
+            }
+            
+            var model = new nfe.model.NotaFiscal();
+            var grid = this.getView();
+            grid.getView().mask('Enviando...');
+            var me = this;
+            model.enviarEmails('HOMOLOGACAO',ids,function(){
+            	me.getViewModel().getStore('notasAutorizadas').reload();
+            	//me.fireViewEvent('notasPendentesEnviadas');
+            	console.log('sucesso!');
+            },
+            null,
+            function(){
+            	grid.getView().unmask();
+            });
+
+        }
+    },
+    
 
     rendererNumero: function(numero, metadata, rec){
         var nf = rec.get('serie') != null ? numero+'/'+rec.get('serie') : numero,
@@ -40,7 +70,12 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
     },
 
     rendererDanfe: function (val, meta, record) {
-        return '<a href="notas_fiscais/imprimir_danfe?notafiscalid=' + val + '" target="_blank" >imprimir DANFE</a>';
+    	var me = this.getViewModel();
+    	if (!me.get('nao_impressa'))
+    		return '<div style="padding: 0px 0px 0px 0px; text-align: center"><a href="notas_fiscais/imprimir_danfe?notafiscalid=' + val + '" target="_blank"><img src="resources/images/danfe.jpg" height="100%" width="100%"/></a></div>'+
+    			        '<div style="padding: 0px 0px 0px 0px; text-align: center"><a href="notas_fiscais/imprimir_danfe?notafiscalid=' + val + '" target="_blank"><img src="resources/images/email.jpg" height="100%" width="100%"/></a></div>';
+    	
+    	return '<div style="padding: 0px 0px 0px 0px; font-size:x-large;line-height: 22px; text-align: center"><a href="notas_fiscais/imprimir_danfe?notafiscalid=' + val + '" target="_blank"><img src="resources/images/danfe.jpg" height="100%" width="100%"/></a></div>';
     },
     
     rendererObservacao: function(valor, metadata, rec){
@@ -53,6 +88,5 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
         return Ext.String.format(
             '<div style="font-style: italic;font-color=red;margin-top: 20px;">{0} - {1}</div>',
             rec.get('msgCodigo'), descricao);
-    }
-
+    }    
 });

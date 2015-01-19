@@ -9,5 +9,23 @@ Ext.define('nfe.model.Filial', {
             type: 'json',
             rootProperty: ''
         }
+    },
+    
+    statics: {
+	    alterarModoOperacao:function(filialId,modoOperacao,
+	    		dataHoraContingencia,justificativaContingencia, 
+	    		success){
+	        Ext.Ajax.request({
+	            url:'filial/alterar_modo_operacao',
+	            method:'POST',
+	            jsonData:Ext.encode({
+	            	'filialId':filialId,
+	            	'modoOperacao':modoOperacao,
+	            	'dataHoraContingencia':dataHoraContingencia,
+	            	'justificativaContingencia':justificativaContingencia
+	            }),
+	            success:success
+	        });
+	    }
     }
 });
