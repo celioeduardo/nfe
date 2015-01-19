@@ -34,7 +34,8 @@ public class DescritorNotaFiscalTradutorJsonTest {
 			"		\"publicoTipo\" : \"C\",\r\n" + 
 			"		\"publicoCodigo\" : 56,\r\n" + 
 			"		\"publicoNome\" : \"CEREALISTA SIQUEIRANDRADE LTDA.         \",\r\n" +
-			"		\"valor\":1000" + 
+			"		\"valor\":1000," +
+			"		\"ufFilial\" :\"MG\"\r\n" + 
 			"}";
 
 	

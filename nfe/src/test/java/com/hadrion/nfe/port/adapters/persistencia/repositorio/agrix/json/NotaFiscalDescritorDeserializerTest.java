@@ -35,7 +35,8 @@ public class NotaFiscalDescritorDeserializerTest {
 			"		\"publicoTipo\" : \"A\",\r\n" + 
 			"		\"publicoCodigo\" : 157,\r\n" + 
 			"		\"publicoNome\" : \"AKEMI YOSHIE YAMAGUCHI\",\r\n" + 
-			"		\"valor\" : 1000\r\n" + 
+			"		\"valor\" : 1000\r\n," + 
+			"		\"ufFilial\" :\"MG\"\r\n" + 
 			"	}";
 
 	private GsonBuilder gsonBuilder;
