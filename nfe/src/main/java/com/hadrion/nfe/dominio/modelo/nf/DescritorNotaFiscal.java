@@ -199,4 +199,9 @@ public class DescritorNotaFiscal {
 	public TipoEmissao tipoEmissao() {
 		return tipoEmissao;
 	}
+
+	public void setTipoEmissao(TipoEmissao tipoEmissao) {
+		this.tipoEmissao = tipoEmissao;
+		
+	}
 }

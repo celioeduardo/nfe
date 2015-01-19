@@ -20,6 +20,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -261,13 +262,15 @@ public class NotaFiscalAplicacaoService {
 
 		List<NotaFiscal> notas = notaFiscalRepositorio
 				.notasPendentesAutorizacao(filial.filialId(), filial.ambiente());
-
+		
+		Contingencia contingencia = null;
+		if (comando.getDataHoraContingencia() != null &&
+				StringUtils.isNotEmpty(comando.getJustificativaContingencia()))
+			contingencia = new Contingencia(comando.getDataHoraContingencia(), comando
+					.getJustificativaContingencia());
+		
 		for (NotaFiscal nf : notas) {
-			nf.alterarModoOperacao(
-					modoOperacao,
-					new Contingencia(comando.getDataHoraContingencia(), comando
-							.getJustificativaContingencia()));
-
+			nf.alterarModoOperacao(modoOperacao,contingencia);
 			notaFiscalRepositorio.salvar(nf);
 		}
 	}

@@ -6,13 +6,16 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hadrion.nfe.aplicacao.empresa.EmpresaAplicacaoService;
 import com.hadrion.nfe.aplicacao.empresa.EmpresaFilialData;
 import com.hadrion.nfe.aplicacao.empresa.data.EmpresaData;
+import com.hadrion.nfe.aplicacao.filial.AlterarModoOperacaoComando;
 import com.hadrion.nfe.aplicacao.filial.FilialAplicacaoService;
 import com.hadrion.nfe.aplicacao.filial.data.FilialData;
 
@@ -75,4 +78,9 @@ public class FilialController {
 		return result;
 	}
 	
+	@RequestMapping(value="/alterar_modo_operacao", method = RequestMethod.POST)
+	public String alterarModoOperacao(@RequestBody AlterarModoOperacaoComando comando){
+		filialAplicacaoService.alterarModoOperacao(comando);
+		return comando.getModoOperacao().toString();
+	}
 }

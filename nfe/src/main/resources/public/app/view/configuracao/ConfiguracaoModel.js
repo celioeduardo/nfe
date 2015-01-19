@@ -2,7 +2,7 @@ Ext.define('nfe.view.configuracao.ConfiguracaoModel', {
     extend: 'Ext.app.ViewModel',
 
     alias: 'viewmodel.configuracao',
-
+    
     stores:{
     	modosOperacao:{
             autoLoad: true,
@@ -24,13 +24,35 @@ Ext.define('nfe.view.configuracao.ConfiguracaoModel', {
     },
 
     formulas:{
-        modoOperacaoSelecionado: {
+        aplicarConfiguracao: {
             bind: {
-            	modoOperacao: '{modoOperacao}'
+            	modoOperacaoAtual: '{modoOperacao}',
+            	modoOperacaoConfig: '{modoOperacaoConfig.value}',
+            	dataContingenciaAtual: '{dataContingencia}',
+            	dataContingenciaConfig: '{dataContingenciaConfig.value}',
+            	horaContingenciaAtual: '{horaContingencia}',
+            	horaContingenciaConfig: '{horaContingenciaConfig.value}',
+            	justificativaContingenciaAtual: '{justificativaContingencia}',
+            	justificativaContingenciaConfig: '{justificativaContingenciaConfig.value}',
             },
 
             get: function (data) {
-                return data.modoOperacao;
+            	var result = 
+            		((data.modoOperacaoAtual != data.modoOperacaoConfig) ||
+            		(data.dataContingenciaAtual != data.dataContingenciaConfig) ||
+            		(data.horaContingenciaAtual != data.horaContingenciaConfig) ||
+            		(data.justificativaContingenciaAtual != data.justificativaContingenciaConfig));
+            	
+            	return result;
+            }
+        },
+        contingenciaHabilitada: {
+            bind: {
+            	modoOperacaoEscolhido: '{modoOperacaoConfig.value}'
+            },
+
+            get: function (data) {
+            	return data.modoOperacaoEscolhido == 'SVC' || data.modoOperacaoEscolhido == 'FS_DA';
             }
         },
         ambienteSelecionado: {
