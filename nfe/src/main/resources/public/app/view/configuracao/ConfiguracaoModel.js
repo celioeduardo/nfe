@@ -33,7 +33,7 @@ Ext.define('nfe.view.configuracao.ConfiguracaoModel', {
             	horaContingenciaAtual: '{horaContingencia}',
             	horaContingenciaConfig: '{horaContingenciaConfig.value}',
             	justificativaContingenciaAtual: '{justificativaContingencia}',
-            	justificativaContingenciaConfig: '{justificativaContingenciaConfig.value}',
+            	justificativaContingenciaConfig: '{justificativaContingenciaConfig.value}'
             },
 
             get: function (data) {
