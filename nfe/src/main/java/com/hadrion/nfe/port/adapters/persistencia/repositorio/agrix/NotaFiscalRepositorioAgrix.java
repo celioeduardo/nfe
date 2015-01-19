@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.filial.Filial;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
+import com.hadrion.nfe.dominio.modelo.filial.FilialRepositorio;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
@@ -39,17 +41,23 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	
 	@Autowired
 	private LoteRepositorio loteRepositorio;
+
+	@Autowired
+	private FilialRepositorio filialRepositorio;
+	
 	
 	@Override
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
 			Ambiente ambiente,
-			Double empresa, FilialId filial, Date inicio, Date fim,
+			Double empresa, FilialId filialId, Date inicio, Date fim,
 			String notistaId, NotaFiscalId notaFiscalId) {
+		
+		Filial filial = filialRepositorio.obterFilial(filialId);
 		
 		List<DescritorNotaFiscal> descritores = agrixService
 				.notasPendentesAutorizacaoResumo(ambiente,empresa, 
-						filial != null ? String.valueOf(filial) : null, 
-						inicio, fim, notistaId, notaFiscalId);
+						filialId.id(),inicio, fim, notistaId, 
+						notaFiscalId,filial.modoOperacao());
 		
 		return filtrarDescritoresPendentes(descritores);
 	}

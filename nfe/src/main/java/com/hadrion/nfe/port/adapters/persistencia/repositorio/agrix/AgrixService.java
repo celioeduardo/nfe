@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
@@ -106,10 +107,11 @@ public class AgrixService{
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
 			Ambiente ambiente,
 			Double empresa,String filial,Date inicio,Date fim,String notistaId,
-			NotaFiscalId notaFiscalId) {
+			NotaFiscalId notaFiscalId,
+			ModoOperacao modoOperacao) {
 		
 		gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer(ambiente));
+		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer(ambiente,modoOperacao));
 		gson = gsonBuilder.create();
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)

@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hadrion.nfe.dominio.config.Application;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
@@ -53,7 +54,8 @@ public class NotaFiscalDescritorTradutorClobTest {
 	@Before
 	public void setUp() {
 		gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, new DescritorNotaFiscalDeserializer(Ambiente.HOMOLOGACAO));
+		gsonBuilder.registerTypeAdapter(DescritorNotaFiscal.class, 
+				new DescritorNotaFiscalDeserializer(Ambiente.HOMOLOGACAO,ModoOperacao.NORMAL));
 		gson = gsonBuilder.create();
 		
 	}

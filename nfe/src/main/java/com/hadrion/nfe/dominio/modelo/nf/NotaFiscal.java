@@ -774,7 +774,7 @@ public class NotaFiscal {
 		}
 	}
 	
-	static TipoEmissao tipoEmissaoPeloModoOperacao(ModoOperacao modoOperacao, Uf ufEmitente){
+	public static TipoEmissao tipoEmissaoPeloModoOperacao(ModoOperacao modoOperacao, Uf ufEmitente){
 		switch (modoOperacao) {
 		case NORMAL:
 			return TipoEmissao.NORMAL;
