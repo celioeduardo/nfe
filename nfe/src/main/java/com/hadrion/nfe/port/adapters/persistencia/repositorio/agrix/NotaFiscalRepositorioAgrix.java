@@ -68,6 +68,7 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 					result.add(descritor);
 					descritor.atualizarMensagem(nf.mensagem());
 					descritor.setChave(nf.chaveAcesso());
+					descritor.setTipoEmissao(nf.tipoEmissao());
 				}
 			}
 		}
@@ -110,7 +111,10 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	@Override
 	public List<NotaFiscal> notasPendentesAutorizacao(FilialId filialId,
 			Ambiente ambiente) {
-		return repositorio.findByFilialIdInAndAmbiente(filialId,ambiente);
+		List<Situacao> situacoes = new ArrayList<Situacao>();
+		situacoes.add(Situacao.INDEFINIDA);
+		situacoes.add(Situacao.EMITIDA);
+		return repositorio.findByFilialIdInAndAmbienteAndSituacaoIn(filialId,ambiente,situacoes);
 	}
 
 	@Override

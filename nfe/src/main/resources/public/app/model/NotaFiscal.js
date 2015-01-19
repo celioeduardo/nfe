@@ -42,8 +42,8 @@ Ext.define('nfe.model.NotaFiscal', {
     tipos: {
         'NORMAL': 'Normal',
         'FS_DA': 'FS-DA',
-        'SVN_RS': 'SVN-RS',
-        'SVN_AN': 'SVN-AN'
+        'SVC_RS': 'SVC-RS',
+        'SVC_AN': 'SVC-AN'
     }
 
 });

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import net.sf.jasperreports.engine.JRException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +60,6 @@ public class NfeController {
 		else
 			return notaFiscalAplicacaoService.notasFicaisAutorizadasResumo(
 					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId);
-	}
-	
-	@RequestMapping("/pendentes_autorizacao")
-	public List<NotaFiscalData> pendentesAutorizacao(
-			@RequestParam(value="ambiente") Ambiente ambiente,
-			@RequestParam(value="filial")String filial,
-			HttpServletRequest req){
-		return notaFiscalAplicacaoService.notasFicaisPendentesAutorizacao(ambiente,filial); 
 	}
 	
 	@RequestMapping(value = "/pre_visualizar_danfe", method = RequestMethod.GET)

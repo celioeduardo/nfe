@@ -13,7 +13,7 @@ Ext.define('nfe.view.main.MainModel', {
         filial: '-1',
         ambiente: 'HOMOLOGACAO',
         modoOperacao: 'NORMAL',        
-        notista: '-1'
+        notista: null
     },
     stores:{
     	empresaFilial:{

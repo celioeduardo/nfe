@@ -667,7 +667,7 @@ public class NotaFiscal {
 	}
 	
 	public boolean permiteAlterarTipoEmissao(TipoEmissao novoTipoEmissao){
-		return consisteTrocaTipoEmissao(novoTipoEmissao) != null;
+		return consisteTrocaTipoEmissao(novoTipoEmissao) == null;
 	}
 	
 	private void atualizarChaveAcesso(){
