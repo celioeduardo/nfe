@@ -16,19 +16,12 @@ Ext.define('nfe.view.main.MainController', {
 
     onSelectFilial: function (combo, record){
     	var me = this,
-            vm = this.getViewModel();
+            vm = this.getViewModel(),
+            filialId = record.get('id');
     	
-    	vm.setData({filial:record.get('id')});
+    	vm.set('filial',filialId);
     	
-    	nfe.model.Filial.load(record.get('id'),{
-    		success: function(r, operation) {
-    	        vm.set('modoOperacao',r.get('modoOperacao'));
-    	        vm.set('ambiente',r.get('ambiente'));
-    	        vm.set('empresa',r.get('empresaId'));
-                me.atualizarTela();
-                me.rendererAmbiente(r.get('ambiente'));
-    	    }
-    	});
+    	me.carregarDadosFilial(filialId);
         
         Ext.toast({
             title: 'Troca de Filial',
@@ -37,6 +30,24 @@ Ext.define('nfe.view.main.MainController', {
             bodyPadding: 10,
             width:350
         });
+    },
+    
+    carregarDadosFilial: function(filialId){
+    	
+    	var me = this,
+        	vm = this.getViewModel();
+    	
+    	nfe.model.Filial.load(filialId,{
+    		scope:this,
+    		success: function(r, operation) {
+    	        
+    			vm.set('modoOperacao',r.get('modoOperacao'));
+    	        vm.set('ambiente',r.get('ambiente'));
+    	        vm.set('empresa',r.get('empresaId'));
+    	        
+                me.atualizarTela();
+    	    }
+    	});
     },
     
     notasPendentesEnviadas: function(){
@@ -58,17 +69,6 @@ Ext.define('nfe.view.main.MainController', {
     atualizarTela: function(){
         this.notasPendentesEnviadas();
         this.obtidoRetornoLotes();
-    },
-
-    rendererAmbiente: function(value){
-        var me = this.lookupReference('labelAmbiente');
-
-        if (value == 'HOMOLOGACAO')
-        	me.setValue('Homologação');
-        else if (value == 'PRODUCAO')
-            me.setValue('Produção');
-        else 
-            me.setValue('SEM AMBIENTE');
     }
 
 });

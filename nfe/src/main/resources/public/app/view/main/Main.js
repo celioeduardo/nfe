@@ -35,13 +35,31 @@ Ext.define('nfe.view.main.Main', {
                 xtype: 'displayfield',
                 fieldLabel: 'Ambiente',
                 labelAlign: 'right',
-                reference: 'labelAmbiente'},{
+                reference: 'labelAmbiente',
+                bind:{
+                	value:'{ambiente}'
+                },
+                renderer: function(valor){
+                	 if (valor == 'HOMOLOGACAO')
+                     	return 'Homologação';
+                     else if (valor == 'PRODUCAO')
+                         return 'Produção';
+                     else 
+                         return 'Não definido';
+                }
+            },{
             	xtype: 'displayfield',
             	fieldLabel: 'Modo Operação',
             	labelAlign: 'right',
             	bind:{
             		value: '{modoOperacao}'
-            	},            	
+            	},
+            	renderer: function(valor){
+                	 if (valor == 'NORMAL') return 'Normal';
+                     else if (valor == 'FS_DA') return 'FS-DA';
+                     else if (valor == 'SVC') return 'SVC';
+                     else return 'Não definido';
+                },
                 margin: '10 10 10 10'
             },{
         		xtype:'filialcombo',
