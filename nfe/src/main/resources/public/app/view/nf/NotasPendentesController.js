@@ -69,11 +69,14 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
             "R$ " + Ext.util.Format.number(valor,'0,000.00'));
     },
 
-    rendererDanfe: function (val, meta, record) {
-        return '<div style="padding: 0px 0px 0px 0px; font-size:x-large;line-height: 22px; text-align: center"><a href="notas_fiscais/pre_visualizar_danfe?notafiscalid=' + val + '" target="_blank"><img src="resources/images/danfe.jpg" height="100%" width="100%"/></a></div>';
+    rendererDanfe: function(column, widget, record) {
+
+    	if (record.get('tipoEmissao')=='FS_DA')
+    		widget.setText('FS-DA');
+    	else
+    		widget.setText('pré-visualizar danfe');
     },
 
-    
     rendererObservacao: function(valor, metadata, rec){
         if (rec.get('msgDescricao') == null) 
             return '';
@@ -84,6 +87,15 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
         return Ext.String.format(
             '<div style="font-style: italic;font-color=red;margin-top: 20px;">{0} - {1}</div>',
             rec.get('msgCodigo'), descricao);
+    },
+    imprimirDanfe: function(btn) {
+    	
+    	var rec = btn.getWidgetRecord();    	
+    	var me = this.getViewModel();
+    	
+    	if (me.get('modoOperacao')=='FS_DA')
+    		window.open('notas_fiscais/imprimir_danfe?notaFiscalId=' + rec.get('notaFiscalId'));
+    	else
+    		window.open('notas_fiscais/pre_visualizar_danfe?notaFiscalId=' + rec.get('notaFiscalId'));
     }
-
 });

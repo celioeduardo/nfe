@@ -164,4 +164,10 @@ public class NotaFiscalTest {
 		assertTrue(nf.danfeImpresso());
 	}
 	
+	@Test(expected=RuntimeException.class)
+	public void naoPermitirImprimirDanfeParaNotaNaoAutorizada(){
+		nf = NotaFiscalFixture.nfEmProducao();
+		nf.definirDanfeComoImpresso();
+	}
+	
 }

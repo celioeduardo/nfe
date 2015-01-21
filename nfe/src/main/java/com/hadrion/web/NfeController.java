@@ -67,16 +67,16 @@ public class NfeController {
 	
 	@RequestMapping(value = "/pre_visualizar_danfe", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> preVisualizarDanfe(
-			@RequestParam(value="notafiscalid")String notaFiscalId) throws IOException, JRException{		
+			@RequestParam(value="notaFiscalId")String notaFiscalId) throws IOException, JRException{		
 		return notaFiscalAplicacaoService.preVisualizarDanfe(notaFiscalId);
 	}	
 	
 	@RequestMapping(value = "/imprimir_danfe", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> imprimirDanfe(
-			@RequestParam(value="notafiscalid")String notaFiscalId) throws IOException, JRException{		
+			@RequestParam(value="notaFiscalId")String notaFiscalId) throws IOException, JRException{		
 		return notaFiscalAplicacaoService.imprimirDanfe(notaFiscalId);
 	}	
-	
+
 	@RequestMapping(value = "/enviar", method = RequestMethod.POST)
 	@ResponseBody
 	public String enviarNotas(

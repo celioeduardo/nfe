@@ -45,7 +45,19 @@ Ext.define('nfe.model.NotaFiscal', {
     			callback:callback,
     			scope:scope
     		});
-    	},
+    	}/*,
+    	imprimirDanfe:function(notaFiscalId,success,failure,callback,scope){
+    		Ext.Ajax.request({
+    			url:'notas_fiscais/imprimir_danfe',
+    			method:'GET',
+    			binary: true,
+    			params:{'notaFiscalId':notaFiscalId},
+    			success:success,
+    			failure:failure,
+    			callback:callback,
+    			scope:scope
+    		});
+    	}*/,
         getTipoEmissao: function(tipoEmissao) {
             return this.prototype.tipos[tipoEmissao];
         }

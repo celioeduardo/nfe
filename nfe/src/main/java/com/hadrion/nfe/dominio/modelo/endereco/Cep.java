@@ -1,5 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.endereco;
 
+import static org.apache.commons.lang.StringUtils.leftPad;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
@@ -16,11 +18,11 @@ public class Cep {
 
 	public Cep(Long numero) {
 		super();
-		this.numero = String.valueOf(numero);
+		this.numero = leftPad(String.valueOf(numero), 8, "0");
 	}
 	public Cep(int numero) {
 		super();
-		this.numero = String.valueOf(numero);
+		this.numero = leftPad(String.valueOf(numero), 8, "0");
 	}
 	public String numero(){
 		return numero;

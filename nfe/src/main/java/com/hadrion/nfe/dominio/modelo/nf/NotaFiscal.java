@@ -679,6 +679,9 @@ public class NotaFiscal {
 	}
 
 	public void definirDanfeComoImpresso() {
+		boolean fs = this.tipoEmissao() == TipoEmissao.FS_DA || this.tipoEmissao() == TipoEmissao.FS_IA;  
+		if (!fs && !this.estaAutorizada())
+			throw new RuntimeException("Danfe somente pode ser impresso para nota autorizada.");
 		danfeImpresso = true;
 	}
 

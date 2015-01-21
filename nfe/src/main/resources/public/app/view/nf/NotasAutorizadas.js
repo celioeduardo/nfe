@@ -7,14 +7,9 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
         enableTextSelection: true
     },
     viewModel: {
-        type: 'notas-autorizadas'/*,
-        session : true*/
+        type: 'notas-autorizadas'
     },
-    tbar:[/*{
-        xtype:'button',
-        text:'Enviar',
-        handler: 'onClickEnviar'
-    },*/{
+    tbar:[{
         xtype:'button',
         text:'Atualizar',
         handler: 'onClickAtualizar'
@@ -24,7 +19,7 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
         selection: '{notasSelecionadas}'
     },
     selType: 'checkboxmodel',
-    //hideHeaders: true,
+    hideHeaders: true,
     columns: [
           {
               text: 'Número',
@@ -43,22 +38,21 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
               renderer: 'rendererValor',
               align: 'right'
           },{
-              text:'Danfe',
-              width: 50,
-              dataIndex: 'notaFiscalId',
-              //flex: 1,
-              renderer: 'rendererDanfe',
-              align: 'center'
-          },{
-              //text: 'e-mail',
               width: 105,
               xtype: 'widgetcolumn',
-              //dataIndex: 'notaFiscalId',
+              widget: {
+            	  text:'danfe',
+                  width: 90,
+                  xtype: 'button',
+                  handler:'imprimirDanfe'
+              }
+          },{
+              width: 105,
+              xtype: 'widgetcolumn',
               widget: {
             	  text:'e-mail',
                   width: 90,
                   xtype: 'button',
-                  //icon: '../shared/icons/fam/feed_add.png',
                   handler: 'enviarEmail'
               }
           },{
