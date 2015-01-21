@@ -148,7 +148,6 @@ public class AgrixService{
 		} catch ( SQLException  e) {
 			conteudo=null;
 		}
-		
 		return Arrays.asList(gson.fromJson(conteudo, DescritorNotaFiscal[].class));
 		
 	}

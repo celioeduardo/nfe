@@ -20,7 +20,8 @@ Ext.define('nfe.view.configuracao.Configuracao', {
     	reference: 'modoOperacaoConfig',
 		publishes: ['value'],
 		bind:{
-			store: '{modosOperacao}'
+			store: '{modosOperacao}',
+			value: '{modoOperacaoSelecionado}'
 		},
 		fieldLabel: 'Modo Operação', 
 		allowBlank:false,
@@ -40,11 +41,9 @@ Ext.define('nfe.view.configuracao.Configuracao', {
 				publishes: ['value'],
 				allowBlank: false,
 				bind:{
-		    		disabled:'{!contingenciaHabilitada}'
+					value: '{dataHoraContingenciaSelecionada}',
+					disabled:'{!contingenciaHabilitada}'
 		    	}
-//				bind:{
-//					allowBlank:'{aplicarConfiguracao}'
-//				}
 	    	},{
 		    	xtype: 'timefield', 
 		    	reference: 'horaContingenciaConfig',
@@ -52,11 +51,9 @@ Ext.define('nfe.view.configuracao.Configuracao', {
 				publishes: ['value'],
 				allowBlank: false,
 				bind:{
-		    		disabled:'{!contingenciaHabilitada}'
+					value: '{dataHoraContingenciaSelecionada}',
+					disabled:'{!contingenciaHabilitada}'
 		    	}
-//				bind:{
-//					allowBlank:'{aplicarConfiguracao}'
-//				}
 	    	}]
 	    	},{
 		    	xtype: 'textarea', 
@@ -68,42 +65,17 @@ Ext.define('nfe.view.configuracao.Configuracao', {
 				publishes: ['value'],
 				allowBlank: false,
 				bind:{
+					value: '{justificativaContingenciaSelecionada}',
 		    		disabled:'{!contingenciaHabilitada}'
 		    	}
-//				bind:{
-//					allowBlank:'{aplicarConfiguracao}'
-//				}
     	}]
     },{
     	xtype:'button',
     	text: 'Aplicar',
-    	handler:'onAplicarConfiguracao',
-    	formBind:true,
-    	disabled:true,
-    	bind:{
-    		disabled:'{!aplicarConfiguracao}'
-    	}
+    	handler:'onAplicarConfiguracao'
     },{
     	xtype:'button',
     	text: 'Cancelar',
-    	handler:'onCancelar',
-    	disabled:true,
-    	bind:{
-    		disabled:'{!aplicarConfiguracao}'
-    	}
-    }/*,{
-    	xtype: 'combo', 
-    	queryMode: 'local',
-		forceSelection: true, 
-		valueField:'id',
-		displayField: 'name',
-		fields: ['id', 'name'],
-    	//publishes: ['value'],
-		bind:{
-			store: '{ambientes}',
-			value: '{ambienteSelecionado}'
-		},
-		fieldLabel: 'Ambiente', 
-		allowBlank:false
-    }*/]
+    	handler:'onCancelar'
+    }]
 });

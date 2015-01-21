@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.filial.Filial;
+import com.hadrion.nfe.dominio.modelo.filial.FilialRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.NotaFiscalRepositorioSpringData;
@@ -18,6 +20,9 @@ public class SincronizarService {
 	
 	@Autowired
 	private AgrixService agrixService;
+	
+	@Autowired
+	private FilialRepositorio filialRepositorio; 
 	
 	@Autowired
 	private NotaFiscalRepositorioSpringData repositorio;
@@ -38,6 +43,8 @@ public class SincronizarService {
 			repositorio.save(nfLocal);
 		}
 		else {
+			Filial filial = filialRepositorio.obterFilial(nfAgrix.filialId());
+			nfAgrix.alterarModoOperacao(filial.modoOperacao(), filial.contingencia());
 			nfLocal = nfAgrix;
 			repositorio.saveAndFlush(nfLocal);
 		}

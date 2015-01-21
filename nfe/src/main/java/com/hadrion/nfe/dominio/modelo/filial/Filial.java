@@ -101,20 +101,21 @@ public class Filial {
 	}
 
 	public void operarEmFsDa(Contingencia contingencia) {
-		
-		if (modoOperacao() == ModoOperacao.FS_DA) return;
-		
 		if (contingencia == null)
 			throw new RuntimeException("Informação de contingência é obrigatória");
+		
+		if (modoOperacao() == ModoOperacao.FS_DA
+				&& contingencia.equals(contingencia())) return;
 		
 		this.setModoOperacao(ModoOperacao.FS_DA,contingencia);
 	}
 	
 	public void operarEmSvc(Contingencia contingencia) {
-		if (modoOperacao() == ModoOperacao.SVC) return;
-		
 		if (contingencia == null)
 			throw new RuntimeException("Informação de contingência é obrigatória");
+		
+		if (modoOperacao() == ModoOperacao.SVC 
+				&& contingencia.equals(contingencia())) return;
 		
 		this.setModoOperacao(ModoOperacao.SVC,contingencia);
 	}

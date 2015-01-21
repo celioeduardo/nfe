@@ -43,7 +43,9 @@ public class FilialAplicacaoService {
 				String.valueOf(filial.cnpj()),
 				String.valueOf(filial.empresaId()),
 				filial.modoOperacao(),
-				filial.ambiente());
+				filial.ambiente(),
+				filial.contingencia() != null ? filial.contingencia().dataHora() : null,
+				filial.contingencia() != null ? filial.contingencia().justificativa(): null);
 	}
 
 	public List<FilialData> filiaisDaEmpresa(String id) {

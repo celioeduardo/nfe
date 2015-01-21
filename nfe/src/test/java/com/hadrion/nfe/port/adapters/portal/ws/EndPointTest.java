@@ -50,8 +50,42 @@ public class EndPointTest {
 		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2",homologacao(local,versao,Servico.STATUS_SERVICO));
 		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2",homologacao(local,versao,Servico.CONSULTA_PROTOCOLO));
 		assertEquals("https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2",homologacao(local,versao,Servico.INUTILIZACAO));
-
 	}
+	
+	@Test
+	public void svcAn(){
+		Local local = Local.SVC_AN;
+		Versao versao = Versao.V3_10;
+		assertEquals("https://www.svc.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx",producao(local,versao,Servico.AUTORIZACAO));
+		assertEquals("https://www.svc.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx",producao(local,versao,Servico.RET_AUTORIZACAO));
+		assertEquals("https://www.svc.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx",producao(local,Versao.V1_00,Servico.EVENTO));
+		assertEquals("https://www.svc.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx",producao(local,versao,Servico.STATUS_SERVICO));
+		assertEquals("https://www.svc.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx",producao(local,versao,Servico.CONSULTA_PROTOCOLO));
+		//Homologação
+		assertEquals("https://hom.svc.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx",homologacao(local,versao,Servico.AUTORIZACAO));
+		assertEquals("https://hom.svc.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx",homologacao(local,versao,Servico.RET_AUTORIZACAO));
+		assertEquals("https://hom.svc.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx",homologacao(local,Versao.V1_00,Servico.EVENTO));
+		assertEquals("https://hom.svc.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx",homologacao(local,versao,Servico.STATUS_SERVICO));
+		assertEquals("https://hom.svc.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx",homologacao(local,versao,Servico.CONSULTA_PROTOCOLO));
+	}
+	
+	@Test
+	public void svcRs(){
+		Local local = Local.SVC_RS;
+		Versao versao = Versao.V3_10;
+		assertEquals("https://nfe.sefazvirtual.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx",producao(local,versao,Servico.AUTORIZACAO));
+		assertEquals("https://nfe.sefazvirtual.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx",producao(local,versao,Servico.RET_AUTORIZACAO));
+		assertEquals("https://nfe.sefazvirtual.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx",producao(local,Versao.V1_00,Servico.EVENTO));
+		assertEquals("https://nfe.sefazvirtual.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx",producao(local,versao,Servico.STATUS_SERVICO));
+		assertEquals("https://nfe.sefazvirtual.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx",producao(local,versao,Servico.CONSULTA_PROTOCOLO));
+		//Homologação
+		assertEquals("https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx",homologacao(local,versao,Servico.AUTORIZACAO));
+		assertEquals("https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx",homologacao(local,versao,Servico.RET_AUTORIZACAO));
+		assertEquals("https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx",homologacao(local,Versao.V1_00,Servico.EVENTO));
+		assertEquals("https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx",homologacao(local,versao,Servico.STATUS_SERVICO));
+		assertEquals("https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx",homologacao(local,versao,Servico.CONSULTA_PROTOCOLO));
+	}
+	
 	@Test @Ignore
 	public void ba(){
 		Local local = Local.BA;

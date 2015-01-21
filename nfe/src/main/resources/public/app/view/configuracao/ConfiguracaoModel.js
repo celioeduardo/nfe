@@ -63,6 +63,33 @@ Ext.define('nfe.view.configuracao.ConfiguracaoModel', {
             get: function (data) {
                 return data.ambiente;
             }
+        },
+        modoOperacaoSelecionado: {
+            bind: {
+            	modoOperacao: '{modoOperacao}'
+            },
+
+            get: function (data) {
+                return data.modoOperacao;
+            }
+        },
+        dataHoraContingenciaSelecionada: {
+            bind: {
+            	dataHoraContingencia: '{dataHoraContingencia}'
+            },
+
+            get: function (data) {
+                return data.dataHoraContingencia;
+            }
+        },
+        justificativaContingenciaSelecionada: {
+            bind: {
+            	justificativaContingencia: '{justificativaContingencia}'
+            },
+
+            get: function (data) {
+                return data.justificativaContingencia;
+            }
         }
     }
 });

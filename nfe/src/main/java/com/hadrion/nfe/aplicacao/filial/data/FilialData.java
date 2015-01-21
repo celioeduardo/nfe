@@ -1,5 +1,7 @@
 package com.hadrion.nfe.aplicacao.filial.data;
 
+import java.util.Date;
+
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 
@@ -11,9 +13,12 @@ public class FilialData {
 	private String empresaId;
 	private ModoOperacao modoOperacao;
 	private Ambiente ambiente;
-
+	private Date dataHoraContingencia;
+	private String justificativaContingencia;
+	
 	public FilialData(String filialId, String nome, String cnpj,
-			String empresaId, ModoOperacao modoOperacao, Ambiente ambiente) {
+			String empresaId, ModoOperacao modoOperacao, Ambiente ambiente,
+			Date dataHoraContingencia, String justificativaContingencia) {
 		super();
 		this.filialId = filialId;
 		this.nome = nome;
@@ -21,55 +26,32 @@ public class FilialData {
 		this.empresaId = empresaId;
 		this.modoOperacao = modoOperacao;
 		this.ambiente = ambiente;
+		this.dataHoraContingencia = dataHoraContingencia;
+		this.justificativaContingencia = justificativaContingencia;
 	}
-
 	public String getFilialId() {
 		return filialId;
 	}
-
-	public void setFilialId(String filialId) {
-		this.filialId = filialId;
-	}
-
 	public String getNome() {
 		return nome;
 	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
 	public String getCnpj() {
 		return cnpj;
 	}
-
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
-
 	public String getEmpresaId() {
 		return empresaId;
 	}
-
 	public ModoOperacao getModoOperacao() {
 		return modoOperacao;
 	}
-
-	public void setModoOperacao(ModoOperacao modoOperacao) {
-		this.modoOperacao = modoOperacao;
-	}
-
 	public Ambiente getAmbiente() {
 		return ambiente;
 	}
-
-	public void setAmbiente(Ambiente ambiente) {
-		this.ambiente = ambiente;
+	public Date getDataHoraContingencia() {
+		return dataHoraContingencia;
 	}
-
-	public void setEmpresaId(String empresaId) {
-		this.empresaId = empresaId;
+	public String getJustificativaContingencia() {
+		return justificativaContingencia;
 	}
-	
 
 }
