@@ -21,7 +21,9 @@ Ext.define('nfe.view.main.MainController', {
     	
     	vm.set('filial',filialId);
     	
-    	me.carregarDadosFilial(filialId);
+    	me.carregarDadosFilial(filialId,function(){
+    		me.fireEvent('filialTrocada');
+    	});
         
         Ext.toast({
             title: 'Troca de Filial',
@@ -32,7 +34,12 @@ Ext.define('nfe.view.main.MainController', {
         });
     },
     
-    carregarDadosFilial: function(filialId){
+    onModoOperacaoAlterado: function(){
+    	var vm = this.getViewModel();
+    	this.carregarDadosFilial(vm.get('filial'));
+    },
+    
+    carregarDadosFilial: function(filialId,fnSuccess){
     	
     	var me = this,
         	vm = this.getViewModel();
@@ -44,6 +51,11 @@ Ext.define('nfe.view.main.MainController', {
     			vm.set('modoOperacao',r.get('modoOperacao'));
     	        vm.set('ambiente',r.get('ambiente'));
     	        vm.set('empresa',r.get('empresaId'));
+    	        vm.set('dataHoraContingencia',r.get('dataHoraContingencia'));
+    	        vm.set('justificativaContingencia',r.get('justificativaContingencia'));
+    	        
+    	        if (fnSuccess)
+    	        	fnSuccess.call();
     	        
                 me.atualizarTela();
     	    }

@@ -15,6 +15,8 @@ public class EndPoints {
 		configurarMg();
 		configurarSp();
 		configurarBa();
+		configurarSvcAn();
+		configurarSvcRs();
 	}
 	
 	private void configurarMg(){
@@ -55,6 +57,38 @@ public class EndPoints {
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.STATUS_SERVICO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.INUTILIZACAO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao2.asmx");
+		
+	}
+	private void configurarSvcAn(){
+		Local uf = Local.SVC_AN;
+		Versao versao = Versao.V3_10;
+		put(Ambiente.PRODUCAO,uf,versao,Servico.AUTORIZACAO,"https://www.svc.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.RET_AUTORIZACAO,"https://www.svc.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx");
+		put(Ambiente.PRODUCAO,uf,Versao.V1_00,Servico.EVENTO,"https://www.svc.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.STATUS_SERVICO,"https://www.svc.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://www.svc.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx");
+		
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.AUTORIZACAO,"https://hom.svc.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.RET_AUTORIZACAO,"https://hom.svc.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,Versao.V1_00,Servico.EVENTO,"https://hom.svc.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.STATUS_SERVICO,"https://hom.svc.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://hom.svc.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx");
+		
+	}
+	private void configurarSvcRs(){
+		Local uf = Local.SVC_RS;
+		Versao versao = Versao.V3_10;
+		put(Ambiente.PRODUCAO,uf,versao,Servico.AUTORIZACAO,"https://nfe.sefazvirtual.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.RET_AUTORIZACAO,"https://nfe.sefazvirtual.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx");
+		put(Ambiente.PRODUCAO,uf,Versao.V1_00,Servico.EVENTO,"https://nfe.sefazvirtual.rs.gov.br/ws/Nferecepcao/NFeRecepcao2.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.STATUS_SERVICO,"https://nfe.sefazvirtual.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://nfe.sefazvirtual.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx");
+		
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.AUTORIZACAO,"https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.RET_AUTORIZACAO,"https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,Versao.V1_00,Servico.EVENTO,"https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.STATUS_SERVICO,"https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx");
 		
 	}
 	private void configurarBa(){

@@ -62,6 +62,18 @@ Ext.define('nfe.view.main.Main', {
                 },
                 margin: '10 10 10 10'
             },{
+            	xtype: 'displayfield',
+            	fieldLabel: 'Contingência',
+            	labelAlign: 'right',
+            	bind:{
+            		value: '{dataHoraContingencia} - {justificativaContingencia}',
+            		hidden: '{!dataHoraContingencia}'
+            	},
+//            	renderer: function(valor){
+//                	return valor;
+//                },
+                margin: '10 10 10 10'
+            },{
         		xtype:'filialcombo',
         		store:Ext.create('nfe.store.EmpresaFilialStore', {storeId: 'EmpresaFilialStore' }),
         		bind:{
@@ -194,8 +206,10 @@ Ext.define('nfe.view.main.Main', {
             title: 'CC-e',
             glyph: 0xf003
         },{
-            xtype:'tela-configuracao'
-        
+            xtype:'tela-configuracao',
+            listeners:{
+            	modoOperacaoAlterado:'onModoOperacaoAlterado'
+            }
         }]
     }]
 });

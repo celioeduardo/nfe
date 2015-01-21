@@ -9,17 +9,17 @@ Ext.define('nfe.view.configuracao.ConfiguracaoController', {
     		return;
     	}
     	
-    	var vm = this.getViewModel(),
+    	var me = this,
+    		vm = this.getViewModel(),
     		dataHoraContingencia = null;
-    	
     	
     	if (vm.get('modoOperacaoConfig').value == 'NORMAL'){
         	this.lookupReference('dataContingenciaConfig').setValue(null);
         	this.lookupReference('horaContingenciaConfig').setValue(null);
         	this.lookupReference('justificativaContingenciaConfig').setValue(null);
     	} else {
-    		var hora = vm.get('horaContingenciaConfig').value;
-    		dataHoraContingencia = vm.get('dataContingenciaConfig').value;
+    		var hora = this.lookupReference('horaContingenciaConfig').getValue();
+    		dataHoraContingencia = this.lookupReference('dataContingenciaConfig').getValue();
     		dataHoraContingencia.setHours(hora.getHours());
     		dataHoraContingencia.setMinutes(hora.getMinutes());
     	}
@@ -30,12 +30,7 @@ Ext.define('nfe.view.configuracao.ConfiguracaoController', {
 			dataHoraContingencia,
 			vm.get('justificativaContingenciaConfig').value,
 			function(){
-				vm.getParent().set('modoOperacao',vm.get('modoOperacaoConfig').value);
-		    	vm.getParent().set('dataContingencia',vm.get('dataContingenciaConfig').value);
-		    	vm.getParent().set('horaContingencia',vm.get('horaContingenciaConfig').value);
-		    	vm.getParent().set('justificativaContingencia',vm.get('justificativaContingenciaConfig').value);
-				console.log('Sucesso: '+vm.get('modoOperacaoConfig').value);
-				console.log(dataHoraContingencia);
+				me.fireViewEvent('modoOperacaoAlterado');
 			});
     },
     
@@ -43,17 +38,12 @@ Ext.define('nfe.view.configuracao.ConfiguracaoController', {
     	var vm = this.getViewModel(),
     		modoOperacao = vm.get('modoOperacao');
     	this.lookupReference('modoOperacaoConfig').setValue(vm.getParent().get('modoOperacao'));
-    	this.lookupReference('dataContingenciaConfig').setValue(vm.getParent().get('dataContingencia'));
-    	this.lookupReference('horaContingenciaConfig').setValue(vm.getParent().get('horaContingencia'));
+    	this.lookupReference('dataContingenciaConfig').setValue(vm.getParent().get('dataHoraContingencia'));
+    	this.lookupReference('horaContingenciaConfig').setValue(vm.getParent().get('dataHoraContingencia'));
     	this.lookupReference('justificativaContingenciaConfig').setValue(vm.getParent().get('justificativaContingencia'));
     },
     
     onCancelar: function(){
     	this.carregarConfiguracoes();
-    },
-    
-    validarModoOperacao: function(){
-    	console.log('asdfasdfa');
-    	return 'abcdef';
     }
 });

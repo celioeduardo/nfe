@@ -1,7 +1,9 @@
 Ext.define('nfe.model.Filial', {
     extend: 'nfe.model.Base',
     idProperty: 'filialId',
-    fields:['nome','modoOperacao','ambiente'],
+    fields:['nome','modoOperacao','ambiente',{
+    	name:'dataHoraContingencia', type:'date'
+    }],
     proxy: {
     	type: 'ajax',
         url : 'filial/obter',
@@ -21,7 +23,7 @@ Ext.define('nfe.model.Filial', {
 	            jsonData:Ext.encode({
 	            	'filialId':filialId,
 	            	'modoOperacao':modoOperacao,
-	            	'dataHoraContingencia':dataHoraContingencia,
+	            	'dataHoraContingencia':Ext.Date.format(dataHoraContingencia,'Y-m-d\\TH:i:s.uP'),
 	            	'justificativaContingencia':justificativaContingencia
 	            }),
 	            success:success
