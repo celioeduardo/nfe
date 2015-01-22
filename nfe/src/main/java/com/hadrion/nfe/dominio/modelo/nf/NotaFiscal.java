@@ -34,10 +34,12 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+import com.hadrion.nfe.dominio.modelo.lote.NotaFiscalAutorizada;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
@@ -347,6 +349,10 @@ public class NotaFiscal {
 		this.mensagem = mensagem;
 		this.numeroProtocolo = numeroProtocolo;
 		this.xmlProtocolo = xmlProtocolo;
+
+		DominioRegistro.eventoDominioPublicador().
+			publicar(new NotaFiscalAutorizada(notaFiscalId()));
+		
 	}
 	public void cancelada() {
 		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.AUTORIZADA);

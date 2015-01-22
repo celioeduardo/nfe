@@ -69,12 +69,12 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
             "R$ " + Ext.util.Format.number(valor,'0,000.00'));
     },
 
-    rendererDanfe: function (val, meta, record) {
-//    	var me = this.getViewModel();
-//    	if (!me.get('nao_impressa'))
-//    		return '<div style="padding: 0px 0px 0px 0px; text-align: center"><a href="notas_fiscais/imprimir_danfe?notafiscalid=' + val + '" target="_blank"><img src="resources/images/danfe.jpg" height="100%" width="100%"/></a></div>';
-    	
-    	return '<div style="padding: 0px 0px 0px 0px; font-size:x-large;line-height: 22px; text-align: center"><a href="notas_fiscais/imprimir_danfe?notafiscalid=' + val + '" target="_blank"><img src="resources/images/danfe.jpg" height="100%" width="100%"/></a></div>';
+    rendererDanfe: function(column, widget, record) {
+
+    	if (record.get('tipoEmissao')=='FS_DA')
+    		widget.setText('FS-DA');
+    	else
+    		widget.setText('danfe');
     },
     
     rendererObservacao: function(valor, metadata, rec){

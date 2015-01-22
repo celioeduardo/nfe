@@ -35,7 +35,7 @@ public class Mensagem {
 	}
 
 	public boolean notaAutorizada(){
-		return codigo() == 100;
+		return codigo() == 100 || codigo() == 150;
 	}
 	
 	public boolean notaDenegada(){

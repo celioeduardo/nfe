@@ -128,7 +128,7 @@ class LoteNotaFiscal {
 		this.mudarParaAutorizada();
 		
 		DominioRegistro.eventoDominioPublicador().
-			publicar(new NotaFiscalAutorizada(
+			publicar(new AutorizacaoNotaFiscalRecebida(
 					ambiente,
 					notaFiscalId(),
 					numeroProtocolo,

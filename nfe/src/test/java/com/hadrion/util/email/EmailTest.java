@@ -31,29 +31,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.SpringApplicationContextLoader;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.hadrion.nfe.dominio.config.Application;
-import com.hadrion.nfe.dominio.config.MailSenderAutoConfiguration;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={Application.class}, loader = SpringApplicationContextLoader.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = {Application.class})
 public class EmailTest {
 
-	@Autowired MailSenderAutoConfiguration bean;
-	@Autowired private NotaFiscalRepositorio repositorio;
+	@Autowired 
+	JavaMailSender mailSender;
+	
+	@Autowired 
+	private NotaFiscalRepositorio repositorio;
 
 	private JasperReport jasperReport;
 	private JasperPrint jasperPrint;
 
 	@Test @Ignore
 	public void enviarEmail() {
-		bean.mailSender().send(new MimeMessagePreparator() {
+		mailSender.send(new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage)
                     throws Exception {
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage,
@@ -88,9 +91,9 @@ public class EmailTest {
     	return new ByteArrayDataSource(JasperExportManager.exportReportToPdf(jasperPrint), "application/xml");
 	}
 	
-	@Test @Ignore
+	@Test
 	public void enviarEmailXmlEDanfe() throws IOException, MessagingException, JRException {
-		MimeMessage mm = bean.mailSender().createMimeMessage();
+		MimeMessage mm = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mm, true);
 		
 		String filename = "H-03F79B1D8D397592E050007F01005CC8";
@@ -103,14 +106,14 @@ public class EmailTest {
 		helper.addAttachment(filename + ".xml", xml);		
 		helper.addAttachment(filename + ".pdf", danfe());
 	
-		bean.mailSender().send(mm);
+		mailSender.send(mm);
 	}
 	@Test @Ignore
 	public void enviarEmailComAnexoXml() throws IOException, MessagingException {
 		
 		File xml = new File("src/test/resources/report/nfe.xml");
 		
-		MimeMessage mm = bean.mailSender().createMimeMessage();
+		MimeMessage mm = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mm, true);
 		
 		helper.setFrom(smm().getFrom());
@@ -119,7 +122,7 @@ public class EmailTest {
 		helper.setText(smm().getText());		
 		helper.addAttachment("H-03F79B1D8D397592E050007F01005CC8" + ".xml", xml);
 		
-		bean.mailSender().send(mm);
+		mailSender.send(mm);
 	}
 
 	@Test @Ignore

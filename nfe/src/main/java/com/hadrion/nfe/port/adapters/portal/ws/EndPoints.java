@@ -80,7 +80,7 @@ public class EndPoints {
 		Versao versao = Versao.V3_10;
 		put(Ambiente.PRODUCAO,uf,versao,Servico.AUTORIZACAO,"https://nfe.sefazvirtual.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.RET_AUTORIZACAO,"https://nfe.sefazvirtual.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx");
-		put(Ambiente.PRODUCAO,uf,Versao.V1_00,Servico.EVENTO,"https://nfe.sefazvirtual.rs.gov.br/ws/Nferecepcao/NFeRecepcao2.asmx");
+		put(Ambiente.PRODUCAO,uf,Versao.V1_00,Servico.EVENTO,"https://nfe.sefazvirtual.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.STATUS_SERVICO,"https://nfe.sefazvirtual.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://nfe.sefazvirtual.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx");
 		

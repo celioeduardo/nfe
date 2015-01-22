@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.config;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,22 +18,22 @@ public class MailProperties {
 	/**
 	 * SMTP server host.
 	 */
-	private String host;//="smtp.gmail.com";
+	private String host="smtp.gmail.com";
 
 	/**
 	 * SMTP server port.
 	 */
-	private Integer port;//=587;
+	private Integer port=587;
 
 	/**
 	 * Login user of the SMTP server.
 	 */
-	private String username;//="teste@hadrion.com.br";
+	private String username="teste@hadrion.com.br";
 
 	/**
 	 * Login password of the SMTP server.
 	 */
-	private String password;//="testeteste";
+	private String password="testeteste";
 
 	/**
 	 * Default MimeMessage encoding.

@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -43,15 +43,19 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  */
 @Configuration
 @ConditionalOnClass({MimeMessage.class, MimeType.class })
-@ConditionalOnProperty(prefix = "spring.mail", value = { "host"})
+//@ConditionalOnProperty(prefix = "spring.mail", value = { "host"})
 @ConditionalOnMissingBean(MailSender.class)
 @EnableConfigurationProperties(MailProperties.class)
 @EnableAutoConfiguration
-//@PropertySource("classpath:mail.properties")
+@PropertySource("classpath:mail.properties")
 public class MailSenderAutoConfiguration {
 	@Autowired 
 	MailProperties properties;	
 	
+	@Bean
+	public String celiao(){
+		return "celiao";
+	}
 	@Bean
 	public JavaMailSender mailSender(){
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();

@@ -1,18 +1,24 @@
 package com.hadrion.nfe.port.adapters.persistencia.messaging.rabbitmq;
 
+import java.io.IOException;
+
+import javax.mail.MessagingException;
+
+import net.sf.jasperreports.engine.JRException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.hadrion.comum.notificacao.NotificationReader;
-import com.hadrion.nfe.aplicacao.nf.DefinirNotaComoAutorizadaComando;
+import com.hadrion.nfe.aplicacao.nf.EnviarEmailComando;
 import com.hadrion.nfe.aplicacao.nf.NotaFiscalAplicacaoService;
 import com.hadrion.nfe.dominio.modelo.lote.NotaFiscalAutorizada;
 
 @Component
 //@Profile({"dev", "prod"})
 @Profile({"!test"})
-public class RabbitMQNotaFiscalAutorizadaListener extends RabbitNfeEventoListener{
+public class RabbitMQEnvioEmailNotaFiscalAutorizadaListener extends RabbitNfeEventoListener{
 
 	@Autowired
 	protected NotaFiscalAplicacaoService notaFiscalAplicacaoService;
@@ -30,16 +36,14 @@ public class RabbitMQNotaFiscalAutorizadaListener extends RabbitNfeEventoListene
 		NotificationReader reader = new NotificationReader(mensagemTexto);
 		
 		String notaFiscalId = reader.eventStringValue("notaFiscalId.id");
-		int msgCodigo = reader.eventIntegerValue("mensagem.codigo");
-		String msgDescricao = reader.eventStringValue("mensagem.descricao");
-		String numeroProtocolo = reader.eventStringValue("numeroProtocolo");
-		String xmlProtocolo = reader.eventStringValue("xmlProtocolo");
 		
-		DefinirNotaComoAutorizadaComando comando = new DefinirNotaComoAutorizadaComando(
-				notaFiscalId, numeroProtocolo, msgCodigo, msgDescricao, xmlProtocolo);
+		EnviarEmailComando comando = new EnviarEmailComando(notaFiscalId);
 		
-		notaFiscalAplicacaoService.definirNotaComoAutorizada(comando);
-		
+		try {
+			notaFiscalAplicacaoService.enviarEmail(comando);
+		} catch (IOException | MessagingException | JRException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
