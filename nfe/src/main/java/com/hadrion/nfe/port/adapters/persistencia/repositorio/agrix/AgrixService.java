@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hadrion.nfe.aplicacao.nf.DefinirNotaComoAutorizadaComando;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
@@ -197,6 +198,12 @@ public class AgrixService{
 		}
 		
 		return conteudo;
+	}
+
+	public void notaAutorizada(DefinirNotaComoAutorizadaComando comando) {
+		
+		
+		
 	}
 
 }

@@ -91,9 +91,8 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
     imprimirDanfe: function(btn) {
     	
     	var rec = btn.getWidgetRecord();    	
-    	var me = this.getViewModel();
     	
-    	if (me.get('modoOperacao')=='FS_DA')
+    	if (rec.get('tipoEmissao')=='FS_DA')
     		window.open('notas_fiscais/imprimir_danfe?notaFiscalId=' + rec.get('notaFiscalId'));
     	else
     		window.open('notas_fiscais/pre_visualizar_danfe?notaFiscalId=' + rec.get('notaFiscalId'));
