@@ -119,7 +119,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		Lote lote = loteProcessandoEmHomologacaoPersistidoParaTest(nf1111,nf1112);
 		processarRetorno.processar(lote);
 		eventosEsperados(2);
-		eventoEsperado(NotaFiscalAutorizada.class,2);
+		eventoEsperado(AutorizacaoNotaFiscalRecebida.class,2);
 		assertTrue("Lote processado.",lote.estaProcessado());
 		assertTrue("Nota está autorizada",lote.estaAutorizada(nf1111.notaFiscalId()));
 		assertTrue("Nota está autorizada",lote.estaAutorizada(nf1112.notaFiscalId()));
@@ -290,7 +290,7 @@ public class ProcessarRetornoLoteServiceTest extends AbstractLoteServiceTest{
 		Lote lote = loteProcessandoEmProducaoPersistidoParaTest(nf1111,nf1112);
 		processarRetorno.processar(lote);
 		eventosEsperados(2);
-		eventoEsperado(NotaFiscalAutorizada.class,2);
+		eventoEsperado(AutorizacaoNotaFiscalRecebida.class,2);
 		assertTrue("Lote processado.",lote.estaProcessado());
 		assertTrue("Nota está autorizada",lote.estaAutorizada(nf1111.notaFiscalId()));
 		assertTrue("Nota está autorizada",lote.estaAutorizada(nf1112.notaFiscalId()));

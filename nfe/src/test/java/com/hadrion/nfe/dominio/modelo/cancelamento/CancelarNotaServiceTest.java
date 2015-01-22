@@ -43,7 +43,7 @@ public class CancelarNotaServiceTest extends DominioTest {
 	public void cancelar_nota_autorizada_em_homologacao(){
 		NotaFiscal nota= notaAutorizadaHomologacaoPersistidaParaTest("1111");
 		cancelarNotaService.cancelarEmHomologacao(nota);
-		eventosEsperados(1);
+		eventosEsperados(2);
 		eventoEsperado(CancelamentoHomologado.class);
 	}
 	
@@ -51,7 +51,7 @@ public class CancelarNotaServiceTest extends DominioTest {
 	public void cancelar_nota_autorizada_em_producao(){
 		NotaFiscal nota = notaAutorizadaProducaoPersistidaParaTest("1111");
 		cancelarNotaService.cancelarEmProducao(nota);
-		eventosEsperados(1);
+		eventosEsperados(2);
 		eventoEsperado(CancelamentoHomologado.class);
 	}
 	
