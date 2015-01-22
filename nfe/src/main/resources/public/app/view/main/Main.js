@@ -13,6 +13,9 @@ Ext.define('nfe.view.main.Main', {
         'nfe.view.main.FilialCombo'
     ],
     xtype: 'app-main',
+    listeners:{
+    	afterrender: 'onAfterRender'
+    },
     
     controller: 'main',
     viewModel: {
@@ -33,7 +36,7 @@ Ext.define('nfe.view.main.Main', {
             layout: 'hbox',
             items:[{
                 xtype: 'displayfield',
-                fieldLabel: 'Ambiente',
+                fieldLabel: 'Ambiente' ,
                 labelAlign: 'right',
                 reference: 'labelAmbiente',
                 bind:{

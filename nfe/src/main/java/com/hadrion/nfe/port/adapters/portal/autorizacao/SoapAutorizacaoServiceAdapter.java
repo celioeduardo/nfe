@@ -39,7 +39,6 @@ import com.hadrion.nfe.port.adapters.portal.ws.Servico;
 import com.hadrion.nfe.port.adapters.portal.ws.Versao;
 import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 import com.hadrion.nfe.port.adapters.xml.nf.ValidadorLote;
-import com.hadrion.util.xml.XmlUtil;
 
 @Service
 public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
@@ -72,8 +71,6 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 		
 		ValidadorLote validador = new ValidadorLote(infNfe);
 		if (validador.temErros()){
-			//TODO Remover System.out.println
-			System.out.println(XmlUtil.xmlParaString(infNfe));
 			throw new RuntimeException(validador.errosComoTexto());
 		}
 		
