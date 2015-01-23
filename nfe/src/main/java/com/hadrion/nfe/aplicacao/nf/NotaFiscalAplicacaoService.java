@@ -34,7 +34,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -89,8 +88,6 @@ public class NotaFiscalAplicacaoService {
 
 	@Autowired
 	private MailProperties mailProperties;
-	
-	private JavaMailSender envioEmail;	
 	
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(
 			Ambiente ambiente, Double empresa, String filial, Date inicio,
@@ -352,6 +349,12 @@ public class NotaFiscalAplicacaoService {
 		if (server.getStarttls() != null)
 			properties.put("mail.smtp.starttls.enable", server.getStarttls());
 		
+		if (server.getTrust() != null)
+			properties.put("mail.smtp.ssl.trust", server.getTrust());
+
+		if (server.getDebug() != null)
+			properties.put("mail.debug", server.getDebug());
+		
 		mailSender.setJavaMailProperties(properties);
 		mailSender.setUsername(server.getUsername());
 		mailSender.setPassword(server.getPassword());
@@ -372,7 +375,7 @@ public class NotaFiscalAplicacaoService {
 		helper.addAttachment(filename + ".xml", new ByteArrayResource(IOUtils.toByteArray(XmlUtil.xmlParaInpuStream(xml))) , "application/xml");		
 		helper.addAttachment(filename + ".pdf", new ByteArrayDataSource(pdf, "application/pdf"));
 	
-		envioEmail.send(mm);
+		mailSender.send(mm);
 	}
 	public String enviarEmail(EnviarEmailComando comando) throws IOException, MessagingException, JRException {
 		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(comando.getIds().get(0)));
