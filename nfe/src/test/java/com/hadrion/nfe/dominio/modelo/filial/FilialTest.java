@@ -31,7 +31,8 @@ public class FilialTest extends DominioTest{
 				"Hadrion",
 				new Cnpj(4007474000116L), 
 				new EmpresaId("123456"),
-				Ambiente.HOMOLOGACAO);
+				Ambiente.HOMOLOGACAO,
+				"Hadrion");
 		
 		assertEquals(new FilialId("654321"),filial.filialId());
 		assertEquals("Hadrion",filial.nome());
@@ -47,7 +48,8 @@ public class FilialTest extends DominioTest{
 				"Hadrion",
 				new Cnpj(4007474000116L), 
 				new EmpresaId("123456"),
-				Ambiente.HOMOLOGACAO);
+				Ambiente.HOMOLOGACAO,
+				"Hadrion");
 		
 		filial.renomear("Hadrion [ALTERADO]");
 		assertEquals("Hadrion [ALTERADO]",filial.nome());
@@ -95,7 +97,8 @@ public class FilialTest extends DominioTest{
 				"Hadrion",
 				new Cnpj(4007474000116L), 
 				new EmpresaId("123456"),
-				Ambiente.HOMOLOGACAO);
+				Ambiente.HOMOLOGACAO,
+				"Hadrion");
 	}
 	
 }

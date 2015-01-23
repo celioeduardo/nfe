@@ -1,0 +1,15 @@
+nome: ABCD
+
+valores:
+  - test1
+  - test2
+
+servers:
+  coopadap:
+    host: smtp.gmail.com
+    port: 587
+  agropesg:
+    host: smtp.hotmail.com
+    port: 25
+    
+    

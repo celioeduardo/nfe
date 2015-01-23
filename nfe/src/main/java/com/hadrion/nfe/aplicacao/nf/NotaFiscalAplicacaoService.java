@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.mail.MessagingException;
@@ -34,13 +35,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
+import com.hadrion.nfe.dominio.config.MailProperties;
+import com.hadrion.nfe.dominio.config.MailProperties.Server;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.empresa.Empresa;
+import com.hadrion.nfe.dominio.modelo.empresa.EmpresaRepositorio;
 import com.hadrion.nfe.dominio.modelo.filial.Filial;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.filial.FilialRepositorio;
@@ -76,9 +82,14 @@ public class NotaFiscalAplicacaoService {
 	private NotaFiscalRepositorio notaFiscalRepositorio;
 
 	@Autowired
+	private EmpresaRepositorio empresaRepositorio;
+	
+	@Autowired
 	private FilialRepositorio filialRepositorio;
 
 	@Autowired
+	private MailProperties mailProperties;
+	
 	private JavaMailSender envioEmail;	
 	
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(
@@ -312,9 +323,41 @@ public class NotaFiscalAplicacaoService {
 		return nfeProc;
 	}
 	
+	private Server configuracaoEmail(FilialId filialId){
+		Filial filial = filialRepositorio.obterFilial(filialId);
+		
+		if (StringUtils.isNotEmpty(filial.apelido()) && 
+				mailProperties.getMail().containsKey(filial.apelido()))
+			return mailProperties.get(filial.apelido());
+		
+		Empresa empresa = empresaRepositorio.obterEmpresa(filial.empresaId());
+		if (StringUtils.isNotEmpty(empresa.apelido()) && 
+				mailProperties.getMail().containsKey(empresa.apelido()))
+			return mailProperties.get(empresa.apelido());
+		
+		return null;
+		
+	}
+	
 	public void enviarEmailXmlEDanfe(NotaFiscal nf) throws IOException, MessagingException, JRException {
 		
-		MimeMessage mm = envioEmail.createMimeMessage();
+		Server server = configuracaoEmail(nf.filialId());
+		
+		if (server == null)
+			throw new RuntimeException("Configuração de e-mail não definida");
+		
+		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
+		Properties properties = new Properties();
+		if (server.getStarttls() != null)
+			properties.put("mail.smtp.starttls.enable", server.getStarttls());
+		
+		mailSender.setJavaMailProperties(properties);
+		mailSender.setUsername(server.getUsername());
+		mailSender.setPassword(server.getPassword());
+		mailSender.setHost(server.getHost());
+		mailSender.setPort(server.getPort());		
+		MimeMessage mm = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mm, true);
 		
 		String filename = nf.chaveAcesso().toString();

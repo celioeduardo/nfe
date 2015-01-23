@@ -11,5 +11,6 @@ public interface EmpresaRepositorio {
 	void salvar(Empresa empresa);
 
 	List<Empresa> obterTodas();
-
+	
+	Empresa obterEmpresa(EmpresaId empresaId);
 }

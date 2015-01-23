@@ -34,11 +34,16 @@ public class Empresa {
 	@Column(name="ID")
 	private Long id;
 	
+	@Column(name="APELIDO")
+	private String apelido;
+	
 	public Empresa(EmpresaId empresaId,
-			String nome, Cnpj cnpj, Certificado certificado) {
+			String nome, Cnpj cnpj, String apelido, 
+			Certificado certificado) {
 		this.empresaId = empresaId;
 		this.nome = nome;
 		this.cnpj = cnpj;
+		this.apelido = apelido;
 		this.certificado = certificado;
 	}
 	
@@ -60,6 +65,10 @@ public class Empresa {
 
 	public void renomear(String novoNome) {
 		this.nome = novoNome;
+	}
+	
+	public String apelido(){
+		return apelido;
 	}
 	
 	/**

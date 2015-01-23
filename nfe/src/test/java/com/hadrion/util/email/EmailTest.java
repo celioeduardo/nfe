@@ -1,5 +1,7 @@
 package com.hadrion.util.email;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -32,12 +34,15 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.SpringApplicationContextLoader;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.hadrion.nfe.dominio.config.Application;
+import com.hadrion.nfe.dominio.config.MailProperties;
+import com.hadrion.nfe.dominio.config.MailProperties.Server;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,8 +50,12 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 @SpringApplicationConfiguration(classes = {Application.class})
 public class EmailTest {
 
-	@Autowired 
+	//@Autowired 
 	JavaMailSender mailSender;
+	
+	@Autowired 
+	MailProperties properties;	
+	
 	
 	@Autowired 
 	private NotaFiscalRepositorio repositorio;
@@ -91,8 +100,31 @@ public class EmailTest {
     	return new ByteArrayDataSource(JasperExportManager.exportReportToPdf(jasperPrint), "application/xml");
 	}
 	
-	@Test
-	public void enviarEmailXmlEDanfe() throws IOException, MessagingException, JRException {
+	@Test @Ignore
+	public void testarPropriedades(){
+		assertEquals(3,this.properties.getMail().size());
+		assertEquals("smtp.gmail.com",this.properties.getMail().get("coopadap").getHost());
+		assertEquals(587,this.properties.getMail().get("coopadap").getPort());
+		assertEquals("smtp.gmail.com",this.properties.get("coopadap").getHost());
+		assertEquals(587,this.properties.get("coopadap").getPort());
+	}
+	
+	@Test @Ignore
+	public void enviarEmailXmlEDanfeSemBean() throws IOException, MessagingException, JRException {
+		
+		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		Server server = this.properties.get("coopadap");
+
+		Properties properties = new Properties();
+		if (server.getStarttls() != null)
+			properties.put("mail.smtp.starttls.enable", server.getStarttls());
+		
+		mailSender.setJavaMailProperties(properties);
+		mailSender.setUsername(server.getUsername());
+		mailSender.setPassword(server.getPassword());
+		mailSender.setHost(server.getHost());
+		mailSender.setPort(server.getPort());
+		
 		MimeMessage mm = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mm, true);
 		
@@ -106,6 +138,23 @@ public class EmailTest {
 		helper.addAttachment(filename + ".xml", xml);		
 		helper.addAttachment(filename + ".pdf", danfe());
 	
+		mailSender.send(mm);
+	}
+	@Test @Ignore
+	public void enviarEmailXmlEDanfe() throws IOException, MessagingException, JRException {
+		MimeMessage mm = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mm, true);
+		
+		String filename = "H-03F79B1D8D397592E050007F01005CC8";
+		File xml = new File("src/test/resources/report/nfe.xml");		
+		
+		helper.setFrom(smm().getFrom());
+		helper.setTo(smm().getTo());
+		helper.setSubject(smm().getSubject());
+		helper.setText(smm().getText());		
+		helper.addAttachment(filename + ".xml", xml);		
+		helper.addAttachment(filename + ".pdf", danfe());
+		
 		mailSender.send(mm);
 	}
 	@Test @Ignore

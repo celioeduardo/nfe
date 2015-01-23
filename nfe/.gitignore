@@ -8,6 +8,7 @@
 /mem.h2.db
 .gradle
 /mem.trace.db
+.springBeans
 
 ## generic files to ignore
 /*~

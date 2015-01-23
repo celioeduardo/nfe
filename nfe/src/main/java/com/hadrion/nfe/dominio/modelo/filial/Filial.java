@@ -43,19 +43,23 @@ public class Filial {
 	@Embedded
 	private Contingencia contingencia;
 	
+	@Column(name="apelido")
+	private String apelido;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
 	@Column(name="ID")
 	private Long id;
 
 	public Filial(FilialId filialId, String nome, Cnpj cnpj,
-			EmpresaId empresaId, Ambiente ambiente) {
+			EmpresaId empresaId, Ambiente ambiente, String apelido) {
 		this.filialId = filialId;
 		this.nome = nome;
 		this.cnpj = cnpj;
 		this.empresaId = empresaId;
 		this.ambiente = ambiente;
 		this.modoOperacao = ModoOperacao.NORMAL;
+		this.apelido = apelido;
 	}
 	
 	public FilialId filialId(){
@@ -139,6 +143,14 @@ public class Filial {
 
 	public Contingencia contingencia() {
 		return contingencia;
+	}
+	
+	public String apelido(){
+		return apelido;
+	}
+	
+	public void alterarApelido(String novoApelido){
+		this.apelido = novoApelido;
 	}
 	
 }

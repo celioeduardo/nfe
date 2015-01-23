@@ -39,4 +39,9 @@ public class EmpresaRepositorioJpa implements EmpresaRepositorio {
 		return repositorio.findAll(new Sort("nome"));
 	}
 
+	@Override
+	public Empresa obterEmpresa(EmpresaId empresaId) {
+		return repositorio.findByEmpresaId(empresaId);
+	}
+
 }
