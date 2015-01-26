@@ -3,7 +3,6 @@ package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -28,6 +27,7 @@ import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.port.adapters.agrix.AgrixUtil;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.DescritorNotaFiscalDeserializer;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.NotaFiscalTradutorJson;
 
@@ -53,10 +53,10 @@ public class AgrixService{
 	}*/
 	
 	public List<NotaFiscal> obterNotas(List<NotaFiscalId> notas, Ambiente ambiente) {
-		String in = "'" + StringUtils.join(notaFiscalIdToGuid(notas), "','") + "'";
+		String in = "'" + StringUtils.join(AgrixUtil.notaFiscalIdToGuid(notas), "','") + "'";
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-		.withSchemaName(schema())
+		.withSchemaName(AgrixUtil.schema())
 		.withCatalogName("pcg_nf_json_adapter")
 		.withFunctionName("obterNotas")
 		.declareParameters(new SqlParameter("vc", Types.CLOB))
@@ -97,14 +97,6 @@ public class AgrixService{
 		return Arrays.asList(nf);
 	}
 	
-	private List<String> notaFiscalIdToGuid(List<NotaFiscalId> ids){
-		List<String> result = new ArrayList<String>();
-		for (NotaFiscalId id : ids) {
-			result.add(id.id().substring(2));
-		}
-		return result;
-	}
-	
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
 			Ambiente ambiente,
 			Double empresa,String filial,Date inicio,Date fim,String notistaId,
@@ -116,7 +108,7 @@ public class AgrixService{
 		gson = gsonBuilder.create();
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-		.withSchemaName(schema())
+		.withSchemaName(AgrixUtil.schema())
 		.withCatalogName("pcg_nf_json_adapter")
 		.withFunctionName("obterPendentes")
 		//.withoutProcedureColumnMetaDataAccess()
@@ -152,11 +144,6 @@ public class AgrixService{
 		return Arrays.asList(gson.fromJson(conteudo, DescritorNotaFiscal[].class));
 		
 	}
-
-	private String schema() {
-		return null;
-	}
-
 	/*
 	@Override
 	public NotaFiscal notaFiscalPeloId(NotaFiscalId notaFiscalId) {

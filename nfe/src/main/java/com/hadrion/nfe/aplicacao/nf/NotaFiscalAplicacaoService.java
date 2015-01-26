@@ -59,10 +59,13 @@ import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+import com.hadrion.nfe.dominio.modelo.nf.ObterEmailService;
+import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
+import com.hadrion.nfe.tipos.Email;
 import com.hadrion.util.xml.XmlUtil;
 
 @Service
@@ -88,6 +91,9 @@ public class NotaFiscalAplicacaoService {
 
 	@Autowired
 	private MailProperties mailProperties;
+	
+	@Autowired
+	private ObterEmailService obterEmailService;
 	
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(
 			Ambiente ambiente, Double empresa, String filial, Date inicio,
@@ -325,12 +331,12 @@ public class NotaFiscalAplicacaoService {
 		
 		if (StringUtils.isNotEmpty(filial.apelido()) && 
 				mailProperties.getMail().containsKey(filial.apelido()))
-			return mailProperties.get(filial.apelido());
+			return mailProperties.get(filial.apelido().toLowerCase());
 		
 		Empresa empresa = empresaRepositorio.obterEmpresa(filial.empresaId());
 		if (StringUtils.isNotEmpty(empresa.apelido()) && 
-				mailProperties.getMail().containsKey(empresa.apelido()))
-			return mailProperties.get(empresa.apelido());
+				mailProperties.getMail().containsKey(empresa.apelido().toLowerCase()))
+			return mailProperties.get(empresa.apelido().toLowerCase());
 		
 		return null;
 		
@@ -368,10 +374,12 @@ public class NotaFiscalAplicacaoService {
 		Document xml = gerarXml(nf);		
 		byte[] pdf = gerarDanfe(xml);
 		
-		helper.setFrom(smm().getFrom());
-		helper.setTo(smm().getTo());
-		helper.setSubject(smm().getSubject());
-		helper.setText(smm().getText());		
+		SimpleMailMessage message = smm(nf);
+		
+		helper.setFrom(message.getFrom());
+		helper.setTo(message.getTo());
+		helper.setSubject(message.getSubject());
+		helper.setText(message.getText());		
 		helper.addAttachment(filename + ".xml", new ByteArrayResource(IOUtils.toByteArray(XmlUtil.xmlParaInpuStream(xml))) , "application/xml");		
 		helper.addAttachment(filename + ".pdf", new ByteArrayDataSource(pdf, "application/pdf"));
 	
@@ -380,22 +388,43 @@ public class NotaFiscalAplicacaoService {
 	public String enviarEmail(EnviarEmailComando comando) throws IOException, MessagingException, JRException {
 		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(new NotaFiscalId(comando.getIds().get(0)));
 		
-		enviarEmailXmlEDanfe(nf);
+		if (nf != null)
+			enviarEmailXmlEDanfe(nf);
 			
 		return String.valueOf("");
 
 	}
-	SimpleMailMessage smm(){
+	SimpleMailMessage smm(NotaFiscal nf){
+		
+		Server server = configuracaoEmail(nf.filialId());
 		
 		SimpleMailMessage ssimpleMailMessagemm = new SimpleMailMessage();
 		
-		ssimpleMailMessagemm.setFrom("teste@hadrion.com.br");
-		ssimpleMailMessagemm.setTo("hdr_ricardo@hotmail.com");
-		ssimpleMailMessagemm.setSubject("NOTA FISCAL 3.1");
-		ssimpleMailMessagemm.setText("TDD via MailSender.MimeMessageHelper.SimpleMailMessage");
+		List<Email> emails = obterEmailService.obterEmailsContatoDaNotaFiscal(nf.notaFiscalId());
+		
+		if (emails.size() == 0)
+			throw new RuntimeException("Nenhum contato de e-mail encontrado para Nota Fiscal: " 
+					+ nf.numero());
+		
+		String to[] = new String[emails.size()]; 
+		for (int i=0; i < emails.size(); i++)
+			to[i] = emails.get(i).email();
+		emails.toArray();
+		
+		ssimpleMailMessagemm.setFrom(server.getFrom());
+		ssimpleMailMessagemm.setTo(to);
+		ssimpleMailMessagemm.setSubject("Arquivo XML e DANFE da NF-e número: "+nf.numero());
+		String mensagem = "Segue anexo o arquivo XML e DANFE da nota fiscal número " 
+				+ nf.numero() + ", em nome de " 
+				+ (nf.tipoOperacao() == TipoOperacao.SAIDA ? 
+						nf.destinatario().razaoSocial() :
+						nf.emitente().razaoSocial())
+				+ ".";
+		ssimpleMailMessagemm.setText(mensagem);
 		
 		return ssimpleMailMessagemm;
 	}
+	
 	public ResponseEntity<InputStreamResource> obterDanfe(NotaFiscal nf) throws JRException{
 		
 		byte[] pdf = gerarDanfe(gerarXml(nf));
