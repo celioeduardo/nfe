@@ -1,5 +1,6 @@
 package com.hadrion.nfe.dominio.modelo;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.hadrion.comum.domain.model.RastreadorEventoTest;
 import com.hadrion.nfe.dominio.config.Application;
-import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamentoRepositorio;
 import com.hadrion.nfe.dominio.modelo.certificado.CertificadoFixture;
 import com.hadrion.nfe.dominio.modelo.empresa.Empresa;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
@@ -49,15 +49,12 @@ public abstract class DominioTest extends RastreadorEventoTest {
 	protected LoteRepositorio loteRepositorio;
 	@Autowired
 	protected NotaFiscalRepositorio notaFiscalRepositorio;
-	@Autowired
-	protected SolicitacaoCancelamentoRepositorio solicitacaoCancelamentoRepositorio;
 	
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		loteRepositorio.limpar();
 		notaFiscalRepositorio.limpar();
-		solicitacaoCancelamentoRepositorio.limpar();
 		
 		Empresa empresa = new Empresa(
 				new EmpresaId("4007474000116"),
@@ -102,7 +99,7 @@ public abstract class DominioTest extends RastreadorEventoTest {
 		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));
 		nf.emitida();
 		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
-		nf.cancelada();
+		nf.cancelar(new NumeroProtocolo("CANC-123456"),Mensagem.mensagemCancelamentoHomologado(),new Date());
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
@@ -143,7 +140,7 @@ public abstract class DominioTest extends RastreadorEventoTest {
 		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id));
 		nf.emitida();
 		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
-		nf.cancelada();
+		nf.cancelar(new NumeroProtocolo("CANC-123456"),Mensagem.mensagemCancelamentoHomologado(),new Date());
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}

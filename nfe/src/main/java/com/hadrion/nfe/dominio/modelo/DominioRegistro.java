@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.hadrion.comum.dominio.modelo.EventoDominioPublicador;
 import com.hadrion.comum.dominio.modelo.EventoDominioPublicadorDefault;
-import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamentoRepositorio;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
@@ -15,11 +14,6 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 public class DominioRegistro implements ApplicationContextAware {
 
 	private static ApplicationContext applicationContext;
-	
-	public static SolicitacaoCancelamentoRepositorio solicitacaoCancelamentoRepositorio(){
-		return (SolicitacaoCancelamentoRepositorio) 
-				applicationContext.getBean("solicitacaoCancelamentoRepositorio");
-	}
 	
 	public static NotaFiscalRepositorio notaFiscalRepositorio(){
 		return (NotaFiscalRepositorio) 

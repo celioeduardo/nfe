@@ -45,6 +45,9 @@ public class Mensagem {
 	public boolean cancelamentoHomologado(){
 		return codigo() == 101;
 	}
+	public static Mensagem mensagemCancelamentoHomologado(){
+		return  new Mensagem(101,"Cancelamento de NF-e homologado");
+	}
 	
 	public boolean inutilizacaoHomologada(){
 		return codigo() == 102;

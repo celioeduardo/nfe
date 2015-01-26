@@ -27,9 +27,7 @@ class CorpoConverter extends AbstractConverter{
 		writer.addAttribute("xmlns", corpo.uriPortal());
 		
 		writer.startNode("idLote");
-		//TODO idLote fixo para test
-		//writer.setValue(obj.idLote());
-		writer.setValue("123456");
+		writer.setValue(corpo.idLote());
 		writer.endNode();
 		
 		writer.startNode("indSinc");

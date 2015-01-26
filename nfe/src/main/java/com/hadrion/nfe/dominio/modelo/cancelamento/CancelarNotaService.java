@@ -1,77 +1,51 @@
 package com.hadrion.nfe.dominio.modelo.cancelamento;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hadrion.nfe.dominio.modelo.Ambiente;
-import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.dominio.modelo.portal.cancelamento.CancelamentoNfeService;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+import com.hadrion.nfe.dominio.modelo.portal.cancelamento.CancelamentoService;
 import com.hadrion.nfe.dominio.modelo.portal.cancelamento.RetornoCancelamento;
 
 @Service
 public class CancelarNotaService{
-	private CancelamentoNfeService cancelamentoNfeService;
+	
+	//@Autowired
+	private CancelamentoService cancelamentoService;
+	
+	@Autowired
+	private NotaFiscalRepositorio notaFiscalRepositorio;
 	
 	CancelarNotaService(){}
 	
-	void configurarCancelamentoNfeService(CancelamentoNfeService cancelamentoNfeService){
-		this.cancelamentoNfeService = cancelamentoNfeService;
+	void configurarCancelamentoNfeService(CancelamentoService cancelamentoNfeService){
+		this.cancelamentoService = cancelamentoNfeService;
 	}
 
-	public void cancelarEmHomologacao(NotaFiscal notaFiscal) {
+	public void cancelar(SolicitacaoCancelamento solicitacao) {
 		
-		assertNotaFiscalNaoNula(notaFiscal);
+		NotaFiscal nf = notaFiscalRepositorio.notaFiscalPeloId(solicitacao.notaFiscalId());
 		
-		if (!notaFiscal.estaAutorizada())
+		if (!nf.estaAutorizada())
 			throw new IllegalArgumentException(
 					"Somente Nota Fiscal AUTORIZADA pode ser Cancelada.");
 		
-		SolicitacaoCancelamento solicitacao = new SolicitacaoCancelamento(
-				DominioRegistro.solicitacaoCancelamentoRepositorio().proximaIdentidade(), 
-				Ambiente.HOMOLOGACAO, 
-				notaFiscal.notaFiscalId());
+		RetornoCancelamento retorno = this.cancelamentoService
+				.cancelar(solicitacao);
 		
-		RetornoCancelamento retorno = this.cancelamentoNfeService
-				.cancelar(solicitacao.solicitacaoCancelamentoId());
+		processarRetorno(nf, solicitacao, retorno);
 		
-		processarRetorno(solicitacao, retorno);
+		this.notaFiscalRepositorio.salvar(nf);
 	}
 
-	public void cancelarEmProducao(NotaFiscal notaFiscal) {
-		
-		assertNotaFiscalNaoNula(notaFiscal); 
-		if (!notaFiscal.estaAutorizada())
-			throw new IllegalArgumentException(
-					"Somente Nota Fiscal AUTORIZADA pode ser Cancelada.");
-		
-		SolicitacaoCancelamento solicitacao = new SolicitacaoCancelamento(
-				DominioRegistro.solicitacaoCancelamentoRepositorio().proximaIdentidade(), 
-				Ambiente.PRODUCAO, 
-				notaFiscal.notaFiscalId());
-		
-		RetornoCancelamento retorno = this.cancelamentoNfeService
-				.cancelar(solicitacao.solicitacaoCancelamentoId());
-		
-		processarRetorno(solicitacao, retorno);
-	}
-
-	private void processarRetorno(SolicitacaoCancelamento solicitacao,
+	private void processarRetorno(NotaFiscal nf,
+			SolicitacaoCancelamento solicitacao,
 			RetornoCancelamento retorno) {
 		if (retorno.cancelamentoHomologado())
-			solicitacao.sucesso(
-					retorno.numeroProtocolo(), 
-					retorno.mensagem(), 
-					retorno.dataHoraProcessamento());
+			nf.cancelar(retorno.numeroProtocolo(),retorno.mensagem(),retorno.dataHoraProcessamento());
 		else
-			solicitacao.fracasso(
-					retorno.mensagem(), 
-					retorno.dataHoraProcessamento());
-	}
-
-
-	private void assertNotaFiscalNaoNula(NotaFiscal notaFiscal){
-		if (notaFiscal == null)
-			throw new IllegalArgumentException("Nota Fiscal não pode ser nula.");
+			throw new RuntimeException(retorno.mensagem().codigo()+"-"+retorno.mensagem().descricao());
 	}
 	
 }

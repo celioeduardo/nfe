@@ -35,6 +35,7 @@ import javax.persistence.Version;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
+import com.hadrion.nfe.dominio.modelo.cancelamento.CancelamentoHomologado;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
@@ -197,7 +198,17 @@ public class NotaFiscal {
 	
 	@Embedded
 	private NumeroProtocolo numeroProtocolo;
-
+	
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="numero", column=@Column(name="CANC_NUMERO_PROTOCOLO"))
+	})
+	private NumeroProtocolo numeroProtocoloCancelamento;
+	
+	@Column(name="CANC_DATA_HORA")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataHoraCancelamento;
+	
 	@Embedded
 	private NotistaId notistaId;
 	
@@ -354,10 +365,18 @@ public class NotaFiscal {
 			publicar(new NotaFiscalAutorizada(notaFiscalId(),chaveAcesso(),ambiente()));
 		
 	}
-	public void cancelada() {
+	public void cancelar(NumeroProtocolo numeroProtocolo, Mensagem mensagem, 
+			Date dataHoraCancelamento) {
 		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.AUTORIZADA);
 		this.situacao=Situacao.CANCELADA;
+		this.mensagem = mensagem;
+		this.numeroProtocoloCancelamento = numeroProtocolo;
+		this.dataHoraCancelamento = dataHoraCancelamento;
+		
+		DominioRegistro.eventoDominioPublicador().publicar(
+				new CancelamentoHomologado(notaFiscalId(), ambiente()));
 	}
+	
 	public void inutilizada() {
 		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.EMITIDA);
 		this.situacao=Situacao.INUTILIZADA;
@@ -705,6 +724,13 @@ public class NotaFiscal {
 	
 	public NumeroProtocolo numeroProtocolo(){
 		return numeroProtocolo;
+	}
+	public NumeroProtocolo numeroProtocoloCancelamento(){
+		return numeroProtocoloCancelamento;
+	}
+	
+	public Date dataHoraCancelamento(){
+		return dataHoraCancelamento;
 	}
 	
 	//TODO Aprimorar Mesclagem

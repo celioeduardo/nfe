@@ -31,7 +31,7 @@ public class RabbitMQComunicarNotaFiscalAutorizadaAgrixListener extends RabbitNf
 		
 		String notaFiscalId = reader.eventStringValue("notaFiscalId.id");
 		String chaveAcesso = reader.eventStringValue("chaveAcesso.chave");
-		String ambiente = reader.eventStringValue("chaveAcesso.chave");
+		String ambiente = reader.eventStringValue("ambiente");
 		
 		agrixService.comunicarNotaAutorizada(notaFiscalId,chaveAcesso,ambiente);
 		
