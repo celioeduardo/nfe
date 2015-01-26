@@ -412,7 +412,10 @@ public class NotaFiscalAplicacaoService {
 		emails.toArray();
 		
 		ssimpleMailMessagemm.setFrom(server.getFrom());
-		ssimpleMailMessagemm.setTo(to);
+		if (nf.ambiente()==Ambiente.HOMOLOGACAO) 
+			ssimpleMailMessagemm.setTo("teste@hadrion.com.br");
+		else
+			ssimpleMailMessagemm.setTo(to);
 		ssimpleMailMessagemm.setSubject("Arquivo XML e DANFE da NF-e número: "+nf.numero());
 		String mensagem = "Segue anexo o arquivo XML e DANFE da nota fiscal número " 
 				+ nf.numero() + ", em nome de " 
