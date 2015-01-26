@@ -52,7 +52,7 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.IndicadorIe;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.NotaFiscalTradutorJson;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.NotaFiscalTradutorJson;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;

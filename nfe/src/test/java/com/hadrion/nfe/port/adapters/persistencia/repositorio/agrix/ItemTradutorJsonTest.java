@@ -25,7 +25,7 @@ import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.ItemDeserializer;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.ItemDeserializer;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;

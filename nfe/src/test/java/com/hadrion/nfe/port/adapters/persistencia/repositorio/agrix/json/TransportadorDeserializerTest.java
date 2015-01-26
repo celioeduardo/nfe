@@ -11,6 +11,7 @@ import com.hadrion.nfe.dominio.modelo.endereco.Endereco;
 import com.hadrion.nfe.dominio.modelo.endereco.Municipio;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transportador;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.TransportadorDeserializer;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
 

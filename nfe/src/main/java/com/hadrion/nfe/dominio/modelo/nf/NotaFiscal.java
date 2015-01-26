@@ -351,7 +351,7 @@ public class NotaFiscal {
 		this.xmlProtocolo = xmlProtocolo;
 
 		DominioRegistro.eventoDominioPublicador().
-			publicar(new NotaFiscalAutorizada(notaFiscalId()));
+			publicar(new NotaFiscalAutorizada(notaFiscalId(),chaveAcesso(),ambiente()));
 		
 	}
 	public void cancelada() {

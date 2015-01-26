@@ -20,10 +20,10 @@ import com.hadrion.nfe.dominio.modelo.nf.transporte.Transportador;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Veiculo;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Volume;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.TransportadorDeserializer;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.TransporteDeserializer;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.TransporteTradutorJson;
-import com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json.VeiculoDeserializer;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.TransportadorDeserializer;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.TransporteDeserializer;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.TransporteTradutorJson;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.VeiculoDeserializer;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
 

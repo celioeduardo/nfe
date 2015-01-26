@@ -11,6 +11,7 @@ import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Placa;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.TipoVeiculo;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Veiculo;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.VeiculoDeserializer;
 
 public class VeiculoDeserializerTest {
 	private static String JSON = 

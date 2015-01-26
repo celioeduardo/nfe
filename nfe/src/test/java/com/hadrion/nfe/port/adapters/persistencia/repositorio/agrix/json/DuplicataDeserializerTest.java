@@ -13,6 +13,8 @@ import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.DateDeserializer;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.DinheiroDeserializer;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 public class DuplicataDeserializerTest {
