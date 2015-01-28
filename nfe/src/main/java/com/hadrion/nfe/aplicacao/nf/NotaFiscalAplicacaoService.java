@@ -6,8 +6,10 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -290,13 +292,15 @@ public class NotaFiscalAplicacaoService {
 	}
 
 	
-	public byte[] gerarDanfe(Document nfeProc) throws JRException{
-		JasperReport jasperReport;
-		JasperPrint jasperPrint;
+	public byte[] gerarDanfe(Document nfeProc,FilialId filialId) throws JRException{
+		JasperReport jasperReport;JasperPrint jasperPrint;
+		
+    	Map<String,Object> parameters= new HashMap<String, Object>();
+    	parameters.put("Logo", new ByteArrayInputStream(empresaRepositorio.obterEmpresa(filialRepositorio.obterFilial(filialId).empresaId()).logo()));
 		
 		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");
 		jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
-		jasperPrint = JasperFillManager.fillReport(jasperReport, null,xmlDataSource);		
+		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,xmlDataSource);		
 		return JasperExportManager.exportReportToPdf(jasperPrint);		
 	}
 	
@@ -372,7 +376,7 @@ public class NotaFiscalAplicacaoService {
 		String filename = nf.chaveAcesso().toString();
 		
 		Document xml = gerarXml(nf);		
-		byte[] pdf = gerarDanfe(xml);
+		byte[] pdf = gerarDanfe(xml,nf.filialId());
 		
 		SimpleMailMessage message = smm(nf);
 		
@@ -430,7 +434,7 @@ public class NotaFiscalAplicacaoService {
 	
 	public ResponseEntity<InputStreamResource> obterDanfe(NotaFiscal nf) throws JRException{
 		
-		byte[] pdf = gerarDanfe(gerarXml(nf));
+		byte[] pdf = gerarDanfe(gerarXml(nf),nf.filialId());
 		
 		HttpHeaders respHeaders = new HttpHeaders();
 		respHeaders.setContentType(new MediaType("application", "pdf"));

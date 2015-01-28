@@ -108,7 +108,7 @@ public class ReportTest {
     	
     }   
     
-    @Test 
+    @Test @Ignore
     public void novoXml() throws JRException, FileNotFoundException{
     	
     	Document xml = JRXmlUtils.parse(JRLoader.getLocationInputStream("src/test/resources/report/nfe.xml"));
