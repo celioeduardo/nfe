@@ -56,6 +56,8 @@ public abstract class DominioTest extends RastreadorEventoTest {
 		super.setUp();
 		loteRepositorio.limpar();
 		notaFiscalRepositorio.limpar();
+
+		
 		Empresa empresa = new Empresa(
 				new EmpresaId("4007474000116"),
 				"Hadrion",
