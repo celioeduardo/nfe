@@ -18,7 +18,8 @@ public class EmpresaTest {
 				"Hadrion Sistemas Integrados",
 				new Cnpj(4007474000116L), 
 				"Hadrion",
-				CertificadoFixture.certificado());
+				CertificadoFixture.certificado(),
+				LogoFixture.logoFile());
 		
 		assertEquals(new EmpresaId("123456"),emp.empresaId());
 		assertEquals("Hadrion Sistemas Integrados",emp.nome());
@@ -35,7 +36,8 @@ public class EmpresaTest {
 				"Hadrion Sistemas Integrados",
 				new Cnpj(4007474000116L), 
 				"Hadrion",
-				CertificadoFixture.certificado());
+				CertificadoFixture.certificado(),
+				LogoFixture.logoFile());
 		
 		emp.renomear("Hadrion Sistemas Integrados Ltda");
 		assertEquals("Hadrion Sistemas Integrados Ltda",emp.nome());

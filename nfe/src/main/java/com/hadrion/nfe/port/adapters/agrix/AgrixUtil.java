@@ -22,7 +22,13 @@ public class AgrixUtil {
 	public static String notaFiscalIdToGuid(NotaFiscalId id){
 		if (id == null || id.id() == null)
 			return null;
-		return id.id().substring(2);
+		return notaFiscalIdToGuid(id.id());
+	}
+
+	public static String notaFiscalIdToGuid(String id) {
+		if (id == null)
+			return null;
+		return  id.substring(2);
 	}
 	
 }

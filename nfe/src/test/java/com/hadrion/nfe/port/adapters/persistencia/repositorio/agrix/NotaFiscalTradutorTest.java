@@ -21,6 +21,7 @@ import com.hadrion.nfe.dominio.modelo.nf.Presenca;
 import com.hadrion.nfe.dominio.modelo.nf.Processo;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.NotaFiscalTradutor;
 
 public class NotaFiscalTradutorTest {
 	@Mock

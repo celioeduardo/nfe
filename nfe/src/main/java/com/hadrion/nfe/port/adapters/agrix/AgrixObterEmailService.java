@@ -1,4 +1,4 @@
-package com.hadrion.nfe.port.adapters.nf.agrix;
+package com.hadrion.nfe.port.adapters.agrix;
 
 import java.sql.Types;
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.ObterEmailService;
-import com.hadrion.nfe.port.adapters.agrix.AgrixUtil;
 import com.hadrion.nfe.tipos.Email;
 
 @Service

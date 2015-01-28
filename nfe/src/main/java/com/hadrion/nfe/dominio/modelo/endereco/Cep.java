@@ -25,7 +25,7 @@ public class Cep {
 		this.numero = leftPad(String.valueOf(numero), 8, "0");
 	}
 	public String numero(){
-		return numero;
+		return leftPad(String.valueOf(numero), 8, "0");
 	}
 	
 	@Override

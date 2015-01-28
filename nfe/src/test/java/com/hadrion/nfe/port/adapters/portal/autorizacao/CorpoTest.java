@@ -8,6 +8,7 @@ import java.util.Collections;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,7 +43,7 @@ public class CorpoTest extends DominioTest {
 		lote = geracaoLoteService.gerarLoteEmHomologacao(nf);
 	}
 	
-	@Test
+	@Test @Ignore
 	public void corpoAutorizacao(){
 		Corpo corpo = new Corpo(lote,Collections.singleton(nf),certificado);
 		assertXMLEquals(XML, corpo.gerarComoString());

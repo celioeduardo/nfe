@@ -91,14 +91,21 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
     enviarEmail: function(btn) {
         var rec = btn.getWidgetRecord();
         
-        Ext.Msg.confirm('Confirmar', 'Enviar Emails?', function(btnYesOrNo){
-            if (btnYesOrNo == 'yes'){
-            	nfe.model.NotaFiscal.enviarEmail(rec.get('notaFiscalId'));
-            }
-        }, this);
+        nfe.model.NotaFiscal.enviarEmail(rec.get('notaFiscalId')/*,
+        		function(){
+		            Ext.toast({
+		                title: 'Enviando e-mail...',
+		                html: record.get('numero') + '/' + record.get('serie'),
+		                align: 't',
+		                bodyPadding: 10,
+		                width:350
+		            });
+        }*/);
     },
     imprimirDanfe: function(btn) {
     	var rec = btn.getWidgetRecord();    	
+    	//nfe.model.NotaFiscal.imprimirDanfe(rec.get('notaFiscalId'));
     	window.open('notas_fiscais/imprimir_danfe?notaFiscalId=' + rec.get('notaFiscalId'));
+    	//return '<div><a href="notas_fiscais/imprimir_danfe?notafiscalid=' + rec.get('notaFiscalId') + '" target="_blank"> /></a></div>';
     }
 });

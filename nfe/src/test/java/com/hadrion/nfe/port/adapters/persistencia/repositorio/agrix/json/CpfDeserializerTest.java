@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.CpfDeserializer;
 import com.hadrion.nfe.tipos.Cpf;
 
 public class CpfDeserializerTest {

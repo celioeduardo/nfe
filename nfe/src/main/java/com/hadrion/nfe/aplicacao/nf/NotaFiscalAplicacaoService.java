@@ -442,4 +442,8 @@ public class NotaFiscalAplicacaoService {
 		return new ResponseEntity<InputStreamResource>(isr, respHeaders,
 				HttpStatus.OK);
 	}
+
+	public NotaFiscalData obterNotaFiscal(String notaFiscalId) {
+		return construir(nota(notaFiscalId));
+	}
 }
