@@ -112,6 +112,14 @@ public class Assinador {
 	public static void assinarNfe(Document xml, Certificado certificado) {
 		new Assinador("infNFe","NFe",certificado).assinar(xml);
 	}
+	public static void assinarEvento(Document xml, Certificado certificado) {
+		new Assinador("infEvento","evento",certificado).assinar(xml);
+	}
+	public static String assinarEvento(String xml, Certificado certificado) {
+		Document doc = parseXml(xml);
+		assinarEvento(doc, certificado);
+		return xmlParaString(doc);
+	}
 	
 	public static String assinarNfe(String xml, Certificado certificado) {
 		Document doc = parseXml(xml);

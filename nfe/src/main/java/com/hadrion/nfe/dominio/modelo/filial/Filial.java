@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
+import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
 import com.hadrion.nfe.tipos.Cnpj;
 
@@ -45,6 +46,10 @@ public class Filial {
 	
 	@Column(name="apelido")
 	private String apelido;
+	
+	@Column(name="UF")
+	@Enumerated(EnumType.STRING)
+	private Uf uf;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
@@ -151,6 +156,10 @@ public class Filial {
 	
 	public void alterarApelido(String novoApelido){
 		this.apelido = novoApelido;
+	}
+	
+	public Uf uf(){
+		return this.uf;
 	}
 	
 }

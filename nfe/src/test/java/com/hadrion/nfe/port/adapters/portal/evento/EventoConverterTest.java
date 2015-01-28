@@ -1,0 +1,60 @@
+package com.hadrion.nfe.port.adapters.portal.evento;
+
+import java.io.IOException;
+
+import org.custommonkey.xmlunit.XMLAssert;
+import org.junit.Test;
+import org.xml.sax.SAXException;
+
+import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
+import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
+import com.hadrion.nfe.port.adapters.xml.XStreamFabrica;
+import com.hadrion.nfe.tipos.Cnpj;
+import com.hadrion.util.DataUtil;
+import com.thoughtworks.xstream.XStream;
+
+public class EventoConverterTest {
+
+	private static final String XML = 
+			"<evento xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"1.00\">\n" + 
+			"  <infEvento Id=\"ID1101113115018667564200010655002000263878100299390601\">\n" + 
+			"    <cOrgao>31</cOrgao>\n" + 
+			"    <tpAmb>1</tpAmb>\n" + 
+			"    <CNPJ>86675642000106</CNPJ>\n" + 
+			"    <chNFe>31150186675642000106550020002638781002993906</chNFe>\n" + 
+			"    <dhEvento>2015-01-27T09:04:22-02:00</dhEvento>\n" + 
+			"    <tpEvento>110111</tpEvento>\n" + 
+			"    <nSeqEvento>1</nSeqEvento>\n" + 
+			"    <verEvento>1.00</verEvento>\n" + 
+			"    <detEvento versao=\"1.00\">\n" + 
+			"      <descEvento>Cancelamento</descEvento>\n" + 
+			"      <nProt>131151658576199</nProt>\n" + 
+			"      <xJust>EMITIDA INDEVIDAMENTE.................</xJust>\n" + 
+			"    </detEvento>\n" + 
+			"  </infEvento>\n" + 
+			"</evento>";
+	
+	@Test
+	public void novoEvento() throws SAXException, IOException{
+		
+		Evento evento = Evento.novoCancelamento(
+				Uf.MG,
+				Ambiente.PRODUCAO,
+				new Cnpj(86675642000106L),
+				new ChaveAcesso("31150186675642000106550020002638781002993906"),
+				DataUtil.dataHora("27/01/2015 09:04:22", "GMT-02:00"), 
+				1, //Sequencia do evento
+				new NumeroProtocolo("131151658576199"),
+				"EMITIDA INDEVIDAMENTE.................");
+		
+		XStream xstream = XStreamFabrica.criar();
+		xstream.registerConverter(new EventoConverter());
+		xstream.alias("evento", Evento.class);
+		
+		XMLAssert.assertXMLEqual(XML,xstream.toXML(evento));
+		
+	}
+	
+}

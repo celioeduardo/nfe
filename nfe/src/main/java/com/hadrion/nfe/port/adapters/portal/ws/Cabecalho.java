@@ -24,6 +24,11 @@ public class Cabecalho {
 		return xstream().toXML(
 				new NfeCabecMsg(uf, "3.10","http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"));	
 	}
+	
+	public String evento() {
+		return xstream().toXML(
+				new NfeCabecMsg(uf, "1.00","http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"));	
+	}
 
 	private XStream xstream(){
 		if (xstream == null){

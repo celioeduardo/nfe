@@ -92,6 +92,7 @@ public class XStreamFabrica {
 		xstream.registerConverter(new AmbienteConverter());
 		xstream.registerConverter(new ContingenciaConverter());
 		xstream.registerConverter(new ReferenciaConverter());
+		xstream.registerConverter(new NumeroProtocoloConverter());
 		
 		return xstream;
 	}

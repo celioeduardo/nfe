@@ -414,10 +414,6 @@
 				<rectangle radius="3">
 					<reportElement style="borda" x="345" y="0" width="220" height="96" uuid="486dfb4c-9435-4917-bbb1-4b93c7e0974c"/>
 				</rectangle>
-				<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank" evaluationTime="Report">
-					<reportElement x="4" y="4" width="60" height="59" uuid="4aafc79a-b64e-4d73-b373-888964f329a2"/>
-					<imageExpression><![CDATA[$P{Logo}]]></imageExpression>
-				</image>
 				<componentElement>
 					<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="371" y="10" width="194" height="30" uuid="bfb11bac-4a89-454f-8537-01e4213a58d9">
 						<printWhenExpression><![CDATA[$F{Chave}!=null]]></printWhenExpression>
@@ -602,6 +598,10 @@ $F{Chave}.substring(36,40) + " " + $F{Chave}.substring(40,44) + " " : "" )]]></t
 					<textFieldExpression><![CDATA[$F{Emi_Telefone}.length() == 8 ? "FONE: " + $F{Emi_Telefone}.substring(0,4) +
 "-" + $F{Emi_Telefone}.substring(4,8) : "FONE: (" + $F{Emi_Telefone}.substring(0,2) + ") " +
 $F{Emi_Telefone}.substring(2,6) + "-" + $F{Emi_Telefone}.substring(6,10)]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="2" y="3" width="64" height="84" uuid="08ec714e-b758-4a55-8e73-7b3d3c0d7212"/>
+					<textFieldExpression><![CDATA[$P{Logo}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>

@@ -1,6 +1,7 @@
 package com.hadrion.util.report;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.w3c.dom.Document;
 
 import com.hadrion.nfe.dominio.config.Application;
+import com.hadrion.nfe.dominio.modelo.empresa.LogoFixture;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
@@ -91,31 +93,37 @@ public class ReportTest {
         JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/test.pdf");
         
     }   
-    @Ignore @Test
+    @Test @Ignore
     public void novoParametros() throws JRException{
     	
     	jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
     	
     	Map<String,Object> parameters= new HashMap<String, Object>();
     	parameters.put("NaturezaOperacao", nf().naturezaOperacao());
+    	parameters.put("Logo", LogoFixture.logoFile());
     	
     	jasperPrint = JasperFillManager.fillReport(jasperReport, parameters);
     	
     	JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
     	
     }   
-    @Ignore @Test
-    public void novoXml() throws JRException{
+    
+    @Test 
+    public void novoXml() throws JRException, FileNotFoundException{
     	
     	Document xml = JRXmlUtils.parse(JRLoader.getLocationInputStream("src/test/resources/report/nfe.xml"));
     	
         JRXmlDataSource xmlDataSource = new JRXmlDataSource(xml,"/nfeProc/NFe/infNFe/det");
         
+    	Map<String,Object> parameters= new HashMap<String, Object>();
+    	parameters.put("NaturezaOperacao", nf().naturezaOperacao());
+    	parameters.put("Logo", LogoFixture.logoInputStream());        
+        
         jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
-        jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
-        JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
-   	
+        jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, xmlDataSource);  
+        JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");   	
     }
+    
     @Test @Ignore
     public void novoXmlDataSource() throws JRException{
     	

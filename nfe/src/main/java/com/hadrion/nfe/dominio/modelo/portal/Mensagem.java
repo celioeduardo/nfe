@@ -42,8 +42,8 @@ public class Mensagem {
 		return codigo() == 110;
 	}
 	
-	public boolean cancelamentoHomologado(){
-		return codigo() == 101;
+	public boolean loteEventoProcessado(){
+		return codigo() == 128;
 	}
 	public static Mensagem mensagemCancelamentoHomologado(){
 		return  new Mensagem(101,"Cancelamento de NF-e homologado");

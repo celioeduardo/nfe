@@ -1,5 +1,6 @@
 package com.hadrion.nfe.port.adapters.portal.ws;
 
+import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.TipoEmissao;
 /** 
@@ -33,15 +34,50 @@ public enum Local {
 			TipoEmissao.FS_DA == tipoEmissao ||
 			TipoEmissao.FS_IA == tipoEmissao ||
 			TipoEmissao.DPEC == tipoEmissao){
-			switch (uf) {
-			case BA:return Local.BA;
-			case MG:return Local.MG;
-			case SP:return Local.SP;
-			
-			default:
-				break;
-			}
+			return localPelaUf(uf);
 		}
 		return null;
+	}
+	
+	private static Local localPelaUf(Uf uf){
+		switch (uf) {
+		case BA:return Local.BA;
+		case MG:return Local.MG;
+		case SP:return Local.SP;
+		default:
+			break;
+		}
+		return null;
+	}
+
+	public static Local obterPeloModoOperacao(ModoOperacao modoOperacao, Uf uf) {
+		if (ModoOperacao.SVC  == modoOperacao)
+			return contingenciaPelaUf(uf);
+		else 
+			return localPelaUf(uf);
+	}
+	
+	public static Local contingenciaPelaUf(Uf uf){
+		switch (uf) {
+		case AC:
+		case AL:
+		case AP: 
+		case DF: 
+		case ES:
+		case MG: 
+		case PB:
+		case RJ: 
+		case RN: 
+		case RO: 
+		case RR: 
+		case RS: 
+		case SC: 
+		case SE: 
+		case SP: 
+		case TO :
+			return Local.SVC_AN;
+		default:
+			return Local.SVC_RS;
+		}
 	}
 }

@@ -52,6 +52,9 @@ public class DataUtil {
 	public static Date dezembro(int dia, int ano){
 		return data(dia,Calendar.DECEMBER,ano); 
 	}
+	public static Date agora(){
+		return Calendar.getInstance().getTime(); 
+	}
 	
 	public static Date data(String data){
 		return data(data,"dd/MM/yy");

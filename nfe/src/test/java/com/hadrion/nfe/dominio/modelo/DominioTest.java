@@ -19,6 +19,7 @@ import com.hadrion.nfe.dominio.modelo.certificado.CertificadoFixture;
 import com.hadrion.nfe.dominio.modelo.empresa.Empresa;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaRepositorio;
+import com.hadrion.nfe.dominio.modelo.empresa.LogoFixture;
 import com.hadrion.nfe.dominio.modelo.filial.Filial;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.filial.FilialRepositorio;
@@ -61,7 +62,8 @@ public abstract class DominioTest extends RastreadorEventoTest {
 				"Hadrion",
 				new Cnpj(4007474000116L),
 				"Hadrion",
-				CertificadoFixture.certificado());
+				CertificadoFixture.certificado(),
+				LogoFixture.logoFile());
 		
 		empresaRepositorio.salvar(empresa);
 		
