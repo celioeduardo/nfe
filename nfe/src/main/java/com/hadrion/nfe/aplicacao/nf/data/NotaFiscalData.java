@@ -16,6 +16,10 @@ public class NotaFiscalData {
 	private String msgDescricao;
 	private String chave;
 	private String tipoEmissao;
+	private Date dataHoraAutorizacao;
+	private String numeroProtocoloAutorizacao;
+	private Date dataHoraCancelamento;
+	private String numeroProtocoloCancelamento;
 	
 	public NotaFiscalData(){}
 	
@@ -25,7 +29,11 @@ public class NotaFiscalData {
 			Date emissao,
 			Double valor, String tipoPublico,Long codigoPublico,
 			String nomePublico,String tipo,
-			Long msgCodigo, String msgDescricao) {
+			Long msgCodigo, String msgDescricao,
+			Date dataHoraAutorizacao,
+			String numeroProtocoloAutorizacao,
+			Date dataHoraCancelamento,
+			String numeroProtocoloCancelamento) {
 		super();
 		this.notaFiscalId=notaFiscalId;
 		this.numero = numero;
@@ -40,13 +48,41 @@ public class NotaFiscalData {
 		this.tipo=tipo;
 		this.msgCodigo = msgCodigo;
 		this.msgDescricao = msgDescricao;
+		this.dataHoraAutorizacao = dataHoraAutorizacao;
+		this.numeroProtocoloAutorizacao = numeroProtocoloAutorizacao;
+		this.dataHoraCancelamento = dataHoraCancelamento;
+		this.numeroProtocoloCancelamento = numeroProtocoloCancelamento;
 	}
+	public String getNumeroProtocoloAutorizacao() {
+		return numeroProtocoloAutorizacao;
+	}
+
+	public String getNumeroProtocoloCancelamento() {
+		return numeroProtocoloCancelamento;
+	}
+
 	public String getChave() {
 		return chave;
 	}
 
 	public void setChave(String chave) {
 		this.chave = chave;
+	}
+
+	public Date getDataHoraAutorizacao() {
+		return dataHoraAutorizacao;
+	}
+
+	public void setDataHoraAutorizacao(Date dataHoraAutorizacao) {
+		this.dataHoraAutorizacao = dataHoraAutorizacao;
+	}
+
+	public Date getDataHoraCancelamento() {
+		return dataHoraCancelamento;
+	}
+
+	public void setDataHoraCancelamento(Date dataHoraCancelamento) {
+		this.dataHoraCancelamento = dataHoraCancelamento;
 	}
 
 	public Long getMsgCodigo() {

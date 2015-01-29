@@ -37,6 +37,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -48,6 +49,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={Application.class}, loader = SpringApplicationContextLoader.class)
 @SpringApplicationConfiguration(classes = {Application.class})
+@ActiveProfiles("test")
 public class EmailTest {
 
 	//@Autowired 

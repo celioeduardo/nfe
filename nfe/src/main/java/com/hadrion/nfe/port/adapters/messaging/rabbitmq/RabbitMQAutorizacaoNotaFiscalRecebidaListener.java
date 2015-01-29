@@ -1,5 +1,7 @@
 package com.hadrion.nfe.port.adapters.messaging.rabbitmq;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -34,9 +36,10 @@ public class RabbitMQAutorizacaoNotaFiscalRecebidaListener extends RabbitNfeEven
 		String msgDescricao = reader.eventStringValue("mensagem.descricao");
 		String numeroProtocolo = reader.eventStringValue("numeroProtocolo");
 		String xmlProtocolo = reader.eventStringValue("xmlProtocolo");
-		
+		//Date dataHoraAutorizacao = DataUtil.parseComTimezone(reader.eventStringValue("dataHoraAutorizacao"));
+		Date dataHoraAutorizacao = reader.eventDateValue("dataHoraAutorizacao");
 		DefinirNotaComoAutorizadaComando comando = new DefinirNotaComoAutorizadaComando(
-				notaFiscalId, numeroProtocolo, msgCodigo, msgDescricao, xmlProtocolo);
+				notaFiscalId, numeroProtocolo, msgCodigo, msgDescricao, dataHoraAutorizacao, xmlProtocolo);
 		
 		notaFiscalAplicacaoService.definirNotaComoAutorizada(comando);
 		

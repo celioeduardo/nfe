@@ -2,6 +2,7 @@ package com.hadrion.nfe.port.adapters.persistencia.repositorio;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
@@ -22,19 +23,19 @@ public interface NotaFiscalRepositorioSpringData extends JpaRepository<NotaFisca
 	List<NotaFiscal> findByNotaFiscalIdIn(List<NotaFiscalId> notas);
 
 	List<NotaFiscal> findByFilialIdAndSituacaoAndAmbiente(FilialId filialId, Situacao autorizada,
-			Ambiente ambiente);
+			Ambiente ambiente,Sort sort);
 	
 	List<NotaFiscal> findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(
 			FilialId filialId, NotistaId notistaId, Situacao autorizada,
-			Ambiente ambiente);
+			Ambiente ambiente, Sort sort);
 	
 	List<NotaFiscal> findByFilialIdAndSituacaoAndAmbienteAndDanfeImpresso(FilialId filialId,
-			Situacao autorizada, Ambiente ambiente, boolean danfeImpresso);
+			Situacao autorizada, Ambiente ambiente, boolean danfeImpresso, Sort sort);
 
 	List<NotaFiscal> findByFilialIdInAndAmbienteAndSituacaoIn(FilialId filialId,
 			Ambiente ambiente, List<Situacao> situacoes);
 
 	List<NotaFiscal> findByFilialIdAndNotistaIdAndSituacaoAndAmbienteAndDanfeImpresso(
 			FilialId filialId, NotistaId notistaId, Situacao autorizada,
-			Ambiente ambiente, boolean danfeImpresso);
+			Ambiente ambiente, boolean danfeImpresso, Sort sort);
 }

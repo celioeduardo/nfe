@@ -1,20 +1,25 @@
 package com.hadrion.nfe.aplicacao.nf;
 
+import java.util.Date;
+
 public class DefinirNotaComoAutorizadaComando {
 	
 	private String notaFiscalId;
 	private String numeroProtocolo;
 	private int msgCodigo;
 	private String msgDescricao;
+	private Date dataHoraAutorizacao;
 	private String xmlProtocolo;
 	
 	public DefinirNotaComoAutorizadaComando(String notaFiscalId, String numeroProtocolo,
-			int msgCodigo,String msgDescricao, String xmlProtocolo) {
+			int msgCodigo,String msgDescricao, 
+			Date dataHoraAutorizacao, String xmlProtocolo) {
 		super();
 		this.notaFiscalId = notaFiscalId;
 		this.numeroProtocolo = numeroProtocolo;
 		this.msgCodigo = msgCodigo;
 		this.msgDescricao = msgDescricao;
+		this.dataHoraAutorizacao = dataHoraAutorizacao;
 		this.xmlProtocolo = xmlProtocolo;
 	}
 	public String getNumeroProtocolo() {
@@ -28,6 +33,9 @@ public class DefinirNotaComoAutorizadaComando {
 	}
 	public void setXmlProtocolo(String xml) {
 		this.xmlProtocolo = xml;
+	}
+	public Date getDataHoraAutorizacao() {
+		return dataHoraAutorizacao;
 	}
 	public DefinirNotaComoAutorizadaComando() {
 		super();

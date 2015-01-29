@@ -133,6 +133,7 @@ class LoteNotaFiscal {
 					notaFiscalId(),
 					numeroProtocolo,
 					mensagem,
+					dataHoraProcessamento,
 					xml));
 	}
 	

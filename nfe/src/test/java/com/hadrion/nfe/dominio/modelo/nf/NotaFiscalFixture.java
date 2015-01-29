@@ -5,6 +5,7 @@ import static com.hadrion.util.DataUtil.dataHora;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -321,7 +322,7 @@ public class NotaFiscalFixture {
 	public static NotaFiscal nfEmProducaoAutorizada() {
 		NotaFiscal nf = nfEmProducao();
 		nf.emitida();
-		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),new Date(),null);
 		return nf;
 	}
 }

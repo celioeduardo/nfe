@@ -72,9 +72,6 @@ Ext.define('nfe.view.main.Main', {
             		value: '{dataHoraContingencia} - {justificativaContingencia}',
             		hidden: '{!dataHoraContingencia}'
             	},
-//            	renderer: function(valor){
-//                	return valor;
-//                },
                 margin: '10 10 10 10'
             },{
         		xtype:'filialcombo',
@@ -122,16 +119,6 @@ Ext.define('nfe.view.main.Main', {
             },
             bodyPadding: 0,
             items:[{
-                /*region:'center',
-                xtype:'notas-pendentes',
-                width: 250
-            },{
-                region:'east',
-                xtype:'notas-pendentes'
-            },{
-                region:'south',
-                xtype:'notas-pendentes',
-                heigth: 150*/
                 title: 'Pendentes',
                 collapsible: false,
                 xtype:'notas-pendentes',
@@ -144,7 +131,6 @@ Ext.define('nfe.view.main.Main', {
                 listeners:{
 					notasPendentesEnviadas: 'notasPendentesEnviadas'
 				}
-                //html: '<h2>Main Page</h2><p>This is where the main content would go</p>'
             },{
                 title: 'Lotes Pendentes',
                 region:'east',
@@ -175,15 +161,19 @@ Ext.define('nfe.view.main.Main', {
         	title: 'Autorizadas',
             layout: 'fit',
             xtype:'notas-autorizadas',
+            itemId:'autorizadas',
             margin: '5 0 0 0',
             viewModel:{
                 data:{
                     nao_impressa: false
                 }
+            },
+            listeners:{
+            	notaFiscalCancelada:'onNotaFiscalCancelada'
             }
             
         },{
-            title: 'Cancelamento',
+            title: 'Canceladas',
             //xtype: 'panel',
             glyph: 0xf00d,
             layout: 'hbox',

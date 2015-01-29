@@ -93,14 +93,14 @@ public abstract class DominioTest extends RastreadorEventoTest {
 	protected NotaFiscal notaAutorizadaHomologacaoPersistidaParaTest(String id) {
 		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));
 		nf.emitida();
-		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),new Date(), null);
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaCanceladaHomologacaoPersistidaParaTest(String id) {
 		NotaFiscal nf = NotaFiscalFixture.nfEmHomologacao(new NotaFiscalId(id));
 		nf.emitida();
-		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),new Date(),null);
 		nf.cancelar(new NumeroProtocolo("CANC-123456"),Mensagem.mensagemCancelamentoHomologado(),new Date());
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
@@ -134,14 +134,14 @@ public abstract class DominioTest extends RastreadorEventoTest {
 	protected NotaFiscal notaAutorizadaProducaoPersistidaParaTest(String id) {
 		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id));
 		nf.emitida();
-		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),new Date(),null);
 		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 	protected NotaFiscal notaCanceladaProducaoPersistidaParaTest(String id) {
 		NotaFiscal nf = NotaFiscalFixture.nfEmProducao(new NotaFiscalId(id));
 		nf.emitida();
-		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),null);
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),new Date(),null);
 		nf.cancelar(new NumeroProtocolo("CANC-123456"),Mensagem.mensagemCancelamentoHomologado(),new Date());
 		notaFiscalRepositorio.salvar(nf);
 		return nf;

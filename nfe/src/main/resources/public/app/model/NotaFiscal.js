@@ -4,6 +4,8 @@ Ext.define('nfe.model.NotaFiscal', {
     fields: ['numero',
              'serie',
 		    {name: 'emissao', type: 'date'},
+		    {name: 'dataHoraAutorizacao', type: 'date'},
+		    {name: 'dataHoraCancelamento', type: 'date'},
 		    'valor',
 		    'publicoTipo',
 		    'publicoCodigo',
@@ -45,19 +47,21 @@ Ext.define('nfe.model.NotaFiscal', {
     			callback:callback,
     			scope:scope
     		});
-    	}/*,
-    	imprimirDanfe:function(notaFiscalId,success,failure,callback,scope){
+    	},
+    	cancelar:function(notaFiscalId,justificativa,success,failure,callback,scope){
     		Ext.Ajax.request({
-    			url:'notas_fiscais/imprimir_danfe',
-    			method:'GET',
-    			binary: true,
-    			params:{'notaFiscalId':notaFiscalId},
+    			url:'notas_fiscais/cancelar',
+    			method:'POST',
+    			jsonData:Ext.encode({
+	            	'notaFiscalId':notaFiscalId,
+	            	'justificativa':justificativa
+	            }),
     			success:success,
     			failure:failure,
     			callback:callback,
     			scope:scope
     		});
-    	}*/,
+    	},
         getTipoEmissao: function(tipoEmissao) {
             return this.prototype.tipos[tipoEmissao];
         }

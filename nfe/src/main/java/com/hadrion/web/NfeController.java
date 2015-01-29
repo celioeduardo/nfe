@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hadrion.nfe.aplicacao.nf.CancelarNotaComando;
 import com.hadrion.nfe.aplicacao.nf.EnviarEmailComando;
 import com.hadrion.nfe.aplicacao.nf.EnviarNotasComando;
 import com.hadrion.nfe.aplicacao.nf.NotaFiscalAplicacaoService;
@@ -87,5 +88,13 @@ public class NfeController {
 	public String enviarEmail(
 			@RequestParam String notaFiscalId) throws IOException, MessagingException, JRException{		
 		return notaFiscalAplicacaoService.enviarEmail(new EnviarEmailComando(notaFiscalId));
+	}	
+	
+	@RequestMapping(value = "/cancelar", method = RequestMethod.POST)
+	@ResponseBody
+	public String cancelar(
+			@RequestBody CancelarNotaComando comando) throws IOException, JRException{		
+		return notaFiscalAplicacaoService.cancelar(comando);
+		//return "OK"; //Chamada fake
 	}	
 }

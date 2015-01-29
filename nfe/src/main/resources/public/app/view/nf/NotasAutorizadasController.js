@@ -34,8 +34,6 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
             var me = this;
             model.enviarEmails('HOMOLOGACAO',ids,function(){
             	me.getViewModel().getStore('notasAutorizadas').reload();
-            	//me.fireViewEvent('notasPendentesEnviadas');
-            	console.log('sucesso!');
             },
             null,
             function(){
@@ -45,7 +43,6 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
         }
     },
     
-
     rendererNumero: function(numero, metadata, rec){
         var nf = rec.get('serie') != null ? numero+'/'+rec.get('serie') : numero,
             es = rec.get('tipo') == 'E' ? 'entrada' : 'saída';
@@ -55,18 +52,25 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
             '<div style="padding: 2px 0px 0px 0px; font-size: 12px;font-color=gray;color: gray;font-style: italic;">{4}</div>'+
             '<div style="padding: 2px 0px 0px 0px; font-weight: 400;font-size: 18px;line-height: 22px; font-family:Arial">{1}</div>'+
             '<hr style="margin: 2px">'+
-            '<div style="font-size: small;font-color=gray;color: gray;font-style: italic;">{2} - emitida em {3}</div>',
+            '<div style="font-size: small;font-color=gray;color: gray;font-style: italic;">{2} - emitida em {3} - ({5})</div>',
             nf,
             rec.get('publicoNome'),
             es,
             Ext.util.Format.date(rec.get('emissao'),'d/m/Y'),
-            rec.get('chave'));
+            rec.get('chave'),
+            nfe.model.NotaFiscal.getTipoEmissao(rec.get('tipoEmissao')));
     },
 
     rendererValor: function(valor, metadata, rec){
         return Ext.String.format(
             '<div style="font-size: large;font-weight: bold;font-style: italic;margin-top: 20px;">{0}</div>',
             "R$ " + Ext.util.Format.number(valor,'0,000.00'));
+    },
+    rendererAutorizacao: function(valor, metadata, rec){
+    	return Ext.String.format(
+    			'<div style="font-size: 12px;font-style: italic;margin-top: 20px;">{0}</div>',
+    			"autorização<br>" + Ext.Date.format(valor,'d/m/Y H:i:s') +
+    			"<br>"+rec.get('numeroProtocoloAutorizacao'));
     },
 
     rendererDanfe: function(column, widget, record) {
@@ -90,22 +94,58 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
     },
     enviarEmail: function(btn) {
         var rec = btn.getWidgetRecord();
-        
-        nfe.model.NotaFiscal.enviarEmail(rec.get('notaFiscalId')/*,
-        		function(){
-		            Ext.toast({
-		                title: 'Enviando e-mail...',
-		                html: record.get('numero') + '/' + record.get('serie'),
-		                align: 't',
-		                bodyPadding: 10,
-		                width:350
-		            });
-        }*/);
+        Ext.toast({
+            title: 'Enviando e-mail...',
+            html: 'Nota Fiscal '+rec.get('numero') + '/' + rec.get('serie'),
+            align: 't',
+            bodyPadding: 10,
+            width:350
+        });
+        nfe.model.NotaFiscal.enviarEmail(rec.get('notaFiscalId'));
     },
     imprimirDanfe: function(btn) {
     	var rec = btn.getWidgetRecord();    	
-    	//nfe.model.NotaFiscal.imprimirDanfe(rec.get('notaFiscalId'));
     	window.open('notas_fiscais/imprimir_danfe?notaFiscalId=' + rec.get('notaFiscalId'));
-    	//return '<div><a href="notas_fiscais/imprimir_danfe?notafiscalid=' + rec.get('notaFiscalId') + '" target="_blank"> /></a></div>';
+    },
+    cancelar: function(btn) {
+    	var rec = btn.getWidgetRecord(),
+    		me = this;
+    	Ext.Msg.prompt('Cancelar Nota Fiscal '+rec.get('numero'),
+    			'Informe o motivo do cancelamento',
+    			function(result,justificativa) {
+    		var me = this;
+    		if (result === 'ok') {
+    			
+    			var tamanhoJustificativa = justificativa.length;
+    			
+    			if (tamanhoJustificativa < 15 || tamanhoJustificativa > 255){
+    				Ext.Msg.show({
+    					title: 'Motivo inválido',
+    					message: 'O Motivo do cancelamento tem que ter no mínimo 15 '+
+    					'e no máximo 255 caracteres. Tamanho informado: '+tamanhoJustificativa,
+    					buttons: Ext.Msg.OK,
+    					icon: Ext.window.MessageBox.INFO
+    				});
+    			} else {
+    				me.getView().mask('Cancelando...');
+                	nfe.model.NotaFiscal.cancelar(rec.get('notaFiscalId'),justificativa,
+	                	function(){
+	                		me.getView().focus(); // Bug de focus no ExtJS - precisa ter essa chamada..
+	                		Ext.toast({
+	    		                title: 'Nota Fiscal Cancelada com Sucesso',
+	    		                html: 'Nota Fiscal '+rec.get('numero') + '/' + rec.get('serie') + 
+	    		                	' foi cancelada com sucesso.',
+	    		                align: 't',
+	    		                bodyPadding: 10,
+	    		                width:350
+	    		            });
+	            	    	me.getViewModel().getStore('notasAutorizadas').reload();
+	                    },null,
+	                    function(){
+	                    	me.getView().unmask();
+	                    });
+    			}
+    		} 
+    	},this);
     }
 });

@@ -88,6 +88,12 @@ Ext.define('nfe.view.main.MainController', {
     	this.carregarDadosFilial(vm.get('filial'));
     },
     
+    onNotaFiscalCancelada: function(){
+    	this.getView().down('#autorizadas')
+	    	.getViewModel().getStore('notasAutorizadas')
+	    	.reload();
+    },
+    
     carregarDadosFilial: function(filialId,fnSuccess){
     	
     	var me = this,

@@ -38,6 +38,14 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
               renderer: 'rendererValor',
               align: 'right'
           },{
+              text: 'Autorização',
+              xtype:'datecolumn',
+              //format:'d/m/Y H:i:s',
+              width: 150,
+              renderer:'rendererAutorizacao',
+              dataIndex: 'dataHoraAutorizacao',
+              align: 'center'
+          },{
               width: 105,
               xtype: 'widgetcolumn',
               widget: {
@@ -54,6 +62,15 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
                   width: 90,
                   xtype: 'button',
                   handler: 'enviarEmail'
+              }
+          },{
+              width: 105,
+              xtype: 'widgetcolumn',
+              widget: {
+            	  text:'cancelar',
+                  width: 90,
+                  xtype: 'button',
+                  handler: 'cancelar'
               }
           },{
               text: 'Observação',

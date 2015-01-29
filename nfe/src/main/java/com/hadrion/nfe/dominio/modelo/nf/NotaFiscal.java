@@ -197,7 +197,7 @@ public class NotaFiscal {
 	private Mensagem mensagem;	
 	
 	@Embedded
-	private NumeroProtocolo numeroProtocolo;
+	private NumeroProtocolo numeroProtocoloAutorizacao;
 	
 	@Embedded
 	@AttributeOverrides({
@@ -211,6 +211,10 @@ public class NotaFiscal {
 	
 	@Embedded
 	private NotistaId notistaId;
+	
+	@Column(name="DATA_HORA_AUTORIZACAO")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataHoraAutorizacao;
 	
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
@@ -346,7 +350,8 @@ public class NotaFiscal {
 		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.INDEFINIDA);
 		this.situacao=Situacao.EMITIDA;
 	}
-	public void autorizada(NumeroProtocolo numeroProtocolo,Mensagem mensagem,String xmlProtocolo) {
+	public void autorizada(NumeroProtocolo numeroProtocolo,Mensagem mensagem,
+			Date dataHoraAutorizacao, String xmlProtocolo) {
 		String msg = "Nota Fiscal está %s e não pode ser definida como Autorizada";
 		
 		if (situacao == Situacao.CANCELADA)
@@ -358,7 +363,8 @@ public class NotaFiscal {
 		
 		this.situacao=Situacao.AUTORIZADA;
 		this.mensagem = mensagem;
-		this.numeroProtocolo = numeroProtocolo;
+		this.numeroProtocoloAutorizacao = numeroProtocolo;
+		this.dataHoraAutorizacao = dataHoraAutorizacao;
 		this.xmlProtocolo = xmlProtocolo;
 
 		DominioRegistro.eventoDominioPublicador().
@@ -722,9 +728,14 @@ public class NotaFiscal {
 		return xmlProtocolo;
 	}
 	
-	public NumeroProtocolo numeroProtocolo(){
-		return numeroProtocolo;
+	public NumeroProtocolo numeroProtocoloAutorizacao(){
+		return numeroProtocoloAutorizacao;
 	}
+	
+	public Date dataHoraAutorizacao(){
+		return dataHoraAutorizacao;
+	}
+	
 	public NumeroProtocolo numeroProtocoloCancelamento(){
 		return numeroProtocoloCancelamento;
 	}

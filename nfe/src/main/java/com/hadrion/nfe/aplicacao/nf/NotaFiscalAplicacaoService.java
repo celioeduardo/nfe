@@ -6,8 +6,10 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -44,6 +46,8 @@ import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
 import com.hadrion.nfe.dominio.config.MailProperties;
 import com.hadrion.nfe.dominio.config.MailProperties.Server;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.cancelamento.CancelarNotaService;
+import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamento;
 import com.hadrion.nfe.dominio.modelo.empresa.Empresa;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaRepositorio;
 import com.hadrion.nfe.dominio.modelo.filial.Filial;
@@ -95,6 +99,9 @@ public class NotaFiscalAplicacaoService {
 	@Autowired
 	private ObterEmailService obterEmailService;
 	
+	@Autowired
+	private CancelarNotaService cancelarNotaService;
+	
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(
 			Ambiente ambiente, Double empresa, String filial, Date inicio,
 			Date fim, String notistaId, String notaFiscalId) {
@@ -108,15 +115,20 @@ public class NotaFiscalAplicacaoService {
 				.notasPendentesAutorizacaoResumo(ambiente, empresa,
 						new FilialId(filial), inicio, fim, notistaId,
 						notaFiscalIdFiltro)) {
-			result.add(new NotaFiscalData(nf.notaFiscalId().id(), nf.numero(),
+			result.add(new NotaFiscalData(
+					nf.notaFiscalId().id(), nf.numero(),
 					String.valueOf(nf.serie().numero()),
 					nf.chave() != null ? String.valueOf(nf.chave()) : null,
-					String.valueOf(nf.tipoEmissao()), nf.emissao(), nf.valor()
-							.valor(), nf.publicoTipo(), nf.publicoCodigo(), nf
-							.publicoNome(), nf.tipo(),
-					nf.mensagem() != null ? new Long(nf.mensagem().codigo())
-							: null, nf.mensagem() != null ? nf.mensagem()
-							.descricao() : null));
+					String.valueOf(nf.tipoEmissao()), 
+					nf.emissao(), 
+					nf.valor().valor(), 
+					nf.publicoTipo(), 
+					nf.publicoCodigo(), 
+					nf.publicoNome(), 
+					nf.tipo(),
+					nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null, 
+					nf.mensagem() != null ? nf.mensagem().descricao() : null,
+					null,null,null,null));
 		}
 
 		return result;
@@ -230,7 +242,9 @@ public class NotaFiscalAplicacaoService {
 			nota.autorizada(
 					new NumeroProtocolo(comando.getNumeroProtocolo()),
 					new Mensagem(comando.getMsgCodigo(), comando
-							.getMsgDescricao()), comando.getXmlProtocolo());
+							.getMsgDescricao()),
+					comando.getDataHoraAutorizacao(),
+					comando.getXmlProtocolo());
 		notaFiscalRepositorio.salvar(nota);
 	}
 
@@ -286,17 +300,22 @@ public class NotaFiscalAplicacaoService {
 				nf.destinatario().razaoSocial(),
 				nf.tipoOperacao().toString(),
 				nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,
-				nf.mensagem() != null ? nf.mensagem().descricao() : null);
+				nf.mensagem() != null ? nf.mensagem().descricao() : null,
+				nf.dataHoraAutorizacao(),
+				String.valueOf(nf.numeroProtocoloAutorizacao()),
+				nf.dataHoraCancelamento(),
+				String.valueOf(nf.numeroProtocoloCancelamento()));
 	}
-
 	
-	public byte[] gerarDanfe(Document nfeProc) throws JRException{
-		JasperReport jasperReport;
-		JasperPrint jasperPrint;
+	public byte[] gerarDanfe(Document nfeProc,FilialId filialId) throws JRException{
+		JasperReport jasperReport;JasperPrint jasperPrint;
+		
+    	Map<String,Object> parameters= new HashMap<String, Object>();
+    	parameters.put("Logo", new ByteArrayInputStream(empresaRepositorio.obterEmpresa(filialRepositorio.obterFilial(filialId).empresaId()).logo()));
 		
 		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");
 		jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
-		jasperPrint = JasperFillManager.fillReport(jasperReport, null,xmlDataSource);		
+		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,xmlDataSource);		
 		return JasperExportManager.exportReportToPdf(jasperPrint);		
 	}
 	
@@ -372,7 +391,7 @@ public class NotaFiscalAplicacaoService {
 		String filename = nf.chaveAcesso().toString();
 		
 		Document xml = gerarXml(nf);		
-		byte[] pdf = gerarDanfe(xml);
+		byte[] pdf = gerarDanfe(xml,nf.filialId());
 		
 		SimpleMailMessage message = smm(nf);
 		
@@ -430,7 +449,7 @@ public class NotaFiscalAplicacaoService {
 	
 	public ResponseEntity<InputStreamResource> obterDanfe(NotaFiscal nf) throws JRException{
 		
-		byte[] pdf = gerarDanfe(gerarXml(nf));
+		byte[] pdf = gerarDanfe(gerarXml(nf),nf.filialId());
 		
 		HttpHeaders respHeaders = new HttpHeaders();
 		respHeaders.setContentType(new MediaType("application", "pdf"));
@@ -445,5 +464,12 @@ public class NotaFiscalAplicacaoService {
 
 	public NotaFiscalData obterNotaFiscal(String notaFiscalId) {
 		return construir(nota(notaFiscalId));
+	}
+
+	public String cancelar(CancelarNotaComando comando) {
+		cancelarNotaService.cancelar(new SolicitacaoCancelamento(
+				new NotaFiscalId(comando.getNotaFiscalId()), 
+				comando.getJustificativa()));
+		return String.valueOf(nota(comando.getNotaFiscalId()).numeroProtocoloCancelamento());
 	}
 }

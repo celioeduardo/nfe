@@ -16,6 +16,7 @@ public class AutorizacaoNotaFiscalRecebida implements EventoDominio {
 	private Ambiente ambiente;
 	private String numeroProtocolo;
 	private String xmlProtocolo;
+	private Date dataHoraAutorizacao;
 	private Mensagem mensagem;
 
 	public AutorizacaoNotaFiscalRecebida(
@@ -23,6 +24,7 @@ public class AutorizacaoNotaFiscalRecebida implements EventoDominio {
 			NotaFiscalId notaFiscalId,
 			NumeroProtocolo numeroProtocolo,
 			Mensagem mensagem,
+			Date dataHoraAutorizacao,
 			String xml) {
 		this.ocorridoEm = new Date();
 		this.versaoEvento = 1;
@@ -30,6 +32,7 @@ public class AutorizacaoNotaFiscalRecebida implements EventoDominio {
 		this.notaFiscalId = notaFiscalId;
 		this.numeroProtocolo = numeroProtocolo != null ? numeroProtocolo.numero() : null;
 		this.mensagem = mensagem;
+		this.dataHoraAutorizacao = dataHoraAutorizacao;
 		this.xmlProtocolo = xml;
 	}
 
@@ -61,6 +64,10 @@ public class AutorizacaoNotaFiscalRecebida implements EventoDominio {
 	
 	public Mensagem mensagem(){
 		return mensagem;
+	}
+	
+	public Date dataHoraAutorizacao(){
+		return dataHoraAutorizacao;
 	}
 	
 }

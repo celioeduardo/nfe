@@ -58,7 +58,7 @@ public class CancelarNotaService{
 				nf.chaveAcesso(), 
 				DataUtil.agora(), 
 				1, //TODO Implementar sequência do evento 
-				nf.numeroProtocolo(), 
+				nf.numeroProtocoloAutorizacao(), 
 				solicitacao.justificativa());
 		
 		LoteEvento lote = new LoteEvento(

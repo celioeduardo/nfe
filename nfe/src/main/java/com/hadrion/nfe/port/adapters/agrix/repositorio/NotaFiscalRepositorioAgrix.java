@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -146,27 +148,28 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 
 	@Override
 	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente) {
-		return repositorio.findByFilialIdAndSituacaoAndAmbiente(filialId, Situacao.AUTORIZADA,ambiente);
+		return repositorio.findByFilialIdAndSituacaoAndAmbiente(
+				filialId, Situacao.AUTORIZADA,ambiente,new Sort(Direction.DESC, "dataHoraAutorizacao"));
 	}
 
 	@Override
 	public List<NotaFiscal> notasAutorizadas(FilialId filialId,
 			Ambiente ambiente, NotistaId notistaId) {
 		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(filialId, notistaId, 
-				Situacao.AUTORIZADA,ambiente);
+				Situacao.AUTORIZADA,ambiente,new Sort(Direction.DESC, "dataHoraAutorizacao"));
 	}
 
 	@Override
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente) {
 		return repositorio.findByFilialIdAndSituacaoAndAmbienteAndDanfeImpresso(
-				filialId, Situacao.AUTORIZADA,ambiente,false);
+				filialId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "dataHoraAutorizacao"));
 	}
 
 	@Override
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,
 			Ambiente ambiente, NotistaId notistaId) {
 		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbienteAndDanfeImpresso(
-				filialId, notistaId, Situacao.AUTORIZADA,ambiente,false);
+				filialId, notistaId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "dataHoraAutorizacao"));
 	}
 	
 	

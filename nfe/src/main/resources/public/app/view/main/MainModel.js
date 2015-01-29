@@ -9,11 +9,11 @@ Ext.define('nfe.view.main.MainModel', {
     data: {
         name: 'nfe',
         titulo: 'Nota Fiscal Eletrônica - 3.10',
-        empresa: undefined,//coopercam
-        filial: undefined,
+        empresa: '86675642000106',//coopercam
+        filial: '53-86675642000106',
         ambiente: 'HOMOLOGACAO',
         modoOperacao: 'NORMAL',        
-        notista: undefined
+        notista: 'COOPADAP'
     },
     stores:{
     	empresaFilial:{
