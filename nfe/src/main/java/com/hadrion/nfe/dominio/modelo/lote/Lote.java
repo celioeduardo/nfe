@@ -178,7 +178,7 @@ public class Lote {
 			if (filialId == null)
 				filialId = nf.filialId();
 			else if (!filialId.equals(nf.filialId()))
-				return null;
+				throw new RuntimeException("Não pode ser criado Lote para Notas de Filiais diferentes.");
 		}
 		return filialId;
 	}
