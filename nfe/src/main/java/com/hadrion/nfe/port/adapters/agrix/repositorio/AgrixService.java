@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
@@ -208,6 +209,25 @@ public class AgrixService{
 		
 		call.execute(params);
 		
+	}
+
+	public void simularCancelamento(NotaFiscal nf) {
+		
+		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
+			.withSchemaName(AgrixUtil.schema())
+			.withCatalogName("pcg_nf_json_adapter")
+			.withProcedureName("simularCancelamento")
+			.declareParameters(new SqlParameter("nfid", Types.VARCHAR));
+	
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		params.addValue("nfid", AgrixUtil.notaFiscalIdToGuid(nf.notaFiscalId()), Types.VARCHAR);
+		call.compile();
+		try {
+			call.execute(params);
+		} catch (UncategorizedSQLException e) {
+			throw new RuntimeException(e.getMostSpecificCause().getMessage());
+		}
 	}
 
 }

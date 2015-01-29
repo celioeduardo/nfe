@@ -1,9 +1,6 @@
 package com.hadrion.nfe.dominio.modelo.cancelamento;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.hadrion.nfe.dominio.modelo.empresa.Empresa;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaRepositorio;
@@ -19,8 +16,6 @@ import com.hadrion.nfe.port.adapters.portal.evento.LoteEvento;
 import com.hadrion.nfe.port.adapters.portal.ws.Local;
 import com.hadrion.util.DataUtil;
 
-@Service
-@Transactional
 public class CancelarNotaService{
 	
 	@Autowired
@@ -35,8 +30,6 @@ public class CancelarNotaService{
 	@Autowired
 	private FilialRepositorio filialRepositorio;
 	
-	CancelarNotaService(){}
-	
 	void configurarCancelamentoNfeService(EventoService cancelamentoNfeService){
 		this.cancelamentoService = cancelamentoNfeService;
 	}
@@ -50,6 +43,8 @@ public class CancelarNotaService{
 		if (!nf.estaAutorizada())
 			throw new IllegalArgumentException(
 					"Somente Nota Fiscal AUTORIZADA pode ser Cancelada.");
+		
+		permiteCancelarNotaFical(nf);
 		
 		Evento evento = Evento.novoCancelamento(
 				filial.uf(), 
@@ -73,6 +68,8 @@ public class CancelarNotaService{
 		
 		this.notaFiscalRepositorio.salvar(nf);
 	}
+	
+	protected void permiteCancelarNotaFical(NotaFiscal nf){}
 
 	private void processarRetorno(NotaFiscal nf,
 			SolicitacaoCancelamento solicitacao,

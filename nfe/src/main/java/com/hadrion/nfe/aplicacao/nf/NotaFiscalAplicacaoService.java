@@ -469,7 +469,7 @@ public class NotaFiscalAplicacaoService {
 	public String cancelar(CancelarNotaComando comando) {
 		cancelarNotaService.cancelar(new SolicitacaoCancelamento(
 				new NotaFiscalId(comando.getNotaFiscalId()), 
-				comando.getJustificativa()));
+				StringUtils.trimToEmpty(comando.getJustificativa())));
 		return String.valueOf(nota(comando.getNotaFiscalId()).numeroProtocoloCancelamento());
 	}
 }
