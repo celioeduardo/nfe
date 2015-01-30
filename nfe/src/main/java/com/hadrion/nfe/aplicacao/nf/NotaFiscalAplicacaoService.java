@@ -331,7 +331,9 @@ public class NotaFiscalAplicacaoService {
 		JasperReport jasperReport;JasperPrint jasperPrint;
 		
     	Map<String,Object> parameters= new HashMap<String, Object>();
-    	parameters.put("Logo", new ByteArrayInputStream(empresaRepositorio.obterEmpresa(filialRepositorio.obterFilial(filialId).empresaId()).logo()));
+    	byte[] logo = empresaRepositorio.obterEmpresa(filialRepositorio.obterFilial(filialId).empresaId()).logo();
+    	if (logo != null)
+    		parameters.put("Logo", new ByteArrayInputStream(logo));
 		
 		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");
 		jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
@@ -489,7 +491,7 @@ public class NotaFiscalAplicacaoService {
 	public String cancelar(CancelarNotaComando comando) {
 		cancelarNotaService.cancelar(new SolicitacaoCancelamento(
 				new NotaFiscalId(comando.getNotaFiscalId()), 
-				comando.getJustificativa()));
+				StringUtils.trimToEmpty(comando.getJustificativa())));
 		return String.valueOf(nota(comando.getNotaFiscalId()).numeroProtocoloCancelamento());
 	}
 }

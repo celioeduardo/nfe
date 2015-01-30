@@ -380,7 +380,7 @@ public class NotaFiscal {
 		this.dataHoraCancelamento = dataHoraCancelamento;
 		
 		DominioRegistro.eventoDominioPublicador().publicar(
-				new CancelamentoHomologado(notaFiscalId(), ambiente()));
+				new CancelamentoHomologado(notaFiscalId()));
 	}
 	
 	public void inutilizada() {

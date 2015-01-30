@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
@@ -186,6 +187,25 @@ public class AgrixService{
 		return conteudo;
 	}
 
+	public void simularCancelamento(NotaFiscal nf) {
+		
+		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
+			.withSchemaName(AgrixUtil.schema())
+			.withCatalogName("pcg_nf_json_adapter")
+			.withProcedureName("simularCancelamento")
+			.declareParameters(new SqlParameter("nfid", Types.VARCHAR));
+	
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		params.addValue("nfid", AgrixUtil.notaFiscalIdToGuid(nf.notaFiscalId()), Types.VARCHAR);
+		call.compile();
+		try {
+			call.execute(params);
+		} catch (UncategorizedSQLException e) {
+			throw new RuntimeException(e.getMostSpecificCause().getMessage());
+		}
+	}
+
 	public void comunicarNotaAutorizada(String notaFiscalId, String chaveAcesso,
 			String ambiente) {
 		
@@ -208,6 +228,36 @@ public class AgrixService{
 		
 		call.execute(params);
 		
+	}
+
+	public void comunicarNotaCancelada(String notaFiscalId) {
+		//Não comunicar Autorização quando o ambiente for Homologação
+		if (ambientePelaNotaFiscalId(notaFiscalId) == Ambiente.HOMOLOGACAO)
+			return;
+		
+		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
+			.withSchemaName(AgrixUtil.schema())
+			.withCatalogName("pcg_nf_json_adapter")
+			.withProcedureName("comunicarCancelamento")
+			.declareParameters(new SqlParameter("nfid", Types.VARCHAR));
+	
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		params.addValue("nfid", AgrixUtil.notaFiscalIdToGuid(notaFiscalId), Types.VARCHAR);
+		call.compile();
+		
+		call.execute(params);
+		
+	}
+	
+	private Ambiente ambientePelaNotaFiscalId(String notaFiscalId){
+		if (notaFiscalId == null) return null;
+		
+		if (notaFiscalId.startsWith("H-"))
+			return Ambiente.HOMOLOGACAO;
+		else if (notaFiscalId.startsWith("P-"))
+			return Ambiente.PRODUCAO;
+		return null;
 	}
 
 }
