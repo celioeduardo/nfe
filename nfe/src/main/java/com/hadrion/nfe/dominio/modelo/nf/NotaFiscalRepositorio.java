@@ -23,6 +23,8 @@ public interface NotaFiscalRepositorio {
 	public NotaFiscal notaFiscalPelaChave(ChaveAcesso chave, Ambiente ambiente);
 	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente);
 	public List<NotaFiscal> notasAutorizadas(FilialId filialId, Ambiente ambiente,NotistaId notistaId);
+	public List<NotaFiscal> notasCanceladas(FilialId filialId, Ambiente ambiente);
+	public List<NotaFiscal> notasCanceladas(FilialId filialId, Ambiente ambiente,NotistaId notistaId);
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente);
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente, NotistaId notistaId);
 }

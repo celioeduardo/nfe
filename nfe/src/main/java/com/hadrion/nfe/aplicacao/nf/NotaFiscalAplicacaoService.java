@@ -165,6 +165,26 @@ public class NotaFiscalAplicacaoService {
 		return result;
 
 	}
+	public List<NotaFiscalData> notasFicaisCanceladasResumo(Ambiente ambiente,
+			Double empresa, String filial, Date inicio, Date fim,
+			String notistaId, String notaFiscalId) {
+		
+		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
+		
+		List<NotaFiscal> notas = null;
+		if (notistaId != null && !notistaId.isEmpty())
+			notas = notaFiscalRepositorio.notasCanceladas(
+					new FilialId(filial), ambiente, new NotistaId(notistaId));
+		else
+			notas = notaFiscalRepositorio.notasCanceladas(
+					new FilialId(filial), ambiente);
+		
+		for (NotaFiscal nf : notas)
+			result.add(construir(nf));
+		
+		return result;
+		
+	}
 
 	public List<NotaFiscalData> notasFicaisAutorizadasNaoImpressasResumo(
 			Ambiente ambiente, Double empresa, String filial, Date inicio,

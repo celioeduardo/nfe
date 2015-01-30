@@ -74,13 +74,13 @@ Ext.define('nfe.view.main.MainController', {
     		me.fireEvent('filialTrocada');
     	});
         
-        Ext.toast({
+        /*Ext.toast({
             title: 'Troca de Filial',
             html: record.get('id') + ' - ' + record.get('nome'),
             align: 't',
             bodyPadding: 10,
             width:350
-        });
+        });*/
     },
     
     onModoOperacaoAlterado: function(){

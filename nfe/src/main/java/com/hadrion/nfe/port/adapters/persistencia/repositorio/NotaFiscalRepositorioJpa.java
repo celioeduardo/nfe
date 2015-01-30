@@ -90,4 +90,17 @@ public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 		return null;
 	}
 
+	@Override
+	public List<NotaFiscal> notasCanceladas(FilialId filialId, Ambiente ambiente) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<NotaFiscal> notasCanceladas(FilialId filialId,
+			Ambiente ambiente, NotistaId notistaId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

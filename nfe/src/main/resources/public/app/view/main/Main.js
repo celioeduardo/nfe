@@ -6,7 +6,7 @@ Ext.define('nfe.view.main.Main', {
         'nfe.model.Filial',
         'nfe.model.NotaFiscal',
         'nfe.model.Notista',
-        'nfe.view.cancelamento.CancelamentoModel',
+        'nfe.view.nf.NotasCanceladasModel',
         'Ext.layout.container.Border',
         'nfe.view.main.Header',
         'nfe.view.configuracao.Configuracao',
@@ -26,11 +26,11 @@ Ext.define('nfe.view.main.Main', {
         type: 'border'
     },
 
-    items: [{
+    items: [/*{
         id: 'app-header',
         xtype: 'app-header',
         region: 'north'
-    },{
+    },*/{
         header: {
             heigth:2000,
             layout: 'hbox',
@@ -174,11 +174,9 @@ Ext.define('nfe.view.main.Main', {
             
         },{
             title: 'Canceladas',
-            //xtype: 'panel',
+            xtype: 'notas-canceladas',
             glyph: 0xf00d,
-            layout: 'hbox',
-            xtype: 'panel',
-            width:100
+            layout: 'fit'
         },{
             title: 'Inutilização',
             width:'500',

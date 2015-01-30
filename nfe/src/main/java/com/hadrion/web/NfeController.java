@@ -66,6 +66,20 @@ public class NfeController {
 					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId);
 	}
 	
+	@RequestMapping(value="/canceladas_resumo", method = RequestMethod.GET)
+	public List<NotaFiscalData> canceladasResumo(
+			@RequestParam(value="ambiente") Ambiente ambiente ,
+			@RequestParam(value="empresa",required=false)Double empresa,
+			@RequestParam(value="filial")String filial,
+			@RequestParam(value="inicio",required=false)Date inicio,
+			@RequestParam(value="fim",required=false)Date fim,
+			@RequestParam(value="notista",required=false)String notista,
+			@RequestParam(value="notafiscalid",required=false)String notaFiscalId){
+		
+			return notaFiscalAplicacaoService.notasFicaisCanceladasResumo(
+					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId);
+	}
+	
 	@RequestMapping(value = "/pre_visualizar_danfe", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> preVisualizarDanfe(
 			@RequestParam(value="notaFiscalId")String notaFiscalId) throws IOException, JRException{		
