@@ -17,7 +17,7 @@ import com.thoughtworks.xstream.XStream;
 
 public class EventoConverterTest {
 
-	private static final String XML = 
+	private static final String XML_CANCELAMENTO = 
 			"<evento xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"1.00\">\n" + 
 			"  <infEvento Id=\"ID1101113115018667564200010655002000263878100299390601\">\n" + 
 			"    <cOrgao>31</cOrgao>\n" + 
@@ -36,10 +36,29 @@ public class EventoConverterTest {
 			"  </infEvento>\n" + 
 			"</evento>";
 	
+	private static final String XML_CCE = 
+			"<evento xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"1.00\">\n" + 
+			"  <infEvento Id=\"ID1101103115018667564200010655002000263878100299390601\">\n" + 
+			"    <cOrgao>31</cOrgao>\n" + 
+			"    <tpAmb>1</tpAmb>\n" + 
+			"    <CNPJ>86675642000106</CNPJ>\n" + 
+			"    <chNFe>31150186675642000106550020002638781002993906</chNFe>\n" + 
+			"    <dhEvento>2015-01-27T09:04:22-02:00</dhEvento>\n" + 
+			"    <tpEvento>110110</tpEvento>\n" + 
+			"    <nSeqEvento>1</nSeqEvento>\n" + 
+			"    <verEvento>1.00</verEvento>\n" + 
+			"    <detEvento versao=\"1.00\">\n" + 
+			"      <descEvento>Carta de Correcao</descEvento>\n" + 
+			"      <xCorrecao>Teste de Carta de Correção</xCorrecao>\n" + 
+			"      <xCondUso>A Carta de Correção é disciplinada pelo § 1º-A do art. 7º do Convênio S/N, de 15 de dezembro de 1970 e pode ser utilizada para regularização de erro ocorrido na emissão de documento fiscal, desde que o erro não esteja relacionado com: I - as variáveis que determinam o valor do imposto tais como: base de cálculo, alíquota, diferença de preço, quantidade, valor da operação ou da prestação; II - a correção de dados cadastrais que implique mudança do remetente ou do destinatário; III - a data de emissão ou de saída.</xCondUso>\n" + 
+			"    </detEvento>\n" + 
+			"  </infEvento>\n" + 
+			"</evento>";
+	
 	@Test
-	public void novoEvento() throws SAXException, IOException{
+	public void eventoCancelamento() throws SAXException, IOException{
 		
-		Evento evento = Evento.novoCancelamento(
+		Evento evento = new EventoCancelamento(
 				Uf.MG,
 				Ambiente.PRODUCAO,
 				new Cnpj(86675642000106L),
@@ -50,10 +69,29 @@ public class EventoConverterTest {
 				"EMITIDA INDEVIDAMENTE.................");
 		
 		XStream xstream = XStreamFabrica.criar();
-		xstream.registerConverter(new EventoConverter());
-		xstream.alias("evento", Evento.class);
+		xstream.registerConverter(new EventoCancelamentoConverter());
+		xstream.alias("evento", EventoCancelamento.class);
 		
-		XMLAssert.assertXMLEqual(XML,xstream.toXML(evento));
+		XMLAssert.assertXMLEqual(XML_CANCELAMENTO,xstream.toXML(evento));
+		
+	}
+	@Test
+	public void eventoCartaCorrecao() throws SAXException, IOException{
+		
+		Evento evento = new EventoCartaCorrecao(
+				Uf.MG,
+				Ambiente.PRODUCAO,
+				new Cnpj(86675642000106L),
+				new ChaveAcesso("31150186675642000106550020002638781002993906"),
+				DataUtil.dataHora("27/01/2015 09:04:22", "GMT-02:00"), 
+				1, //Sequencia do evento
+				"Teste de Carta de Correção");
+		
+		XStream xstream = XStreamFabrica.criar();
+		xstream.registerConverter(new EventoCartaCorrecaoConverter());
+		xstream.alias("evento", EventoCartaCorrecao.class);
+		
+		XMLAssert.assertXMLEqual(XML_CCE,xstream.toXML(evento));
 		
 	}
 	

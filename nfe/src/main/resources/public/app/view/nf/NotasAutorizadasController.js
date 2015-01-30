@@ -147,5 +147,39 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
     			}
     		} 
     	},this);
+    },
+    onAbrirCartaCorrecao: function(btn) {
+    	var rec = btn.getWidgetRecord(),
+			me = this;
+    	
+		this.windowCce = Ext.widget('cce',{
+				modal:true,
+				viewModel:{
+					data:{
+						notaFiscalId: rec.get('notaFiscalId'),
+						nf: rec
+					}
+				},
+				listeners:{
+					registrarCartaCorrecao:'registrarCartaCorrecao'
+				}
+			});
+    	this.getView().add(this.windowCce);
+    	this.windowCce.show();
+    },
+    registrarCartaCorrecao:function(notaFiscalId,correcao){
+    	var me = this;
+    	nfe.model.NotaFiscal.registrarCce(notaFiscalId,correcao,
+    		function(){
+    			me.windowCce.close();
+    			me.windowCce = null;
+    			Ext.toast({
+    	            title: 'Carta de Correção',
+    	            html: 'Carta de Correção registrada com Sucesso para NotaFiscal.',
+    	            align: 't',
+    	            bodyPadding: 10,
+    	            width:350
+    	        });
+    		});
     }
 });

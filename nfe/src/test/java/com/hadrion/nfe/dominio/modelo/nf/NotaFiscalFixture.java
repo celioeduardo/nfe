@@ -325,4 +325,10 @@ public class NotaFiscalFixture {
 		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),new Date(),null);
 		return nf;
 	}
+	public static NotaFiscal nfEmHomologacaoAutorizada() {
+		NotaFiscal nf = nfEmHomologacao();
+		nf.emitida();
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),new Date(),null);
+		return nf;
+	}
 }

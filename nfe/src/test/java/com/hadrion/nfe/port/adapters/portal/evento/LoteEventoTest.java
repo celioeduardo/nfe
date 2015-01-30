@@ -19,7 +19,7 @@ public class LoteEventoTest {
 	
 	@Test
 	public void novoLote(){
-		Evento evento1 = Evento.novoCancelamento(
+		Evento evento1 = new EventoCancelamento(
 				Uf.MG,
 				Ambiente.HOMOLOGACAO,
 				new Cnpj(86675642000106L),
@@ -28,7 +28,7 @@ public class LoteEventoTest {
 				1, //Sequencia do evento
 				new NumeroProtocolo("131151658576199"),
 				"Nota Fiscal emitida indevidamente");
-		Evento evento2 = Evento.novoCancelamento(
+		Evento evento2 = new EventoCancelamento(
 				Uf.MG,
 				Ambiente.HOMOLOGACAO,
 				new Cnpj(86675642000106L),

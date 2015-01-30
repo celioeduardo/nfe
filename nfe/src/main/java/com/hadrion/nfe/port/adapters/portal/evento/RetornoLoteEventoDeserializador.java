@@ -4,8 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.evento.RetornoEvento;
 import com.hadrion.nfe.dominio.modelo.portal.evento.RetornoLoteEvento;
@@ -20,15 +22,18 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 class RetornoLoteEventoDeserializador extends AbstractConverter{
 	
-	private String xml;
+	private String xmlRetorno;
+	private Document xmlEnvio;
 	private XStream xstream;
 
-	RetornoLoteEventoDeserializador(String xml){
-		this.xml = xml;
+	RetornoLoteEventoDeserializador(Document xmlEnvio,
+			String xmlRetorno){
+		this.xmlEnvio = xmlEnvio;
+		this.xmlRetorno = xmlRetorno;
 	}
 
 	RetornoLoteEvento deserializar() {
-		return (RetornoLoteEvento) xstream().fromXML(xml);
+		return (RetornoLoteEvento) xstream().fromXML(xmlRetorno);
 	}
 
 	@Override
@@ -55,7 +60,7 @@ class RetornoLoteEventoDeserializador extends AbstractConverter{
 			reader.moveUp();
 		}
 		
-		Document doc = XmlUtil.parseXml(xml);
+		Document doc = XmlUtil.parseXml(xmlRetorno);
 		doc.normalizeDocument();
 		NodeList nodes = doc.getElementsByTagName("infEvento");
 		
@@ -63,6 +68,8 @@ class RetornoLoteEventoDeserializador extends AbstractConverter{
 		for (int i = 0; i < nodes.getLength() ; i++) {
 			String xmlInfEvento = XmlUtil.xmlParaString(nodes.item(i));
 			RetornoEvento e = (RetornoEvento) xstream().fromXML(xmlInfEvento);
+			e.definirXmlRetorno(xmlInfEvento);
+			e.definirXmlEnvio(obterXmlEnvio(e.chaveAcesso()));
 			eventos.add(e);
 		}
 		
@@ -70,7 +77,21 @@ class RetornoLoteEventoDeserializador extends AbstractConverter{
 				new Mensagem(cStat, xMotivo), 
 				eventos);
 	}
-
+	
+	private String obterXmlEnvio(ChaveAcesso chaveAcesso){
+		if (xmlEnvio == null || chaveAcesso == null) return null;
+		NodeList lista = xmlEnvio.getElementsByTagName("infEvento");
+		for (int i=0; i < lista.getLength(); i++){
+			Element el = (Element)lista.item(i);
+			NodeList chaves = el.getElementsByTagName("chNFe");
+			if (chaves.getLength() == 1 && 
+					chaves.item(0).getTextContent().equals(chaveAcesso.chave())){
+				return XmlUtil.xmlParaString(el);
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	public boolean canConvert(@SuppressWarnings("rawtypes") Class type) {
 		return RetornoLoteEvento.class.isAssignableFrom(type);

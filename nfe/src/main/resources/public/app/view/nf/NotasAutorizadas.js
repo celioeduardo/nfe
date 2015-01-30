@@ -73,6 +73,15 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
                   handler: 'cancelar'
               }
           },{
+              width: 105,
+              xtype: 'widgetcolumn',
+              widget: {
+            	  text:'cc-e',
+                  width: 90,
+                  xtype: 'button',
+                  handler: 'onAbrirCartaCorrecao'
+              }
+          },{
               text: 'Observação',
               dataIndex: 'msgDescricao',
               renderer: 'rendererObservacao',

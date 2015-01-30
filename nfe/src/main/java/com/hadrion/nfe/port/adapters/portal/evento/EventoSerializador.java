@@ -21,7 +21,6 @@ public class EventoSerializador {
 	}
 
 	public String serializar(Evento evento){
-		//String xml = xstream().toXML(evento);
 		String xml = xmlCompacto(xstream(), evento);
 		if (certificado != null)
 			xml = Assinador.assinarEvento(xml, certificado);
@@ -37,8 +36,10 @@ public class EventoSerializador {
 	private XStream xstream(){
 		if (xstream == null)
 			xstream = XStreamFabrica.criar();
-		xstream.registerConverter(new EventoConverter());
-		xstream.alias("evento", Evento.class);
+		xstream.registerConverter(new EventoCancelamentoConverter());
+		xstream.registerConverter(new EventoCartaCorrecaoConverter());
+		xstream.alias("evento", EventoCancelamento.class);
+		xstream.alias("evento", EventoCartaCorrecao.class);
 		return xstream;
 	}
 	

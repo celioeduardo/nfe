@@ -16,7 +16,7 @@ public class EventoTest {
 	
 	@Test
 	public void novoEvento(){
-		Evento evento = Evento.novoCancelamento(
+		EventoCancelamento evento = new EventoCancelamento(
 				Uf.MG,
 				Ambiente.HOMOLOGACAO,
 				new Cnpj(86675642000106L),
@@ -38,5 +38,27 @@ public class EventoTest {
 		assertEquals("Nota Fiscal emitida indevidamente",evento.justificativa());
 		
 	}
+//	@Test
+//	public void novoEventoCartaCorrecao(){
+//		Evento evento = Evento.novaCartaCorrecao(
+//				Uf.MG,
+//				Ambiente.HOMOLOGACAO,
+//				new Cnpj(86675642000106L),
+//				new ChaveAcesso("31150186675642000106550020002638781002993906"),
+//				DataUtil.dataHora("04/12/2014 17:27:22", "GMT-02:00"), 
+//				1, //Sequencia do evento
+//				"Teste de Carta de Correção");
+//		
+//		assertEquals("ID1101103115018667564200010655002000263878100299390601",evento.id());
+//		assertEquals(110110,evento.tipo());
+//		assertEquals(31,evento.codigoOrgaoRecepcao());
+//		assertEquals(Ambiente.HOMOLOGACAO,evento.ambiente());
+//		assertEquals(new Cnpj(86675642000106L),evento.cnpjAutor());
+//		assertEquals(new ChaveAcesso("31150186675642000106550020002638781002993906"),evento.chaveAcesso());
+//		assertEquals(DataUtil.dataHora("04/12/2014 17:27:22", "GMT-02:00"),evento.dataHora());
+//		assertEquals(1,evento.sequencia());
+//		assertEquals("Nota Fiscal emitida indevidamente",evento.correcao());
+//		
+//	}
 	
 }

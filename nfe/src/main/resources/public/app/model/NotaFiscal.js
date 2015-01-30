@@ -62,6 +62,20 @@ Ext.define('nfe.model.NotaFiscal', {
     			scope:scope
     		});
     	},
+    	registrarCce:function(notaFiscalId,correcao,success,failure,callback,scope){
+    		Ext.Ajax.request({
+    			url:'notas_fiscais/registrar_cce',
+    			method:'POST',
+    			jsonData:Ext.encode({
+	            	'notaFiscalId':notaFiscalId,
+	            	'correcao':correcao
+	            }),
+    			success:success,
+    			failure:failure,
+    			callback:callback,
+    			scope:scope
+    		});
+    	},
         getTipoEmissao: function(tipoEmissao) {
             return this.prototype.tipos[tipoEmissao];
         }

@@ -48,6 +48,7 @@ import com.hadrion.nfe.dominio.config.MailProperties.Server;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.cancelamento.CancelarNotaService;
 import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamento;
+import com.hadrion.nfe.dominio.modelo.cce.RegistrarCartaCorrecaoService;
 import com.hadrion.nfe.dominio.modelo.empresa.Empresa;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaRepositorio;
 import com.hadrion.nfe.dominio.modelo.filial.Filial;
@@ -58,6 +59,7 @@ import com.hadrion.nfe.dominio.modelo.lote.EnviarLoteService;
 import com.hadrion.nfe.dominio.modelo.lote.GeracaoLoteService;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
+import com.hadrion.nfe.dominio.modelo.nf.CartaCorrecao;
 import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
 import com.hadrion.nfe.dominio.modelo.nf.DescritorNotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
@@ -101,6 +103,9 @@ public class NotaFiscalAplicacaoService {
 	
 	@Autowired
 	private CancelarNotaService cancelarNotaService;
+	
+	@Autowired
+	private RegistrarCartaCorrecaoService registrarCartaCorrecaoService;
 	
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(
 			Ambiente ambiente, Double empresa, String filial, Date inicio,
@@ -164,6 +169,26 @@ public class NotaFiscalAplicacaoService {
 
 		return result;
 
+	}
+	public List<NotaFiscalData> notasFicaisCanceladasResumo(Ambiente ambiente,
+			Double empresa, String filial, Date inicio, Date fim,
+			String notistaId, String notaFiscalId) {
+		
+		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
+		
+		List<NotaFiscal> notas = null;
+		if (notistaId != null && !notistaId.isEmpty())
+			notas = notaFiscalRepositorio.notasCanceladas(
+					new FilialId(filial), ambiente, new NotistaId(notistaId));
+		else
+			notas = notaFiscalRepositorio.notasCanceladas(
+					new FilialId(filial), ambiente);
+		
+		for (NotaFiscal nf : notas)
+			result.add(construir(nf));
+		
+		return result;
+		
 	}
 
 	public List<NotaFiscalData> notasFicaisAutorizadasNaoImpressasResumo(
@@ -307,7 +332,7 @@ public class NotaFiscalAplicacaoService {
 				String.valueOf(nf.numeroProtocoloCancelamento()));
 	}
 	
-	public byte[] gerarDanfe(Document nfeProc,FilialId filialId) throws JRException{
+	private byte[] gerarDanfe(Document nfeProc,FilialId filialId) throws JRException{
 		JasperReport jasperReport;JasperPrint jasperPrint;
 		
     	Map<String,Object> parameters= new HashMap<String, Object>();
@@ -321,7 +346,7 @@ public class NotaFiscalAplicacaoService {
 		return JasperExportManager.exportReportToPdf(jasperPrint);		
 	}
 	
-	public Document gerarXml(NotaFiscal nf) throws JRException{
+	private Document gerarXml(NotaFiscal nf) throws JRException{
 		
 		NotaFiscalSerializador serializador = new NotaFiscalSerializador();
 		
@@ -345,6 +370,41 @@ public class NotaFiscalAplicacaoService {
 		nfeProc.normalizeDocument();
 		
 		return nfeProc;
+	}
+	public Document xmlCce(String notaFiscalId){
+		return gerarXmlCce(nota(notaFiscalId).cartaCorrecaoAtual());
+	}
+	private Document gerarXmlCce(CartaCorrecao cce){
+		
+		Document procEventoNFe = XmlUtil.novoDocument();
+		procEventoNFe.normalizeDocument();
+		Element root = procEventoNFe.createElementNS(
+				"http://www.portalfiscal.inf.br/nfe", "procEventoNFe");
+		procEventoNFe.appendChild(root);
+		
+		Element evento = procEventoNFe.createElement("evento");
+		procEventoNFe.getDocumentElement().appendChild(evento);
+		
+		Document envio = XmlUtil.parseXml(cce.xmlEnvio());
+		Document retorno = XmlUtil.parseXml(cce.xmlRetorno());
+		
+		evento.appendChild(
+				procEventoNFe.importNode(envio.getFirstChild(), true));
+		if (retorno != null){
+			Element retEvento = procEventoNFe.createElement("retEvento");
+			procEventoNFe.getDocumentElement().appendChild(retEvento);
+			retEvento.appendChild(
+					procEventoNFe.importNode(retorno.getFirstChild(), true));
+		}
+//		procEventoNFe.getDocumentElement().appendChild(
+//				procEventoNFe.importNode(envio.getFirstChild(), true));
+//		if (retorno != null)
+//			procEventoNFe.getDocumentElement().appendChild(
+//					procEventoNFe.importNode(retorno.getFirstChild(), true));
+		
+		procEventoNFe.normalizeDocument();
+		
+		return procEventoNFe;
 	}
 	
 	private Server configuracaoEmail(FilialId filialId){
@@ -473,5 +533,11 @@ public class NotaFiscalAplicacaoService {
 				new NotaFiscalId(comando.getNotaFiscalId()), 
 				StringUtils.trimToEmpty(comando.getJustificativa())));
 		return String.valueOf(nota(comando.getNotaFiscalId()).numeroProtocoloCancelamento());
+	}
+	
+	public void registrarCartaCorrecao(RegistrarCartaCorrecaoComando comando){
+		registrarCartaCorrecaoService.registar(
+				new NotaFiscalId(comando.getNotaFiscalId()), 
+				StringUtils.trimToEmpty(comando.getCorrecao()));
 	}
 }

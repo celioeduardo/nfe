@@ -7,7 +7,7 @@ import com.hadrion.nfe.port.adapters.portal.ws.Local;
 
 public interface EventoService {
 	
-	RetornoLoteEvento cancelar(LoteEvento lote, Certificado certificado,
+	RetornoLoteEvento enviar(LoteEvento lote, Certificado certificado,
 			Ambiente ambiente, Local local);
 	
 }

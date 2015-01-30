@@ -53,7 +53,7 @@ public class Corpo {
 			xstream = XStreamFabrica.criar();
 		}
 		
-		xstream.registerConverter(new EventoConverter());
+		xstream.registerConverter(new EventoCancelamentoConverter());
 		xstream.registerConverter(new CorpoConverter());
 		xstream.alias("nfeDadosMsg", Corpo.class);
 		return xstream;

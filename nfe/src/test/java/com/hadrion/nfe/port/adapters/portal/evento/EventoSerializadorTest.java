@@ -26,7 +26,7 @@ public class EventoSerializadorTest {
 				FileUtils.getFile("src","test","resources","assinatura","certificado.pfx"), 
 				"12345678");
 		
-		Evento evento = Evento.novoCancelamento(
+		Evento evento = new EventoCancelamento(
 				Uf.MG,
 				Ambiente.PRODUCAO,
 				new Cnpj(86675642000106L),

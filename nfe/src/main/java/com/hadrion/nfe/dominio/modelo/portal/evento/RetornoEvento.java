@@ -17,6 +17,9 @@ public class RetornoEvento {
 	private NumeroProtocolo numeroProtocolo;
 	private Mensagem mensagem;
 	private Date dataHoraRegistroEvento;
+	private String xmlEnvio;
+	private String xmlRetorno;
+	
 	public RetornoEvento(
 			ChaveAcesso chaveAcesso,
 			int codigoTipoEvento,
@@ -35,6 +38,20 @@ public class RetornoEvento {
 
 	public ChaveAcesso chaveAcesso(){
 		return chaveAcesso;
+	}
+	
+	public void definirXmlRetorno(String xmlRetorno){
+		this.xmlRetorno = xmlRetorno;
+	}
+	public String xmlRetorno(){
+		return xmlRetorno;
+	}
+	public void definirXmlEnvio(String xmlEnvio){
+		this.xmlEnvio = xmlEnvio;
+	}
+	
+	public String xmlEnvio(){
+		return this.xmlEnvio;
 	}
 	
 	public Date dataHoraRegistroEvento(){
@@ -59,6 +76,10 @@ public class RetornoEvento {
 	
 	public boolean cancelamentoHomologado() {
 		return codigoTipoEvento == 110111 &&
+				numeroProtocolo() != null;
+	}
+	public boolean cartaCorrecaoRegistrada() {
+		return codigoTipoEvento == 110110 &&
 				numeroProtocolo() != null;
 	}
 	
@@ -103,5 +124,5 @@ public class RetornoEvento {
 				+ ",numeroProtocolo="+ numeroProtocolo
 				+ "]";
 	}
-	
+
 }

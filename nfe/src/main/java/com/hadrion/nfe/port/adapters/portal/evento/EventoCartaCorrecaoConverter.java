@@ -6,18 +6,18 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-class EventoConverter extends AbstractConverter{
+class EventoCartaCorrecaoConverter extends AbstractConverter{
 	
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean canConvert(Class type) {
-		return Evento.class.isAssignableFrom(type);	
+		return EventoCartaCorrecao.class.isAssignableFrom(type);	
 	}
 
 	@Override
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
-		Evento evento = (Evento) source;
+		EventoCartaCorrecao evento = (EventoCartaCorrecao) source;
 		
 		writer.addAttribute("xmlns", "http://www.portalfiscal.inf.br/nfe");
 		writer.addAttribute("versao", evento.versao());
@@ -35,8 +35,8 @@ class EventoConverter extends AbstractConverter{
 		writer.startNode("detEvento");
 		writer.addAttribute("versao", evento.versao());
 		convert("descEvento", evento.descricao(), writer, context);
-		convert("nProt", evento.numeroProtocolo(), writer, context);
-		convert("xJust", evento.justificativa(), writer, context);
+		convert("xCorrecao", evento.correcao(), writer, context);
+		convert("xCondUso", evento.condicaoUso(), writer, context);
 		writer.endNode();
 		writer.endNode();
 	}

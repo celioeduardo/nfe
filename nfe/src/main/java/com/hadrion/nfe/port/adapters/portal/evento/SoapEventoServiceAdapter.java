@@ -46,7 +46,7 @@ public class SoapEventoServiceAdapter implements EventoService{
 	
 	
 	@Override
-	public RetornoLoteEvento cancelar(
+	public RetornoLoteEvento enviar(
 			final LoteEvento lote, Certificado certificado,
 			Ambiente ambiente, Local local) {
 		
@@ -106,6 +106,7 @@ public class SoapEventoServiceAdapter implements EventoService{
 		System.out.println(writerResult.toString());
 		
 		return new RetornoLoteEventoDeserializador(
+				xml,
 				writerResult.toString()).deserializar();
 	}
 	

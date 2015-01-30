@@ -27,6 +27,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -219,6 +220,11 @@ public class NotaFiscal {
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
 	private String xmlProtocolo;
+	
+	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL)
+	@OrderColumn(name="ORDEM")
+	@JoinColumn(name="ID_NF")
+	private List<CartaCorrecao> cartasCorrecao;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
@@ -831,6 +837,44 @@ public class NotaFiscal {
 		default:
 			return null;
 		}
+	}
+
+	public CartaCorrecao cartaCorrecaoAtual() {
+		int size = getCartasCorrecao().size();
+		if (size == 0)
+			return null;
+		else
+			return getCartasCorrecao().get(size-1);
+	}
+
+	public void registrarCartaCorrecao(int sequencia, String correcao, Date dataRegistro,
+			String xmlEnvio, String xmlRetorno) {
+		
+		if (cartaCorrecaoAtual() != null && 
+				cartaCorrecaoAtual().naoEstaRegistrada())
+			throw new RuntimeException(
+					"Não é possível adicionar nova Carta de Correção. "
+					+ "Existe Carta de Correção prévia não registrada");
+		
+		getCartasCorrecao().add(new CartaCorrecao(sequencia, correcao, 
+				dataRegistro,xmlEnvio, xmlRetorno));
+	}
+	
+	public void registrarCartaCorrecao(String correcao,Date dataRegistro) {
+		registrarCartaCorrecao(ultimaSequenciaCartaCorrecao() + 1,correcao, dataRegistro,null,null);
+	}
+	
+	private List<CartaCorrecao> getCartasCorrecao(){
+		if (cartasCorrecao == null)
+			cartasCorrecao = new ArrayList<CartaCorrecao>();
+		return cartasCorrecao;
+	}
+
+	public int ultimaSequenciaCartaCorrecao() {
+		int result = 0;
+		for (CartaCorrecao cce : getCartasCorrecao()) 
+			result = cce.sequencia();
+		return result;
 	}
 
 }
