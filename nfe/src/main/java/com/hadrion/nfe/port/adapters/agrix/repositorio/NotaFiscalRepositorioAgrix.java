@@ -171,7 +171,20 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbienteAndDanfeImpresso(
 				filialId, notistaId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "dataHoraAutorizacao"));
 	}
-	
-	
+
+	@Override
+	public List<NotaFiscal> notasCanceladas(FilialId filialId,
+			Ambiente ambiente, NotistaId notistaId) {
+		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(filialId, notistaId, 
+				Situacao.CANCELADA,ambiente,new Sort(Direction.DESC, "dataHoraCancelamento"));
+	}
+
+	@Override
+	public List<NotaFiscal> notasCanceladas(FilialId filialId,
+			Ambiente ambiente) {
+		return repositorio.findByFilialIdAndSituacaoAndAmbiente(filialId,  
+				Situacao.CANCELADA,ambiente,new Sort(Direction.DESC, "dataHoraCancelamento"));
+	}
+
 	
 }

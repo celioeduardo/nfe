@@ -165,6 +165,16 @@ public class ReportTest {
 		return NotaFiscalFixture.nfEmProducao();
 	}
     
+    @Test 
+    public void cceXmlDataSource() throws JRException{
+    	
+        File xmlFile = new File("src/test/resources/report/cce.xml");  
+        JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/");
+        
+        jasperReport = JasperCompileManager.compileReport("src/test/resources/report/cce.jrxml");
+        jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
+        JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/cce.pdf");
+    }
     
 }
 
