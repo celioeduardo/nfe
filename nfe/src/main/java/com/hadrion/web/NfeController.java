@@ -126,4 +126,9 @@ public class NfeController {
 			@RequestParam String notaFiscalId){		
 		return XmlUtil.xmlParaString(notaFiscalAplicacaoService.xmlCce(notaFiscalId));
 	}	
+	@RequestMapping(value = "/imprimir_cce", method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> imprimirCce(
+			@RequestParam(value="notaFiscalId")String notaFiscalId) throws IOException, JRException{		
+		return notaFiscalAplicacaoService.imprimirCce(notaFiscalId);
+	}	
 }

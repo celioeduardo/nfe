@@ -96,7 +96,7 @@ public class ReportTest {
     @Test @Ignore
     public void novoParametros() throws JRException{
     	
-    	jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
+    	jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
     	
     	Map<String,Object> parameters= new HashMap<String, Object>();
     	parameters.put("NaturezaOperacao", nf().naturezaOperacao());
@@ -119,7 +119,7 @@ public class ReportTest {
     	parameters.put("NaturezaOperacao", nf().naturezaOperacao());
     	parameters.put("Logo", LogoFixture.logoInputStream());        
         
-        jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
+        jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
         jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, xmlDataSource);  
         JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");   	
     }
@@ -130,7 +130,7 @@ public class ReportTest {
         File xmlFile = new File("src/test/resources/report/nfe.xml");  
         JRXmlDataSource xmlDataSource = new JRXmlDataSource( xmlFile,"/nfeProc/NFe/infNFe/det");
         
-        jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
+        jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
         jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
         JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
     }
@@ -143,7 +143,7 @@ public class ReportTest {
     			"</nfeProc>", "UTF-8");
     	
     	JRXmlDataSource xmlDataSource = new JRXmlDataSource( xmlFile,"/nfeProc/NFe/infNFe/det");    	
-    	jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
+    	jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
     	jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
     	JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
     }
@@ -156,7 +156,7 @@ public class ReportTest {
     	File xmlFile = new File("src/test/resources/report/nfe.xml");  
     	JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/nfeProc/NFe/infNFe/det");
     	
-    	jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
+    	jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
     	jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, xmlDataSource);  
     	JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
     	//JasperViewer.viewReport(jasperPrint, true); 
@@ -171,7 +171,7 @@ public class ReportTest {
         File xmlFile = new File("src/test/resources/report/cce.xml");  
         JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/");
         
-        jasperReport = JasperCompileManager.compileReport("src/test/resources/report/cce.jrxml");
+        jasperReport = JasperCompileManager.compileReport("src/main/resources/report/cce.jrxml");
         jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
         JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/cce.pdf");
     }

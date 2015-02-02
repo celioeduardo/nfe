@@ -96,7 +96,7 @@ public class EmailTest {
 		File xmlFile = new File("src/test/resources/report/nfe.xml");
     	
     	JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/nfeProc/NFe/infNFe/det");    	
-    	jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
+    	jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
     	jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
 
     	return new ByteArrayDataSource(JasperExportManager.exportReportToPdf(jasperPrint), "application/xml");
