@@ -156,12 +156,12 @@ public class RetornoEventoDeserializadorTest {
 		assertEquals(
 				new RetornoLoteEvento(new Mensagem(128,"Lote de Evento Processado."), 
 						new RetornoEvento(
-								new ChaveAcesso("31141286675642000106550020002048171000000014"),
-								110111,
-								"CANCELAMENTO",
-								new Mensagem(220,"Rejeicao: Prazo de Cancelamento Superior ao Previsto na Legislacao"), 
-								DataUtil.dataHora("27/01/2015 17:47:36", "GMT-02:00"),
-								null)),
+								new ChaveAcesso("31141286675642000106550020002048861000000011"),
+								110110,
+								"CARTA DE CORRECAO",
+								new Mensagem(135,"Evento registrado e vinculado a NF-e."), 
+								DataUtil.dataHora("30/01/2015 17:52:28", "GMT-02:00"),
+								new NumeroProtocolo("131150045789855"))),
 								deserializador.deserializar());
 	}
 	

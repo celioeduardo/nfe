@@ -55,7 +55,7 @@ dependencies {
 	
     compile("com.h2database:h2")
 
-	testCompile('xmlunit:xmlunit:1.4')
+	compile('xmlunit:xmlunit:1.4')
     testCompile("org.springframework.boot:spring-boot-starter-test")
   
 }

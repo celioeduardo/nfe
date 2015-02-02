@@ -10,12 +10,12 @@ import org.apache.commons.io.FileUtils;
 public class LogoFixture {
 	
 	public static File logoFile(){
-		return FileUtils.getFile("src","test","resources","report","logo.jpg");
+		return FileUtils.getFile("src","main","resources","report","logo.jpg");
 	}
 	
 	public static InputStream logoInputStream() throws FileNotFoundException{
 		
-		return new FileInputStream("src/test/resources/report/logo.jpg");
+		return new FileInputStream("src/main/resources/report/logo.jpg");
 	}
 
 }
