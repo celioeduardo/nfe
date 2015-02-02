@@ -8,8 +8,6 @@ public class NotaFiscalData {
 	private String serie;
 	private Date emissao;
 	private Double valor;
-	private String publicoTipo;
-	private Long publicoCodigo;
 	private String publicoNome;
 	private String tipo;
 	private Long msgCodigo;
@@ -20,39 +18,48 @@ public class NotaFiscalData {
 	private String numeroProtocoloAutorizacao;
 	private Date dataHoraCancelamento;
 	private String numeroProtocoloCancelamento;
+	private Integer cceSequencia;
+	private String cceCorrecao;
 	
 	public NotaFiscalData(){}
 	
-	public NotaFiscalData(String notaFiscalId,Long numero, String serie, 
-			String chave,
-			String tipoEmissao,
-			Date emissao,
-			Double valor, String tipoPublico,Long codigoPublico,
-			String nomePublico,String tipo,
-			Long msgCodigo, String msgDescricao,
-			Date dataHoraAutorizacao,
-			String numeroProtocoloAutorizacao,
-			Date dataHoraCancelamento,
-			String numeroProtocoloCancelamento) {
+	public NotaFiscalData(String notaFiscalId, Long numero, String serie,
+			Date emissao, Double valor,String publicoNome, String tipo, Long msgCodigo,
+			String msgDescricao, String chave, String tipoEmissao,
+			Date dataHoraAutorizacao, String numeroProtocoloAutorizacao,
+			Date dataHoraCancelamento, String numeroProtocoloCancelamento,
+			Integer cceSequencia, String cceCorrecao) {
 		super();
-		this.notaFiscalId=notaFiscalId;
+		this.notaFiscalId = notaFiscalId;
 		this.numero = numero;
 		this.serie = serie;
-		this.chave = chave;
-		this.tipoEmissao = tipoEmissao;
 		this.emissao = emissao;
 		this.valor = valor;
-		this.publicoTipo=tipoPublico;
-		this.publicoCodigo=codigoPublico;
-		this.publicoNome=nomePublico;
-		this.tipo=tipo;
+		this.publicoNome = publicoNome;
+		this.tipo = tipo;
 		this.msgCodigo = msgCodigo;
 		this.msgDescricao = msgDescricao;
+		this.chave = chave;
+		this.tipoEmissao = tipoEmissao;
 		this.dataHoraAutorizacao = dataHoraAutorizacao;
 		this.numeroProtocoloAutorizacao = numeroProtocoloAutorizacao;
 		this.dataHoraCancelamento = dataHoraCancelamento;
 		this.numeroProtocoloCancelamento = numeroProtocoloCancelamento;
+		this.cceSequencia = cceSequencia;
+		this.cceCorrecao = cceCorrecao;
 	}
+
+
+	public Integer getCceSequencia() {
+		return cceSequencia;
+	}
+
+	public String getCceCorrecao() {
+		return cceCorrecao;
+	}
+
+
+
 	public String getNumeroProtocoloAutorizacao() {
 		return numeroProtocoloAutorizacao;
 	}
@@ -139,22 +146,6 @@ public class NotaFiscalData {
 
 	public void setValor(Double valor) {
 		this.valor = valor;
-	}
-
-	public String getPublicoTipo() {
-		return publicoTipo;
-	}
-
-	public void setPublicoTipo(String tipoPublico) {
-		this.publicoTipo = tipoPublico;
-	}
-
-	public Long getPublicoCodigo() {
-		return publicoCodigo;
-	}
-
-	public void setPublicoCodigo(Long codigoPublico) {
-		this.publicoCodigo = codigoPublico;
 	}
 
 	public String getPublicoNome() {
