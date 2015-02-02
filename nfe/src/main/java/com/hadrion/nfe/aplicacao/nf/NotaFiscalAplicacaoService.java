@@ -123,17 +123,15 @@ public class NotaFiscalAplicacaoService {
 			result.add(new NotaFiscalData(
 					nf.notaFiscalId().id(), nf.numero(),
 					String.valueOf(nf.serie().numero()),
-					nf.chave() != null ? String.valueOf(nf.chave()) : null,
-					String.valueOf(nf.tipoEmissao()), 
 					nf.emissao(), 
 					nf.valor().valor(), 
-					nf.publicoTipo(), 
-					nf.publicoCodigo(), 
 					nf.publicoNome(), 
 					nf.tipo(),
 					nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null, 
 					nf.mensagem() != null ? nf.mensagem().descricao() : null,
-					null,null,null,null));
+					nf.chave() != null ? String.valueOf(nf.chave()) : null,
+					String.valueOf(nf.tipoEmissao()), 
+					null,null,null,null,null,null));
 		}
 
 		return result;
@@ -314,22 +312,21 @@ public class NotaFiscalAplicacaoService {
 		return new NotaFiscalData(
 				nf.notaFiscalId().id(),
 				nf.numero(),
-				String.valueOf(nf.serie().numero()),
-				nf.chaveAcesso() != null ? String.valueOf(nf.chaveAcesso())
-						: null,
-				String.valueOf(nf.tipoEmissao()),
+				String.valueOf(nf.serie()),
 				nf.emissao(),
 				nf.total().valor(),
-				null,
-				null,
 				nf.destinatario().razaoSocial(),
 				nf.tipoOperacao().toString(),
 				nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,
 				nf.mensagem() != null ? nf.mensagem().descricao() : null,
+				nf.chaveAcesso() != null ? String.valueOf(nf.chaveAcesso()): null,
+				String.valueOf(nf.tipoEmissao()),
 				nf.dataHoraAutorizacao(),
 				String.valueOf(nf.numeroProtocoloAutorizacao()),
 				nf.dataHoraCancelamento(),
-				String.valueOf(nf.numeroProtocoloCancelamento()));
+				String.valueOf(nf.numeroProtocoloCancelamento()),
+				nf.cartaCorrecaoAtual() != null ? nf.cartaCorrecaoAtual().sequencia() : null,
+				nf.cartaCorrecaoAtual() != null ? nf.cartaCorrecaoAtual().correcao() : null);
 	}
 	
 	private byte[] gerarDanfe(Document nfeProc,FilialId filialId) throws JRException{

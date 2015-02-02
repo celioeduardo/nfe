@@ -82,11 +82,17 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
                   handler: 'onAbrirCartaCorrecao'
               }
           },{
-              text: 'Observação',
-              dataIndex: 'msgDescricao',
-              renderer: 'rendererObservacao',
+              text: 'Correção',
+              dataIndex: 'cceCorrecao',
+              renderer: 'rendererCceCorrecao',
               cellWrap: true,
               flex: 2
+          },{
+        	  text: 'Observação',
+        	  dataIndex: 'msgDescricao',
+        	  renderer: 'rendererObservacao',
+        	  cellWrap: true,
+        	  flex: 2
           }
     ]
 });
