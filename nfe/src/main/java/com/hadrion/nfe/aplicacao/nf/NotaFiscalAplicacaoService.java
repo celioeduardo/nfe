@@ -123,17 +123,15 @@ public class NotaFiscalAplicacaoService {
 			result.add(new NotaFiscalData(
 					nf.notaFiscalId().id(), nf.numero(),
 					String.valueOf(nf.serie().numero()),
-					nf.chave() != null ? String.valueOf(nf.chave()) : null,
-					String.valueOf(nf.tipoEmissao()), 
 					nf.emissao(), 
 					nf.valor().valor(), 
-					nf.publicoTipo(), 
-					nf.publicoCodigo(), 
 					nf.publicoNome(), 
 					nf.tipo(),
 					nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null, 
 					nf.mensagem() != null ? nf.mensagem().descricao() : null,
-					null,null,null,null));
+					nf.chave() != null ? String.valueOf(nf.chave()) : null,
+					String.valueOf(nf.tipoEmissao()), 
+					null,null,null,null,null,null));
 		}
 
 		return result;
@@ -314,22 +312,21 @@ public class NotaFiscalAplicacaoService {
 		return new NotaFiscalData(
 				nf.notaFiscalId().id(),
 				nf.numero(),
-				String.valueOf(nf.serie().numero()),
-				nf.chaveAcesso() != null ? String.valueOf(nf.chaveAcesso())
-						: null,
-				String.valueOf(nf.tipoEmissao()),
+				String.valueOf(nf.serie()),
 				nf.emissao(),
 				nf.total().valor(),
-				null,
-				null,
 				nf.destinatario().razaoSocial(),
 				nf.tipoOperacao().toString(),
 				nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,
 				nf.mensagem() != null ? nf.mensagem().descricao() : null,
+				nf.chaveAcesso() != null ? String.valueOf(nf.chaveAcesso()): null,
+				String.valueOf(nf.tipoEmissao()),
 				nf.dataHoraAutorizacao(),
 				String.valueOf(nf.numeroProtocoloAutorizacao()),
 				nf.dataHoraCancelamento(),
-				String.valueOf(nf.numeroProtocoloCancelamento()));
+				String.valueOf(nf.numeroProtocoloCancelamento()),
+				nf.cartaCorrecaoAtual() != null ? nf.cartaCorrecaoAtual().sequencia() : null,
+				nf.cartaCorrecaoAtual() != null ? nf.cartaCorrecaoAtual().correcao() : null);
 	}
 	
 	private byte[] gerarDanfe(Document nfeProc,FilialId filialId) throws JRException{
@@ -341,7 +338,7 @@ public class NotaFiscalAplicacaoService {
     		parameters.put("Logo", new ByteArrayInputStream(logo));
 		
 		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");
-		jasperReport = JasperCompileManager.compileReport("src/test/resources/report/danfe.jrxml");
+		jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
 		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,xmlDataSource);		
 		return JasperExportManager.exportReportToPdf(jasperPrint);		
 	}
@@ -539,5 +536,36 @@ public class NotaFiscalAplicacaoService {
 		registrarCartaCorrecaoService.registar(
 				new NotaFiscalId(comando.getNotaFiscalId()), 
 				StringUtils.trimToEmpty(comando.getCorrecao()));
+	}
+
+	
+	public ResponseEntity<InputStreamResource> imprimirCce(
+			String notaFiscalId) throws IOException, JRException {
+		NotaFiscal nf = notaFiscalRepositorio
+				.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
+		return obterCce(nf);
+	}
+	public ResponseEntity<InputStreamResource> obterCce(NotaFiscal nf) throws JRException{
+		
+		byte[] pdf = gerarCce(gerarXmlCce(nf.cartaCorrecaoAtual()),nf.filialId());
+		
+		HttpHeaders respHeaders = new HttpHeaders();
+		respHeaders.setContentType(new MediaType("application", "pdf"));
+		respHeaders.set("Cache-Control", "no-cache");
+		respHeaders.set("Content-Disposition",
+				"inline; filename=pre-" + nf.chaveAcesso() + ".pdf");
+		InputStreamResource isr = new InputStreamResource(
+				new ByteArrayInputStream(pdf));
+		return new ResponseEntity<InputStreamResource>(isr, respHeaders,
+				HttpStatus.OK);
+	}
+
+	private byte[] gerarCce(Document cce,FilialId filialId) throws JRException{
+		JasperReport jasperReport;JasperPrint jasperPrint;
+		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(cce), "/");
+		
+		jasperReport = JasperCompileManager.compileReport("src/main/resources/report/cce.jrxml");
+		jasperPrint = JasperFillManager.fillReport(jasperReport, null,xmlDataSource);		
+		return JasperExportManager.exportReportToPdf(jasperPrint);		
 	}
 }
