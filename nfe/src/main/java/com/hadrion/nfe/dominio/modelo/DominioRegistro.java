@@ -14,6 +14,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 public class DominioRegistro implements ApplicationContextAware {
 
 	private static ApplicationContext applicationContext;
+	private static EventoDominioPublicador eventoDominioPublicador;
 	
 	public static NotaFiscalRepositorio notaFiscalRepositorio(){
 		return (NotaFiscalRepositorio) 
@@ -26,7 +27,10 @@ public class DominioRegistro implements ApplicationContextAware {
 	}
 	
 	public static EventoDominioPublicador eventoDominioPublicador(){
-		return (EventoDominioPublicador) applicationContext.getBean(EventoDominioPublicadorDefault.class);
+		if (eventoDominioPublicador == null)
+			eventoDominioPublicador = (EventoDominioPublicador) 
+				applicationContext.getBean(EventoDominioPublicadorDefault.class);
+		return eventoDominioPublicador;
 	}
 	@Override
 	public synchronized void setApplicationContext(
@@ -34,6 +38,10 @@ public class DominioRegistro implements ApplicationContextAware {
 		if (DominioRegistro.applicationContext == null) {
 			DominioRegistro.applicationContext = applicationContext;
 		}
-
+	}
+	
+	public synchronized static void setEventoDominioPublicador(
+			EventoDominioPublicador publicador){
+		eventoDominioPublicador = publicador;
 	}
 }

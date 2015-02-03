@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo.inutillizacao;
+package com.hadrion.nfe.dominio.modelo.inutilizacao;
 
 import java.util.Date;
 

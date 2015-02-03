@@ -1,18 +1,28 @@
 package com.hadrion.nfe.dominio.modelo.inutilizacao;
 
+import java.util.Date;
+
+import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
+import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 
 public class Inutilizacao {
 
 	private InutilizacaoId inutilizacaoId; 
+	private Ambiente ambiente;
 	private Serie serie; 
 	private long numeroInicial;
 	private long numeroFinal; 
 	private String justificativa; 
 	private FilialId filialId;
+	private Date dataHoraHomologacao;
+	private NumeroProtocolo protocolo;
+	private String xmlRetorno;
 	
-	public Inutilizacao(InutilizacaoId inutilizacaoId, Serie serie,
+	public Inutilizacao(InutilizacaoId inutilizacaoId, 
+			Ambiente ambiente, Serie serie,
 			long numeroInicial, long numeroFinal, String justificativa,
 			FilialId filialId) {
 		super();
@@ -20,6 +30,7 @@ public class Inutilizacao {
 		if (numeroInicial > numeroFinal)
 			throw new RuntimeException("Número Incial não pode ser maior que Número Final");
 		
+		this.ambiente = ambiente;
 		this.inutilizacaoId = inutilizacaoId;
 		this.serie = serie;
 		this.numeroInicial = numeroInicial;
@@ -58,4 +69,37 @@ public class Inutilizacao {
 	@SuppressWarnings("unused")
 	private Inutilizacao() {}
 
+	public void homologar(Date dataHoraHomologacao,
+			NumeroProtocolo numeroProtocolo, String xmlRetorno) {
+		this.dataHoraHomologacao = dataHoraHomologacao;
+		this.protocolo = numeroProtocolo;
+		this.xmlRetorno = xmlRetorno;
+		
+		DominioRegistro.eventoDominioPublicador().
+			publicar(new InutilizacaoHomologada(ambiente));
+	}
+
+	public Date dataHoraHomologacao() {
+		return dataHoraHomologacao;
+	}
+
+	public NumeroProtocolo numeroProtocolo() {
+		return protocolo;
+	}
+
+	public String xmlRetorno(){
+		return xmlRetorno;
+	}
+
+	public boolean estaHomologada() {
+		return dataHoraHomologacao != null;
+	}
+
+	public void falhar(String xmlRetorno) {
+		this.xmlRetorno = xmlRetorno;
+	}
+	
+	public Ambiente ambiente(){
+		return ambiente;
+	}
 }
