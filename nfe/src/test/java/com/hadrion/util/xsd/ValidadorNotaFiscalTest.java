@@ -20,7 +20,7 @@ public class ValidadorNotaFiscalTest {
 	@Test
 	public void validarOk() throws SAXException, IOException{
 		Source source = new StreamSource(arquivoXmlOk());
-		validador = new Validador(arquivoXsd(),source);
+		validador = new Validador(xsd(),source);
 		assertFalse(validador.temErros());
 		assertEquals(0,validador.quantidadeErros());
 	}
@@ -28,14 +28,16 @@ public class ValidadorNotaFiscalTest {
 	@Test
 	public void validarNok() throws SAXException, IOException{
 		Source source = new StreamSource(arquivoXmlNok());
-		validador = new Validador(arquivoXsd(),source);
+		validador = new Validador(xsd(),source);
 		assertTrue(validador.temErros());
         assertEquals(27,validador.quantidadeErros());
 	}
 	
-	private File arquivoXsd(){
-		return FileUtils.getFile("src","main","resources","xsd","PL_008e","nfe_v3.10.xsd");
+	private Source xsd() {
+		return new StreamSource(getClass().getClassLoader()
+				.getResourceAsStream("xsd/PL_008e/nfe_v3.10.xsd"));
 	}
+	
 	private File arquivoXmlOk(){
 		return FileUtils.getFile("src","test","resources","xsd","nf-ok.xml");
 	}

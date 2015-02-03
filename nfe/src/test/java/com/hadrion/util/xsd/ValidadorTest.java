@@ -20,7 +20,7 @@ public class ValidadorTest {
 	@Test
 	public void validarOk() throws SAXException, IOException{
 		Source source = new StreamSource(arquivoXmlOk());
-		validador = new Validador(arquivoXsd(),source);
+		validador = new Validador(xsd(),source);
 		assertFalse(validador.temErros());
 		assertEquals(0,validador.quantidadeErros());
 	}
@@ -28,14 +28,16 @@ public class ValidadorTest {
 	@Test
 	public void validarNok() throws SAXException, IOException{
 		Source source = new StreamSource(arquivoXmlNok());
-		validador = new Validador(arquivoXsd(),source);
+		validador = new Validador(xsd(),source);
 		assertTrue(validador.temErros());
         assertEquals(6,validador.quantidadeErros());
 	}
 	
-	private File arquivoXsd(){
-		return FileUtils.getFile("src","test","resources","xsd","test.xsd");
+	private Source xsd() {
+		return new StreamSource(getClass().getClassLoader()
+				.getResourceAsStream("xsd/test.xsd"));
 	}
+	
 	private File arquivoXmlOk(){
 		return FileUtils.getFile("src","test","resources","xsd","test-ok.xml");
 	}

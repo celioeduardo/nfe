@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,7 +19,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 
 import org.apache.commons.io.IOUtils;
@@ -83,7 +83,8 @@ public class ReportTest {
     @Ignore @Test
 	public void novoDataSource() throws JRException{
     	
-        jasperReport = JasperCompileManager.compileReport("src/test/resources/report/test.jrxml");
+        jasperReport = JasperCompileManager.compileReport(
+        		getClass().getClassLoader().getResourceAsStream("report/test.jrxml"));
 
 		Vector<NotaFiscal> notas = new Vector<NotaFiscal>();
 		notas.add(nf());
@@ -96,7 +97,8 @@ public class ReportTest {
     @Test @Ignore
     public void novoParametros() throws JRException{
     	
-    	jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
+    	jasperReport = JasperCompileManager.compileReport(
+    			getClass().getClassLoader().getResourceAsStream("report/danfe.jrxml"));
     	
     	Map<String,Object> parameters= new HashMap<String, Object>();
     	parameters.put("NaturezaOperacao", nf().naturezaOperacao());
@@ -111,7 +113,8 @@ public class ReportTest {
     @Test @Ignore
     public void novoXml() throws JRException, FileNotFoundException{
     	
-    	Document xml = JRXmlUtils.parse(JRLoader.getLocationInputStream("src/test/resources/report/nfe.xml"));
+    	Document xml = JRXmlUtils.parse(
+    			getClass().getClassLoader().getResourceAsStream("report/nfe.xml"));
     	
         JRXmlDataSource xmlDataSource = new JRXmlDataSource(xml,"/nfeProc/NFe/infNFe/det");
         
@@ -119,7 +122,8 @@ public class ReportTest {
     	parameters.put("NaturezaOperacao", nf().naturezaOperacao());
     	parameters.put("Logo", LogoFixture.logoInputStream());        
         
-        jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
+        jasperReport = JasperCompileManager.compileReport(
+        		getClass().getClassLoader().getResourceAsStream("report/danfe.jrxml"));
         jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, xmlDataSource);  
         JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");   	
     }
@@ -127,10 +131,12 @@ public class ReportTest {
     @Test @Ignore
     public void novoXmlDataSource() throws JRException{
     	
-        File xmlFile = new File("src/test/resources/report/nfe.xml");  
-        JRXmlDataSource xmlDataSource = new JRXmlDataSource( xmlFile,"/nfeProc/NFe/infNFe/det");
+        JRXmlDataSource xmlDataSource = new JRXmlDataSource(
+        		getClass().getClassLoader().getResourceAsStream("report/nfe.xml"),
+        		"/nfeProc/NFe/infNFe/det");
         
-        jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
+        jasperReport = JasperCompileManager.compileReport(
+        		getClass().getClassLoader().getResourceAsStream("report/danfe.jrxml"));
         jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
         JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
     }
@@ -143,7 +149,8 @@ public class ReportTest {
     			"</nfeProc>", "UTF-8");
     	
     	JRXmlDataSource xmlDataSource = new JRXmlDataSource( xmlFile,"/nfeProc/NFe/infNFe/det");    	
-    	jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
+    	jasperReport = JasperCompileManager.compileReport(
+    			getClass().getClassLoader().getResourceAsStream("report/danfe.jrxml"));
     	jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
     	JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
     }
@@ -156,7 +163,8 @@ public class ReportTest {
     	File xmlFile = new File("src/test/resources/report/nfe.xml");  
     	JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/nfeProc/NFe/infNFe/det");
     	
-    	jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
+    	jasperReport = JasperCompileManager.compileReport(
+    			getClass().getClassLoader().getResourceAsStream("report/danfe.jrxml"));
     	jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, xmlDataSource);  
     	JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
     	//JasperViewer.viewReport(jasperPrint, true); 
@@ -166,12 +174,13 @@ public class ReportTest {
 	}
     
     @Test 
-    public void cceXmlDataSource() throws JRException{
+    public void cceXmlDataSource() throws JRException, URISyntaxException, IOException{
     	
-        File xmlFile = new File("src/test/resources/report/cce.xml");  
-        JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlFile,"/");
-        
-        jasperReport = JasperCompileManager.compileReport("src/main/resources/report/cce.jrxml");
+        JRXmlDataSource xmlDataSource = new JRXmlDataSource(
+        		getClass().getClassLoader().getResourceAsStream("report/cce.xml"),"/");
+
+        jasperReport = JasperCompileManager.compileReport(
+        		getClass().getClassLoader().getResourceAsStream("report/cce.jrxml"));
         jasperPrint = JasperFillManager.fillReport(jasperReport, null, xmlDataSource);  
         JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/cce.pdf");
     }

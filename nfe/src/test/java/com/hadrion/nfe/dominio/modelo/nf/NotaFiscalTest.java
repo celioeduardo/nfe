@@ -9,14 +9,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.dominio.modelo.DominioTest;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 
-public class NotaFiscalTest {
+public class NotaFiscalTest extends DominioTest{
 	
 	private NotaFiscal nf;
 	
 	@Before
-	public void setUp(){
+	public void setUp() throws Exception{
+		super.setUp();
 		nf = NotaFiscalFixture.nfEmProducao();
 	}
 	

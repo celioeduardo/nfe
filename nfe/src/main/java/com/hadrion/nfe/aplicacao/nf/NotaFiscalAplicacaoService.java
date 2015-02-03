@@ -338,7 +338,7 @@ public class NotaFiscalAplicacaoService {
     		parameters.put("Logo", new ByteArrayInputStream(logo));
 		
 		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");
-		jasperReport = JasperCompileManager.compileReport("src/main/resources/report/danfe.jrxml");
+		jasperReport = JasperCompileManager.compileReport(getClass().getClassLoader().getResourceAsStream("report/danfe.jrxml"));
 		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,xmlDataSource);		
 		return JasperExportManager.exportReportToPdf(jasperPrint);		
 	}
@@ -564,7 +564,8 @@ public class NotaFiscalAplicacaoService {
 		JasperReport jasperReport;JasperPrint jasperPrint;
 		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(cce), "/");
 		
-		jasperReport = JasperCompileManager.compileReport("src/main/resources/report/cce.jrxml");
+		jasperReport = JasperCompileManager.compileReport(
+				getClass().getClassLoader().getResourceAsStream("report/cce.jrxml"));
 		jasperPrint = JasperFillManager.fillReport(jasperReport, null,xmlDataSource);		
 		return JasperExportManager.exportReportToPdf(jasperPrint);		
 	}

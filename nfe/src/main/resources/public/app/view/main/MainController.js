@@ -128,6 +128,8 @@ Ext.define('nfe.view.main.MainController', {
     },
     
     obtidoRetornoLotes: function(){
+    	vm = this.getViewModel();
+    	
     	if (!vm.get('filial')) return;
 
     	this.getView().down('notas-pendentes')

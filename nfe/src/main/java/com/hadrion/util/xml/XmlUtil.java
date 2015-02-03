@@ -113,8 +113,9 @@ public class XmlUtil {
 		}
 		
 		try {
-			doc = builder.parse(new ByteArrayInputStream(xml.getBytes()));
+			doc = builder.parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
 		} catch (SAXException | IOException e) {
+			e.printStackTrace();
 		}
 		
 		return doc;

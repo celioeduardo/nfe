@@ -81,7 +81,7 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
     		widget.setText('danfe');
     },
     rendererCceCorrecao: function(correcao, metadata, rec){
-        return Ext.String.format('<a href="notas_fiscais/imprimir_cce?notaFiscalId={0}&sequencia={1}">{2}</a>',
+        return Ext.String.format('<a href="notas_fiscais/imprimir_cce?notaFiscalId={0}&sequencia={1}" target="_blank">{2}</a>',
         	rec.get('notaFiscalId'),
         	rec.get('cceSequencia'),
         	Ext.util.Format.ellipsis(correcao,100));
