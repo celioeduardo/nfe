@@ -62,6 +62,8 @@ public class Cofins {
 	}
 
 	public Dinheiro valor() {
+		if (cst()==null)
+			return Dinheiro.ZERO;
 		switch (cst()) {
 		case CST_03:
 			return calcularPelaQuantidade();
