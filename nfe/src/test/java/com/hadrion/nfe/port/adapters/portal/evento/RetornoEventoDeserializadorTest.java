@@ -145,8 +145,6 @@ public class RetornoEventoDeserializadorTest {
 						DataUtil.dataHora("30/01/2015 17:52:28", "GMT-02:00"),
 						new NumeroProtocolo("131150045789855"))),
 			retornoLoteEvento);
-		System.out.println(retornoLoteEvento.retornoDaNota(new ChaveAcesso("31141286675642000106550020002048861000000011")).xmlEnvio());
-		System.out.println(retornoLoteEvento.retornoDaNota(new ChaveAcesso("31141286675642000106550020002048861000000011")).xmlRetorno());
 		assertNotNull(retornoLoteEvento.retornoDaNota(new ChaveAcesso("31141286675642000106550020002048861000000011")).xmlEnvio());
 		assertNotNull(retornoLoteEvento.retornoDaNota(new ChaveAcesso("31141286675642000106550020002048861000000011")).xmlRetorno());
 	}

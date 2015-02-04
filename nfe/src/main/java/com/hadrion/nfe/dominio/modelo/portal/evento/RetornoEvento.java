@@ -116,7 +116,7 @@ public class RetornoEvento {
 
 	@Override
 	public String toString() {
-		return "Evento [chaveAcesso=" + chaveAcesso
+		return "RetornoEvento [chaveAcesso=" + chaveAcesso
 				+ ",codigoTipoEvento="+ codigoTipoEvento
 				+ ",descricaoTipoEvento="+ descricaoTipoEvento
 				+ ",mensagem="+ mensagem

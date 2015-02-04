@@ -58,6 +58,11 @@ public class Filial {
 
 	public Filial(FilialId filialId, String nome, Cnpj cnpj,
 			EmpresaId empresaId, Ambiente ambiente, String apelido) {
+		this(filialId,nome,cnpj,empresaId,ambiente,apelido,null);	
+	}
+	
+	public Filial(FilialId filialId, String nome, Cnpj cnpj,
+			EmpresaId empresaId, Ambiente ambiente, String apelido, Uf uf) {
 		this.filialId = filialId;
 		this.nome = nome;
 		this.cnpj = cnpj;
@@ -65,6 +70,7 @@ public class Filial {
 		this.ambiente = ambiente;
 		this.modoOperacao = ModoOperacao.NORMAL;
 		this.apelido = apelido;
+		this.uf = uf;
 	}
 	
 	public FilialId filialId(){

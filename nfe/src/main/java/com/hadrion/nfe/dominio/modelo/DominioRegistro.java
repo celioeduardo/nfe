@@ -27,9 +27,14 @@ public class DominioRegistro implements ApplicationContextAware {
 	}
 	
 	public static EventoDominioPublicador eventoDominioPublicador(){
-		if (eventoDominioPublicador == null)
+		if (eventoDominioPublicador == null){
+			
+			if (applicationContext == null)
+				throw new RuntimeException("ApplicationContext não foi definido.");
+			
 			eventoDominioPublicador = (EventoDominioPublicador) 
 				applicationContext.getBean(EventoDominioPublicadorDefault.class);
+		}
 		return eventoDominioPublicador;
 	}
 	@Override
