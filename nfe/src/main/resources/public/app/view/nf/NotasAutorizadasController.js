@@ -68,7 +68,7 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
     },
     rendererAutorizacao: function(valor, metadata, rec){
     	return Ext.String.format(
-    			'<div style="font-size: 12px;font-style: italic;margin-top: 20px;">{0}</div>',
+    			'<div style="font-size: 12px;font-style: normal;margin-top: 20px;">{0}</div>',
     			"autorização<br>" + Ext.Date.format(valor,'d/m/Y H:i:s') +
     			"<br>"+rec.get('numeroProtocoloAutorizacao'));
     },

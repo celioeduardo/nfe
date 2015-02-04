@@ -35,6 +35,13 @@ Ext.define('nfe.view.lote.LotesPendentesController', {
 
     onClickAtualizar: function (){
         this.getViewModel().getStore('lotesPendentes').reload();
+    },
+    
+    rendererLote: function(valor, metadata, rec){
+        return Ext.String.format(
+                '<div style="font-size: 12px;font-weight: normal;font-style: normal;margin-top: 5px;">'+
+        		'Número: {0}<br>Recibo: {1}</div>',
+                rec.get('numero'),rec.get('numeroRecibo'));
     }
 
 });

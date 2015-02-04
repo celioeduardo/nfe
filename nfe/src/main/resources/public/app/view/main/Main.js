@@ -137,7 +137,7 @@ Ext.define('nfe.view.main.Main', {
                 xtype:'lotes-pendentes',
                 floatable: false,
                 margin: '5 0 0 0',
-                width: 500,
+                width: 200,
                 minWidth: 100,
                 maxWidth: 500,
                 listeners:{
