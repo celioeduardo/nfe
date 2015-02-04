@@ -62,7 +62,9 @@ public class Pis {
 	}
 
 	public Dinheiro valor() {
-		switch (cst()) {
+		if (cst()==null)
+			return Dinheiro.ZERO;
+		switch (cst()) {			
 		case CST_03:
 			return calcularPelaQuantidade();
 		default:

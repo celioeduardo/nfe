@@ -17,7 +17,7 @@ import com.hadrion.nfe.port.adapters.portal.ws.Local;
 @Transactional
 public class InutilizacaoService {
 	
-	//@Autowired
+	@Autowired
 	private InutilizacaoRepositorio repositorio;
 	
 	@Autowired
@@ -30,6 +30,10 @@ public class InutilizacaoService {
 	private InutilizacaoPortalService inutilizacaoPortalService;
 	
 	public void inutilizar(Inutilizacao inutilizacao){
+		
+		if (inutilizacao.estaHomologada())
+			throw new RuntimeException("Inutilização já foi homologada");
+		
 		Filial filial = filialRepositorio.obterFilial(inutilizacao.filialId());
 		
 		RetornoInutilizacao retorno = inutilizacaoPortalService.inutilizar(
@@ -42,10 +46,13 @@ public class InutilizacaoService {
 		if (retorno.inutilizacaoHomologada())
 			inutilizacao.homologar(
 					retorno.dataHoraProcessamento(), 
-					retorno.numeroProtocolo(), 
+					retorno.numeroProtocolo(),
+					retorno.mensagem(),
+					retorno.xmlEnvio(),
 					retorno.xmlRetorno());
 		else
-			inutilizacao.falhar(retorno.xmlRetorno());
+			inutilizacao.falhar(retorno.mensagem(),
+					retorno.xmlEnvio(),retorno.xmlRetorno());
 		
 		repositorio.salvar(inutilizacao);
 	}

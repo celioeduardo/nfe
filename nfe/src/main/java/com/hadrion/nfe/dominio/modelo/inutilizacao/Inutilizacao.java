@@ -2,24 +2,91 @@ package com.hadrion.nfe.dominio.modelo.inutilizacao;
 
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Version;
+
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 
+@Entity
+@SequenceGenerator(name="SEQ",sequenceName="SQ_INUTILIZACAO")
+@Table(name="INUTILIZACAO")
 public class Inutilizacao {
-
+	
+	@Embedded
 	private InutilizacaoId inutilizacaoId; 
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="AMBIENTE")
 	private Ambiente ambiente;
+	
+	@Embedded
 	private Serie serie; 
+	
+	@Column(name="NUMERO_INICIAL")
 	private long numeroInicial;
+	
+	@Column(name="NUMERO_FINAL")
 	private long numeroFinal; 
+	
+	@Column(name="JUSTIFICATIVA",length=1000,nullable=false) 
 	private String justificativa; 
+	
+	@Embedded
 	private FilialId filialId;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="DATA_HORA_HOMOLOGACAO")
 	private Date dataHoraHomologacao;
+	
+	@Embedded
 	private NumeroProtocolo protocolo;
+	
+	@Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="XML_ENVIO")
+	private String xmlEnvio;
+	
+	@Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(name="XML_RETORNO")
 	private String xmlRetorno;
+	
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name="codigo", column=@Column(name="MSG_COD")),
+		@AttributeOverride(name="descricao", column=@Column(name="MSG_DSC"))
+	})
+	private Mensagem mensagem;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
+	@Column(name="ID")
+	private Long id;
+	
+	@Version
+    @Column(name="VERSAO")
+    private int versaoConcorrencia;
 	
 	public Inutilizacao(InutilizacaoId inutilizacaoId, 
 			Ambiente ambiente, Serie serie,
@@ -70,9 +137,16 @@ public class Inutilizacao {
 	private Inutilizacao() {}
 
 	public void homologar(Date dataHoraHomologacao,
-			NumeroProtocolo numeroProtocolo, String xmlRetorno) {
+			NumeroProtocolo numeroProtocolo, Mensagem mensagem,
+			String xmlEnvio, String xmlRetorno) {
+		
+		if (estaHomologada())
+			throw new RuntimeException("Inutilização já foi homologada");
+		
 		this.dataHoraHomologacao = dataHoraHomologacao;
 		this.protocolo = numeroProtocolo;
+		this.mensagem = mensagem;
+		this.xmlEnvio = xmlEnvio;
 		this.xmlRetorno = xmlRetorno;
 		
 		DominioRegistro.eventoDominioPublicador().
@@ -95,11 +169,18 @@ public class Inutilizacao {
 		return dataHoraHomologacao != null;
 	}
 
-	public void falhar(String xmlRetorno) {
+	public void falhar(Mensagem mensagem, 
+			String xmlEnvio, String xmlRetorno) {
+		this.mensagem = mensagem;
+		this.xmlEnvio = xmlEnvio;
 		this.xmlRetorno = xmlRetorno;
 	}
 	
 	public Ambiente ambiente(){
 		return ambiente;
+	}
+	
+	public Mensagem mensagem(){
+		return mensagem;
 	}
 }

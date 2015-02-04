@@ -60,11 +60,12 @@ import com.hadrion.nfe.tipos.Dinheiro;
 @SequenceGenerator(name="SEQ",sequenceName="SQ_NF")
 @Table(name="NF")
 public class NotaFiscal {
-	@Enumerated(EnumType.STRING)
-	private Ambiente ambiente;
 	
 	@Embedded
 	private NotaFiscalId notaFiscalId;
+
+	@Enumerated(EnumType.STRING)
+	private Ambiente ambiente;
 	
 	@Embedded
 	private ChaveAcesso chaveAcesso;

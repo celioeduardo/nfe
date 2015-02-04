@@ -2,6 +2,7 @@ package com.hadrion.nfe.port.adapters.portal.inutilizacao;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.UnknownHostException;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -12,6 +13,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ws.WebServiceMessage;
+import org.springframework.ws.client.WebServiceIOException;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.SoapHeader;
@@ -71,28 +73,34 @@ public class SoapInutilizacaoServiceAdapter implements InutilizacaoPortalService
 		WebServiceTemplate ws;
 		
 		ws = webServiceTemplateFabrica.criar(certificado.keyStore(), certificado.senha());
+		try {
+			ws.sendSourceAndReceiveToResult(
+					endpoint,
+					source,
+					new WebServiceMessageCallback() {
+						@Override
+						public void doWithMessage(WebServiceMessage arg) throws IOException,
+								TransformerException {
+							
+							((SoapMessage)arg).setSoapAction(
+									endpoint+"/nfeInutilizacaoNF2");
+							
+							StringSource ss = new StringSource(nfeCabecMsg(uf));
+							SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
+							Transformer transformer = TransformerFactory.newInstance().newTransformer();
+							transformer.transform(ss, soapHeader.getResult());
+							//BUG - Precisa dessa chamada aqui para atualizar o Header do Envelope SOAP.
+							arg.writeTo(System.out);
+							//arg.writeTo(new NullOutputStream());
+						}
+					},
+					result);
+		} catch (WebServiceIOException e) {
+			if (e.contains(UnknownHostException.class))
+				throw new RuntimeException("Host desconhecido", e.getCause());
+			throw new RuntimeException("Problema ao conectar com o WebService", e.getCause());
+		} 
 		
-		ws.sendSourceAndReceiveToResult(
-				endpoint,
-				source,
-				new WebServiceMessageCallback() {
-					@Override
-					public void doWithMessage(WebServiceMessage arg) throws IOException,
-							TransformerException {
-						
-						((SoapMessage)arg).setSoapAction(
-								endpoint+"/nfeInutilizacaoNF2");
-						
-						StringSource ss = new StringSource(nfeCabecMsg(uf));
-						SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
-						Transformer transformer = TransformerFactory.newInstance().newTransformer();
-						transformer.transform(ss, soapHeader.getResult());
-						//BUG - Precisa dessa chamada aqui para atualizar o Header do Envelope SOAP.
-						arg.writeTo(System.out);
-						//arg.writeTo(new NullOutputStream());
-					}
-				},
-				result);
 		
 		//TODO REMOVER println
 		System.out.println("\n=== RETORNO ===");

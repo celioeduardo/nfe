@@ -49,7 +49,7 @@ class InutilizacaoConverter extends AbstractConverter{
 		convert("mod", "55", writer, context);
 		convert("serie", inutilizacao.serie(), writer, context);
 		convert("nNFIni", inutilizacao.numeroInicial(), writer, context);
-		convert("nNFFin", inutilizacao.numeroInicial(), writer, context);
+		convert("nNFFin", inutilizacao.numeroFinal(), writer, context);
 		convert("xJust", inutilizacao.justificativa(), writer, context);
 		writer.endNode();
 	}

@@ -135,7 +135,9 @@ public class Transporte {
 	public Transporte mesclar(Transporte transp){
 		
 		if (equals(transp)) return this;
-			
+		
+		if(transp==null) return null;
+		
 		return new Transporte(
 				transp.modalidadeFrete, 
 				transp.transportador, 
