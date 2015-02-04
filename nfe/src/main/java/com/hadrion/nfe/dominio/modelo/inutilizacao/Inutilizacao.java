@@ -60,7 +60,7 @@ public class Inutilizacao {
 	private Date dataHoraHomologacao;
 	
 	@Embedded
-	private NumeroProtocolo protocolo;
+	private NumeroProtocolo numeroProtocolo;
 	
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
@@ -144,7 +144,7 @@ public class Inutilizacao {
 			throw new RuntimeException("Inutilização já foi homologada");
 		
 		this.dataHoraHomologacao = dataHoraHomologacao;
-		this.protocolo = numeroProtocolo;
+		this.numeroProtocolo = numeroProtocolo;
 		this.mensagem = mensagem;
 		this.xmlEnvio = xmlEnvio;
 		this.xmlRetorno = xmlRetorno;
@@ -158,7 +158,7 @@ public class Inutilizacao {
 	}
 
 	public NumeroProtocolo numeroProtocolo() {
-		return protocolo;
+		return numeroProtocolo;
 	}
 
 	public String xmlRetorno(){

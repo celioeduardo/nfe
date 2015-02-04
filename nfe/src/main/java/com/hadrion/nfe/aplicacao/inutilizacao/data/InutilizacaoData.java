@@ -16,41 +16,6 @@ public class InutilizacaoData {
 	private String numeroProtocolo;
 	private Integer msgCodigo;
 	private String msgMensagem;
-
-	public String getInutilizacaoId() {
-		return inutilizacaoId;
-	}
-	public Ambiente getAmbiente() {
-		return ambiente;
-	}
-	public String getSerie() {
-		return serie;
-	}
-	public Long getNumeroInicial() {
-		return numeroInicial;
-	}
-	public Long getNumeroFinal() {
-		return numeroFinal;
-	}
-	public String getJustificativa() {
-		return justificativa;
-	}
-	public Date getDataHoraHomologacao() {
-		return dataHoraHomologacao;
-	}
-	public String getProtocolo() {
-		return numeroProtocolo;
-	}
-	
-	public Integer getMsgCodigo() {
-		return msgCodigo;
-	}
-	public String getMsgMensagem() {
-		return msgMensagem;
-	}
-	public String getNumeroProtocolo() {
-		return numeroProtocolo;
-	}
 	
 	public InutilizacaoData(String inutilizacaoId, Ambiente ambiente,
 			String serie, Long numeroInicial, Long numeroFinal,
@@ -67,6 +32,46 @@ public class InutilizacaoData {
 		this.numeroProtocolo = numeroProtocolo;
 		this.msgCodigo = msgCodigo;
 		this.msgMensagem = msgMensagem;
+	}
+
+	public String getInutilizacaoId() {
+		return inutilizacaoId;
+	}
+
+	public Ambiente getAmbiente() {
+		return ambiente;
+	}
+
+	public String getSerie() {
+		return serie;
+	}
+
+	public Long getNumeroInicial() {
+		return numeroInicial;
+	}
+
+	public Long getNumeroFinal() {
+		return numeroFinal;
+	}
+
+	public String getJustificativa() {
+		return justificativa;
+	}
+
+	public Date getDataHoraHomologacao() {
+		return dataHoraHomologacao;
+	}
+
+	public String getNumeroProtocolo() {
+		return numeroProtocolo;
+	}
+
+	public Integer getMsgCodigo() {
+		return msgCodigo;
+	}
+
+	public String getMsgMensagem() {
+		return msgMensagem;
 	}
 	
 }
