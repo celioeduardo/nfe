@@ -15,7 +15,7 @@ public class InutilizacaoData {
 	private Date dataHoraHomologacao;
 	private String numeroProtocolo;
 	private Integer msgCodigo;
-	private String msgMensagem;
+	private String msgDescricao;
 	
 	public InutilizacaoData(String inutilizacaoId, Ambiente ambiente,
 			String serie, Long numeroInicial, Long numeroFinal,
@@ -31,7 +31,7 @@ public class InutilizacaoData {
 		this.dataHoraHomologacao = dataHoraHomologacao;
 		this.numeroProtocolo = numeroProtocolo;
 		this.msgCodigo = msgCodigo;
-		this.msgMensagem = msgMensagem;
+		this.msgDescricao = msgMensagem;
 	}
 
 	public String getInutilizacaoId() {
@@ -70,8 +70,8 @@ public class InutilizacaoData {
 		return msgCodigo;
 	}
 
-	public String getMsgMensagem() {
-		return msgMensagem;
+	public String getMsgDescricao() {
+		return msgDescricao;
 	}
 	
 }

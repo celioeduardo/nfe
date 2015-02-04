@@ -34,6 +34,10 @@ public class InutilizacaoService {
 		if (inutilizacao.estaHomologada())
 			throw new RuntimeException("Inutilização já foi homologada");
 		
+		int tamanhoJustificativa = inutilizacao.justificativa().length(); 
+		if ( tamanhoJustificativa < 15 || tamanhoJustificativa > 10000)
+			throw new RuntimeException("A Justificativa tem que ter de 15 a 1000 caracteres.");
+		
 		Filial filial = filialRepositorio.obterFilial(inutilizacao.filialId());
 		
 		RetornoInutilizacao retorno = inutilizacaoPortalService.inutilizar(

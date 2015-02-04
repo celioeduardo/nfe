@@ -178,21 +178,35 @@ Ext.define('nfe.view.main.Main', {
             glyph: 0xf00d,
             layout: 'fit'
         },{
+            glyph: 0xf088,
             title: 'Inutilização',
-            width:'500',
-            heigth:'100',
-            //layout: 'fit',
-        	items:[{
-        		xtype:'filialcombo',
-        		bind:{
-        			value: '{filial}'
-        		},
-        		store:Ext.create('nfe.store.EmpresaFilialStore', {storeId: 'EmpresaFilialStore' }),
-        		listeners: {
-        			select: 'onSelectFilial'
-        		}
-        	}], 
-            glyph: 0xf088
+            layout:{
+                type:'vbox'
+            },
+            bodyPadding: 0,
+            items:[{
+                title: 'Pendentes',
+                collapsible: false,
+                xtype:'inutilizacoes-pendentes',
+                itemId:'inutilizacoes-pendentes',
+                //region: 'center',
+                flex:1,
+                width:'100%',
+                margin: '5 0 0 0',
+                listeners:{
+                	inutilizacaoHomologada:'onInutilizacaoHomologada'
+                }
+            },{
+                title: 'Homologadas',
+                collapsible: false,
+                itemId:'inutilizacoes-homologadas',
+                xtype:'inutilizacoes-homologadas',
+                //region: 'south',
+                width:'100%',
+                flex:2,
+                margin: '5 0 0 0'
+            }]
+            
         },{
             title: 'CC-e',
             glyph: 0xf003
