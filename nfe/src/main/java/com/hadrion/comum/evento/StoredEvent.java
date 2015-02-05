@@ -31,8 +31,8 @@ import com.hadrion.comum.Afirmacao;
 import com.hadrion.comum.dominio.modelo.EventoDominio;
 
 @Entity
-@SequenceGenerator(name="SEQ", sequenceName="SQ_STORED_EVENT")
-@Table(name="STORED_EVENT")
+@SequenceGenerator(name="SEQ", sequenceName="SQ_EVENT_STORE")
+@Table(name="EVENT_STORE")
 public class StoredEvent extends Afirmacao {
 	
 	@Lob
