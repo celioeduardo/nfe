@@ -1,7 +1,12 @@
 package com.hadrion.nfe.dominio.modelo.inutilizacao;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
+@Embeddable
+@Access(AccessType.FIELD)
 public class InutilizacaoId {
 	@Column(name="INUTILIZACAO_ID")
 	private String id; 

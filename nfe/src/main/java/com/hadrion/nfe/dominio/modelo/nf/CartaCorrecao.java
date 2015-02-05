@@ -23,7 +23,7 @@ public class CartaCorrecao {
 	@Column(name="SEQUENCIA")
 	private int sequencia;
 	
-	@Column(name="CORRECAO")
+	@Column(name="CORRECAO",length=1000)
 	private String correcao;
 	
 	@Temporal(TemporalType.TIMESTAMP)

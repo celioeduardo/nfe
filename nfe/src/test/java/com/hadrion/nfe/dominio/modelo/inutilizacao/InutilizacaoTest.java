@@ -20,6 +20,7 @@ import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.nf.Serie;
+import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
 
 public class InutilizacaoTest {
@@ -71,7 +72,9 @@ public class InutilizacaoTest {
 				"  </infInut>\n" + 
 				"</retInutNFe>\n";
 		
-		inutilizacao.falhar(xmlRetorno);
+		inutilizacao.falhar(
+				new Mensagem(201, "Rejeição: O numero máximo de numeração de NF-e a inutilizar ultrapassou o limite"),
+				null,xmlRetorno);
 		
 		assertFalse(inutilizacao.estaHomologada());
 		assertEquals(xmlRetorno, inutilizacao.xmlRetorno());
@@ -96,6 +99,8 @@ public class InutilizacaoTest {
 		inutilizacao.homologar(
 				dataHoraHomologacao,
 				new NumeroProtocolo("INUT-1234"),
+				new Mensagem(102, "Inutilizacao de número homologado"),
+				null,
 				xmlRetorno);
 		
 		verify(eventoDominioPublicador).publicar(any(InutilizacaoHomologada.class));

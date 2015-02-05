@@ -22,12 +22,13 @@ Ext.define('nfe.view.lote.LotesPendentes', {
     selType: 'checkboxmodel',
     hideHeaders: true,
     columns: [{
-        text: 'Número',
+        text: 'Lote',
         dataIndex: 'numero',
+        renderer:'rendererLote',
         sortable: false,
         hideable: false,
         flex: 1
-    },{
+    }/*,{
         text: 'Recibo',
         dataIndex: 'numeroRecibo',
         sortable: false,
@@ -39,5 +40,5 @@ Ext.define('nfe.view.lote.LotesPendentes', {
         sortable: false,
         hideable: false,
         flex: 1
-    }]
+    }*/]
 });

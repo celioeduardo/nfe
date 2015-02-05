@@ -93,6 +93,11 @@ Ext.define('nfe.view.main.MainController', {
 	    	.getViewModel().getStore('notasAutorizadas')
 	    	.reload();
     },
+    onInutilizacaoHomologada: function(){
+    	this.getView().down('#inutilizacoes-homologadas')
+	    	.getViewModel().getStore('inutilizacoesHomologadas')
+	    	.reload();
+    },
     
     carregarDadosFilial: function(filialId,fnSuccess){
     	
@@ -144,6 +149,14 @@ Ext.define('nfe.view.main.MainController', {
     atualizarTela: function(){
         this.notasPendentesEnviadas();
         this.obtidoRetornoLotes();
+        
+        this.getView().down('#inutilizacoes-homologadas')
+	    	.getViewModel().getStore('inutilizacoesHomologadas')
+	    	.reload();
+        
+        this.getView().down('#inutilizacoes-pendentes')
+	        .getViewModel().getStore('inutilizacoesPendentes')
+	        .reload();
     }
 
 });
