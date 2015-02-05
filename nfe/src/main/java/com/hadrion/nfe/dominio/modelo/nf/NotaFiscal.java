@@ -153,7 +153,7 @@ public class NotaFiscal {
 	private Cobranca cobranca;
 	
 	@Embedded
-	@AttributeOverride(name="texto", column=@Column(name="FISCO_INFORMACAO"))
+	@AttributeOverride(name="texto", column=@Column(name="FISCO_INFORMACAO",length=2000))
 	@AssociationOverrides({
 		@AssociationOverride(name="observacoes",
 				joinTable=@JoinTable(name="FISCO_OBS"))
@@ -161,7 +161,7 @@ public class NotaFiscal {
 	private Informacao informacaoFisco;
 	
 	@Embedded
-	@AttributeOverride(name="texto", column=@Column(name="CONTRIB_INFORMACAO",length=400))
+	@AttributeOverride(name="texto", column=@Column(name="CONTRIB_INFORMACAO",length=4000))
 	@AssociationOverrides({
 		@AssociationOverride(name="observacoes",
 				joinTable=@JoinTable(name="CONTRIB_OBS"))
