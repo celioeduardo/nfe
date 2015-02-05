@@ -25,6 +25,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.Situacao;
 import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
+import com.hadrion.nfe.port.adapters.agrix.AgrixUtil;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.NotaFiscalRepositorioSpringData;
 
 @Repository
@@ -116,6 +117,16 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas,Ambiente ambiente) {
 		sincronizarService.sincronizar(notas,ambiente);
 		return repositorio.findByNotaFiscalIdInAndAmbiente(notas,ambiente);
+	}
+	@Override
+	public NotaFiscal notaPendenteAutorizacao(NotaFiscalId notaFiscalId) {
+		Ambiente ambiente = AgrixUtil.ambientePelaNotaFiscalId(notaFiscalId);
+		sincronizarService.sincronizar(Collections.singletonList(notaFiscalId),
+				ambiente);
+		List<NotaFiscal> result = 
+				repositorio.findByNotaFiscalIdInAndAmbiente(
+						Collections.singletonList(notaFiscalId),ambiente);
+		return result.size() > 0 ? result.get(0) : null;
 	}
 
 	@Override

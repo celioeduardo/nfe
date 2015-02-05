@@ -232,7 +232,7 @@ public class AgrixService{
 
 	public void comunicarNotaCancelada(String notaFiscalId) {
 		//Não comunicar Autorização quando o ambiente for Homologação
-		if (ambientePelaNotaFiscalId(notaFiscalId) == Ambiente.HOMOLOGACAO)
+		if (AgrixUtil.ambientePelaNotaFiscalId(notaFiscalId) == Ambiente.HOMOLOGACAO)
 			return;
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
@@ -250,14 +250,6 @@ public class AgrixService{
 		
 	}
 	
-	private Ambiente ambientePelaNotaFiscalId(String notaFiscalId){
-		if (notaFiscalId == null) return null;
-		
-		if (notaFiscalId.startsWith("H-"))
-			return Ambiente.HOMOLOGACAO;
-		else if (notaFiscalId.startsWith("P-"))
-			return Ambiente.PRODUCAO;
-		return null;
-	}
+	
 
 }

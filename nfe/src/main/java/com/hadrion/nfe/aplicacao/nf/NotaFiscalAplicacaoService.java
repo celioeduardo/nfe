@@ -223,7 +223,7 @@ public class NotaFiscalAplicacaoService {
 	public ResponseEntity<InputStreamResource> preVisualizarDanfe(
 			String notaFiscalId) throws IOException, JRException {
 		NotaFiscal nf = notaFiscalRepositorio
-				.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
+				.notaPendenteAutorizacao(new NotaFiscalId(notaFiscalId));
 		return obterDanfe(nf);
 	}
 
@@ -480,7 +480,7 @@ public class NotaFiscalAplicacaoService {
 		
 		List<Email> emails = obterEmailService.obterEmailsContatoDaNotaFiscal(nf.notaFiscalId());
 		
-		if (emails.size() == 0)
+		if (emails.size() == 0 && nf.ambiente()==Ambiente.PRODUCAO)
 			throw new RuntimeException("Nenhum contato de e-mail encontrado para Nota Fiscal: " 
 					+ nf.numero());
 		

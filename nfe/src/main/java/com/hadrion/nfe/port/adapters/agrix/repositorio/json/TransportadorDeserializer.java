@@ -25,12 +25,17 @@ public class TransportadorDeserializer implements JsonDeserializer<Transportador
 			JsonDeserializationContext arg2) throws JsonParseException {
 		 
 		final JsonObject j = jsonSource.getAsJsonObject();
-		
+		Uf uf = null;
+		try {
+			uf = Uf.valueOf(s(j,"uf"));
+		} catch (Exception e) {
+			new Exception("Uf do transportador inválida.");
+		}
 		Endereco endereco = new Endereco(s(j,"endereco"), 
 				null,
 				null,
 				null,
-			    new Municipio(-1,s(j,"municipio"),Uf.valueOf(s(j,"uf"))),
+			    new Municipio(-1,s(j,"municipio"),uf),
 			    null,
 			    null,
 			    null);
