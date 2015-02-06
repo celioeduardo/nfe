@@ -31,4 +31,8 @@ public class AgrixUtil {
 		return  id.substring(2);
 	}
 	
+	public static String paraFilialId(int codigoFilial, long cnpjFilial){
+		return codigoFilial + "-" + cnpjFilial;
+	}
+	
 }

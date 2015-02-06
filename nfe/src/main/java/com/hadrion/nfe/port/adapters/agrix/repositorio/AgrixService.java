@@ -144,6 +144,9 @@ public class AgrixService{
 		return Arrays.asList(gson.fromJson(conteudo, DescritorNotaFiscal[].class));
 		
 	}
+	
+	
+	
 	/*
 	@Override
 	public NotaFiscal notaFiscalPeloId(NotaFiscalId notaFiscalId) {

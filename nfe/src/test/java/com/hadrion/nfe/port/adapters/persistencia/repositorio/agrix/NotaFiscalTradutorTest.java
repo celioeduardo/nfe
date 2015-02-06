@@ -1,6 +1,5 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.sql.ResultSet;
@@ -9,19 +8,6 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import com.hadrion.nfe.dominio.modelo.ibge.Uf;
-import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
-import com.hadrion.nfe.dominio.modelo.nf.FormaPagamento;
-import com.hadrion.nfe.dominio.modelo.nf.LocalDestino;
-import com.hadrion.nfe.dominio.modelo.nf.Modelo;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
-import com.hadrion.nfe.dominio.modelo.nf.Presenca;
-import com.hadrion.nfe.dominio.modelo.nf.Processo;
-import com.hadrion.nfe.dominio.modelo.nf.Serie;
-import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
-import com.hadrion.nfe.port.adapters.agrix.repositorio.NotaFiscalTradutor;
 
 public class NotaFiscalTradutorTest {
 	@Mock
@@ -50,28 +36,5 @@ public class NotaFiscalTradutorTest {
 		when(rs.next()).thenReturn(true).thenReturn(false);		
 	}
 	
-	//@Test
-	public void traduzirParaNota(){
 	
-		NotaFiscal nf = NotaFiscalTradutor.paraNotaFiscal(rs);
-		assertEquals(new NotaFiscalId("00FBCC5B1F25E835E050007F01003F32"),nf.notaFiscalId());
-		assertEquals("VENDA",nf.naturezaOperacao());
-		assertEquals(FormaPagamento.A_VISTA,nf.formaPagamento());
-		assertEquals(new Modelo("55"),nf.modelo());
-		assertEquals(new Serie(1L),nf.serie());
-		assertEquals(new Long(1),nf.numero());
-		assertEquals(java.sql.Date.valueOf("2014-08-19"),nf.emissao());
-		assertEquals(java.sql.Timestamp.valueOf("2014-08-19 18:45:00"),nf.dataHora());
-		assertEquals(TipoOperacao.ENTRADA,nf.tipoOperacao());
-		assertEquals(LocalDestino.INTERNA,nf.localDestino());
-		assertEquals(Uf.SP,nf.municipioFatoGerador());
-		//assertEquals(FormatoDanfe.NORMAL_RETRATO,nf.formatoDanfe());
-		assertEquals(Finalidade.NORMAL,nf.finalidade());		
-		assertEquals(false,nf.consumidorFinal());
-		assertEquals(Presenca.NAO_APLICA,nf.presenca());
-		assertEquals(Processo.APLICATIVO_CONTRIBUINTE,nf.processo());
-		//assertEquals(Referencia.DEVOLUCAO,nf.referencia());
-		//assertEquals(new NotaFiscalId("00FBCC5B1F25E835E050007F01003F33"),nf.documentoReferenciado().notaFiscalId());
-		
-	}
 }

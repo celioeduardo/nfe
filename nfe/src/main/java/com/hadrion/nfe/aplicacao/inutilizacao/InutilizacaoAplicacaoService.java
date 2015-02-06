@@ -14,6 +14,7 @@ import com.hadrion.nfe.dominio.modelo.inutilizacao.Inutilizacao;
 import com.hadrion.nfe.dominio.modelo.inutilizacao.InutilizacaoId;
 import com.hadrion.nfe.dominio.modelo.inutilizacao.InutilizacaoRepositorio;
 import com.hadrion.nfe.dominio.modelo.inutilizacao.InutilizacaoService;
+import com.hadrion.nfe.dominio.modelo.nf.Serie;
 
 @Service
 @Transactional
@@ -28,6 +29,20 @@ public class InutilizacaoAplicacaoService {
 	public void inutilizar(InutilizarComando comando){
 		Inutilizacao inutilizacao = inutilizacao(comando.getInutilizacaoId());
 		inutilizacaoService.inutilizar(inutilizacao);
+	}
+	
+	public void novaInutilizacao(NovaInutilizacaoComando comando){
+		Inutilizacao inutilizacao = new Inutilizacao(
+				new InutilizacaoId(comando.getInutilizacaoId()), 
+				comando.getAmbiente(), 
+				new Serie(comando.getSerie()), 
+				comando.getNumeroInicial(), 
+				comando.getNumeroFinal(), 
+				comando.getJustificativa(), 
+				new FilialId(comando.getFilialId()));
+		
+		inutilizacaoRepositorio.salvar(inutilizacao);
+		
 	}
 	
 	@Transactional(readOnly=true)
