@@ -4,6 +4,7 @@ import static com.hadrion.util.xml.XmlUtil.xmlParaInpuStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,12 +20,12 @@ import javax.mail.util.ByteArrayDataSource;
 import javax.transaction.Transactional;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -337,8 +338,12 @@ public class NotaFiscalAplicacaoService {
     	if (logo != null)
     		parameters.put("Logo", new ByteArrayInputStream(logo));
 		
+    	InputStream reportStream = getClass().getClassLoader().getResourceAsStream("report/danfe.jasper");
+    	jasperReport = (JasperReport) JRLoader.loadObject(reportStream);
+    	
+    	
 		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");
-		jasperReport = JasperCompileManager.compileReport(getClass().getClassLoader().getResourceAsStream("report/danfe.jrxml"));
+		//jasperReport = JasperCompileManager.compileReport(getClass().getClassLoader().getResourceAsStream("report/danfe.jrxml"));
 		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,xmlDataSource);		
 		return JasperExportManager.exportReportToPdf(jasperPrint);		
 	}
@@ -563,9 +568,11 @@ public class NotaFiscalAplicacaoService {
 	private byte[] gerarCce(Document cce,FilialId filialId) throws JRException{
 		JasperReport jasperReport;JasperPrint jasperPrint;
 		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(cce), "/");
+
+		InputStream reportStream = getClass().getClassLoader().getResourceAsStream("report/cce.jasper");
+    	jasperReport = (JasperReport) JRLoader.loadObject(reportStream);
 		
-		jasperReport = JasperCompileManager.compileReport(
-				getClass().getClassLoader().getResourceAsStream("report/cce.jrxml"));
+		//jasperReport = JasperCompileManager.compileReport(getClass().getClassLoader().getResourceAsStream("report/cce.jrxml"));
 		jasperPrint = JasperFillManager.fillReport(jasperReport, null,xmlDataSource);		
 		return JasperExportManager.exportReportToPdf(jasperPrint);		
 	}
