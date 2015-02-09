@@ -2,7 +2,8 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
     extend: 'Ext.app.ViewController',
 
     requires: [
-        'Ext.window.MessageBox'
+        'Ext.window.MessageBox',
+        'Ext.window.Toast'
     ],
 
     alias: 'controller.notas-autorizadas',
@@ -98,7 +99,7 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
             rec.get('msgCodigo'), descricao);
     },
     enviarEmail: function(btn) {
-        var rec = btn.getWidgetRecord();
+       var rec = btn.getWidgetRecord();
         Ext.toast({
             title: 'Enviando e-mail...',
             html: 'Nota Fiscal '+rec.get('numero') + '/' + rec.get('serie'),

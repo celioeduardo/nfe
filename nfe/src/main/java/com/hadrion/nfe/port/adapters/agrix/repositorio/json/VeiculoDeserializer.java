@@ -23,9 +23,14 @@ public class VeiculoDeserializer implements JsonDeserializer<Veiculo>{
 		 
 		final JsonObject j = jsonSource.getAsJsonObject();
 		
+		Uf uf=null;
+		
+		if (!s(j,"uf").isEmpty())
+			uf = Uf.valueOf(s(j,"uf"));		
+		
 		Veiculo veiculo = new Veiculo(
 				TipoVeiculo.valueOf(s(j,"tipo")), 
-				new Placa(Uf.valueOf(s(j,"uf")), s(j,"placa")), 
+				new Placa(uf, s(j,"placa")), 
 				s(j,"rntc"), 
 				s(j,"rntc"));
 					
@@ -39,5 +44,5 @@ public class VeiculoDeserializer implements JsonDeserializer<Veiculo>{
 	boolean tem(JsonObject j, String propriedade){
 		return j.has(propriedade);
 	}
-
+	
 }

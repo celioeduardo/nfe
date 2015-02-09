@@ -27,4 +27,5 @@ public interface NotaFiscalRepositorio {
 	public List<NotaFiscal> notasCanceladas(FilialId filialId, Ambiente ambiente,NotistaId notistaId);
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente);
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente, NotistaId notistaId);
+	public NotaFiscal notaPendenteAutorizacao(NotaFiscalId notaFiscalId);
 }

@@ -103,4 +103,10 @@ public class NotaFiscalRepositorioJpa implements NotaFiscalRepositorio{
 		return null;
 	}
 
+	@Override
+	public NotaFiscal notaPendenteAutorizacao(NotaFiscalId notaFiscalId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

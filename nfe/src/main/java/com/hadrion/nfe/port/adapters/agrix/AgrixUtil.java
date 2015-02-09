@@ -49,4 +49,6 @@ public class AgrixUtil {
 	public static Ambiente ambientePelaNotaFiscalId(NotaFiscalId notaFiscalId){
 		return ambientePelaNotaFiscalId(String.valueOf(notaFiscalId));
 	}
+	
+	
 }
