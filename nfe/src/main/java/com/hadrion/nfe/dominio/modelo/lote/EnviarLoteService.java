@@ -1,5 +1,6 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,8 @@ public class EnviarLoteService {
 			retorno = autorizacaoService.autorizar(lote,certificado);
 		} catch (Throwable t) {
 			t.printStackTrace();
-			lote.erroTransmissao(new Mensagem(-1, t.getMessage()));
+			lote.erroTransmissao(
+					new Mensagem(-1,StringUtils.substring(t.getMessage(),0,3999)));
 			return;
 		}
 		
