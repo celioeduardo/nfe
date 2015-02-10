@@ -3,6 +3,7 @@ package com.hadrion.nfe.aplicacao.nf;
 import static com.hadrion.util.xml.XmlUtil.xmlParaInpuStream;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -18,6 +19,14 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
 import javax.transaction.Transactional;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -575,5 +584,21 @@ public class NotaFiscalAplicacaoService {
 		//jasperReport = JasperCompileManager.compileReport(getClass().getClassLoader().getResourceAsStream("report/cce.jrxml"));
 		jasperPrint = JasperFillManager.fillReport(jasperReport, null,xmlDataSource);		
 		return JasperExportManager.exportReportToPdf(jasperPrint);		
+	}
+	public ResponseEntity<InputStreamResource>  xmlNfe(String notaFiscalId) throws JRException, TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError{
+		
+		HttpHeaders respHeaders = new HttpHeaders();
+		respHeaders.setContentType(new MediaType("application", "xml"));
+		respHeaders.set("Cache-Control", "no-cache");
+		respHeaders.set("Content-Disposition","attachment; filename=" + notaFiscalId + ".xml");
+		
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); 
+		Source xmlSource = new DOMSource(gerarXml(nota(notaFiscalId))); 
+		Result outputTarget = new StreamResult(outputStream); 
+		TransformerFactory.newInstance().newTransformer().transform(xmlSource, outputTarget); 
+		InputStream is = new ByteArrayInputStream(outputStream.toByteArray());		
+		InputStreamResource isr = new InputStreamResource(is);
+		
+		return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK); 
 	}
 }

@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import net.sf.jasperreports.engine.JRException;
 
@@ -130,5 +133,11 @@ public class NfeController {
 	public ResponseEntity<InputStreamResource> imprimirCce(
 			@RequestParam(value="notaFiscalId")String notaFiscalId) throws IOException, JRException{		
 		return notaFiscalAplicacaoService.imprimirCce(notaFiscalId);
+	}	
+	@RequestMapping(value = "/xml_nfe", method = RequestMethod.GET,produces="application/xml;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<InputStreamResource>  xmlNfe(
+			@RequestParam String notaFiscalId) throws JRException, TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError{		
+		return notaFiscalAplicacaoService.xmlNfe(notaFiscalId);
 	}	
 }
