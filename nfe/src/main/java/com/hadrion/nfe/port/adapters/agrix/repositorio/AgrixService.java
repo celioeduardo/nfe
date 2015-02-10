@@ -118,6 +118,7 @@ public class AgrixService{
 		.declareParameters(new SqlParameter("fim", Types.DATE))
 		.declareParameters(new SqlParameter("v_notista", Types.VARCHAR))
 		.declareParameters(new SqlParameter("notafiscalid", Types.VARCHAR))
+		.declareParameters(new SqlParameter("ambiente", Types.VARCHAR))
 		.declareParameters(
 				new SqlOutParameter("RETURN_VALUE", Types.CLOB));
 		
@@ -131,6 +132,7 @@ public class AgrixService{
 			params.addValue("notafiscalid", "", Types.VARCHAR);
 		else
 			params.addValue("notafiscalid", notaFiscalId.id(), Types.VARCHAR);			
+		params.addValue("ambiente", ambiente, Types.VARCHAR);		
 		
 		call.compile();
 		
