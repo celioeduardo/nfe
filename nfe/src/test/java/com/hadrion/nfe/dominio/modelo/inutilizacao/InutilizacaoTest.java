@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Date;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -33,7 +34,12 @@ public class InutilizacaoTest {
 		MockitoAnnotations.initMocks(this);
 		DominioRegistro.setEventoDominioPublicador(eventoDominioPublicador);
 	}
-	
+    
+	@After
+		public void destroy(){
+		DominioRegistro.setEventoDominioPublicador(null);
+	}
+    
 	@Test
 	public void mockDominioRegistro(){
 		assertNotNull(DominioRegistro.eventoDominioPublicador());
