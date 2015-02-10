@@ -3,6 +3,7 @@ package com.hadrion.nfe.port.adapters.portal.autorizacao.consulta;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.port.adapters.xml.XStreamFabrica;
+import com.hadrion.util.xml.XmlUtil;
 import com.thoughtworks.xstream.XStream;
 
 public class Corpo {
@@ -15,7 +16,7 @@ public class Corpo {
 	}
 
 	public String gerar() {
-		return xstream().toXML(this);
+		return XmlUtil.xmlCompacto(xstream(),this);
 	}
 	
 	protected Ambiente ambiente(){

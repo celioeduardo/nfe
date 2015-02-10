@@ -28,6 +28,7 @@ class EventosAgrixJsonDeserializer implements
 			
 			Long id = item.get("id").getAsLong();
 			String type = item.get("type").getAsString();
+			//TODO Parse date
 			String occurredOn = item.get("occurred_on").getAsString();
 			String body = item.get("body").getAsString();
 			

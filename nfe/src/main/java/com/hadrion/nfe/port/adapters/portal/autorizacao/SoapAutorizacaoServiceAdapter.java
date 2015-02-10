@@ -22,6 +22,7 @@ import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapMessage;
 import org.springframework.xml.transform.StringSource;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -31,6 +32,7 @@ import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.AutorizacaoService;
 import com.hadrion.nfe.dominio.modelo.portal.autorizacao.RetornoAutorizacao;
 import com.hadrion.nfe.port.adapters.portal.ws.Cabecalho;
@@ -39,6 +41,7 @@ import com.hadrion.nfe.port.adapters.portal.ws.Servico;
 import com.hadrion.nfe.port.adapters.portal.ws.Versao;
 import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 import com.hadrion.nfe.port.adapters.xml.nf.ValidadorLote;
+import com.hadrion.nfe.port.adapters.xml.nf.ValidadorNotaFiscal;
 
 @Service
 public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
@@ -67,7 +70,26 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 		
 		if (nl.getLength() == 0)
 			throw new RuntimeException("Nó infNFe não encontado.");
+		
 		Node infNfe = nl.item(0);
+		
+		NodeList nfeList = ((Element)infNfe).getElementsByTagName("NFe");
+		RetornoAutorizacao retorno = new RetornoAutorizacao();
+		for (int i = 0; i < nfeList.getLength(); i++) {
+			Node nfe = nfeList.item(i);
+			String chave = getIdAttribute(nfe,"infNFe");
+			if (chave == null)
+				throw new RuntimeException("Atributo Id da TAG infNFe não encontrado.");
+			
+			chave = chave.substring(3);
+			ValidadorNotaFiscal validador = new ValidadorNotaFiscal(nfe);
+			
+			if (validador.temErros())
+				retorno.registrarErro(new ChaveAcesso(chave), validador.errosComoTexto());
+		}
+		
+		if (retorno.temErros())
+			return retorno;
 		
 		ValidadorLote validador = new ValidadorLote(infNfe);
 		if (validador.temErros()){
@@ -83,7 +105,7 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 		
 		ws = webServiceTemplateFabrica.criar(certificado.keyStore(), certificado.senha());
 		
-		ws.sendSourceAndReceiveToResult(
+		ws.sendSourceAndReceiveToResult( 
 				endpoint,
 				source,
 				new WebServiceMessageCallback() {
@@ -107,6 +129,13 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 		
 		return new RetornoAutorizacaoDeserializador(
 				writerResult.toString()).deserializar();
+	}
+	
+	private String getIdAttribute(Node node, String tag){
+		NodeList nl = ((Element)node).getElementsByTagName(tag);
+		if (nl.getLength() == 0) 
+			return null;
+		return ((Element)nl.item(0)).getAttribute("Id");
 	}
 	
 	private Set<NotaFiscal> notasDoLote(Lote lote){

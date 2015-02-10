@@ -1,6 +1,8 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -262,6 +264,26 @@ public class Lote {
 		dispararEventoNotasRejeitadas(erro);
 	}
 	
+	public void inconsistente(Mensagem erro, Map<NotaFiscalId, String> erros){
+		this.mensagemErro = erro != null ? erro : 
+			new Mensagem(0, erros.size() + " Nota(s) Fiscal(ais) com erro");
+		this.falhaConsistencia();
+		if (erros != null && erros.size() > 0)
+			for (Entry<NotaFiscalId, String> e : erros.entrySet()) {
+				DominioRegistro.eventoDominioPublicador()
+					.publicar(new NotaFiscalRejeitada(e.getKey(), new Mensagem(0,e.getValue())));
+			}
+		else
+			dispararEventoNotasRejeitadas(this.mensagemErro);
+	}
+	
+	private void dispararEventoNotasRejeitadas(Mensagem mensagem){
+		for (LoteNotaFiscal nota : getNotas()) {
+			DominioRegistro.eventoDominioPublicador()
+				.publicar(new NotaFiscalRejeitada(nota.notaFiscalId(), mensagem));
+		}
+	}
+
 	private void falhaConsistencia(){
 		if (situacao != SituacaoLote.NAO_ENVIADO && 
 			situacao != SituacaoLote.PROCESSANDO)
@@ -373,13 +395,6 @@ public class Lote {
 		dispararEventoNotasRejeitadas(erro);
 	}
 	
-	private void dispararEventoNotasRejeitadas(Mensagem mensagem){
-		for (LoteNotaFiscal nota : getNotas()) {
-			DominioRegistro.eventoDominioPublicador()
-				.publicar(new NotaFiscalRejeitada(nota.notaFiscalId(), mensagem));
-		}
-	}
-
 	public Local local() {
 		return local;
 	}

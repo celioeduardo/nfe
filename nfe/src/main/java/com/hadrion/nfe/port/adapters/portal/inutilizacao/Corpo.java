@@ -32,7 +32,7 @@ public class Corpo {
 	}
 
 	public Document gerar() {
-		Document doc = parseXml(xstream().toXML(this));
+		Document doc = parseXml(XmlUtil.xmlCompacto(xstream(),this));
 		
 		Document inutilizacaoXml = parseXml(serializador.serializar(inutilizacao, uf, cnpj));
 		doc.getDocumentElement().appendChild(doc.importNode(inutilizacaoXml.getFirstChild(), true));

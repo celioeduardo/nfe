@@ -2,6 +2,7 @@ package com.hadrion.nfe.port.adapters.portal.ws;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.port.adapters.xml.XStreamFabrica;
+import com.hadrion.util.xml.XmlUtil;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -16,12 +17,12 @@ public class Cabecalho {
 	}
 	
 	public String autorizacao(){
-		return xstream().toXML(
+		return XmlUtil.xmlCompacto(xstream(),
 				new NfeCabecMsg(uf, "3.10","http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao"));
 	}
 
 	public String retornoAutorizacao() {
-		return xstream().toXML(
+		return XmlUtil.xmlCompacto(xstream(),
 				new NfeCabecMsg(uf, "3.10","http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"));	
 	}
 	
@@ -30,7 +31,7 @@ public class Cabecalho {
 				new NfeCabecMsg(uf, "1.00","http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"));	
 	}
 	public String inutilizacao() {
-		return xstream().toXML(
+		return XmlUtil.xmlCompacto(xstream(),
 				new NfeCabecMsg(uf, "2.00","http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2"));	
 	}
 

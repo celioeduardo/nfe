@@ -25,7 +25,7 @@ public class Corpo {
 	}
 
 	public Document gerar() {
-		Document doc = parseXml(xstream().toXML(this));
+		Document doc = parseXml(XmlUtil.xmlCompacto(xstream(),this));
 		Node enviLote = doc.getElementsByTagName("envEvento").item(0);
 		
 		for (Evento evento: lote.eventos()) {

@@ -33,7 +33,8 @@ public class Corpo {
 	}
 
 	public Document gerar() {
-		Document doc = parseXml(xstream().toXML(this));
+		Document doc = parseXml(
+				XmlUtil.xmlCompacto(xstream(),this));
 		Node enviNfe = doc.getElementsByTagName("enviNFe").item(0);
 		
 		for (NotaFiscal nf: notas) {

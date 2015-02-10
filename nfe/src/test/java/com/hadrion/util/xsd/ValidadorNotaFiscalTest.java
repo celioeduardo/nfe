@@ -14,13 +14,15 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import com.hadrion.nfe.port.adapters.xml.nf.ValidadorNotaFiscal;
+
 public class ValidadorNotaFiscalTest {
 	private Validador validador;
 	
 	@Test
 	public void validarOk() throws SAXException, IOException{
 		Source source = new StreamSource(arquivoXmlOk());
-		validador = new Validador(xsd(),source);
+		validador = new ValidadorNotaFiscal(source);
 		assertFalse(validador.temErros());
 		assertEquals(0,validador.quantidadeErros());
 	}
@@ -28,14 +30,9 @@ public class ValidadorNotaFiscalTest {
 	@Test
 	public void validarNok() throws SAXException, IOException{
 		Source source = new StreamSource(arquivoXmlNok());
-		validador = new Validador(xsd(),source);
+		validador = new ValidadorNotaFiscal(source);
 		assertTrue(validador.temErros());
         assertEquals(27,validador.quantidadeErros());
-	}
-	
-	private Source xsd() {
-		return new StreamSource(getClass().getClassLoader()
-				.getResourceAsStream("xsd/PL_008e/nfe_v3.10.xsd"));
 	}
 	
 	private File arquivoXmlOk(){
