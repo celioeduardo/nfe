@@ -27,6 +27,7 @@ Ext.define('nfe.model.NotaFiscal', {
         Ext.Ajax.request({
             url:'notas_fiscais/enviar',
             method:'POST',
+            timeout: 120000,
             jsonData:Ext.encode([data]),
             success:success,
             failure:failure,

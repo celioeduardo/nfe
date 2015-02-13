@@ -49,7 +49,7 @@ public class SoapInutilizacaoServiceAdapterTest extends DominioTest{
 		RetornoInutilizacao retorno = inutilizacaoPortalService.inutilizar(
 				inutilizacao, certificado, Local.MG,Uf.MG,new Cnpj(86675642000106L));
 		
-		System.out.println(retorno.xmlRetorno());
+		//System.out.println(retorno.xmlRetorno());
 		System.out.println("\nNúmero do Recibo retornado: "+retorno.numeroProtocolo());
 	}
 }

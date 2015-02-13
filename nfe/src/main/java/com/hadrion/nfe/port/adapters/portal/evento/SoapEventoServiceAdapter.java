@@ -101,9 +101,8 @@ public class SoapEventoServiceAdapter implements EventoService{
 				},
 				result);
 		
-		//TODO REMOVER println
-		System.out.println("\n=== RETORNO ===");
-		System.out.println(writerResult.toString());
+//		System.out.println("\n=== RETORNO ===");
+//		System.out.println(writerResult.toString());
 		
 		return new RetornoLoteEventoDeserializador(
 				xml,

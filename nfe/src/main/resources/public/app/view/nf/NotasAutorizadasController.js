@@ -109,10 +109,16 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
         });
         nfe.model.NotaFiscal.enviarEmail(rec.get('notaFiscalId'));
     },
+    
     imprimirDanfe: function(btn) {
-    	var rec = btn.getWidgetRecord();    	
+    	var me = this,rec = btn.getWidgetRecord();    	
+    
     	window.open('notas_fiscais/imprimir_danfe?notaFiscalId=' + rec.get('notaFiscalId'));
+    	
+    	this.getViewModel().getStore('notasAutorizadas').load();
+    	
     },
+    
     cancelar: function(btn) {
     	var rec = btn.getWidgetRecord(),
     		me = this;

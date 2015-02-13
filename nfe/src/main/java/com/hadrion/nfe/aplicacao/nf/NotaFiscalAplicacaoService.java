@@ -262,7 +262,7 @@ public class NotaFiscalAplicacaoService {
 
 	public void definirNotaComoRejeitada(DefinirNotaComoRejeitadaComando comando) {
 		NotaFiscal nota = nota(comando.getNotaFiscalId());
-		if (nota != null)
+		if (nota != null && !nota.estaAutorizada())
 			nota.rejeitada(new Mensagem(comando.getMsgCodigo(), comando
 					.getMsgDescricao()));
 		notaFiscalRepositorio.salvar(nota);
@@ -450,8 +450,8 @@ public class NotaFiscalAplicacaoService {
 		if (server.getTrust() != null)
 			properties.put("mail.smtp.ssl.trust", server.getTrust());
 
-		if (server.getDebug() != null)
-			properties.put("mail.debug", server.getDebug());
+//		if (server.getDebug() != null)
+//			properties.put("mail.debug", server.getDebug());
 		
 		mailSender.setJavaMailProperties(properties);
 		mailSender.setUsername(server.getUsername());

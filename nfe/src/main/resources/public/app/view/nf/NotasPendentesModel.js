@@ -15,6 +15,7 @@ Ext.define('nfe.view.nf.NotasPendentesModel', {
             proxy:{
                 url:'notas_fiscais/pendentes_autorizacao_resumo',
                 type: 'ajax',
+                timeout: 50000,
                 extraParams:{
                 	"ambiente":"{ambiente}",
                     "empresa":"{empresa}",
