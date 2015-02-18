@@ -19,6 +19,7 @@ Ext.define('nfe.model.Inutilizacao', {
     		Ext.Ajax.request({
     			url:'inutilizacao/inutilizar',
     			method:'POST',
+    			timeout: 120000,
     			jsonData:Ext.encode({
 	            	'inutilizacaoId':inutilizacaoId
 	            }),

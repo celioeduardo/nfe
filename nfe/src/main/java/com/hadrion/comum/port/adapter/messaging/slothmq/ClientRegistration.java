@@ -28,7 +28,7 @@ public class ClientRegistration {
     }
 
 	public void addSubscription(String anExchangeName) {
-		System.out.println("ADDING EXCHANGE: " + anExchangeName);
+		//System.out.println("ADDING EXCHANGE: " + anExchangeName);
 		this.exchanges.add(anExchangeName);
 	}
 

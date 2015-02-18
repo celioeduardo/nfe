@@ -10,6 +10,7 @@ Ext.define('nfe.view.nf.NotasAutorizadasModel', {
             proxy:{
                 url:'notas_fiscais/autorizadas_resumo',
                 type: 'ajax',
+                timeout: 50000,
                 extraParams:{
                 	"ambiente":"{ambiente}",
                 	"nao_impressa":"{nao_impressa}",

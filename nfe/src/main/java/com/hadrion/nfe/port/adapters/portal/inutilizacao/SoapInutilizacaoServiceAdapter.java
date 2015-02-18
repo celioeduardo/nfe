@@ -102,9 +102,8 @@ public class SoapInutilizacaoServiceAdapter implements InutilizacaoPortalService
 		} 
 		
 		
-		//TODO REMOVER println
-		System.out.println("\n=== RETORNO ===");
-		System.out.println(writerResult.toString());
+//		System.out.println("\n=== RETORNO ===");
+//		System.out.println(writerResult.toString());
 		
 		return new RetornoInutilizacaoDeserializador(
 				xml,

@@ -45,7 +45,7 @@ public class SoapConsultaProcessamentoLoteServiceAdapterTest extends DominioTest
 		
 		assertEquals(new Mensagem(104, "Lote processado"),retorno.mensagem());
 		
-		System.out.println(retorno);
+		//System.out.println(retorno);
 		
 //		assertNull(retorno.erro());
 //		

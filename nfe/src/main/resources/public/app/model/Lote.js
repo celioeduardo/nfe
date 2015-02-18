@@ -11,6 +11,7 @@ Ext.define('nfe.model.Lote', {
         Ext.Ajax.request({
             url:'lotes/processar_retorno',
             method:'POST',
+            timeout: 120000,
             jsonData:Ext.encode(ids),
             success:success,
             failure:failure,

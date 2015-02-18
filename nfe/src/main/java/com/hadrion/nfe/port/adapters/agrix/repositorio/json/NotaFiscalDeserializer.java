@@ -50,7 +50,6 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 		final NotaFiscal nf = new NotaFiscal(
 				ambiente,
 				criarNotaFiscalId(s(j,"NotaFiscalId"), ambiente),
-				//new FilialId("86675642000106"), //TODO Obter Filial
 				new FilialId(s(j,"codFilial") + "-" + emitente(j).cnpj().toString()),
 				s(j,"naturezaOperacao"),
 				FormaPagamento.A_VISTA,//TODO forma pagamento
