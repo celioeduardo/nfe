@@ -59,7 +59,8 @@ public class Volume {
 		this.numeracao = numeracao;
 		this.pesoLiquido = pesoLiquido;
 		this.pesoBruto = pesoBruto;
-		this.lacres = lacres;
+		if (lacres != null)
+			this.getLacres().addAll(lacres);
 	}
 
 	public int quantidade() {

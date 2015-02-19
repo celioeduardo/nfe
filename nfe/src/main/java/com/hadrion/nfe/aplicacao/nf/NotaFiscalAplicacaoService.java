@@ -601,4 +601,14 @@ public class NotaFiscalAplicacaoService {
 		
 		return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK); 
 	}
+
+	public void definirNotaEmLote(DefinirNotaFiscalEmLoteComando comando) {
+		NotaFiscal nf = nota(comando.getNotaFiscalId());
+		nf.definirComoEmLote();
+		salvar(nf);
+	}
+	
+	private void salvar(NotaFiscal nf){
+		this.notaFiscalRepositorio.salvar(nf);
+	}
 }

@@ -157,9 +157,16 @@ public class Lote {
 		this.notistaId = definirNotista(notas);
 		this.local = definirLocal(notas);
 		this.uf = definirUf(notas);
-		for (NotaFiscal notaFiscal : notas)
+		for (NotaFiscal notaFiscal : notas){
+			
 			this.notas.add(
 					new LoteNotaFiscal(notaFiscal,ambiente));
+			
+			DominioRegistro.eventoDominioPublicador()
+				.publicar(new NotaFiscalAdicionadaNoLote(
+						notaFiscal.notaFiscalId(), loteId));
+			
+		}
 	}
 	
 	private Local definirLocal(Set<NotaFiscal> notas){

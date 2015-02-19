@@ -4,7 +4,6 @@ import static com.hadrion.util.NumeroUtil.randInt;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -299,7 +298,7 @@ public class NotaFiscal {
 		this.destinatario = destinatario;
 		this.localRetirada = localRetirada;
 		this.localEntrega = localEntrega;
-		this.itens = itens;
+		this.getItens().addAll(itens);
 		this.cobranca = cobranca;
 		this.informacaoFisco = informacaoFisco;
 		this.informacaoContribuinte = informacaoContribuinte;
@@ -310,9 +309,12 @@ public class NotaFiscal {
 		this.contingencia = contingencia;
 		this.notistaId = notistaId;
 		this.setChaveAcesso(gerarChaveAcesso());
-		for (Referencia referencia : referencias) 
-			referenciar(referencia);
-		consistirNotasReferencia();
+		
+		if (referencias != null){
+			for (Referencia referencia : referencias) 
+				referenciar(referencia);
+			consistirNotasReferencia();
+		}
 	}
 	
 	private void setChaveAcesso(ChaveAcesso novaChaveAcesso) {
@@ -340,7 +342,7 @@ public class NotaFiscal {
 	}
 	
 	private void consistirNotasReferencia(){
-		if (referencias != null && referencias.size() > 500)
+		if (getReferencias() != null && getReferencias().size() > 500)
 			throw new IllegalArgumentException(
 					"Quantidade máxima de 500 Notas de Referência excedida. "
 					+"Informadas: "+referencias.size());
@@ -587,7 +589,9 @@ public class NotaFiscal {
 		return itens;
 	}
 	public List<Item> itens() {
-		return Collections.unmodifiableList(getItens());
+		return new ArrayList<Item>(getItens());
+		
+		//return Collections.unmodifiableList(getItens());
 	}
 	public Item item(int i) {
 		return getItens().get(i);
@@ -876,6 +880,25 @@ public class NotaFiscal {
 		for (CartaCorrecao cce : getCartasCorrecao()) 
 			result = cce.sequencia();
 		return result;
+	}
+
+	public void definirComoEmLote() {
+		String msg = "Nota Fiscal está %s e não pode ser definida como Em Lote";
+		
+		if (situacao == Situacao.CANCELADA)
+			throw new RuntimeException(String.format(msg, "Cancelada"));
+		if (situacao == Situacao.DENEGADA)
+			throw new RuntimeException(String.format(msg, "Denegada"));
+		if (situacao == Situacao.INUTILIZADA)
+			throw new RuntimeException(String.format(msg, "Inutilizada"));
+		if (situacao == Situacao.AUTORIZADA)
+			throw new RuntimeException(String.format(msg, "Autorizada"));
+		
+		this.situacao = Situacao.EM_LOTE;
+	}
+
+	public boolean estaEmLote() {
+		return situacao == Situacao.EM_LOTE;
 	}
 
 }

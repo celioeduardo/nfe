@@ -30,6 +30,8 @@ public class GeracaoLoteServiceProducaoTest extends AbstractLoteServiceTest {
 		Lote lote = geracaoLoteService.gerarLoteEmProducao(notas);		
 		assertEquals(3,lote.quantidadeNotas());
 		assertEquals(lote.ambiente(),Ambiente.PRODUCAO);
+		eventosEsperados(3);
+		eventoEsperado(NotaFiscalAdicionadaNoLote.class,3);
 		
 	}
 	

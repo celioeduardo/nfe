@@ -28,7 +28,8 @@ public class Cobranca {
 	public Cobranca(Fatura fatura, List<Duplicata> duplicatas) {
 		super();
 		this.fatura = fatura;
-		this.duplicatas = duplicatas;
+		if (duplicatas != null )
+			this.getDuplicatas().addAll(duplicatas);
 	}
 	
 	public Cobranca(Fatura fatura, Duplicata... duplicatas) {

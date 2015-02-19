@@ -1,6 +1,8 @@
 package com.hadrion.nfe.dominio.modelo.nf.transporte;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Access;
@@ -65,14 +67,22 @@ public class Transporte {
 		this.transportador = transportador;
 		this.retencaoIcms = retencaoIcms;
 		this.veiculo = veiculo;
-		this.volumes = volumes;
+		if (volumes != null)
+			this.getVolumes().addAll(volumes);
 	}
+	
 	public Transporte(ModalidadeFrete modalidadeFrete,
 			Transportador transportador, RetencaoIcms retencaoIcms,
 			Veiculo veiculo, Volume... volumes) {
 		this(modalidadeFrete,transportador,retencaoIcms,veiculo,Arrays.asList(volumes));
 	}
-
+	
+	private List<Volume> getVolumes(){
+		if (this.volumes == null)
+			this.volumes = new ArrayList<Volume>();
+		return this.volumes;
+	}
+	
 	public ModalidadeFrete modalidadeFrete() {
 		return modalidadeFrete;
 	}
@@ -90,7 +100,7 @@ public class Transporte {
 	}
 
 	public List<Volume> volumes() {
-		return volumes;
+		return Collections.unmodifiableList(getVolumes());
 	}
 
 	@Override
