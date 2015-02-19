@@ -75,7 +75,7 @@ public class GeracaoLoteService {
 		for (NotaFiscal nf : notas){ 
 			if (nf.ambiente() != ambiente)
 				throw new IllegalArgumentException(
-						"Nota Fiscal "+nf.notaFiscalId()+
+						"Nota Fiscal "+nf.numero()+
 						" gerada em ambiente diferente. ["+nf.ambiente()+"]");
 			
 			assertNotaNaoEstaPendenteEmOutrosLotes(nf, ambiente);
@@ -94,7 +94,7 @@ public class GeracaoLoteService {
 			if (lote.ambiente() == ambiente && 
 				(lote.estaNaoEnviado() || lote.estaProcessando()))
 				throw new IllegalArgumentException(
-						"Nota Fiscal "+nf.notaFiscalId()+
+						"Nota Fiscal "+nf.numero()+
 						" já está no Lote "+lote.numero());
 	}	
 }
