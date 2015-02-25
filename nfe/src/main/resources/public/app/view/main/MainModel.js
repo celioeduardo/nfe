@@ -13,7 +13,8 @@ Ext.define('nfe.view.main.MainModel', {
         filial: undefined,//'53-86675642000106',
         ambiente: 'HOMOLOGACAO',
         modoOperacao: 'NORMAL',        
-        notista: undefined//'COOPADAP'
+        notista: undefined,//'COOPADAP'
+        usuario: undefined
     },
     stores:{
     	empresaFilial:{
