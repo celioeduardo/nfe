@@ -6,7 +6,7 @@ Ext.define('nfe.view.nf.CartaCorrecao', {
         type: 'cce'
     },
     bind:{
-    	title: 'Registrar Carta de Correção da Nota Fiscal: {nf.numero}',
+    	title: 'Registrar Carta de Correção da Nota Fiscal: {nf.numero}'
     },
     bodyPadding: 5,
     width: 450,

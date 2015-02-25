@@ -71,7 +71,7 @@ class LoteNotaFiscal {
 		
 		if (!notaFiscal.pendenteDeTransmissao())
 			throw new IllegalArgumentException(
-					"Nota Fiscal "+notaFiscal.notaFiscalId()+
+					"Nota Fiscal "+notaFiscal.numero()+
 					" não está Pendente de Transmissão.");
 		
 		this.notaFiscalId = notaFiscal.notaFiscalId();

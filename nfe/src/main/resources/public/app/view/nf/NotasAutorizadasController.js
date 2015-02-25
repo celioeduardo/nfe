@@ -46,7 +46,7 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
     
     rendererNumero: function(numero, metadata, rec){
         var nf = rec.get('serie') != null ? numero+'/'+rec.get('serie') : numero,
-            es = rec.get('tipo') == 'E' ? 'entrada' : 'saída';
+            es = rec.get('tipo') == 'ENTRADA' ? 'entrada' : 'saída';
 
         return Ext.String.format(
             '<div style="font-size:x-large;font-weight: bold;">{0}</div>'+
