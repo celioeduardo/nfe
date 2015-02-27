@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.hadrion.nfe.dominio.modelo.hospede.Hospede;
+
 @Entity
 @SequenceGenerator(name="SEQ", sequenceName="SQ_NOTISTA")
 @Table(name="NOTISTA")
@@ -18,8 +20,15 @@ public class Notista {
 	private NotistaId notistaId;
 	@Column(name="NOME")
 	private String nome;
+	
 	@Column(name="DESCRICAO")
 	private String descricao; 
+	
+	@Embedded
+	private Hospede hospede;
+	
+	@Column(name="IDENTIFICACAO")
+	private String identificacao;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
@@ -50,6 +59,14 @@ public class Notista {
 	
 	public void alterarDescricao(String novaDescricao){
 		this.descricao = novaDescricao;
+	}
+	
+	public Hospede hospede(){
+		return hospede;
+	}
+	
+	public String identificacao(){
+		return identificacao;
 	}
 	
 	/**

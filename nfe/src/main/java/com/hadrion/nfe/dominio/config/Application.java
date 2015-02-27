@@ -144,11 +144,6 @@ public abstract class Application extends WebMvcConfigurerAdapter {
 	}
 
 	
-//	@Bean
-//	JavaMailSender mailSender(){
-//		return new MailSenderAutoConfiguration().mailSender();
-//	}
-//	
 	public static void main(String[] args) {
 
 		ApplicationContext ctx = SpringApplication.run(Application.class, args);
