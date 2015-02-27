@@ -101,5 +101,5 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
 			store: '{notasAutorizadas}'
 		}, 
 		displayInfo: true
-	}]/*
+	}]*/
 });

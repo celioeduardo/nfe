@@ -1,5 +1,7 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -57,8 +59,7 @@ public class NotaFiscalTradutorClobTest {
 
 		Clob clob = call.executeFunction(Clob.class, params);
 		String conteudo =  clob.getSubString(1, (int)clob.length());
-		System.out.println(conteudo);
-		System.out.println("TAMANHO DO CLOB: "+clob.length());
+		assertNotNull(conteudo);
 		//clobToString(clob);
 //		Reader reader = null;
 //		reader = clob.getCharacterStream();

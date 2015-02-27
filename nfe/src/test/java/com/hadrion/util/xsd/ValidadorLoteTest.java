@@ -22,7 +22,6 @@ public class ValidadorLoteTest {
 	public void validarOkSource() throws SAXException, IOException {
 		Source source = new StreamSource(arquivoXmlOk());
 		validador = new Validador(xsd(), source);
-		System.out.println(validador.errosComoTexto());
 		assertFalse(validador.temErros());
 		assertEquals(0, validador.quantidadeErros());
 	}
@@ -31,7 +30,6 @@ public class ValidadorLoteTest {
 	public void validarOk() throws SAXException, IOException {
 		Source source = new StreamSource(arquivoXmlOk());
 		validador = new Validador(xsd(), source);
-		System.out.println(validador.errosComoTexto());
 		assertFalse(validador.temErros());
 		assertEquals(0, validador.quantidadeErros());
 	}
@@ -40,7 +38,6 @@ public class ValidadorLoteTest {
 	public void validarLoteOk() throws SAXException, IOException {
 		Source source = new StreamSource(arquivoXmlOk());
 		ValidadorLote validador = new ValidadorLote(source);
-		System.out.println(validador.errosComoTexto());
 		assertFalse(validador.temErros());
 		assertEquals(0, validador.quantidadeErros());
 	}

@@ -36,6 +36,7 @@ public class LoteRepositorioTest extends DominioTest {
 		em.clear();
 	}
 	
+	
 	@Test
 	public void salvar () throws SQLException {
 		Lote lote = Lote.gerarEmHomologacao(nf,new EmpresaId("4007474000116"));

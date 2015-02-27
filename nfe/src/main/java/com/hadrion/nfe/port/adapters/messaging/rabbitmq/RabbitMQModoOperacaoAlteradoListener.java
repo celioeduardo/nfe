@@ -13,7 +13,6 @@ import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 import com.hadrion.nfe.dominio.modelo.filial.ModoOperacaoAlterado;
 
 @Component
-//@Profile({"dev", "prod"})
 @Profile({"!test"})
 public class RabbitMQModoOperacaoAlteradoListener extends RabbitNfeEventoListener{
 
