@@ -319,11 +319,11 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 	public void serializarIcms41(){
 		String XML = 
 				"<ICMS>\r\n" + 
-						"	<ICMS41>\r\n" + 
-						"		<orig>0</orig>\r\n" + 
-						"		<CST>41</CST>\r\n" + 
-						"	</ICMS41>\r\n" + 
-						"</ICMS>";
+				"	<ICMS40>\r\n" + 
+				"		<orig>0</orig>\r\n" + 
+				"		<CST>41</CST>\r\n" + 
+				"	</ICMS40>\r\n" + 
+				"</ICMS>";
 		icms = new Icms(Origem.NACIONAL,Cst.CST_41,null,null,null,null,null,null);
 		assertXMLEquals(XML,toXML(icms));
 	}
@@ -331,11 +331,11 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 	public void deserializarIcms41(){
 		String XML = 
 				"<ICMS>\r\n" + 
-						"	<ICMS41>\r\n" + 
-						"		<orig>0</orig>\r\n" + 
-						"		<CST>41</CST>\r\n" + 
-						"	</ICMS41>\r\n" + 
-						"</ICMS>\r\n";
+				"	<ICMS40>\r\n" + 
+				"		<orig>0</orig>\r\n" + 
+				"		<CST>41</CST>\r\n" + 
+				"	</ICMS40>\r\n" + 
+				"</ICMS>\r\n";
 		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_41,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
@@ -344,11 +344,11 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 	public void serializarIcms50(){
 		String XML = 
 				"<ICMS>\r\n" + 
-						"	<ICMS50>\r\n" + 
-						"		<orig>0</orig>\r\n" + 
-						"		<CST>50</CST>\r\n" + 
-						"	</ICMS50>\r\n" + 
-						"</ICMS>";
+				"	<ICMS40>\r\n" + 
+				"		<orig>0</orig>\r\n" + 
+				"		<CST>50</CST>\r\n" + 
+				"	</ICMS40>\r\n" + 
+				"</ICMS>";
 		icms = new Icms(Origem.NACIONAL,Cst.CST_50,null,null,null,null,null,null);
 		assertXMLEquals(XML,toXML(icms));
 	}
@@ -356,11 +356,11 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 	public void deserializarIcms50(){
 		String XML = 
 				"<ICMS>\r\n" + 
-						"	<ICMS50>\r\n" + 
-						"		<orig>0</orig>\r\n" + 
-						"		<CST>50</CST>\r\n" + 
-						"	</ICMS50>\r\n" + 
-						"</ICMS>\r\n";
+				"	<ICMS50>\r\n" + 
+				"		<orig>0</orig>\r\n" + 
+				"		<CST>50</CST>\r\n" + 
+				"	</ICMS50>\r\n" + 
+				"</ICMS>\r\n";
 		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_50,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
