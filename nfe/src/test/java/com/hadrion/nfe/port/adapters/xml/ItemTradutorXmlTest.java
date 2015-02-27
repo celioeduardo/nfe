@@ -85,7 +85,6 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 			"		  <vBC>1000.00</vBC>\r\n" + 
 			"		  <pICMS>0.0000</pICMS>\r\n" + 
 			"		  <vICMSOp>0.00</vICMSOp>\r\n" + 
-			"		  <pDif>0.0000</pDif>\r\n" + 
 			"		  <vICMSDif>0.00</vICMSDif>\r\n" + 
 			"		  <vICMS>0.00</vICMS>\r\n" + 
 			"		</ICMS51>\r\n" + 

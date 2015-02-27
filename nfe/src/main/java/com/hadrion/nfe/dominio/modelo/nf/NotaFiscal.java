@@ -278,7 +278,7 @@ public class NotaFiscal {
 		this.ambiente = ambiente;
 		this.notaFiscalId = notaFiscalId;
 		this.filialId = filialId;
-		this.situacao=Situacao.INDEFINIDA;
+		this.setSituacao(Situacao.INDEFINIDA);
 		this.naturezaOperacao=naturezaOperacao;
 		this.formaPagamento=formaPagamento;
 		this.modelo=modelo;
@@ -325,8 +325,12 @@ public class NotaFiscal {
 		this.notaFiscalId = notaFiscalId;
 		this.ambiente = ambiente;
 		this.tipoEmissao = TipoEmissao.NORMAL;
-		this.situacao=Situacao.INDEFINIDA;
+		this.setSituacao(Situacao.INDEFINIDA);
 		this.filialId = filialId;
+	}
+	
+	private void setSituacao(Situacao situacao){
+		this.situacao = situacao;
 	}
 	
 	public Ambiente ambiente(){
@@ -353,24 +357,24 @@ public class NotaFiscal {
 
 	
 	public boolean pendenteDeTransmissao(){
-		return this.situacao == Situacao.EMITIDA || this.situacao == Situacao.INDEFINIDA;
+		return this.getSituacao() == Situacao.EMITIDA || this.getSituacao() == Situacao.INDEFINIDA;
 	}
 	public void emitida(){
-		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.INDEFINIDA);
-		this.situacao=Situacao.EMITIDA;
+		assertSituacaoIgual("Situação inválida: "+this.getSituacao(),Situacao.INDEFINIDA);
+		this.setSituacao(Situacao.EMITIDA);
 	}
 	public void autorizada(NumeroProtocolo numeroProtocolo,Mensagem mensagem,
 			Date dataHoraAutorizacao, String xmlProtocolo) {
 		String msg = "Nota Fiscal está %s e não pode ser definida como Autorizada";
 		
-		if (situacao == Situacao.CANCELADA)
+		if (getSituacao() == Situacao.CANCELADA)
 			throw new RuntimeException(String.format(msg, "Cancelada"));
-		if (situacao == Situacao.DENEGADA)
+		if (getSituacao() == Situacao.DENEGADA)
 			throw new RuntimeException(String.format(msg, "Denegada"));
-		if (situacao == Situacao.INUTILIZADA)
+		if (getSituacao() == Situacao.INUTILIZADA)
 			throw new RuntimeException(String.format(msg, "Inutilizada"));
 		
-		this.situacao=Situacao.AUTORIZADA;
+		this.setSituacao(Situacao.AUTORIZADA);
 		this.mensagem = mensagem;
 		this.numeroProtocoloAutorizacao = numeroProtocolo;
 		this.dataHoraAutorizacao = dataHoraAutorizacao;
@@ -382,8 +386,8 @@ public class NotaFiscal {
 	}
 	public void cancelar(NumeroProtocolo numeroProtocolo, Mensagem mensagem, 
 			Date dataHoraCancelamento) {
-		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.AUTORIZADA);
-		this.situacao=Situacao.CANCELADA;
+		assertSituacaoIgual("Situação inválida: "+this.getSituacao(),Situacao.AUTORIZADA);
+		this.setSituacao(Situacao.CANCELADA);
 		this.mensagem = mensagem;
 		this.numeroProtocoloCancelamento = numeroProtocolo;
 		this.dataHoraCancelamento = dataHoraCancelamento;
@@ -393,37 +397,38 @@ public class NotaFiscal {
 	}
 	
 	public void inutilizada() {
-		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.EMITIDA);
-		this.situacao=Situacao.INUTILIZADA;
+		assertSituacaoIgual("Situação inválida: "+this.getSituacao(),Situacao.EMITIDA);
+		this.setSituacao(Situacao.INUTILIZADA);
 	}
 	public void denegada() {
-		assertSituacaoIgual("Situação inválida: "+this.situacao,Situacao.EMITIDA);
-		this.situacao=Situacao.DENEGADA;
+		assertSituacaoIgual("Situação inválida: "+this.getSituacao(),Situacao.EMITIDA);
+		this.setSituacao(Situacao.DENEGADA);
 	}
 	
 	public void rejeitada(Mensagem mensagem){
 		String msg = "Nota Fiscal está %s e não pode ser definida como Rejeitada";
 		
-		if (situacao == Situacao.AUTORIZADA)
+		if (getSituacao() == Situacao.AUTORIZADA)
 			throw new RuntimeException(String.format(msg, "Autorizada"));
-		if (situacao == Situacao.CANCELADA)
+		if (getSituacao() == Situacao.CANCELADA)
 			throw new RuntimeException(String.format(msg, "Cancelada"));
-		if (situacao == Situacao.DENEGADA)
+		if (getSituacao() == Situacao.DENEGADA)
 			throw new RuntimeException(String.format(msg, "Denegada"));
-		if (situacao == Situacao.INUTILIZADA)
+		if (getSituacao() == Situacao.INUTILIZADA)
 			throw new RuntimeException(String.format(msg, "Inutilizada"));
 		
 		this.mensagem = mensagem;
+		this.setSituacao(Situacao.EMITIDA);
 	}
 	
 	public boolean estaEmitida() {
-		return this.situacao==Situacao.EMITIDA;
+		return this.getSituacao()==Situacao.EMITIDA;
 	}
 	public boolean estaAutorizada() {
-		return this.situacao==Situacao.AUTORIZADA;
+		return this.getSituacao()==Situacao.AUTORIZADA;
 	}
 	public boolean estaCancelada() {
-		return this.situacao==Situacao.CANCELADA;
+		return this.getSituacao()==Situacao.CANCELADA;
 	}
 	public String naturezaOperacao() {
 		return naturezaOperacao;
@@ -457,7 +462,7 @@ public class NotaFiscal {
 	}
 	private void assertSituacaoIgual(String mensagem,Situacao... esperadas){
 		for (Situacao esperada : esperadas) {
-			if (esperada == this.situacao)
+			if (esperada == this.getSituacao())
 				return;
 		}
 		throw new UnsupportedOperationException(mensagem);
@@ -779,7 +784,7 @@ public class NotaFiscal {
 		this.cobranca = nf.cobranca;
 		this.notistaId = nf.notistaId;
 		
-		mesclarInformacaoFisco(informacaoFisco);
+		mesclarInformacaoFisco(nf.informacaoFisco);
 		
 		//this.informacaoContribuinte = nf.informacaoContribuinte.mesclar(nf.informacaoContribuinte);
 		this.exportacao = nf.exportacao;
@@ -878,27 +883,29 @@ public class NotaFiscal {
 	public int ultimaSequenciaCartaCorrecao() {
 		int result = 0;
 		for (CartaCorrecao cce : getCartasCorrecao()) 
-			result = cce.sequencia();
+			result = Math.max(result,cce.sequencia());
 		return result;
 	}
 
 	public void definirComoEmLote() {
 		String msg = "Nota Fiscal está %s e não pode ser definida como Em Lote";
 		
-		if (situacao == Situacao.CANCELADA)
+		if (getSituacao() == Situacao.CANCELADA)
 			throw new RuntimeException(String.format(msg, "Cancelada"));
-		if (situacao == Situacao.DENEGADA)
+		if (getSituacao() == Situacao.DENEGADA)
 			throw new RuntimeException(String.format(msg, "Denegada"));
-		if (situacao == Situacao.INUTILIZADA)
+		if (getSituacao() == Situacao.INUTILIZADA)
 			throw new RuntimeException(String.format(msg, "Inutilizada"));
-		if (situacao == Situacao.AUTORIZADA)
+		if (getSituacao() == Situacao.AUTORIZADA)
 			throw new RuntimeException(String.format(msg, "Autorizada"));
 		
-		this.situacao = Situacao.EM_LOTE;
+		this.setSituacao(Situacao.EM_LOTE);
 	}
-
+	private Situacao getSituacao(){
+		return situacao;
+	}
 	public boolean estaEmLote() {
-		return situacao == Situacao.EM_LOTE;
+		return getSituacao() == Situacao.EM_LOTE;
 	}
 
 }

@@ -95,5 +95,9 @@ public class RetornoAutorizacao {
 	public boolean temErros() {
 		return getErros().size() > 0;
 	}
+
+	public boolean temErroPara(ChaveAcesso chaveAcesso) {
+		return getErros().containsKey(chaveAcesso);
+	}
 	
 }

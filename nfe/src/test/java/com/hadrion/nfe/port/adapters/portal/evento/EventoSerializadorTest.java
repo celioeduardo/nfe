@@ -32,7 +32,6 @@ public class EventoSerializadorTest {
 				new Cnpj(86675642000106L),
 				new ChaveAcesso("31150186675642000106550020002638781002993906"),
 				DataUtil.dataHora("27/01/2015 09:04:22", "GMT-02:00"), 
-				1, //Sequencia do evento
 				new NumeroProtocolo("131151658576199"),
 				"EMITIDA INDEVIDAMENTE.................");
 		

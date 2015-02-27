@@ -77,6 +77,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.ObterEmailService;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
+import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
 import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
@@ -339,20 +340,29 @@ public class NotaFiscalAplicacaoService {
 				nf.cartaCorrecaoAtual() != null ? nf.cartaCorrecaoAtual().correcao() : null);
 	}
 	
-	private byte[] gerarDanfe(Document nfeProc,FilialId filialId) throws JRException{
+	private byte[] gerarDanfe(Document nfeProc,NotaFiscal nf) throws JRException{
 		JasperReport jasperReport;JasperPrint jasperPrint;
 		
     	Map<String,Object> parameters= new HashMap<String, Object>();
-    	byte[] logo = empresaRepositorio.obterEmpresa(filialRepositorio.obterFilial(filialId).empresaId()).logo();
+    	byte[] logo = empresaRepositorio.obterEmpresa(filialRepositorio.obterFilial(nf.filialId()).empresaId()).logo();
     	if (logo != null)
     		parameters.put("Logo", new ByteArrayInputStream(logo));
-		
+    	
+    	if (nf.cobranca()!=null){
+    		int i=1;
+	    	for (Duplicata dup : nf.cobranca().duplicatas()) {
+				parameters.put("FAT_NUMERO"+i,dup.numero());        
+				parameters.put("FAT_VENCIMENTO"+i, dup.vencimento());        
+				parameters.put("FAT_VALOR"+i, dup.valor().valor());        
+	    		i++;
+			}
+		}
+    	
     	InputStream reportStream = getClass().getClassLoader().getResourceAsStream("report/danfe.jasper");
     	jasperReport = (JasperReport) JRLoader.loadObject(reportStream);
     	
     	
 		JRXmlDataSource xmlDataSource = new JRXmlDataSource(xmlParaInpuStream(nfeProc), "/nfeProc/NFe/infNFe/det");
-		//jasperReport = JasperCompileManager.compileReport(getClass().getClassLoader().getResourceAsStream("report/danfe.jrxml"));
 		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,xmlDataSource);		
 		return JasperExportManager.exportReportToPdf(jasperPrint);		
 	}
@@ -464,7 +474,7 @@ public class NotaFiscalAplicacaoService {
 		String filename = nf.chaveAcesso().toString();
 		
 		Document xml = gerarXml(nf);		
-		byte[] pdf = gerarDanfe(xml,nf.filialId());
+		byte[] pdf = gerarDanfe(xml,nf);
 		
 		SimpleMailMessage message = smm(nf);
 		
@@ -522,7 +532,7 @@ public class NotaFiscalAplicacaoService {
 	
 	public ResponseEntity<InputStreamResource> obterDanfe(NotaFiscal nf) throws JRException{
 		
-		byte[] pdf = gerarDanfe(gerarXml(nf),nf.filialId());
+		byte[] pdf = gerarDanfe(gerarXml(nf),nf);
 		
 		HttpHeaders respHeaders = new HttpHeaders();
 		respHeaders.setContentType(new MediaType("application", "pdf"));

@@ -28,7 +28,7 @@ Ext.define('nfe.view.nf.NotasPendentesController', {
             var grid = this.getView();
             grid.getView().mask('Enviando...');
             var me = this;
-            model.enviarNotas('HOMOLOGACAO',ids,function(){
+            model.enviarNotas(me.getViewModel().get('ambiente'),ids,function(){
             	me.getViewModel().getStore('notasPendentes').reload();
             	me.fireViewEvent('notasPendentesEnviadas');
             	console.log('sucesso!');

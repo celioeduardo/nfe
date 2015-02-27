@@ -64,7 +64,7 @@ public class DestinatarioDeserializer implements JsonDeserializer<Destinatario>{
 	}
 	
 	private Cpf cpf(JsonObject j){
-		return tem(j,"cpj")?new Cpf(l(j,"cpf")):null;
+		return tem(j,"cpf")?new Cpf(l(j,"cpf")):null;
 	}
 	private Long l(JsonObject j, String propriedade){
 		return j.get(propriedade).getAsLong();

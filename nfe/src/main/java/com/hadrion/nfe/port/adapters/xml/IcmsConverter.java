@@ -88,6 +88,10 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 		case CST_40:
 		case CST_41:
 		case CST_50:
+			writer.startNode("ICMS40");
+			convert("orig", icms.origem(), writer, context);
+			convert("CST", icms.cst(), writer, context);
+			break;
 		case CST_60:
 		case CST_90:
 			writer.startNode("ICMS"+icms.cst().codigo());
@@ -103,7 +107,8 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 			convert("vBC", icms.baseCalculo(), writer, context);
 			convert("pICMS", formatarAliquota(icms.aliquota()), writer, context);
 			convert("vICMSOp", icms.valorSemDiferimento(), writer, context);
-			convert("pDif", formatarPercentualDiferimento(icms.percentualDiferimento()), writer, context);
+			if (icms.percentualDiferimento().maiorQueZero())
+				convert("pDif", formatarPercentualDiferimento(icms.percentualDiferimento()), writer, context);
 			convert("vICMSDif", icms.valorDiferido(), writer, context);
 			convert("vICMS", icms.valor(), writer, context);
 			break;

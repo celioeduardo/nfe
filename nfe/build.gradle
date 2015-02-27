@@ -8,7 +8,6 @@ buildscript {
 }
 
 apply plugin: 'java'
-
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 apply plugin: 'maven'
@@ -38,7 +37,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-amqp")
     compile("org.springframework.boot:spring-boot-starter-ws")
     compile("org.springframework.boot:spring-boot-starter-mail")
-    compile("org.springframework.boot:spring-boot-starter-security")
+    //compile("org.springframework.boot:spring-boot-starter-security")
 
     compile group: 'com.google.code.gson', name: 'gson', version:'2.1'
     compile group: 'commons-io', name: 'commons-io', version:'2.3'
@@ -58,22 +57,58 @@ dependencies {
 
 	compile('xmlunit:xmlunit:1.4')
     testCompile("org.springframework.boot:spring-boot-starter-test")
-  
+    
 }
 
 test {
     systemProperties 'property': 'value'
 }
 
+//applicationDistribution.with {
+//	exclude '*.jar'
+//}
+//applicationDistribution.from("build/libs/") {
+//	into 'lib'
+//}
+
+
+ext.priv = parseConfig(file('private.properties'))
+
+def parseConfig(File config) {
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+          parent { 
+            groupId 'org.springframework.boot'
+            artifactId 'spring-boot-starter-parent'
+            version "1.2.1.RELEASE"
+          }
+        }
+    }
+}
+
 uploadArchives {
 	repositories {
 	   mavenDeployer {
-			repository(url: "http://repo.hadrion.com.br:8081/nexus/content/repositories/snapshots") {
-				authentication(userName: "jenkins", password: "qu4l1s")
+			repository(url: priv.host) {
+				authentication(
+					userName: priv.user, password: priv.pass
+				)
 			}
-			pom.version = "0.0.1-SNAPSHOT"
-			pom.artifactId = "nfe"
-			pom.groupId = "com.hadrion"
+			pom.project {
+	          parent { 
+	            groupId 'org.springframework.boot'
+	            artifactId 'spring-boot-starter-parent'
+	            version "1.2.1.RELEASE"
+	          }
+	        }
 	   }
 	}
 }

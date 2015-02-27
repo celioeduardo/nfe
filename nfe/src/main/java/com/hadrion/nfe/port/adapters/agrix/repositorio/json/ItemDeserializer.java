@@ -9,9 +9,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
+import com.hadrion.nfe.dominio.modelo.icms.Cst;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
+import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculoSt;
 import com.hadrion.nfe.dominio.modelo.icms.Icms;
 import com.hadrion.nfe.dominio.modelo.icms.Origem;
+import com.hadrion.nfe.dominio.modelo.icms.SubstituicaoTributaria;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.Combustivel;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
@@ -26,6 +29,7 @@ import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
+import com.hadrion.nfe.tipos.Percentual;
 import com.hadrion.nfe.tipos.Quantidade;
 
 public class ItemDeserializer implements JsonDeserializer<Item>{
@@ -119,7 +123,17 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		
 		f = j.get("imposto").getAsJsonObject();
 		g = f.get("icms").getAsJsonObject();
-		icms = Icms.cst_00(Origem.obterPeloCodigo(i(g,"origem")), 
+		icms = new Icms(
+				Origem.obterPeloCodigo(i(g,"origem")), 
+				Cst.obterPeloCodigo(i(g,"st")), 
+				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
+				new Percentual(d(g,"percentualReducaoBc")), 
+				new Dinheiro(d(g,"base")), 
+				new Aliquota(d(g,"aliquota")), 
+				substituicaoTributaria(g), 
+				new Percentual(0));
+				
+				Icms.cst_00(Origem.obterPeloCodigo(i(g,"origem")), 
 				new Dinheiro(d(g,"base")), 
 				new Aliquota(d(g,"aliquota")), 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO);
@@ -139,5 +153,14 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 				d(g,"valor"));
 			
 		return new Imposto(Dinheiro.ZERO, icms, pis, cofins);
+	}
+	
+	private SubstituicaoTributaria substituicaoTributaria(JsonObject g){
+		return new SubstituicaoTributaria(
+				new Percentual(d(g,"percentualReducaoBcSt")), 
+				new Dinheiro(d(g,"baseSt")), 
+				new Aliquota(d(g,"aliquotaSt")), 
+				DeterminacaoBaseCalculoSt.MVA, 
+				new Percentual(d(g,"mvaSt")));
 	}
 }

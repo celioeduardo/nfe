@@ -96,6 +96,14 @@ Ext.define('nfe.view.main.Main', {
                 bind:{
                     store: '{notistas}',
                     value: '{notista}'
+                },
+                triggers: {
+                    limpar: {
+                        cls: 'x-form-clear-trigger',
+                        handler: function(ctl){
+                        ctl.setValue('');
+                        }
+                    }
                 }
             }]        
         },    

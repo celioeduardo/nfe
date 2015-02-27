@@ -19,6 +19,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 
 import org.apache.commons.io.IOUtils;
@@ -38,6 +39,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalFixture;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
+import com.hadrion.util.DataUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -119,13 +121,24 @@ public class ReportTest {
         JRXmlDataSource xmlDataSource = new JRXmlDataSource(xml,"/nfeProc/NFe/infNFe/det");
         
     	Map<String,Object> parameters= new HashMap<String, Object>();
-    	parameters.put("NaturezaOperacao", nf().naturezaOperacao());
-    	parameters.put("Logo", LogoFixture.logoInputStream());        
+    	//parameters.put("NaturezaOperacao", nf().naturezaOperacao());
+    	//parameters.put("Logo", LogoFixture.logoInputStream());
+    	for (int i = 0; i < 90; i++) {
+			parameters.put("FAT_NUMERO"+i,i+"A");        
+			parameters.put("FAT_VENCIMENTO"+i, DataUtil.agora());        
+			parameters.put("FAT_VALOR"+i, 50.23*i);        
+			
+		}
         
-        jasperReport = JasperCompileManager.compileReport(
-        		getClass().getClassLoader().getResourceAsStream("report/danfe.jrxml"));
-        jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, xmlDataSource);  
-        JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");   	
+        //jasperReport = JasperCompileManager.compileReport(getClass().getClassLoader().getResourceAsStream("report/danfe.jrxml"));
+        
+    	InputStream reportStream = getClass().getClassLoader().getResourceAsStream("report/danfe.jasper");
+    	jasperReport = (JasperReport) JRLoader.loadObject(reportStream);
+    	jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, xmlDataSource);  
+    	JasperExportManager.exportReportToPdfFile(jasperPrint, "src/test/resources/report/danfe.pdf");
+		
+        
+        
     }
     
     @Test @Ignore
@@ -173,7 +186,7 @@ public class ReportTest {
 		return NotaFiscalFixture.nfEmProducao();
 	}
     
-    @Test 
+    @Test @Ignore
     public void cceXmlDataSource() throws JRException, URISyntaxException, IOException{
     	
         JRXmlDataSource xmlDataSource = new JRXmlDataSource(

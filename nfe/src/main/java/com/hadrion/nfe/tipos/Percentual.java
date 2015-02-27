@@ -80,4 +80,8 @@ public class Percentual {
 	
 	@SuppressWarnings("unused")
 	private Percentual(){}
+
+	public boolean maiorQueZero() {
+		return valor > 0;
+	}
 }

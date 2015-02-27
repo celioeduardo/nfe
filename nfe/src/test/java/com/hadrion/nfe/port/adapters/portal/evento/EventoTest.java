@@ -22,7 +22,6 @@ public class EventoTest {
 				new Cnpj(86675642000106L),
 				new ChaveAcesso("31150186675642000106550020002638781002993906"),
 				DataUtil.dataHora("04/12/2014 17:27:22", "GMT-02:00"), 
-				1, //Sequencia do evento
 				new NumeroProtocolo("131151658576199"),
 				"Nota Fiscal emitida indevidamente");
 		

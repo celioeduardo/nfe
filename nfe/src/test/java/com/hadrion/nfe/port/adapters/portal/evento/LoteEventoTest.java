@@ -25,7 +25,6 @@ public class LoteEventoTest {
 				new Cnpj(86675642000106L),
 				new ChaveAcesso("31150186675642000106550020002638781002993906"),
 				DataUtil.dataHora("26/01/2014 17:27:22", "GMT-02:00"), 
-				1, //Sequencia do evento
 				new NumeroProtocolo("131151658576199"),
 				"Nota Fiscal emitida indevidamente");
 		Evento evento2 = new EventoCancelamento(
@@ -34,7 +33,6 @@ public class LoteEventoTest {
 				new Cnpj(86675642000106L),
 				new ChaveAcesso("31131016832651000420550010000199361002699180"),
 				DataUtil.dataHora("27/01/2014 08:06:38", "GMT-02:00"), 
-				1, //Sequencia do evento
 				new NumeroProtocolo("199131151658576"),
 				"Valor Total da Nota Fiscal incorreto");
 		

@@ -30,7 +30,7 @@ class EventoCancelamentoConverter extends AbstractConverter{
 		convert("chNFe", evento.chaveAcesso(), writer, context);
 		convert("dhEvento", evento.dataHora(), writer, context);
 		convert("tpEvento", evento.tipo(), writer, context);
-		convert("nSeqEvento", evento.sequencia(), writer, context);
+		convert("nSeqEvento",evento.sequencia(), writer, context);
 		convert("verEvento", evento.versao(), writer, context);
 		writer.startNode("detEvento");
 		writer.addAttribute("versao", evento.versao());

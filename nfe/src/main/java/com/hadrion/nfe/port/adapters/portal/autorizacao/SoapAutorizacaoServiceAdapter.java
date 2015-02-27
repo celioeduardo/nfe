@@ -88,8 +88,17 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 				retorno.registrarErro(new ChaveAcesso(chave), validador.errosComoTexto());
 		}
 		
-		if (retorno.temErros())
+		if (retorno.temErros()){
+			for (int i = 0; i < nfeList.getLength(); i++) {
+				Node nfe = nfeList.item(i);
+				String chave = getIdAttribute(nfe,"infNFe");
+				chave = chave.substring(3);
+				if (!retorno.temErroPara(new ChaveAcesso(chave)))
+					retorno.registrarErro(new ChaveAcesso(chave), "Lote inconsistente.");
+			}
+			
 			return retorno;
+		}
 		
 		ValidadorLote validador = new ValidadorLote(infNfe);
 		if (validador.temErros()){

@@ -14,11 +14,11 @@ import com.hadrion.nfe.tipos.Cnpj;
 public class EventoCancelamento extends Evento{
 
 	public EventoCancelamento(Uf uf, Ambiente ambiente, Cnpj cnpjAutor,
-			ChaveAcesso chaveAcesso, Date dataHora, long sequencia,
+			ChaveAcesso chaveAcesso, Date dataHora,
 			NumeroProtocolo numeroProtocolo, String justificativa) {
 		
-		super(110111, "Cancelamento", uf, ambiente, cnpjAutor, chaveAcesso, dataHora,
-				sequencia);
+		super(110111, "Cancelamento", uf, ambiente, 
+				cnpjAutor, chaveAcesso, dataHora,1);
 		this.numeroProtocolo = numeroProtocolo;
 		this.justificativa = justificativa;
 	}

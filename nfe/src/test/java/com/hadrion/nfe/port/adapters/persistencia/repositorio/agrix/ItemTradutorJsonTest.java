@@ -67,6 +67,8 @@ public class ItemTradutorJsonTest {
 			"			\"aliquotaSt\" : 0,\r\n" + 
 			"			\"aliquota\" : 18,\r\n" + 
 			"			\"coeficiente\" : 0.7,\r\n" + 
+			"			\"percentualReducaoBc\" : 0.0,\r\n" + 
+			"			\"percentualReducaoBcSt\" : 0.0,\r\n" + 
 			"			\"cvSt\" : 0,\r\n" + 
 			"			\"ivaSt\" : 0,\r\n" + 
 			"			\"mvaSt\" : 0,\r\n" + 

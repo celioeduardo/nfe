@@ -1,6 +1,7 @@
 package com.hadrion.nfe.port.adapters.agrix.evento;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +20,7 @@ public class EventoAgrixServiceTest extends DominioTest{
 		super.setUp();
 	}
 	
-	@Test
+	@Test @Ignore
 	public void consumirEventos(){
 		consumidorEvento.consumirEventos();
 	}

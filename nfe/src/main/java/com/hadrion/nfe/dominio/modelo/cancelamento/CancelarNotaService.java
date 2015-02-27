@@ -52,7 +52,6 @@ public class CancelarNotaService{
 				filial.cnpj(), 
 				nf.chaveAcesso(), 
 				DataUtil.agora(), 
-				nf.ultimaSequenciaCartaCorrecao()+1,
 				nf.numeroProtocoloAutorizacao(), 
 				solicitacao.justificativa());
 		

@@ -61,10 +61,13 @@ public class Informacao {
 			return this;
 		}
 		if (equals(outra)) return this;
-		
-		return new Informacao(
-				outra.texto,
-				clonarObservacoes(outra));
+		this.texto = outra.texto;
+		this.getObservacoes().clear();
+		this.getObservacoes().addAll(Arrays.asList(clonarObservacoes(outra)));
+		return this;
+//		return new Informacao(
+//				outra.texto,
+//				clonarObservacoes(outra));
 		
 	}
 	
