@@ -101,7 +101,7 @@ Ext.define('nfe.view.main.Main', {
                     limpar: {
                         cls: 'x-form-clear-trigger',
                         handler: function(ctl){
-                        ctl.setValue('');
+                        	ctl.setValue('');
                         }
                     }
                 }
