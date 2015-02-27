@@ -26,27 +26,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//		auth
-//            .inMemoryAuthentication()
-//                .withUser("user").password("1234").roles("USER");
 		auth.authenticationProvider(authenticationProvider);
-		
     }
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.formLogin()
-			.authenticationDetailsSource(new HospedeIdAuthenticationDetailsSource())
-			.and()
-				.authorizeRequests()
-                .antMatchers("/**").authenticated();
+			.authorizeRequests()
+				.anyRequest().permitAll();
+		
 //		http
-//			.authorizeRequests()
-//				.antMatchers("/filial/alterar_modo_operacao").fullyAuthenticated()
-//				.anyRequest().permitAll();
-//		http.httpBasic();
-//		http.csrf().disable();
+//			.formLogin()
+//			.authenticationDetailsSource(new HospedeIdAuthenticationDetailsSource())
+//			.and()
+//				.authorizeRequests()
+//                .antMatchers("/**").authenticated();
 	}
 
 }

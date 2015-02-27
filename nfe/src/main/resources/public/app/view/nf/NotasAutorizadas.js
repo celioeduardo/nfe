@@ -94,5 +94,12 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
         	  cellWrap: true,
         	  flex: 2
           }
-    ]
+    ]/*,
+    dockedItems: [{
+		dock: 'bottom', xtype: 'pagingtoolbar', 
+		bind:{
+			store: '{notasAutorizadas}'
+		}, 
+		displayInfo: true
+	}]/*
 });

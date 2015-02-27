@@ -30,3 +30,5 @@ nfe/.gradle
 /gradlew.bat
 ##/gradle/
 ##/.gradle/
+/private.properties
+/gradle-app.setting
