@@ -1,4 +1,4 @@
-package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
+package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json;
 
 import static com.hadrion.util.DataUtil.data;
 import static org.junit.Assert.assertEquals;

@@ -1,4 +1,4 @@
-package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix;
+package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -66,7 +66,7 @@ public class NotaFiscalTradutorJsonTest {
 	@Test
 	public void traduzirNota() throws IOException{
 		
-		final File json =FileUtils.getFile("src","test", "resources", "nota.json");
+		final File json =FileUtils.getFile("src","test", "resources", "json", "nota.json");
 		
 		NotaFiscalTradutorJson tradutor = new NotaFiscalTradutorJson(
 				FileUtils.readFileToString(json),

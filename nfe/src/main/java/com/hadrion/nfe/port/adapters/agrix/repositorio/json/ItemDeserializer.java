@@ -128,8 +128,11 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 				Cst.obterPeloCodigo(i(g,"st")), 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
 				new Percentual(d(g,"percentualReducaoBc")), 
+				new Dinheiro(d(g,"reducao")), 
+				null, 
 				new Dinheiro(d(g,"base")), 
-				new Aliquota(d(g,"aliquota")), 
+				new Aliquota(d(g,"aliquota")),
+				new Dinheiro(d(g,"valor")),
 				substituicaoTributaria(g), 
 				new Percentual(0));
 				

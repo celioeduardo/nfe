@@ -58,6 +58,9 @@ public class Dinheiro {
 	public Dinheiro multiplicar(BigDecimal quantia, MathContext mathContext){
 		return new Dinheiro(quantia().multiply(quantia,mathContext));
 	}
+	public Dinheiro multiplicar(Percentual percentual) {
+		return multiplicar(percentual.valor());
+	}
 	public Dinheiro dividir(Double fator) {
 		return dividir(new BigDecimal(fator));
 	}

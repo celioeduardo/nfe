@@ -24,6 +24,7 @@ import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.icms.Cst;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
+import com.hadrion.nfe.dominio.modelo.icms.Icms;
 import com.hadrion.nfe.dominio.modelo.icms.Origem;
 import com.hadrion.nfe.dominio.modelo.nf.Contingencia;
 import com.hadrion.nfe.dominio.modelo.nf.Finalidade;
@@ -287,9 +288,8 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 					new Combustivel(110203073L, new Quantidade(568.1234), Uf.SP, 
 							new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14)))),
 			new Imposto(Dinheiro.ZERO,
-				new IcmsDeserializado(Origem.NACIONAL, Cst.CST_51, DeterminacaoBaseCalculo.VALOR_OPERACAO, 
-						Percentual.ZERO, Dinheiro.ZERO, Aliquota.ZERO, Dinheiro.ZERO, null, Percentual.ZERO, 
-						new Dinheiro(500.78)),
+				new Icms(Origem.NACIONAL, Cst.CST_51, DeterminacaoBaseCalculo.VALOR_OPERACAO, 
+						Percentual.ZERO, Dinheiro.ZERO, Dinheiro.ZERO, new Dinheiro(500.78), Aliquota.ZERO, Dinheiro.ZERO, null, Percentual.ZERO),
 				new PisDeserializado(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO), 
 				new CofinsDeserializado(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO)),
 			"Informação Adicional");

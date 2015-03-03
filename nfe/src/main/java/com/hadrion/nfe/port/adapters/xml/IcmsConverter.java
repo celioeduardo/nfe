@@ -204,17 +204,37 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 				baseCalculoSt, 
 				valorSt);
 		
-		return new IcmsDeserializado(
+		return new Icms(
 				origem, 
 				cst, 
 				determinacaoBaseCalculo, 
 				percentualReducaoBaseCalculo, 
+				calcularDescontoRbc(percentualReducaoBaseCalculo, baseCalculo,
+						aliquota), 
 				null, 
-				aliquota, 
+				baseCalculo,
+				aliquota,				
 				valor, 
 				st, 
-				percentualDiferimento,
-				baseCalculo);
+				percentualDiferimento);
 	}
+
+	private Dinheiro calcularDescontoRbc(
+			Percentual percentualReducaoBaseCalculo, 
+			Dinheiro baseCalculo,Aliquota aliquota) {
+		
+		if (percentualReducaoBaseCalculo == null)
+			return null;
+		
+		if (percentualReducaoBaseCalculo.maiorQueZero())
+			return baseCalculo
+				.dividir(1-percentualReducaoBaseCalculo.valor() / 100)
+				.multiplicar(percentualReducaoBaseCalculo.valor() / 100)
+				.multiplicar(aliquota.valor())
+				.dividir(100.0);
+		
+		return Dinheiro.ZERO;
+	}
+	
 
 }

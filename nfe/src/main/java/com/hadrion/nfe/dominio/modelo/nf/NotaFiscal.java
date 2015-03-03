@@ -527,7 +527,9 @@ public class NotaFiscal {
 	public Dinheiro totalDesconto(){
 		Dinheiro result = Dinheiro.ZERO;
 		for (Item item : getItens())
-			result = result.soma(item.produto().valorDesconto());
+			result = result.soma(
+					item.produto().valorDesconto().soma(
+							item.imposto().icms().descontoReducaoBaseCalculo()));
 		return result;
 	}
 	public Dinheiro totalPis(){
@@ -560,7 +562,7 @@ public class NotaFiscal {
 				.soma(totalSeguro())
 				.soma(outrasDespesasAcessorias());
 	}	
-	
+
 	public Dinheiro totalValorAproximadoTributos(){
 		Dinheiro result = Dinheiro.ZERO;
 		for (Item item : getItens())
