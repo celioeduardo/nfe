@@ -787,8 +787,8 @@ public class NotaFiscal {
 		this.notistaId = nf.notistaId;
 		
 		mesclarInformacaoFisco(nf.informacaoFisco);
+		mesclarInformacaoContribuinte(nf.informacaoContribuinte);
 		
-		//this.informacaoContribuinte = nf.informacaoContribuinte.mesclar(nf.informacaoContribuinte);
 		this.exportacao = nf.exportacao;
 		
 		this.getReferencias().clear();
@@ -808,6 +808,13 @@ public class NotaFiscal {
 			this.informacaoFisco = outra == null ? null : outra.clonar(); 
 		else
 			this.informacaoFisco = this.informacaoFisco.mesclar(outra);
+	}
+	
+	private void mesclarInformacaoContribuinte(Informacao outra){
+		if (this.informacaoContribuinte == null)
+			this.informacaoContribuinte = outra == null ? null : outra.clonar(); 
+		else
+			this.informacaoContribuinte = this.informacaoContribuinte.mesclar(outra);
 	}
 	
 	private void mesclarItem(Item item, List<Item> itens){
