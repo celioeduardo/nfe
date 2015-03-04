@@ -89,7 +89,7 @@ public class RetornoInutilizacaoDeserializadorTest {
 			new RetornoInutilizacao(
 					new NumeroProtocolo("131150045959856"), 
 					new Mensagem(102,"Inutilizacao de numero homologado"), 
-					DataUtil.dataHota("03/02/2015 17:54:36"),
+					DataUtil.dataHora("03/02/2015 17:54:36"),
 					XML_ENVIO,
 					XML_RETORNO_OK),
 			retornoInutilizacao);

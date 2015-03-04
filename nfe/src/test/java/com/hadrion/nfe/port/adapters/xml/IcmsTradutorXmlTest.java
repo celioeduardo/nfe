@@ -110,9 +110,10 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				new Dinheiro(2500), 
 				new Aliquota(8), 
 				new SubstituicaoTributaria(
+						new Dinheiro(2420), 
+						new Aliquota(18),
+						new Dinheiro(435.60),
 						new Percentual(12), 
-						new Dinheiro(2500), 
-						new Aliquota(18), 
 						DeterminacaoBaseCalculoSt.MVA, 
 						new Percentual(10)),
 				Percentual.ZERO);
@@ -150,14 +151,13 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				new Dinheiro(2500),
 				new Aliquota(8),
 				new Dinheiro(200),
-				new SubstituicaoTributariaConvertida(
-						new Percentual(12), 
-						null, 
-						new Aliquota(18), 
-						DeterminacaoBaseCalculoSt.MVA, 
-						new Percentual(10),
+				new SubstituicaoTributaria(
 						new Dinheiro(2420),
-						new Dinheiro(435.6)),
+						new Aliquota(18), 
+						new Dinheiro(435.6),
+						new Percentual(12), 
+						DeterminacaoBaseCalculoSt.MVA, 
+						new Percentual(10)),
 				null);
 		
 		assertEquals(icms,fromXML(XML));
@@ -246,14 +246,13 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				null,
 				null, 
 				null, 
-				new SubstituicaoTributariaConvertida(
-						new Percentual(12), 
-						null, 
-						new Aliquota(18), 
-						DeterminacaoBaseCalculoSt.MVA, 
-						new Percentual(10),
+				new SubstituicaoTributaria(
 						new Dinheiro(2420),
-						new Dinheiro(435.6)), 
+						new Aliquota(18), 
+						new Dinheiro(435.6),
+						new Percentual(12), 
+						DeterminacaoBaseCalculoSt.MVA, 
+						new Percentual(10)), 
 				Percentual.ZERO);
 		
 		assertXMLEquals(XML,toXML(icms));
@@ -285,14 +284,13 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				null,
 				null,
 				null,
-				new SubstituicaoTributariaConvertida(
-						new Percentual(12), 
-						null, 
-						new Aliquota(18), 
-						DeterminacaoBaseCalculoSt.MVA, 
-						new Percentual(10),
+				new SubstituicaoTributaria(
 						new Dinheiro(2420),
-						new Dinheiro(435.6)),
+						new Aliquota(18), 
+						new Dinheiro(435.6),
+						new Percentual(12), 
+						DeterminacaoBaseCalculoSt.MVA, 
+						new Percentual(10)),
 				null);
 		
 		assertEquals(icms,fromXML(XML));
@@ -493,9 +491,10 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				new Dinheiro(2500.0), 
 				new Aliquota(18.0), 
 				new SubstituicaoTributaria(
-						new Percentual(12), 
-						new Dinheiro(2500), 
+						new Dinheiro(2420), 
 						new Aliquota(18), 
+						new Dinheiro(435.60), 
+						new Percentual(12), 
 						DeterminacaoBaseCalculoSt.MVA, 
 						new Percentual(10)), 
 				Percentual.ZERO);
@@ -532,14 +531,13 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				new Dinheiro(1500),
 				new Aliquota(18.0), 
 				new Dinheiro(270), 
-				new SubstituicaoTributariaConvertida(
-						new Percentual(12), 
-						null, 
-						new Aliquota(18), 
-						DeterminacaoBaseCalculoSt.MVA, 
-						new Percentual(10),
+				new SubstituicaoTributaria(
 						new Dinheiro(2420),
-						new Dinheiro(435.6)), 
+						new Aliquota(18), 
+						new Dinheiro(435.6),
+						new Percentual(12), 
+						DeterminacaoBaseCalculoSt.MVA, 
+						new Percentual(10)), 
 				null);
 		
 		assertEquals(icms,fromXML(XML));

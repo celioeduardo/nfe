@@ -13,9 +13,10 @@ public class SubstituicaoTributariaTest {
 	@Test
 	public void somenteAliquota(){
 		SubstituicaoTributaria st = new SubstituicaoTributaria(
-				Percentual.ZERO, 
 				new Dinheiro(1200), 
 				new Aliquota(12), 
+				new Dinheiro(144), 
+				Percentual.ZERO, 
 				DeterminacaoBaseCalculoSt.PRECO_TABELADO, 
 				Percentual.ZERO);
 		
@@ -26,9 +27,10 @@ public class SubstituicaoTributariaTest {
 	@Test
 	public void margemValorAgregado(){
 		SubstituicaoTributaria st = new SubstituicaoTributaria(
-				Percentual.ZERO, 
-				new Dinheiro(1200), 
+				new Dinheiro(1740), 
 				new Aliquota(12), 
+				new Dinheiro(208.8), 
+				Percentual.ZERO, 
 				DeterminacaoBaseCalculoSt.MVA, 
 				new Percentual(45));
 		
@@ -39,9 +41,10 @@ public class SubstituicaoTributariaTest {
 	@Test
 	public void margemValorAgregadoComReducaoBaseCalculo(){
 		SubstituicaoTributaria st = new SubstituicaoTributaria(
-				new Percentual(12), 
-				new Dinheiro(2500), 
+				new Dinheiro(2420), 
 				new Aliquota(18), 
+				new Dinheiro(435.6), 
+				new Percentual(12), 
 				DeterminacaoBaseCalculoSt.MVA, 
 				new Percentual(10));
 		

@@ -1,8 +1,10 @@
 package com.hadrion.nfe.port.adapters.agrix.repositorio.json;
 
 import static com.hadrion.util.DataUtil.data;
+import static com.hadrion.util.DataUtil.dataHora;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gson.JsonDeserializationContext;
@@ -57,7 +59,7 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 				new Serie(l(j,"serie")),
 				l(j,"numero"), 
 				data(s(j,"emissao")), 
-				data(s(j,"dataHora")),
+				parseDataHora(s(j,"dataHora")),
 				1,//TODO codigo numerico
 				FormatoDanfe.RETRATO,//TODO Formato DANFE
 				TipoEmissao.NORMAL,//TODO TipoEmissao.valueOf(j.get("tipoEmissao").getAsString()),
@@ -83,6 +85,13 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 				notista(j) != null ? notista(j).notistaId() : null); 
 		
 		return nf;
+	}
+	
+	private Date parseDataHora(String s) {
+		if (s.length() > 8)
+			return dataHora(s);
+		else
+			return data(s);
 	}
 	
 	private List<Item> itens(JsonObject j){

@@ -57,8 +57,13 @@ public class SubstituicaoTributariaConverter extends AbstractConverter{
 			}
 			reader.moveUp();
 		}
-		return new SubstituicaoTributariaConvertida(percentualReducaoBaseCalculo, null, 
-				aliquota, determinacaoBaseCalculo, percentualMargemValorAdicionado, baseCalculo, valor);
+		return new SubstituicaoTributaria(
+				baseCalculo, 
+				aliquota, 
+				valor, 
+				percentualReducaoBaseCalculo,  
+				determinacaoBaseCalculo, 
+				percentualMargemValorAdicionado);
 	}
 
 }

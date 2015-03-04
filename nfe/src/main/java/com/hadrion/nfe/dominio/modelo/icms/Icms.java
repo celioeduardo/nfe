@@ -279,10 +279,14 @@ public class Icms {
 	}
 
 	public Dinheiro baseCalculo() {
+		if (this.baseCalculo == null)
+			return Dinheiro.ZERO;
 		return this.baseCalculo;
 	}
 
 	public Dinheiro valor() {
+		if (this.valor == null)
+			return Dinheiro.ZERO;
 		return this.valor;
 	}
 

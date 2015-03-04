@@ -1,0 +1,197 @@
+[{
+		"NotaFiscalId" : "0F75A9CD9BFDC155E050007F0100752A",
+		"codFilial" : 4,
+		"numero" : 37858,
+		"serie" : 0,
+		"modelo" : "55",
+		"emissao" : "11/02/15",
+		"dataHora" : "11/02/15",
+		"tipoOperacao" : "SAIDA",
+		"localDestino" : "INTERNA",
+		"finalidade" : "NORMAL",
+		"consumidorFinal" : false,
+		"naturezaOperacao" : "VENDA PRODUCAO REG SUBST TRIB",
+		"itens" : [{
+				"produtoId" : "0F75A9BAEB34C155E050007F0100752A",
+				"codigo" : "2252",
+				"ean" : null,
+				"descricao" : "GRAN RESERVA GOURMET ESPRESSO - LATA 250 GR - LINHA ELEGANTE",
+				"ncm" : "09012100",
+				"nve" : "",
+				"extIpi" : "",
+				"cfop" : 5401,
+				"unidade" : "UN",
+				"quantidade" : 10,
+				"unitario" : 15.76,
+				"bruto" : 157.6,
+				"unidadeTributavel" : "UN",
+				"quantidadeTributavel" : 10,
+				"unitarioTributacao" : 15.76,
+				"frete" : 0,
+				"seguro" : 0,
+				"desconto" : 0,
+				"acessorias" : 0,
+				"combustivel" : "",
+				"imposto" : {
+					"icms" : {
+						"origem" : 0,
+						"aliquotaSt" : 18,
+						"aliquota" : 18,
+						"coeficiente" : 0.3888,
+						"cvSt" : 0.3888,
+						"ivaSt" : 1.2161,
+						"mvaSt" : 21.61,
+						"base" : 61.27,
+						"baseSt" : 74.52,
+						"reducao" : 0,
+						"percentualReducaoBc" : 61.12,
+						"percentualReducaoBcSt" : 61.12,
+						"valor" : 11.03,
+						"ipi" : 0,
+						"outras" : 0,
+						"valorSt" : 2.38,
+						"st" : 70
+					},
+					"pis" : {
+						"aliquota" : 0,
+						"base" : 0,
+						"valor" : 0,
+						"st" : "06"
+					},
+					"cofins" : {
+						"aliquota" : 0,
+						"base" : 0,
+						"valor" : 0,
+						"st" : "06"
+					}
+				},
+				"informacaoAdicional" : ""
+			}, {
+				"produtoId" : "0F75A9BAEC42C155E050007F0100752A",
+				"codigo" : "2365",
+				"ean" : null,
+				"descricao" : "GRAN RESERVA GOURMET TORRADO E MOIDO - LATA 500 GRAMAS - LINHA ELEGANTE",
+				"ncm" : "09012100",
+				"nve" : "",
+				"extIpi" : "",
+				"cfop" : 5401,
+				"unidade" : "UN",
+				"quantidade" : 10,
+				"unitario" : 21.92,
+				"bruto" : 219.2,
+				"unidadeTributavel" : "UN",
+				"quantidadeTributavel" : 10,
+				"unitarioTributacao" : 21.92,
+				"frete" : 0,
+				"seguro" : 0,
+				"desconto" : 0,
+				"acessorias" : 0,
+				"combustivel" : "",
+				"imposto" : {
+					"icms" : {
+						"origem" : 0,
+						"aliquotaSt" : 18,
+						"aliquota" : 18,
+						"coeficiente" : 0.3888,
+						"cvSt" : 0.3888,
+						"ivaSt" : 1.2161,
+						"mvaSt" : 21.61,
+						"base" : 85.22,
+						"baseSt" : 103.64,
+						"reducao" : 0,
+						"percentualReducaoBc" : 61.12,
+						"percentualReducaoBcSt" : 61.12,
+						"valor" : 15.34,
+						"ipi" : 0,
+						"outras" : 0,
+						"valorSt" : 3.32,
+						"st" : 70
+					},
+					"pis" : {
+						"aliquota" : 0,
+						"base" : 0,
+						"valor" : 0,
+						"st" : "06"
+					},
+					"cofins" : {
+						"aliquota" : 0,
+						"base" : 0,
+						"valor" : 0,
+						"st" : "06"
+					}
+				},
+				"informacaoAdicional" : ""
+			}
+		],
+		"referencias" : [],
+		"emitente" : {
+			"cnpj" : "54226501000110",
+			"razaoSocial" : "COOP. DOS CAFEIC. DA REGIAO DE PINHAL",
+			"nomeFantasia" : "COOP. DOS CAFEIC. DA REGIAO DE PINHAL",
+			"logradouro" : "RUA VEREADOR ESTEVO DE FILIPPI",
+			"numero" : "1305",
+			"complemento" : "",
+			"bairro" : "MATADOURO",
+			"municipio" : "ESPIRITO STO DO PINHAL - SP",
+			"pais" : 1058,
+			"paisNome" : "BRASIL",
+			"cep" : "13990000",
+			"telefone" : "1936618181",
+			"ie" : "530.002.576.118",
+			"ieSubstituto" : "",
+			"uf" : "SP",
+			"codigoMunicipio" : 3515186,
+			"crt" : 3
+		},
+		"destinatario" : {
+			"idEstrangeiro" : "",
+			"razaoSocial" : "ESTDP COMERCIO E PARTICIPACOES LTDA",
+			"nomeFantasia" : "",
+			"cnpj" : "07913830000159",
+			"logradouro" : "AVENIDA GUILHERME CAMPOS 500 LOJA RX-005",
+			"numero" : "500",
+			"complemento" : "LOJA RX-005",
+			"bairro" : "PARQUE DAS FLORES",
+			"municipio" : "CAMPINAS",
+			"uf" : "SP",
+			"cep" : "13087970",
+			"telefone" : "1937569984",
+			"ie" : "244746107110",
+			"indicadorIe" : 1,
+			"codigoMunicipio" : 3509502,
+			"pais" : 1058,
+			"paisNome" : "BRASIL",
+			"email" : "MIVRANGEL@HOTMAIL.COM"
+		},
+		"transporte" : {
+			"tipoFrete" : "0",
+			"transportadora" : {
+				"cpf" : "32982978873",
+				"nome" : "THIAGO FERREIRA GOMES FRANCOSO",
+				"endereco" : "RUA DR RAUL RIBEIRO VERGUEIRO,",
+				"municipio" : "ESPIRITO STO DO PINHAL - SP",
+				"uf" : "SP"
+			}
+		},
+		"cobranca" : [{
+				"tipoDoc" : "D04",
+				"numero" : 37858,
+				"sequencia" : "01",
+				"vencimento" : "13/03/15",
+				"valor" : 382.5,
+				"desconto" : 0
+			}
+		],
+		"observacao" : "OPERADOR: ALCUNHA VENDEDOR: E-10215 THIAGO FERREIRA GOMES FRANCOSO VENDA A PRAZO - VENC. FIXO VALOR APROXIMADO DOS TRIBUTOS: R$ 26,37",
+		"observacaoFisco" : "PROD SUBMETIDO AO REG DO ICMS ST CONF ART 313 X DO RICMS-IVA ST 21,61% PORTARIA CAT 47/2009  - BASE DE CALCULO RED CONF ART 3 ANEXO II ITEM 4 DO RICMS 45490/2000 - ALTERACAO PORTARIA CAT N 106 DE 14/1 0/2013 -  ANEXO XI ITEM 11.5 - VENDA COM ALIQUOTA REDUZIDA A ZERO PARA PIS E COFINS NOS TERMOS DO INCISO XXI DA LEI 10925/2004 , COM REDACAO DADA PELA LEI 12839/2013 , MP 609/2013 ARTIGO 1 * CAFE DE PROPRIEDADE DE COOPERADO (S) CON STANTE DO PEDIDO DE VENDA DESTACADO NOS DADOS ADICIONAIS DESTA NOTA FISCAL.",
+		"ufSaidaPais" : "",
+		"localEmbarque" : "",
+		"localDespacho" : "",
+		"notista" : {
+			"notistaId" : "ALCUNHA",
+			"nome" : "ALCUNHA",
+			"descricao" : "ANDRE LUIZ DA CUNHA",
+			"ativo" : "S"
+		}
+	}
+]

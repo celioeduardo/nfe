@@ -195,14 +195,13 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 		
 		SubstituicaoTributaria st = null;
 		if (determinacaoBaseCalculoSt != null)
-			st = new SubstituicaoTributariaConvertida(
-				percentualReducaoBaseCalculoSt, 
-				null, 
-				aliquotaSt, 
-				determinacaoBaseCalculoSt, 
-				percentualMargemValorAdicionado, 
+			st = new SubstituicaoTributaria(
 				baseCalculoSt, 
-				valorSt);
+				aliquotaSt, 
+				valorSt,
+				percentualReducaoBaseCalculoSt, 
+				determinacaoBaseCalculoSt, 
+				percentualMargemValorAdicionado);
 		
 		return new Icms(
 				origem, 

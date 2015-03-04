@@ -782,7 +782,12 @@ public class NotaFiscal {
 		this.destinatario = nf.destinatario;
 		this.localRetirada = nf.localRetirada;
 		this.localEntrega = nf.localEntrega;
-		this.transporte = this.transporte.mesclar(nf.transporte);
+		
+		if (this.transporte == null)
+			this.transporte = nf.transporte;
+		else
+			this.transporte = this.transporte.mesclar(nf.transporte);
+		
 		this.cobranca = nf.cobranca;
 		this.notistaId = nf.notistaId;
 		

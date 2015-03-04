@@ -160,9 +160,10 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 	
 	private SubstituicaoTributaria substituicaoTributaria(JsonObject g){
 		return new SubstituicaoTributaria(
-				new Percentual(d(g,"percentualReducaoBcSt")), 
-				new Dinheiro(d(g,"baseSt")), 
+				new Dinheiro(d(g,"baseSt")),
 				new Aliquota(d(g,"aliquotaSt")), 
+				new Dinheiro(d(g,"valorSt")),
+				new Percentual(d(g,"percentualReducaoBcSt")), 
 				DeterminacaoBaseCalculoSt.MVA, 
 				new Percentual(d(g,"mvaSt")));
 	}
