@@ -63,7 +63,8 @@
 						"base" : 0,
 						"valor" : 0,
 						"st" : "06"
-					}
+					},
+					"valorAproximadoTributos" : 0
 				},
 				"informacaoAdicional" : ""
 			}, {
@@ -118,7 +119,8 @@
 						"base" : 0,
 						"valor" : 0,
 						"st" : "06"
-					}
+					},
+					"valorAproximadoTributos" : 0
 				},
 				"informacaoAdicional" : ""
 			}

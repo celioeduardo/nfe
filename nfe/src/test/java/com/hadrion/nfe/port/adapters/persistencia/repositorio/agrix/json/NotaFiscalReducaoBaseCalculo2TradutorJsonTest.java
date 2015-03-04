@@ -36,6 +36,7 @@ public class NotaFiscalReducaoBaseCalculo2TradutorJsonTest {
 		assertEquals(new Dinheiro(355.18),nf.totalBaseCalculoIcms());
 		assertEquals(new Dinheiro(63.93),nf.totalIcms());
 		assertEquals(new Dinheiro(27.4),nf.totalDesconto());
+		assertEquals(new Dinheiro(63.93),nf.totalValorAproximadoTributos());
 		
 		Item item = null;
 

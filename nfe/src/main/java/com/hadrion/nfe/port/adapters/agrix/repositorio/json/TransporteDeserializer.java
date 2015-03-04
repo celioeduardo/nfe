@@ -1,7 +1,7 @@
 package com.hadrion.nfe.port.adapters.agrix.repositorio.json;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -34,7 +34,7 @@ public class TransporteDeserializer implements JsonDeserializer<Transporte>{
 				transportador(j),
 				retencao(j),
 				veiculo(j),
-				new ArrayList<Volume>());//TODO volumes
+				volumes(j));
 		
 		return transporte;
 	}
@@ -42,6 +42,12 @@ public class TransporteDeserializer implements JsonDeserializer<Transporte>{
 	private Transportador transportador(JsonObject j){
 		if (tem(j,"transportadora")){
 			return new TransporteTradutorJson(j.get("transportadora").toString()).converterTransportadora();
+		}
+		return null;
+	}
+	private List<Volume> volumes(JsonObject j){
+		if (tem(j,"volumes")){
+			return new TransporteTradutorJson(j.get("volumes").toString()).converterVolumes();
 		}
 		return null;
 	}

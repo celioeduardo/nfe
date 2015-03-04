@@ -63,12 +63,12 @@
 						"base" : 0,
 						"valor" : 0,
 						"st" : "06"
-					}
+					},
+					"valorAproximadoTributos" : 63.93
 				},
 				"informacaoAdicional" : ""
 			}
 		],
-		"valorAproximadoTributos" : 63.93,
 		"referencias" : [],
 		"emitente" : {
 			"cnpj" : "16832651000188",

@@ -69,7 +69,8 @@
 			"base" : 3513.75,
 			"valor" : 267.05,
 			"st" : "01"
-		}
+		},
+		"valorAproximadoTributos" : 0
     },
     "informacaoAdicional" : "ADICIONAL"
   }, {
@@ -132,7 +133,8 @@
 			"base" : 3513.75,
 			"valor" : 267.05,
 			"st" : "01"
-		}
+		},
+		"valorAproximadoTributos" : 0
     },
     "informacaoAdicional" : "ADICIONAL"
   }, {
@@ -194,7 +196,8 @@
 			"base" : 3513.75,
 			"valor" : 267.05,
 			"st" : "01"
-		}
+		},
+		"valorAproximadoTributos" : 0
     },
     "informacaoAdicional" : "ADICIONAL"
   }, {
@@ -256,7 +259,8 @@
 			"base" : 3513.75,
 			"valor" : 267.05,
 			"st" : "01"
-		}
+		},
+		"valorAproximadoTributos" : 0
     },
     "informacaoAdicional" : "ADICIONAL"
   }],
@@ -348,6 +352,14 @@
 			"placa" : "AAA9999",
 			"uf" : "SP",
 			"rntc" : ""
+		},
+		"volumes" : {
+			"quantidade" : 25,
+			"especie" : "SACAS",
+			"marca" : "COPAMIL",
+			"numero" : "8930",
+			"liquido" : 1000,
+			"bruto" : 1000
 		}
  },
  "cobranca" : [{

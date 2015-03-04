@@ -155,7 +155,7 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 				.0, 
 				d(g,"valor"));
 			
-		return new Imposto(Dinheiro.ZERO, icms, pis, cofins);
+		return new Imposto(new Dinheiro(d(f,"valorAproximadoTributos")), icms, pis, cofins);
 	}
 	
 	private SubstituicaoTributaria substituicaoTributaria(JsonObject g){

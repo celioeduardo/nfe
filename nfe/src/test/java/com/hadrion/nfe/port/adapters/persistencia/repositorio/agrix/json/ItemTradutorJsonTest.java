@@ -92,7 +92,8 @@ public class ItemTradutorJsonTest {
 			"			\"base\" : 3513.75,\r\n" + 
 			"			\"valor\" : 267.05,\r\n" + 
 			"			\"st\" : \"01\"\r\n" + 
-			"		}\r\n" + 
+			"		},\r\n" + 
+			"		\"valorAproximadoTributos\" : 0\r\n" + 
 			"	},\r\n" +
 			"	\"informacaoAdicional\" : \"ADICIONAL\"\r\n" + 
 			"}";

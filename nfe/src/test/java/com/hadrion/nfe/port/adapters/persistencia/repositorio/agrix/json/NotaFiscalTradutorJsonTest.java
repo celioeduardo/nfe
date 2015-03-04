@@ -49,6 +49,7 @@ import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.publico.IndicadorIe;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.Volume;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
@@ -201,6 +202,9 @@ public class NotaFiscalTradutorJsonTest {
 		assertEquals(
 				new Exportacao(Uf.MG, "Local do Embarque", "Despacho"),
 				nf.exportacao());
+		
+		assertEquals(new Volume(25,"SACAS","COPAMIL","8930",1000.0,1000.0,null),
+				nf.transporte().volumes().get(0));
 	}
 
 	private Date data(String data){
