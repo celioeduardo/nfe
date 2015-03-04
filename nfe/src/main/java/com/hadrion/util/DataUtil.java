@@ -70,7 +70,7 @@ public class DataUtil {
 		
 	}
 	
-	public static Date dataHota(String dataHora){
+	public static Date dataHora(String dataHora){
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 		try {
 			return formatter.parse(dataHora);

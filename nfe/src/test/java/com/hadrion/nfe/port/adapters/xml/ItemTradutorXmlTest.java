@@ -149,7 +149,7 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 							new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14)))),
 			new Imposto(Dinheiro.ZERO, 
 				Icms.cst_51(Origem.NACIONAL,new Dinheiro(1000), Aliquota.ZERO,
-						Percentual.ZERO,Percentual.ZERO, DeterminacaoBaseCalculo.VALOR_OPERACAO), 
+						Percentual.ZERO,Dinheiro.ZERO, Percentual.ZERO, DeterminacaoBaseCalculo.VALOR_OPERACAO), 
 				new Pis(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null), 
 				new Cofins(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null)),
 			"Informação Adicional");
@@ -187,9 +187,9 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 					new Combustivel(123456789L, new Quantidade(568.1234), Uf.SP, 
 							new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14)))),
 			new Imposto(Dinheiro.ZERO, 
-				new IcmsDeserializado(Origem.NACIONAL,Cst.CST_51, DeterminacaoBaseCalculo.VALOR_OPERACAO,
-						Percentual.ZERO, new Dinheiro(1000), Aliquota.ZERO, Dinheiro.ZERO, null, 
-						Percentual.ZERO, new Dinheiro(1000)), 
+				new Icms(Origem.NACIONAL,Cst.CST_51, DeterminacaoBaseCalculo.VALOR_OPERACAO,
+						Percentual.ZERO, Dinheiro.ZERO, new Dinheiro(1000), new Dinheiro(1000), Aliquota.ZERO, Dinheiro.ZERO, null, 
+						Percentual.ZERO), 
 				new PisDeserializado(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO), 
 				new CofinsDeserializado(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null,Dinheiro.ZERO)),
 				"Informação Adicional");

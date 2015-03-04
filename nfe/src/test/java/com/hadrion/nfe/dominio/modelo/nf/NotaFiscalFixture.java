@@ -275,7 +275,7 @@ public class NotaFiscalFixture {
 							new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14)))),
 			new Imposto(Dinheiro.ZERO, 
 				Icms.cst_51(Origem.NACIONAL,new Dinheiro(1000), Aliquota.ZERO,
-						Percentual.ZERO,new Percentual(1), DeterminacaoBaseCalculo.VALOR_OPERACAO), 
+						Percentual.ZERO,Dinheiro.ZERO, new Percentual(1), DeterminacaoBaseCalculo.VALOR_OPERACAO), 
 				new Pis(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null), 
 				new Cofins(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null)),
 			"Informação Adicional");

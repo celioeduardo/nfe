@@ -1,7 +1,5 @@
 package com.hadrion.nfe.dominio.modelo.icms;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.AttributeOverride;
@@ -22,17 +20,14 @@ import com.hadrion.nfe.tipos.Percentual;
 @Access(AccessType.FIELD)
 public class SubstituicaoTributaria {
 	
-	public static final SubstituicaoTributaria NULA = new SubstituicaoTributaria(
-			Percentual.ZERO,Dinheiro.ZERO,Aliquota.ZERO,null, Percentual.ZERO);
+	public static final SubstituicaoTributaria NULA = 
+			new SubstituicaoTributaria(
+			Dinheiro.ZERO,Aliquota.ZERO,Dinheiro.ZERO,Percentual.ZERO, null, Percentual.ZERO);
 	
 	@Embedded
 	@AttributeOverride(name="valor", column=@Column(name="ICMS_ST_PER_RBC"))
 	private Percentual percentualReducaoBaseCalculo;
-	
-	@Embedded
-	@AttributeOverride(name="quantia", column=@Column(name="ICMS_ST_VAL_OPERACAO"))
-	private Dinheiro valorOperacao;
-	
+
 	@Embedded
 	@AttributeOverride(name="valor", column=@Column(name="ICMS_ST_ALIQUOTA"))
 	private Aliquota aliquota;
@@ -44,14 +39,26 @@ public class SubstituicaoTributaria {
 	@Embedded
 	@AttributeOverride(name="valor", column=@Column(name="ICMS_ST_PER_MVA"))	
 	private Percentual percentualMargemValorAdicionado;
+
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="ICMS_ST_BASE_CALCULO"))
+	protected Dinheiro baseCalculo;
+
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="ICMS_ST_VALOR"))
+	protected Dinheiro valor;
 	
-	public SubstituicaoTributaria(Percentual percentualReducaoBaseCalculo,
-			Dinheiro valorOperacao, Aliquota aliquota, 
+	public SubstituicaoTributaria(
+			Dinheiro baseCalculo,
+			Aliquota aliquota,
+			Dinheiro valor,
+			Percentual percentualReducaoBaseCalculo,
 			DeterminacaoBaseCalculoSt determinacaoBaseCalculo,
 			Percentual percentualMargemValorAdicionado) {
-		this.percentualReducaoBaseCalculo = percentualReducaoBaseCalculo;
-		this.valorOperacao = valorOperacao;
+		this.baseCalculo = baseCalculo;
 		this.aliquota = aliquota;
+		this.valor = valor;
+		this.percentualReducaoBaseCalculo = percentualReducaoBaseCalculo;
 		this.determinacaoBaseCalculo = determinacaoBaseCalculo;
 		this.percentualMargemValorAdicionado = percentualMargemValorAdicionado;
 	}
@@ -61,11 +68,15 @@ public class SubstituicaoTributaria {
 	}
 	
 	public Aliquota aliquota() {
+		if (aliquota == null)
+			return Aliquota.ZERO;
 		return aliquota;
 	}
 
 	public Dinheiro valor() {
-		return calcularImpostoBase();
+		if (valor == null)
+			return Dinheiro.ZERO;
+		return valor;
 	}
 	
 	public Dinheiro calcularImpostoBase(){
@@ -74,13 +85,9 @@ public class SubstituicaoTributaria {
 	}
 	
 	public Dinheiro baseCalculo(){
-		return valorOperacao
-				.multiplicar(BigDecimal.ONE.add(percentualMargemValorAdicionado().valorDecimalComoBigDecimal()))
-				.multiplicar(percentualReducaoBaseCalculo().valorComplementarDecimal());
-	}
-	
-	public Dinheiro valorOperacao(){
-		return valorOperacao;
+		if(baseCalculo == null)
+			return Dinheiro.ZERO;
+		return baseCalculo;
 	}
 	
 	public DeterminacaoBaseCalculoSt determinacaoBaseCalculo() {
@@ -98,11 +105,12 @@ public class SubstituicaoTributaria {
 		if (objeto != null && this.getClass() == objeto.getClass()) {
 			SubstituicaoTributaria objetoTipado = (SubstituicaoTributaria) objeto;
 			objetosIguais = new EqualsBuilder()
-				.append(percentualReducaoBaseCalculo, objetoTipado.percentualReducaoBaseCalculo)
-				.append(valorOperacao, objetoTipado.valorOperacao)
-				.append(aliquota, objetoTipado.aliquota)
-				.append(determinacaoBaseCalculo, objetoTipado.determinacaoBaseCalculo)
-				.append(percentualMargemValorAdicionado, objetoTipado.percentualMargemValorAdicionado)
+				.append(baseCalculo(), objetoTipado.baseCalculo())
+				.append(aliquota(), objetoTipado.aliquota())
+				.append(valor(), objetoTipado.valor())
+				.append(percentualReducaoBaseCalculo(), objetoTipado.percentualReducaoBaseCalculo())
+				.append(determinacaoBaseCalculo(), objetoTipado.determinacaoBaseCalculo())
+				.append(percentualMargemValorAdicionado(), objetoTipado.percentualMargemValorAdicionado())
 				.isEquals();
 		}
 
@@ -112,9 +120,10 @@ public class SubstituicaoTributaria {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder(6645,71)
-		.append(percentualReducaoBaseCalculo())
-		.append(valorOperacao())
+		.append(baseCalculo())
 		.append(aliquota())
+		.append(valor())
+		.append(percentualReducaoBaseCalculo())
 		.append(determinacaoBaseCalculo())
 		.append(percentualMargemValorAdicionado())			
 		.toHashCode();
@@ -123,14 +132,14 @@ public class SubstituicaoTributaria {
 	@Override
 	public String toString() {
 		return "SubstituicaoTributaria [" 
-				+"percentualReducaoBaseCalculo=" + percentualReducaoBaseCalculo() 
-				+",valorOperacao=" + valorOperacao() 
+				+",baseCalculo=" + baseCalculo() 
 				+",aliquota=" + aliquota() 
+				+",valor=" + valor() 
 				+",determinacaoBaseCalculo=" + determinacaoBaseCalculo() 
+				+"percentualReducaoBaseCalculo=" + percentualReducaoBaseCalculo() 
 				+",percentualMargemValorAdicionado=" + percentualMargemValorAdicionado() 
 				+ "]";
 	}
-	
 	
 	/*
 	 * Somente para JPA

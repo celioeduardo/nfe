@@ -527,7 +527,9 @@ public class NotaFiscal {
 	public Dinheiro totalDesconto(){
 		Dinheiro result = Dinheiro.ZERO;
 		for (Item item : getItens())
-			result = result.soma(item.produto().valorDesconto());
+			result = result.soma(
+					item.produto().valorDesconto().soma(
+							item.imposto().icms().descontoReducaoBaseCalculo()));
 		return result;
 	}
 	public Dinheiro totalPis(){
@@ -560,7 +562,7 @@ public class NotaFiscal {
 				.soma(totalSeguro())
 				.soma(outrasDespesasAcessorias());
 	}	
-	
+
 	public Dinheiro totalValorAproximadoTributos(){
 		Dinheiro result = Dinheiro.ZERO;
 		for (Item item : getItens())
@@ -780,13 +782,18 @@ public class NotaFiscal {
 		this.destinatario = nf.destinatario;
 		this.localRetirada = nf.localRetirada;
 		this.localEntrega = nf.localEntrega;
-		this.transporte = this.transporte.mesclar(nf.transporte);
+		
+		if (this.transporte == null)
+			this.transporte = nf.transporte;
+		else
+			this.transporte = this.transporte.mesclar(nf.transporte);
+		
 		this.cobranca = nf.cobranca;
 		this.notistaId = nf.notistaId;
 		
 		mesclarInformacaoFisco(nf.informacaoFisco);
+		mesclarInformacaoContribuinte(nf.informacaoContribuinte);
 		
-		//this.informacaoContribuinte = nf.informacaoContribuinte.mesclar(nf.informacaoContribuinte);
 		this.exportacao = nf.exportacao;
 		
 		this.getReferencias().clear();
@@ -806,6 +813,13 @@ public class NotaFiscal {
 			this.informacaoFisco = outra == null ? null : outra.clonar(); 
 		else
 			this.informacaoFisco = this.informacaoFisco.mesclar(outra);
+	}
+	
+	private void mesclarInformacaoContribuinte(Informacao outra){
+		if (this.informacaoContribuinte == null)
+			this.informacaoContribuinte = outra == null ? null : outra.clonar(); 
+		else
+			this.informacaoContribuinte = this.informacaoContribuinte.mesclar(outra);
 	}
 	
 	private void mesclarItem(Item item, List<Item> itens){

@@ -160,41 +160,41 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	@Override
 	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente) {
 		return repositorio.findByFilialIdAndSituacaoAndAmbiente(
-				filialId, Situacao.AUTORIZADA,ambiente,new Sort(Direction.DESC, "dataHoraAutorizacao"));
+				filialId, Situacao.AUTORIZADA,ambiente,new Sort(Direction.DESC, "numero"));
 	}
 
 	@Override
 	public List<NotaFiscal> notasAutorizadas(FilialId filialId,
 			Ambiente ambiente, NotistaId notistaId) {
 		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(filialId, notistaId, 
-				Situacao.AUTORIZADA,ambiente,new Sort(Direction.DESC, "dataHoraAutorizacao"));
+				Situacao.AUTORIZADA,ambiente,new Sort(Direction.DESC, "numero"));
 	}
 
 	@Override
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente) {
 		return repositorio.findByFilialIdAndSituacaoAndAmbienteAndDanfeImpresso(
-				filialId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "dataHoraAutorizacao"));
+				filialId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "numero"));
 	}
 
 	@Override
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,
 			Ambiente ambiente, NotistaId notistaId) {
 		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbienteAndDanfeImpresso(
-				filialId, notistaId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "dataHoraAutorizacao"));
+				filialId, notistaId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "numero"));
 	}
 
 	@Override
 	public List<NotaFiscal> notasCanceladas(FilialId filialId,
 			Ambiente ambiente, NotistaId notistaId) {
 		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(filialId, notistaId, 
-				Situacao.CANCELADA,ambiente,new Sort(Direction.DESC, "dataHoraCancelamento"));
+				Situacao.CANCELADA,ambiente,new Sort(Direction.DESC, "numero"));
 	}
 
 	@Override
 	public List<NotaFiscal> notasCanceladas(FilialId filialId,
 			Ambiente ambiente) {
 		return repositorio.findByFilialIdAndSituacaoAndAmbiente(filialId,  
-				Situacao.CANCELADA,ambiente,new Sort(Direction.DESC, "dataHoraCancelamento"));
+				Situacao.CANCELADA,ambiente,new Sort(Direction.DESC, "numero"));
 	}
 
 	

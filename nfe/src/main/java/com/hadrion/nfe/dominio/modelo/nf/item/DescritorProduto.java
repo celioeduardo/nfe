@@ -278,4 +278,5 @@ public class DescritorProduto {
 	 */
 	@SuppressWarnings("unused")
 	private DescritorProduto(){}
+	
 }

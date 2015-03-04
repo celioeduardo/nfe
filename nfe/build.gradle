@@ -40,7 +40,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-amqp")
     compile("org.springframework.boot:spring-boot-starter-ws")
     compile("org.springframework.boot:spring-boot-starter-mail")
-    compile("org.springframework.boot:spring-boot-starter-security")
+    //compile("org.springframework.boot:spring-boot-starter-security")
 
     compile group: 'com.google.code.gson', name: 'gson', version:'2.1'
     compile group: 'commons-io', name: 'commons-io', version:'2.3'

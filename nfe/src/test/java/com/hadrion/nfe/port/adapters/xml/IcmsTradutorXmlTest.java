@@ -43,6 +43,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				Cst.CST_00, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
 				Percentual.ZERO, 
+				Dinheiro.ZERO, 
 				new Dinheiro(1200.32), 
 				new Aliquota(12.0), 
 				null, 
@@ -65,17 +66,18 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"	</ICMS00>\r\n" + 
 				"</ICMS>\r\n";
 		
-		icms = new IcmsDeserializado(
+		icms = new Icms(
 				Origem.NACIONAL, 
 				Cst.CST_00, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
-				Percentual.ZERO, 
+				null,
+				Dinheiro.ZERO,
 				null, 
+				new Dinheiro(1200.32), 
 				new Aliquota(12.0), 
 				new Dinheiro(144.03), 
 				null, 
-				null,
-				new Dinheiro(1200.32));
+				null);
 		assertEquals(icms,fromXML(XML));
 	}
 
@@ -103,13 +105,15 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				Origem.NACIONAL, 
 				Cst.CST_10, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
-				Percentual.ZERO, 
+				Percentual.ZERO,
+				Dinheiro.ZERO,
 				new Dinheiro(2500), 
 				new Aliquota(8), 
 				new SubstituicaoTributaria(
+						new Dinheiro(2420), 
+						new Aliquota(18),
+						new Dinheiro(435.60),
 						new Percentual(12), 
-						new Dinheiro(2500), 
-						new Aliquota(18), 
 						DeterminacaoBaseCalculoSt.MVA, 
 						new Percentual(10)),
 				Percentual.ZERO);
@@ -137,24 +141,24 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"	</ICMS10>\r\n" + 
 				"</ICMS>\r\n";
 		
-		icms = new IcmsDeserializado(
+		icms = new Icms(
 				Origem.NACIONAL, 
 				Cst.CST_10, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
-				Percentual.ZERO, 
 				null, 
+				Dinheiro.ZERO,
+				null, 
+				new Dinheiro(2500),
 				new Aliquota(8),
 				new Dinheiro(200),
-				new SubstituicaoTributariaConvertida(
-						new Percentual(12), 
-						null, 
-						new Aliquota(18), 
-						DeterminacaoBaseCalculoSt.MVA, 
-						new Percentual(10),
+				new SubstituicaoTributaria(
 						new Dinheiro(2420),
-						new Dinheiro(435.6)),
-				null,
-				new Dinheiro(2500));
+						new Aliquota(18), 
+						new Dinheiro(435.6),
+						new Percentual(12), 
+						DeterminacaoBaseCalculoSt.MVA, 
+						new Percentual(10)),
+				null);
 		
 		assertEquals(icms,fromXML(XML));
 	}
@@ -178,7 +182,8 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				Origem.NACIONAL, 
 				Cst.CST_20, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
-				new Percentual(33), 
+				new Percentual(33),
+				new Dinheiro(120.6),
 				new Dinheiro(1000), 
 				new Aliquota(18), 
 				null, 
@@ -202,17 +207,18 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"	</ICMS20>\r\n" + 
 				"</ICMS>\r\n";		
 		
-		icms = new IcmsDeserializado(
+		icms = new Icms(
 				Origem.NACIONAL, 
 				Cst.CST_20, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
 				new Percentual(33),
+				new Dinheiro(59.4),
 				null,
+				new Dinheiro(670),
 				new Aliquota(18.0), 
 				new Dinheiro(120.6), 
 				null, 
-				null,
-				new Dinheiro(670));
+				null);
 		assertEquals(icms,fromXML(XML));
 	}
 	
@@ -237,16 +243,16 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				Cst.CST_30, 
 				null, 
 				null, 
+				null,
 				null, 
 				null, 
-				new SubstituicaoTributariaConvertida(
-						new Percentual(12), 
-						null, 
-						new Aliquota(18), 
-						DeterminacaoBaseCalculoSt.MVA, 
-						new Percentual(10),
+				new SubstituicaoTributaria(
 						new Dinheiro(2420),
-						new Dinheiro(435.6)), 
+						new Aliquota(18), 
+						new Dinheiro(435.6),
+						new Percentual(12), 
+						DeterminacaoBaseCalculoSt.MVA, 
+						new Percentual(10)), 
 				Percentual.ZERO);
 		
 		assertXMLEquals(XML,toXML(icms));
@@ -268,23 +274,23 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"	</ICMS30>\r\n" + 
 				"</ICMS>\r\n";
 		
-		icms = new IcmsDeserializado(
+		icms = new Icms(
 				Origem.NACIONAL, 
 				Cst.CST_30, 
 				null, 
 				null, 
 				null, 
+				null, 
 				null,
 				null,
-				new SubstituicaoTributariaConvertida(
-						new Percentual(12), 
-						null, 
-						new Aliquota(18), 
-						DeterminacaoBaseCalculoSt.MVA, 
-						new Percentual(10),
+				null,
+				new SubstituicaoTributaria(
 						new Dinheiro(2420),
-						new Dinheiro(435.6)),
-				null,
+						new Aliquota(18), 
+						new Dinheiro(435.6),
+						new Percentual(12), 
+						DeterminacaoBaseCalculoSt.MVA, 
+						new Percentual(10)),
 				null);
 		
 		assertEquals(icms,fromXML(XML));
@@ -299,7 +305,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 			"		<CST>40</CST>\r\n" + 
 			"	</ICMS40>\r\n" + 
 			"</ICMS>";
-		icms = new Icms(Origem.NACIONAL,Cst.CST_40,null,null,null,null,null,null);
+		icms = new Icms(Origem.NACIONAL,Cst.CST_40,null,null,null,null,null,null,null);
 		assertXMLEquals(XML,toXML(icms));
 	}
 	@Test
@@ -311,7 +317,9 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<CST>40</CST>\r\n" + 
 				"	</ICMS40>\r\n" + 
 				"</ICMS>\r\n";
-		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_40,null,null,null,null,null,null,null,null);
+		icms = new Icms(Origem.NACIONAL,
+				Cst.CST_40,
+				null,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
 	
@@ -324,7 +332,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<CST>41</CST>\r\n" + 
 				"	</ICMS40>\r\n" + 
 				"</ICMS>";
-		icms = new Icms(Origem.NACIONAL,Cst.CST_41,null,null,null,null,null,null);
+		icms = new Icms(Origem.NACIONAL,Cst.CST_41,null,null,null,null,null,null,null);
 		assertXMLEquals(XML,toXML(icms));
 	}
 	@Test
@@ -336,7 +344,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<CST>41</CST>\r\n" + 
 				"	</ICMS40>\r\n" + 
 				"</ICMS>\r\n";
-		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_41,null,null,null,null,null,null,null,null);
+		icms = new Icms(Origem.NACIONAL,Cst.CST_41,null,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
 	
@@ -349,7 +357,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<CST>50</CST>\r\n" + 
 				"	</ICMS40>\r\n" + 
 				"</ICMS>";
-		icms = new Icms(Origem.NACIONAL,Cst.CST_50,null,null,null,null,null,null);
+		icms = new Icms(Origem.NACIONAL,Cst.CST_50,null,null,null,null,null,null,null);
 		assertXMLEquals(XML,toXML(icms));
 	}
 	@Test
@@ -361,7 +369,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<CST>50</CST>\r\n" + 
 				"	</ICMS50>\r\n" + 
 				"</ICMS>\r\n";
-		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_50,null,null,null,null,null,null,null,null);
+		icms = new Icms(Origem.NACIONAL,Cst.CST_50,null,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
 	@Test
@@ -387,6 +395,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				Cst.CST_51, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
 				Percentual.ZERO, 
+				Dinheiro.ZERO,
 				new Dinheiro(1000.0), 
 				new Aliquota(18.0), 
 				null, 
@@ -411,17 +420,18 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<vICMS>0.00</vICMS>\r\n" + 
 				"	</ICMS51>\r\n" + 
 				"</ICMS>\r\n";		
-		icms = new IcmsDeserializado(
+		icms = new Icms(
 				Origem.NACIONAL, 
 				Cst.CST_51, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
 				Percentual.ZERO, 
+				Dinheiro.ZERO,
 				null, 
+				new Dinheiro(1000),
 				new Aliquota(18.0), 
 				new Dinheiro(0), 
 				null, 
-				Percentual.CEM,
-				new Dinheiro(1000));
+				Percentual.CEM);
 		assertEquals(icms,fromXML(XML));
 	}
 
@@ -434,7 +444,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 						"		<CST>60</CST>\r\n" + 
 						"	</ICMS60>\r\n" + 
 						"</ICMS>";
-		icms = new Icms(Origem.NACIONAL,Cst.CST_60,null,null,null,null,null,null);
+		icms = new Icms(Origem.NACIONAL,Cst.CST_60,null,null,null,null,null,null,null);
 		assertXMLEquals(XML,toXML(icms));
 	}
 
@@ -447,7 +457,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 						"		<CST>60</CST>\r\n" + 
 						"	</ICMS60>\r\n" + 
 						"</ICMS>\r\n";
-		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_60,null,null,null,null,null,null,null,null);
+		icms = new Icms(Origem.NACIONAL,Cst.CST_60,null,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
 
@@ -477,12 +487,14 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				Cst.CST_70, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
 				new Percentual(40), 
+				new Dinheiro(270),
 				new Dinheiro(2500.0), 
 				new Aliquota(18.0), 
 				new SubstituicaoTributaria(
-						new Percentual(12), 
-						new Dinheiro(2500), 
+						new Dinheiro(2420), 
 						new Aliquota(18), 
+						new Dinheiro(435.60), 
+						new Percentual(12), 
 						DeterminacaoBaseCalculoSt.MVA, 
 						new Percentual(10)), 
 				Percentual.ZERO);
@@ -509,24 +521,24 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<vICMSST>435.60</vICMSST>\r\n" +
 				"	</ICMS70>\r\n" + 
 				"</ICMS>\r\n";		
-		icms = new IcmsDeserializado(
+		icms = new Icms(
 				Origem.NACIONAL, 
 				Cst.CST_70, 
 				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
-				new Percentual(40), 
-				null, 
+				new Percentual(40),
+				new Dinheiro(180), 
+				null,
+				new Dinheiro(1500),
 				new Aliquota(18.0), 
 				new Dinheiro(270), 
-				new SubstituicaoTributariaConvertida(
-						new Percentual(12), 
-						null, 
-						new Aliquota(18), 
-						DeterminacaoBaseCalculoSt.MVA, 
-						new Percentual(10),
+				new SubstituicaoTributaria(
 						new Dinheiro(2420),
-						new Dinheiro(435.6)), 
-				null,
-				new Dinheiro(1500));
+						new Aliquota(18), 
+						new Dinheiro(435.6),
+						new Percentual(12), 
+						DeterminacaoBaseCalculoSt.MVA, 
+						new Percentual(10)), 
+				null);
 		
 		assertEquals(icms,fromXML(XML));
 	}	
@@ -540,7 +552,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 			"		<CST>90</CST>\r\n" + 
 			"	</ICMS90>\r\n" + 
 			"</ICMS>";
-		icms = new Icms(Origem.NACIONAL,Cst.CST_90,null,null,null,null,null,null);
+		icms = new Icms(Origem.NACIONAL,Cst.CST_90,null,null,null,null,null,null,null);
 		assertXMLEquals(XML,toXML(icms));
 	}
 	@Test
@@ -552,7 +564,7 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"		<CST>90</CST>\r\n" + 
 				"	</ICMS90>\r\n" + 
 				"</ICMS>\r\n";
-		icms = new IcmsDeserializado(Origem.NACIONAL,Cst.CST_90,null,null,null,null,null,null,null,null);
+		icms = new Icms(Origem.NACIONAL,Cst.CST_90,null,null,null,null,null,null,null,null,null);
 		assertEquals(icms,fromXML(XML));
 	}
 }

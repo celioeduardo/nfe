@@ -20,7 +20,7 @@ import com.hadrion.nfe.tipos.Percentual;
 public class Icms {
 	
 	public static final Icms NULO = 
-			new Icms(null, null, null,Percentual.ZERO, Dinheiro.ZERO, 
+			new Icms(null, null, null,Percentual.ZERO, Dinheiro.ZERO, Dinheiro.ZERO, 
 					Aliquota.ZERO,null, Percentual.ZERO);
 	
 	@Enumerated
@@ -39,6 +39,10 @@ public class Icms {
 	private Percentual percentualReducaoBaseCalculo;
 	
 	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="ICMS_VAL_DESCONTO_RBC"))
+	private Dinheiro descontoReducaoBaseCalculo;
+
+	@Embedded
 	@AttributeOverride(name="quantia", column=@Column(name="ICMS_VAL_OPERACAO"))
 	private Dinheiro valorOperacao;
 	
@@ -53,11 +57,45 @@ public class Icms {
 	@AttributeOverride(name="valor", column=@Column(name="ICMS_PER_DIFER"))
 	private Percentual percentualDiferimento; //CST 51
 	//private Dinheiro valorDiferido; //CST51
+
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="ICMS_BASE_CALCULO"))
+	protected Dinheiro baseCalculo;
+
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="ICMS_VALOR"))
+	protected Dinheiro valor;
 	
 	public Icms(Origem origem, Cst cst,
 			DeterminacaoBaseCalculo determinacaoBaseCalculo,
-			Percentual percentualReducaoBaseCalculo, Dinheiro valorOperacao,
+			Percentual percentualReducaoBaseCalculo,
+			Dinheiro descontoReducaoBaseCalculo,
+			Dinheiro valorOperacao,
 			Aliquota aliquota,
+			SubstituicaoTributaria substituicaoTributaria,
+			Percentual percentualDiferimento) {
+		this(origem, 
+			cst, 
+			determinacaoBaseCalculo, 
+			percentualReducaoBaseCalculo, 
+			descontoReducaoBaseCalculo, 
+			valorOperacao, 
+			calcularBaseCalculo(valorOperacao, percentualReducaoBaseCalculo),
+			aliquota, 
+			calcularValor(
+					calcularBaseCalculo(valorOperacao, percentualReducaoBaseCalculo), 
+					aliquota, percentualDiferimento), 
+			substituicaoTributaria, 
+			percentualDiferimento);
+	}
+	public Icms(Origem origem, Cst cst,
+			DeterminacaoBaseCalculo determinacaoBaseCalculo,
+			Percentual percentualReducaoBaseCalculo,
+			Dinheiro descontoReducaoBaseCalculo,
+			Dinheiro valorOperacao,
+			Dinheiro baseCalculo,
+			Aliquota aliquota,
+			Dinheiro valor,
 			SubstituicaoTributaria substituicaoTributaria,
 			Percentual percentualDiferimento) {
 		super();
@@ -65,26 +103,42 @@ public class Icms {
 		this.cst = cst;
 		this.determinacaoBaseCalculo = determinacaoBaseCalculo;
 		this.percentualReducaoBaseCalculo = percentualReducaoBaseCalculo;
+		this.descontoReducaoBaseCalculo = descontoReducaoBaseCalculo;
 		this.valorOperacao = valorOperacao;
+		this.baseCalculo = baseCalculo;
 		this.aliquota = aliquota;
+		this.valor = valor;
 		this.substituicaoTributaria = substituicaoTributaria;
 		this.percentualDiferimento = percentualDiferimento;
 	}
 	
-	public Dinheiro baseCalculo(){
-		return valorOperacao.multiplicar(percentualReducaoBaseCalculo().valorComplementarDecimal());
+	private static Dinheiro calcularBaseCalculo(Dinheiro valorOperacao,Percentual percentualRbc){
+		return valorOperacao == null || percentualRbc == null ? 
+				null :
+				valorOperacao.multiplicar(
+						percentualRbc.valorComplementarDecimal());
 	}
 	public Dinheiro valorOperacao(){
 		return valorOperacao;
 	}
-	public Dinheiro valor(){
-		return calcularImpostoBase()
-			.multiplicar(percentualDiferimento().valorComplementarDecimalComoBigDecimal());
+	
+	private static Dinheiro calcularValor(Dinheiro baseCalculo,Aliquota aliquota,Percentual percentualDiferimento){
+		if (baseCalculo == null || aliquota == null)
+			return null;
+		
+		if (percentualDiferimento != null)
+			return calcularImpostoBase(baseCalculo,aliquota)
+					.multiplicar(percentualDiferimento.valorComplementarDecimalComoBigDecimal());
+		else
+			return calcularImpostoBase(baseCalculo,aliquota);
 	}
 	
-	public Dinheiro calcularImpostoBase(){
-		return baseCalculo()
-		.multiplicar(aliquota().valorDecimal());
+	public static Dinheiro calcularImpostoBase(Dinheiro baseCalculo,Aliquota aliquota){
+		return 
+			baseCalculo == null || aliquota == null ?
+				null:
+				baseCalculo
+					.multiplicar(aliquota.valorDecimal());
 	}
 	
 	public Aliquota aliquota(){
@@ -108,17 +162,22 @@ public class Icms {
 			return Percentual.ZERO;
 		return percentualReducaoBaseCalculo;
 	}
+	public Dinheiro descontoReducaoBaseCalculo(){
+		if (descontoReducaoBaseCalculo == null)
+			return Dinheiro.ZERO;
+		return descontoReducaoBaseCalculo;
+	}
 	
 	public Percentual percentualDiferimento(){
 		return percentualDiferimento;
 	}
 	
 	public Dinheiro valorDiferido(){
-		return calcularImpostoBase().subtrair(valor());
+		return calcularImpostoBase(baseCalculo(),aliquota()).subtrair(valor());
 	}
 	
 	public Dinheiro valorSemDiferimento() {
-		return calcularImpostoBase();
+		return calcularImpostoBase(baseCalculo(),aliquota());
 	}
 
 	public SubstituicaoTributaria st(){
@@ -134,6 +193,7 @@ public class Icms {
 			Cst.CST_00,
 			determinacaoBaseCalculo,
 			Percentual.ZERO,
+			Dinheiro.ZERO,
 			baseCalculo,
 			aliquota,
 			null,
@@ -146,13 +206,15 @@ public class Icms {
 	
 	public static Icms cst_51(Origem origem, Dinheiro valorOperacao,
 			Aliquota aliquota, Percentual percentualReducaoBaseCalculo,
+			Dinheiro descontoReducaoBaseCalculo,
 			Percentual percentualDiferimento,
 			DeterminacaoBaseCalculo determinacaoBaseCalculo) {
 		return new Icms(
 				origem, 
 				Cst.CST_51, 
 				determinacaoBaseCalculo, 
-				percentualReducaoBaseCalculo, 
+				percentualReducaoBaseCalculo,
+				descontoReducaoBaseCalculo,
 				valorOperacao, 
 				aliquota, 
 				null, 
@@ -168,12 +230,15 @@ public class Icms {
 			objetosIguais = new EqualsBuilder()
 				.append(origem, objetoTipado.origem)
 				.append(cst, objetoTipado.cst)
-				.append(determinacaoBaseCalculo, objetoTipado.determinacaoBaseCalculo)
-				.append(percentualReducaoBaseCalculo, objetoTipado.percentualReducaoBaseCalculo)
-				.append(valorOperacao, objetoTipado.valorOperacao)
-				.append(aliquota, objetoTipado.aliquota)
-				.append(substituicaoTributaria, objetoTipado.substituicaoTributaria)
-				.append(percentualDiferimento, objetoTipado.percentualDiferimento)
+				.append(determinacaoBaseCalculo(), objetoTipado.determinacaoBaseCalculo())
+				.append(percentualReducaoBaseCalculo(), objetoTipado.percentualReducaoBaseCalculo())
+				.append(descontoReducaoBaseCalculo(), objetoTipado.descontoReducaoBaseCalculo())
+				.append(valorOperacao(), objetoTipado.valorOperacao())
+				.append(baseCalculo(), objetoTipado.baseCalculo())
+				.append(aliquota(), objetoTipado.aliquota())
+				.append(valor(), objetoTipado.valor())
+				.append(st(), objetoTipado.st())
+				.append(percentualDiferimento(), objetoTipado.percentualDiferimento())
 				.isEquals();
 		}
 
@@ -187,8 +252,11 @@ public class Icms {
 		.append(cst())
 		.append(determinacaoBaseCalculo())
 		.append(percentualReducaoBaseCalculo())
+		.append(descontoReducaoBaseCalculo())
 		.append(valorOperacao())
+		.append(baseCalculo())
 		.append(aliquota())
+		.append(valor())
 		.append(st())
 		.append(percentualDiferimento())
 		.toHashCode();
@@ -200,12 +268,26 @@ public class Icms {
 			+ ",cst=" + cst()
 			+ ",determinacaoBaseCalculo=" + determinacaoBaseCalculo()
 			+ ",percentualReducaoBaseCalculo=" + percentualReducaoBaseCalculo() 
+			+ ",descontoReducaoBaseCalculo=" + descontoReducaoBaseCalculo() 
 			+ ",valorOperacao=" + valorOperacao()
+			+ ",baseCalculo=" + baseCalculo()
 			+ ",aliquota=" + aliquota()
 			+ ",valor=" + valor()
 			+ ",substituicaoTributaria=" + st()
 			+ ",percentualDiferimento=" + percentualDiferimento()
 			+ "]";
+	}
+
+	public Dinheiro baseCalculo() {
+		if (this.baseCalculo == null)
+			return Dinheiro.ZERO;
+		return this.baseCalculo;
+	}
+
+	public Dinheiro valor() {
+		if (this.valor == null)
+			return Dinheiro.ZERO;
+		return this.valor;
 	}
 
 	public static Dinheiro calcularValorOperacao(Dinheiro baseCalculo,

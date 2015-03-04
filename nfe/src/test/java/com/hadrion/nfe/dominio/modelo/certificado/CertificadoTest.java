@@ -1,6 +1,6 @@
 package com.hadrion.nfe.dominio.modelo.certificado;
 
-import static com.hadrion.util.DataUtil.dataHota;
+import static com.hadrion.util.DataUtil.dataHora;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -25,8 +25,8 @@ public class CertificadoTest {
 	@Test
 	public void dados() throws IOException{
 		Certificado certificado = new Certificado(arquivo,senha);
-		assertEquals(dataHota("15/04/2014 14:22:00"), certificado.validoAPartir());
-		assertEquals(dataHota("15/04/2015 14:22:00"), certificado.validoAte());
+		assertEquals(dataHora("15/04/2014 14:22:00"), certificado.validoAPartir());
+		assertEquals(dataHora("15/04/2015 14:22:00"), certificado.validoAte());
 		assertNotNull(certificado.privateKey());
 		
 		Principal principal = certificado.x509Certificate().getSubjectDN();

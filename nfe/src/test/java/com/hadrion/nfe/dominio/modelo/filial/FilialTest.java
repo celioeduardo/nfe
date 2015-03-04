@@ -74,14 +74,14 @@ public class FilialTest extends DominioTest{
 		
 		assertEquals(ModoOperacao.NORMAL, filial.modoOperacao());
 		
-		filial.operarEmFsDa(new Contingencia(DataUtil.dataHota("12/01/2015 08:54:00"), "Conexão com a Internet com problema"));
+		filial.operarEmFsDa(new Contingencia(DataUtil.dataHora("12/01/2015 08:54:00"), "Conexão com a Internet com problema"));
 		assertEquals(ModoOperacao.FS_DA, filial.modoOperacao());
-		assertEquals(new Contingencia(DataUtil.dataHota("12/01/2015 08:54:00"), "Conexão com a Internet com problema"), 
+		assertEquals(new Contingencia(DataUtil.dataHora("12/01/2015 08:54:00"), "Conexão com a Internet com problema"), 
 				filial.contingencia());
 		
-		filial.operarEmSvc(new Contingencia(DataUtil.dataHota("12/01/2015 08:54:00"), "Servidor da SEFAZ fora do ar"));
+		filial.operarEmSvc(new Contingencia(DataUtil.dataHora("12/01/2015 08:54:00"), "Servidor da SEFAZ fora do ar"));
 		assertEquals(ModoOperacao.SVC, filial.modoOperacao());
-		assertEquals(new Contingencia(DataUtil.dataHota("12/01/2015 08:54:00"), "Servidor da SEFAZ fora do ar"), 
+		assertEquals(new Contingencia(DataUtil.dataHora("12/01/2015 08:54:00"), "Servidor da SEFAZ fora do ar"), 
 				filial.contingencia());
 		
 		filial.operarEmModoNormal();

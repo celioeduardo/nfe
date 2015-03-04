@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="danfe" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="14" rightMargin="16" topMargin="14" bottomMargin="14" uuid="3a66161b-c318-4cff-ae2a-897307b5d628">
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
-	<property name="ireport.zoom" value="2.196150000000003"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="342"/>
+	<property name="ireport.zoom" value="5.0"/>
+	<property name="ireport.x" value="2041"/>
+	<property name="ireport.y" value="1014"/>
 	<style name="campoPequeno" hAlign="Left" vAlign="Top" markup="styled" pattern="" fontName="DejaVu Serif" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="DejaVu Serif" isPdfEmbedded="true"/>
 	<style name="borda" mode="Transparent" forecolor="#000000" fill="Solid" radius="3" scaleImage="Clip" hAlign="Left" vAlign="Top" markup="none" pattern="" fontName="DejaVu Serif" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="true" pdfFontName="DejaVu Serif" isPdfEmbedded="true">
 		<pen lineWidth="0.25"/>
@@ -1234,7 +1234,7 @@ $F{Trans_CNPJ}.substring(8,12) + "-" + $F{Trans_CNPJ}.substring(12,14) : $F{Tran
 					<textFieldExpression><![CDATA[$F{TipoNF} == 0 ? "Entrada" : "Saída"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="157" y="93" width="404" height="21" uuid="e0993895-ad60-4484-bc8b-574945c38bc9">
+					<reportElement mode="Opaque" x="3" y="93" width="558" height="21" uuid="e0993895-ad60-4484-bc8b-574945c38bc9">
 						<printWhenExpression><![CDATA[$P{FAT_NUMERO1} == null && $P{FAT_VENCIMENTO1} == null && $P{FAT_VALOR1} == null ? true : false]]></printWhenExpression>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -1703,7 +1703,7 @@ $F{Trans_CNPJ}.substring(8,12) + "-" + $F{Trans_CNPJ}.substring(12,14) : $F{Tran
 				<textField isBlankWhenNull="true">
 					<reportElement style="dados" x="4" y="53" width="358" height="83" uuid="e96e69cc-e375-45d5-87ee-f5e72f69012b"/>
 					<textElement verticalAlignment="Top" markup="styled">
-						<font size="8" isItalic="false"/>
+						<font size="7" isItalic="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[($F{InfoFisco}!= null ? $F{InfoFisco} : "") + "\n" +
 ($F{InfoCpl}  != null ? $F{InfoCpl}   : "")]]></textFieldExpression>

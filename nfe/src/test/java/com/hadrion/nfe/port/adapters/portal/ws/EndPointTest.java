@@ -17,7 +17,7 @@ public class EndPointTest {
 		Versao versao = Versao.V3_10;
 		assertEquals("https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx",producao(local,versao,Servico.AUTORIZACAO));
 		assertEquals("https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx",producao(local,versao,Servico.RET_AUTORIZACAO));
-		assertEquals("https://nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx",producao(local,versao,Servico.EVENTO));
+		assertEquals("https://nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx",producao(local,Versao.V1_00,Servico.EVENTO));
 		assertEquals("https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx",producao(local,versao,Servico.CONSULTA_CADASTRO));
 		assertEquals("https://nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx",producao(local,versao,Servico.STATUS_SERVICO));
 		assertEquals("https://nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx",producao(local,versao,Servico.CONSULTA_PROTOCOLO));
@@ -25,7 +25,7 @@ public class EndPointTest {
 		//Homologação
 		assertEquals("https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx",homologacao(local,versao,Servico.AUTORIZACAO));
 		assertEquals("https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx",homologacao(local,versao,Servico.RET_AUTORIZACAO));
-		assertEquals("https://homologacao.nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx",homologacao(local,versao,Servico.EVENTO));
+		assertEquals("https://homologacao.nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx",homologacao(local,Versao.V1_00,Servico.EVENTO));
 		assertEquals("https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx",homologacao(local,versao,Servico.CONSULTA_CADASTRO));
 		assertEquals("https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx",homologacao(local,versao,Servico.STATUS_SERVICO));
 		assertEquals("https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx",homologacao(local,versao,Servico.CONSULTA_PROTOCOLO));

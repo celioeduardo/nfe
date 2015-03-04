@@ -50,6 +50,7 @@ public class IcmsTest {
 				new Dinheiro(1000), 
 				new Aliquota(18),
 				Percentual.ZERO,
+				Dinheiro.ZERO,
 				Percentual.CEM,
 				DeterminacaoBaseCalculo.VALOR_OPERACAO);
 		
@@ -63,6 +64,7 @@ public class IcmsTest {
 				new Dinheiro(1000), 
 				new Aliquota(18),
 				Percentual.ZERO,
+				Dinheiro.ZERO,
 				new Percentual(60),
 				DeterminacaoBaseCalculo.VALOR_OPERACAO);
 		
@@ -78,12 +80,14 @@ public class IcmsTest {
 				new Dinheiro(1000), 
 				new Aliquota(18),
 				new Percentual(33),
+				new Dinheiro(120.6),
 				new Percentual(60),
 				DeterminacaoBaseCalculo.VALOR_OPERACAO);
 		assertEquals(new Dinheiro(670.0),icms.baseCalculo());
 		assertEquals(new Dinheiro(48.24),icms.valor());
 		assertEquals(new Dinheiro(72.36),icms.valorDiferido());
 		assertEquals(new Dinheiro(120.6),icms.valorSemDiferimento());
+		assertEquals(new Dinheiro(120.6),icms.descontoReducaoBaseCalculo());
 	}
 	
 	@Test
@@ -93,6 +97,7 @@ public class IcmsTest {
 				new Dinheiro(1000), 
 				new Aliquota(18),
 				Percentual.ZERO,
+				Dinheiro.ZERO,
 				Percentual.ZERO,
 				DeterminacaoBaseCalculo.VALOR_OPERACAO);
 		
@@ -107,11 +112,13 @@ public class IcmsTest {
 				new Dinheiro(1000), 
 				new Aliquota(18),
 				new Percentual(33),
+				new Dinheiro(120.6),
 				Percentual.ZERO,
 				DeterminacaoBaseCalculo.VALOR_OPERACAO);
 		assertEquals(new Dinheiro(670.0),icms.baseCalculo());
 		assertEquals(new Dinheiro(120.6),icms.valor());
 		assertEquals(Dinheiro.ZERO,icms.valorDiferido());
+		assertEquals(new Dinheiro(120.6),icms.descontoReducaoBaseCalculo());
 	}
 	
 }
