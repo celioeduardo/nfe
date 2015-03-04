@@ -1,9 +1,12 @@
 buildscript {
+ext {
+        springBootVersion = '1.2.2.RELEASE'
+    }
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
@@ -88,7 +91,7 @@ install {
           parent { 
             groupId 'org.springframework.boot'
             artifactId 'spring-boot-starter-parent'
-            version "1.2.1.RELEASE"
+            version "${springBootVersion}"
           }
         }
     }
@@ -106,7 +109,7 @@ uploadArchives {
 	          parent { 
 	            groupId 'org.springframework.boot'
 	            artifactId 'spring-boot-starter-parent'
-	            version "1.2.1.RELEASE"
+	            version "${springBootVersion}"
 	          }
 	        }
 	   }
