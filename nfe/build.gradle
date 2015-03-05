@@ -77,6 +77,14 @@ test {
     systemProperties 'property': 'value'
 }
 
+ant.importBuild('src/main/resources/public/build.xml') { antTaskName -> 
+	"sencha-"+antTaskName
+}
+
+tasks.matching { task ->
+	task.name.startsWith('sencha-')
+}*.group = 'Sencha'
+
 task copyPublicToExtjs(type: Copy, dependsOn: processResources) {
 	from "${rootDir}/src/main/resources/public/build/production/nfe"
 	into "${buildDir}/extjs"
@@ -92,10 +100,7 @@ task copyExtjsToPublic(type: Copy, dependsOn:deleteExtjsResources) {
 }
 
 task customJar(type: Jar, dependsOn: copyExtjsToPublic) {
-	manifest {
-		attributes firstKey: 'firstValue', secondKey: 'secondValue'
-	}
- 	destinationDir = file("${buildDir}/jars")
+	destinationDir = file("${buildDir}/jars")
 	from sourceSets.main.output
 }
 
@@ -159,3 +164,6 @@ uploadArchives {
 	   }
 	}
 }
+
+
+
