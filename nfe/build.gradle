@@ -1,5 +1,5 @@
 buildscript {
-ext {
+	ext {
         springBootVersion = '1.2.2.RELEASE'
     }
     repositories {
@@ -63,18 +63,6 @@ dependencies {
     
 }
 
-test {
-    systemProperties 'property': 'value'
-}
-
-//applicationDistribution.with {
-//	exclude '*.jar'
-//}
-//applicationDistribution.from("build/libs/") {
-//	into 'lib'
-//}
-
-
 ext.priv = parseConfig(file('private.properties'))
 
 def parseConfig(File config) {
@@ -82,6 +70,67 @@ def parseConfig(File config) {
         def prop = new Properties()
         prop.load(it)
         return (new ConfigSlurper().parse(prop))
+    }
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+ant.importBuild('src/main/resources/public/build.xml') { antTaskName -> 
+	"sencha-"+antTaskName
+}
+
+tasks.matching { task ->
+	task.name.startsWith('sencha-')
+}*.group = 'Sencha'
+
+task copyPublicToExtjs(type: Copy, dependsOn: processResources) {
+	from "${rootDir}/src/main/resources/public/build/production/nfe"
+	into "${buildDir}/extjs"
+}
+
+task deleteExtjsResources(type: Delete, dependsOn:copyPublicToExtjs) {
+   delete "${buildDir}/resources/main/public"
+}
+
+task copyExtjsToPublic(type: Copy, dependsOn:deleteExtjsResources) {
+	from "${buildDir}/extjs"
+	into "${buildDir}/resources/main/public"
+}
+
+task customJar(type: Jar, dependsOn: copyExtjsToPublic) {
+	destinationDir = file("${buildDir}/jars")
+	from sourceSets.main.output
+}
+
+configurations {
+    ftpAntTask
+}
+
+dependencies {
+    ftpAntTask("org.apache.ant:ant-commons-net:1.8.4") {
+        module("commons-net:commons-net:1.4.1") {
+            dependencies "oro:oro:2.0.8:jar"
+        }
+    }
+}
+
+task ftp << {
+    ant {
+        taskdef(name: 'ftp',
+                classname: 'org.apache.tools.ant.taskdefs.optional.net.FTP',
+                classpath: configurations.ftpAntTask.asPath)
+        ftp(server: priv.ftp.server, 
+        	remoteDir: priv.ftp.remoteDir,
+        	userid: priv.ftp.user, 
+        	password: priv.ftp.pass, 
+        	passive:"yes") {
+            fileset(dir: "${buildDir}/jars") {
+                include(name: "*.jar")
+            }
+        }
+        
     }
 }
 
@@ -115,4 +164,6 @@ uploadArchives {
 	   }
 	}
 }
+
+
 
