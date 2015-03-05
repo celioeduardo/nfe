@@ -33,7 +33,7 @@ public class VolumeDeserializer implements JsonDeserializer<Volume>{
 	private String s(JsonObject j, String propriedade){
 		return j.has(propriedade) ? j.get(propriedade).getAsString() : null;
 	}
-	private int i(JsonObject j, String propriedade){
+	private Integer i(JsonObject j, String propriedade){
 		return j.has(propriedade) ? j.get(propriedade).getAsInt() : null;
 	}
 	private Double d(JsonObject j, String propriedade){

@@ -22,7 +22,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class Volume {
 	
 	@Column(name="QUANTIDADE")
-	private int quantidade;
+	private Integer quantidade;
 	
 	@Column(name="ESPECIE")
 	private String especie;
@@ -49,7 +49,7 @@ public class Volume {
 	@Column(name="ID")
 	private Long id;
 	
-	public Volume(int quantidade, String especie, String marca,
+	public Volume(Integer quantidade, String especie, String marca,
 			String numeracao, Double pesoLiquido, Double pesoBruto, 
 			List<String> lacres) {
 		super();
@@ -63,7 +63,7 @@ public class Volume {
 			this.getLacres().addAll(lacres);
 	}
 
-	public int quantidade() {
+	public Integer quantidade() {
 		return quantidade;
 	}
 
