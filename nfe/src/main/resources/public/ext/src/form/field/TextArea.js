@@ -226,7 +226,7 @@ Ext.define('Ext.form.field.TextArea', {
      */
     autoSize: function() {
         var me = this,
-            inputEl, inputHeight, height, curWidth, value;
+            inputEl, height, curWidth, value;
 
         if (me.grow && me.rendered && me.getSizeModel().height.auto) {
             inputEl = me.inputEl;

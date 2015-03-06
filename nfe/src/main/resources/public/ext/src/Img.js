@@ -140,14 +140,20 @@ Ext.define('Ext.Img', {
         
         if (autoEl === 'img' || (Ext.isObject(autoEl) && autoEl.tag === 'img')) {
             me.imgEl = el;
-        }
-        else {
+        } else {
             me.imgEl = el.getById(me.id + '-img');
         }
     },
 
     onDestroy: function () {
-        Ext.destroy(this.imgEl);
+        var me = this,
+            imgEl = me.imgEl;
+
+        // Only clean up when the img is a child, otherwise it will get handled
+        // by the element destruction in the parent
+        if (imgEl && me.el !== imgEl) {
+            imgEl.destroy();
+        }
         this.imgEl = null;
         this.callParent();
     },
@@ -179,7 +185,7 @@ Ext.define('Ext.Img', {
             glyphParts;
 
         me.glyph = glyph;
-        if (me.rendered && glyph != old) {
+        if (me.rendered && glyph !== old) {
             if (typeof glyph === 'string') {
                 glyphParts = glyph.split('@');
                 glyph = glyphParts[0];

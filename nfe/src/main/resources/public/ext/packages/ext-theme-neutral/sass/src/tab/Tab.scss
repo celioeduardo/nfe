@@ -1554,6 +1554,16 @@
 
         // inner el requires max-width in order for ellipsis to work.
         max-width: 100%;
+        
+        // x-unselectable will apply -moz-user-select: none to the tab el;
+        // this causes Firefox not to fire click event when mousedown/mouseup
+        // happens within the inner el: https://sencha.jira.com/browse/EXTJS-15862
+        // According to https://developer.mozilla.org/en-US/docs/Web/CSS/user-select,
+        // the value of "element" is only supported in IE; it does cure the issue
+        // with click events and does not produce CSS warnings in Firefox.
+        .#{$prefix}gecko .#{$prefix}tab & {
+            -moz-user-select: element;
+        }
 
         .#{$prefix}tab-icon-right > &,
         .#{$prefix}tab-icon-left > & {

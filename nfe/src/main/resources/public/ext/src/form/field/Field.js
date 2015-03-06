@@ -169,10 +169,13 @@ Ext.define('Ext.form.field.Field', {
     initValue: function() {
         var me = this;
 
-        // Set the initial value - prevent validation on initial set
-        me.suspendCheckChange++;
-        me.setValue(me.value);
-        me.suspendCheckChange--;
+        // Set the initial value if we have one.
+        // Prevent validation on initial set.
+        if ('value' in me) {
+            me.suspendCheckChange++;
+            me.setValue(me.value);
+            me.suspendCheckChange--;
+        }
         
         /**
          * @property {Object} originalValue

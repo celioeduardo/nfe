@@ -85,6 +85,11 @@ Ext.define('Ext.selection.RowModel', {
 
     isRowModel: true,
 
+    /**
+     * @inheritdoc
+     */
+    deselectOnContainerClick: false,
+
     onUpdate: function(record) {
         var me = this,
             view = me.view,
@@ -152,33 +157,6 @@ Ext.define('Ext.selection.RowModel', {
         }
     },
 
-    // Provide indication of what row was last focused via
-    // the gridview.
-    onLastFocusChanged: function(oldFocused, newFocused, supressFocus) {
-        var views   = this.views || [this.view],
-            viewsLn = views.length,
-            rowIdx,
-            i = 0;
-
-        if (oldFocused && viewsLn) {
-            rowIdx = views[0].indexOf(oldFocused);
-            if (rowIdx !== -1) {
-                for (; i < viewsLn; i++) {
-                    views[i].onRowFocus(rowIdx, false, true);
-                }
-            }
-        }
-
-        if (newFocused && viewsLn) {
-            rowIdx = views[0].indexOf(newFocused);
-            if (rowIdx !== -1) {
-                for (i = 0; i < viewsLn; i++) {
-                    views[i].onRowFocus(rowIdx, true, supressFocus);
-                }
-            }
-        }
-    },
-
     onEditorTab: function(editingPlugin, e) {
         var me = this,
             view = editingPlugin.context.view,
@@ -216,10 +194,10 @@ Ext.define('Ext.selection.RowModel', {
     },
 
     selectByPosition: function (position, keepExisting) {
-        var context = new Ext.grid.CellContext(this.view);
-            
-        context.setPosition(position.row, position.column);
-        this.select(context.record, keepExisting);
+        if (!position.isCellContext) {
+            position = new Ext.grid.CellContext(this.view).setPosition(position.row, position.column);
+        }
+        this.select(position.record, keepExisting);
     },
 
     /**

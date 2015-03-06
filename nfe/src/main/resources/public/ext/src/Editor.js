@@ -44,8 +44,7 @@ Ext.define('Ext.Editor', {
 
     /**
      * @cfg {Boolean} allowBlur
-     * True to {@link #completeEdit complete the editing process} if in edit mode when the
-     * field is blurred.
+     * True to {@link #completeEdit complete the editing process} if in edit mode when focus exits from this Editor's hierarchy.
      */
     allowBlur: true,
 
@@ -225,7 +224,6 @@ Ext.define('Ext.Editor', {
         field.msgTarget = field.msgTarget || 'qtip';
         me.mon(field, {
             scope: me,
-            blur: me.onFieldBlur,
             specialkey: me.onSpecialKey
         });
 
@@ -238,6 +236,12 @@ Ext.define('Ext.Editor', {
         me.items = field;
 
         me.callParent(arguments);
+    },
+
+    onAdded: function (container) {
+        // Editors are floaters and shouldn't have an ownerCt, so use ownerCmp as
+        // the upward link.
+        this.ownerCmp = container;
     },
 
     // private
@@ -314,7 +318,6 @@ Ext.define('Ext.Editor', {
         value = Ext.isDefined(value) ? value : Ext.String.trim(dom.textContent || dom.innerText || dom.innerHTML);
 
         if (me.fireEvent('beforestartedit', me, me.boundEl, value) !== false) {
-            
             // If NOT configured with a renderTo, render to the ownerCt's element
             // Being floating, we do not need to use the actual layout's target.
             // Indeed, it's better if we do not so that we do not interfere with layout's child management.
@@ -335,7 +338,7 @@ Ext.define('Ext.Editor', {
             field.setValue(value);
             field.resetOriginalValue();
             field.resumeEvents();
-            field.focus([field.getRawValue().length]);
+            field.focus(field.selectOnFocus ? true : [Number.MAX_VALUE]);
             if (field.autoSize) {
                 field.autoSize();
             }
@@ -443,19 +446,14 @@ Ext.define('Ext.Editor', {
     },
 
     // private
-    onFieldBlur: function(field, e) {
-        var me = this,
-            target = Ext.Element.getActiveElement();
+    onFocusLeave: function(e) {
+        var me = this;
 
         // selectSameEditor flag allows the same editor to be started without onFieldBlur firing on itself
-        if(me.allowBlur === true && me.editing && me.selectSameEditor !== true) {
-            me.completeEdit();
+        if (me.allowBlur === true && me.editing && me.selectSameEditor !== true) {
+            this.completeEdit();
         }
-
-        // If newly active element is focusable, prevent reacquisition of focus by editor owner
-        if (Ext.fly(target).isFocusable() || target.getAttribute('tabindex')) {
-            target.focus();
-        }
+        this.callParent([e]);
     },
 
     // private
@@ -465,20 +463,11 @@ Ext.define('Ext.Editor', {
 
         if (me.editing) {
             me.completeEdit();
-            return;
         }
-        if (field.collapse) {
+        else if (field.collapse) {
             field.collapse();
         }
         me.callParent(arguments);
-    },
-
-    /**
-     * Sets the data value of the editor
-     * @param {Object} value Any valid value supported by the underlying field
-     */
-    setValue: function(value) {
-        this.field.setValue(value);
     },
 
     /**
@@ -487,6 +476,14 @@ Ext.define('Ext.Editor', {
      */
     getValue: function() {
         return this.field.getValue();
+    },
+
+    /**
+     * Sets the data value of the editor
+     * @param {Object} value Any valid value supported by the underlying field
+     */
+    setValue: function(value) {
+        this.field.setValue(value);
     },
 
     toggleBoundEl: function(visible) {

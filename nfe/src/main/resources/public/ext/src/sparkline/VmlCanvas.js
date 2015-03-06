@@ -1,3 +1,6 @@
+/**
+ * @private
+ */
 Ext.define('Ext.sparkline.VmlCanvas', {
     extend: 'Ext.sparkline.CanvasBase',
 
@@ -198,7 +201,7 @@ Ext.define('Ext.sparkline.VmlCanvas', {
         this.group.dom.innerHTML = this.prerender.join('');
     }
 }, function() {
-    Ext.onReady(function() {
+    Ext.onInternalReady(function() {
         var doc = document;
     
         if (doc.namespaces && !doc.namespaces.svml) {

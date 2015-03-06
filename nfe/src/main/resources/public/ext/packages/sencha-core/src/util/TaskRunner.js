@@ -256,7 +256,7 @@ Ext.define('Ext.util.TaskRunner', {
                     if (task.hasOwnProperty('fireIdleEvent')) {
                         fireIdleEvent = task.fireIdleEvent;
                     } else {
-                        fireIdleEvent = me.fireIdleEvent
+                        fireIdleEvent = me.fireIdleEvent;
                     }
 
                     try {

@@ -70,7 +70,7 @@ Ext.define('Ext.form.trigger.Spinner', {
         return this.spinnerEl;
     },
 
-    onClick: function(e) {
+    onClick: function () {
         var me = this,
             args = arguments,
             e = me.clickRepeater ? args[1] : args[0],

@@ -301,7 +301,7 @@ Ext.define('Ext.fx.Anim', {
         // If not a pre-defined curve, try a cubic-bezier
         if (!me.easingFn) {
             me.easingFn = String(me.easing).match(me.bezierRE);
-            if (me.easingFn && me.easingFn.length == 5) {
+            if (me.easingFn && me.easingFn.length === 5) {
                 curve = me.easingFn;
                 me.easingFn = Ext.fx.CubicBezier.cubicBezier(+curve[1], +curve[2], +curve[3], +curve[4]);
             }

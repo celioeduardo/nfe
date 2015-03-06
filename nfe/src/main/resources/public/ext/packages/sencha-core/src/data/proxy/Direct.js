@@ -213,6 +213,7 @@ Ext.define('Ext.data.proxy.Direct', {
     },
 
     /**
+     * @method
      * @inheritdoc
      */
     applyEncoding: Ext.identityFn,
@@ -226,6 +227,7 @@ Ext.define('Ext.data.proxy.Direct', {
     },
 
     /**
+     * @method
      * @inheritdoc
      */
     extractResponseData: function(response){
@@ -233,6 +235,7 @@ Ext.define('Ext.data.proxy.Direct', {
     },
 
     /**
+     * @method
      * @inheritdoc
      */
     setException: function(operation, response) {
@@ -240,6 +243,7 @@ Ext.define('Ext.data.proxy.Direct', {
     },
 
     /**
+     * @method
      * @inheritdoc
      */
     buildUrl: function(){

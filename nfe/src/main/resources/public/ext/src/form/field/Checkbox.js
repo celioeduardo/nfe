@@ -485,7 +485,9 @@ Ext.define('Ext.form.field.Checkbox', {
         var me = this,
             handler = me.handler;
 
-        Ext.callback(me.handler, me.scope, [me, newVal], 0, me);
+        if (handler) {
+            Ext.callback(handler, me.scope, [me, newVal], 0, me);
+        }
 
         me.callParent(arguments);
 

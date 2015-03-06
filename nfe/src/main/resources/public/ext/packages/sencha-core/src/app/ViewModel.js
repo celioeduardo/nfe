@@ -1037,7 +1037,7 @@ Ext.define('Ext.app.ViewModel', {
                 // Get rid of listeners so they don't get considered as a bind
                 listeners = cfg.listeners;
                 delete cfg.listeners;
-                storeBind = me.bind(cfg, me.onStoreBind, me);
+                storeBind = me.bind(cfg, me.onStoreBind, me, {trackStatics: true});
                 if (storeBind.isStatic()) {
                     // Everything is static, we don't need to wait, so remove the
                     // binding because it will only fire the first time.
@@ -1061,7 +1061,7 @@ Ext.define('Ext.app.ViewModel', {
             if (!store) {
                 this.createStore(key, cfg, binding.$listeners, binding);
             } else {
-                cfg = Ext.merge({}, cfg);
+                cfg = Ext.merge({}, binding.pruneStaticKeys());
                 proxy = cfg.proxy;
                 delete cfg.type;
                 delete cfg.model;
@@ -1076,7 +1076,9 @@ Ext.define('Ext.app.ViewModel', {
                     delete proxy.writer;
                     store.getProxy().setConfig(proxy);
                 }
+                store.blockLoad();
                 store.setConfig(cfg);
+                store.unblockLoad(true);
             }
         },
 

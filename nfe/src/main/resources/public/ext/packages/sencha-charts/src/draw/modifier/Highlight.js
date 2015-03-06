@@ -150,7 +150,7 @@ Ext.define('Ext.draw.modifier.Highlight', {
                             // modifier for more details on the 'animationOriginal' object.
 
                             tplAttr = attr.template && attr.template.ownAttr;
-                            if (tplAttr && !attr.hasOwnProperty(name)) {
+                            if (tplAttr && !attr.prototype.hasOwnProperty(name)) {
                                 removeFromInstance[name] = true;
                                 highlightOriginal[name] = tplAttr.animationOriginal[name];
                             } else {

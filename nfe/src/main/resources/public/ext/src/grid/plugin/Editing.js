@@ -190,10 +190,6 @@ Ext.define('Ext.grid.plugin.Editing', {
         grid.editingPlugin = grid.view.editingPlugin = me;
     },
 
-    resolveListenerScope: function(defaultScope) {
-        return this.grid.resolveListenerScope(defaultScope);
-    },
-    
     onBeforeReconfigure: function() {
         this.reconfiguring = true;
     },
@@ -243,28 +239,31 @@ Ext.define('Ext.grid.plugin.Editing', {
             columns = [columns];
         }
 
-        var me   = this,
+        var me = this,
             c,
             cLen = columns.length,
+            getEditor = function(record, defaultField) {
+                return me.getColumnField(this, defaultField);
+            },
+            hasEditor = function() {
+                return me.hasColumnField(this);
+            },
+            setEditor = function(field) {
+                me.setColumnField(this, field);
+            },
             column;
 
         for (c = 0; c < cLen; c++) {
             column = columns[c];
 
             if (!column.getEditor) {
-                column.getEditor = function(record, defaultField) {
-                    return me.getColumnField(this, defaultField);
-                };
+                column.getEditor = getEditor;
             }
             if (!column.hasEditor) {
-                column.hasEditor = function() {
-                    return me.hasColumnField(this);
-                };
+                column.hasEditor = hasEditor;
             }
             if (!column.setEditor) {
-                column.setEditor = function(field) {
-                    me.setColumnField(this, field);
-                };
+                column.setEditor = setEditor;
             }
         }
     },
@@ -381,9 +380,9 @@ Ext.define('Ext.grid.plugin.Editing', {
             view = me.view;
 
         // Listen for the edit trigger event.
-        if (me.triggerEvent == 'cellfocus') {
+        if (me.triggerEvent === 'cellfocus') {
             me.mon(view, 'cellfocus', me.onCellFocus, me);
-        } else if (me.triggerEvent == 'rowfocus') {
+        } else if (me.triggerEvent === 'rowfocus') {
             me.mon(view, 'rowfocus', me.onRowFocus, me);
         } else {
 
@@ -469,13 +468,24 @@ Ext.define('Ext.grid.plugin.Editing', {
 
     // @private
     onEnterKey: function(e) {
-        if (e.view === this.view) {
-            var me = this,
-                grid = me.grid,
-                navModel = grid.getView().getNavigationModel(),
-                record,
-                pos,
-                column;
+        var me = this,
+            grid = me.grid,
+            navModel,
+            record,
+            pos,
+            column,
+            targetComponent;
+
+        if (me.editing) {
+            targetComponent = Ext.getCmp(e.getTarget().getAttribute('componentId'));
+
+            // ENTER when a picker is expanded does not complete the edit
+            if (!(targetComponent && targetComponent.isPickerField && targetComponent.isExpanded)) {
+                me.completeEdit();
+            }
+        }
+        else if (e.view === me.view) {
+            navModel = grid.getView().getNavigationModel();
 
             // Calculate editing start position from NavigationModel
             pos = navModel.getPosition();
@@ -493,7 +503,14 @@ Ext.define('Ext.grid.plugin.Editing', {
 
     // @private
     onEscKey: function(e) {
-        return this.cancelEdit();
+        if (this.editing) {
+            var targetComponent = Ext.getCmp(e.getTarget().getAttribute('componentId'));
+
+            // ESCAPE when a picker is expanded does not cancel the edit
+            if (!(targetComponent && targetComponent.isPickerField && targetComponent.isExpanded)) {
+                return this.cancelEdit();
+            }
+        }
     },
 
     /**
@@ -580,7 +597,7 @@ Ext.define('Ext.grid.plugin.Editing', {
         }
 
         // Navigate to the view which the column header relates to.
-        view = columnHeader.getOwnerHeaderCt().view;
+        view = columnHeader.getRootHeaderCt().view;
 
         gridRow = view.getRow(record);
 

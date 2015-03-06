@@ -17,8 +17,8 @@
  *         proxy  : {
  *             type   : 'memory',
  *             reader : {
- *                 type : 'json',
- *                 root : 'items'
+ *                 rootProperty : 'items',
+ *                 type         : 'json'
  *             }
  *         }
  *     });
@@ -93,9 +93,9 @@ Ext.define('Ext.grid.column.Check', {
     processEvent: function(type, view, cell, recordIndex, cellIndex, e, record, row) {
         var me = this,
             key = type === 'keydown' && e.getKey(),
-            mousedown = type == 'mousedown';
+            mousedown = type === 'mousedown';
 
-        if (!me.disabled && (mousedown || (key == e.ENTER || key == e.SPACE))) {
+        if (!me.disabled && (mousedown || (key === e.ENTER || key === e.SPACE))) {
             var checked = !me.isRecordChecked(record);
 
             // Allow apps to hook beforecheckchange

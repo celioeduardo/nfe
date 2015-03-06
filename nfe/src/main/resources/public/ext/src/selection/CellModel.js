@@ -33,7 +33,7 @@
  *             { text : 'Email', dataIndex : 'email', flex : 1 },
  *             { text : 'Phone', dataIndex : 'phone' }
  *         ],
- *         selType: 'cellmodel'
+ *         selModel: 'cellmodel'
  *     });
  */
 Ext.define('Ext.selection.CellModel', {
@@ -52,6 +52,11 @@ Ext.define('Ext.selection.CellModel', {
 
 
     isCellModel: true,
+
+    /**
+     * @inheritdoc
+     */
+    deselectOnContainerClick: false,
 
     /**
      * @cfg {Boolean} enableKeyNav
@@ -198,7 +203,7 @@ Ext.define('Ext.selection.CellModel', {
      * @return {Ext.grid.CellContext} A CellContext object describing the current cell.
      */
     getPosition: function() {
-        return this.selecting ? this.nextSelection : this.selection;
+        return (this.selecting ? this.nextSelection : this.selection) || null;
     },
 
     /**
@@ -216,7 +221,7 @@ Ext.define('Ext.selection.CellModel', {
                 column: typeof pos.column === 'number' ? this.view.getColumnManager().getColumns()[pos.column] : pos.column
             });
         }
-        return this.setPosition(pos, suppressEvent, preventCheck)
+        return this.setPosition(pos, suppressEvent, preventCheck);
     },
 
     /**
@@ -282,6 +287,10 @@ Ext.define('Ext.selection.CellModel', {
             pos = me.getPosition();
 
         me.callParent(arguments);
+        if (pos && store.isMoving(pos.record)) {
+            return;
+        }
+        
         if (pos && store.getCount() && store.indexOf(pos.record) !== -1) {
             pos.setRow(pos.record);
         } else {
@@ -336,10 +345,7 @@ Ext.define('Ext.selection.CellModel', {
 
     onSelectChange: function(record, isSelected, suppressEvent, commitFn) {
         var me = this,
-            pos,
-            eventName,
-            view,
-            nm;
+            pos, eventName, view;
 
         if (isSelected) {
             pos = me.nextSelection;
@@ -358,14 +364,6 @@ Ext.define('Ext.selection.CellModel', {
                 commitFn() !== false) {
 
             if (isSelected) {
-                // Focus the cell unless we are configured not to do so, or the NavigationModel reports
-                // that that position is already focused.
-                if (!me.preventFocus) {
-                    nm = view.getNavigationModel();
-                    if (!pos.isEqual(nm.getPosition())) {
-                        nm.setPosition(pos, null, null, null, true);
-                    }
-                }
                 view.onCellSelect(pos);
             } else {
                 view.onCellDeselect(pos);

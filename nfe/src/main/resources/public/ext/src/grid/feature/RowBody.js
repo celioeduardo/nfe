@@ -190,7 +190,7 @@ Ext.define('Ext.grid.feature.RowBody', {
             i;
 
         for (i = 0; i < len; ++i) {
-            items[i].colSpan = colspan;
+            items[i].setAttribute('colSpan', colspan);
         }
     },
 

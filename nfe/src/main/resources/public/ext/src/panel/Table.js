@@ -96,7 +96,6 @@ Ext.define('Ext.panel.Table', {
      */
     hasView: false,
 
-    // each panel should dictate what viewType and selType to use
     /**
      * @cfg {String} viewType
      * An xtype of view to use. This is automatically set to 'tableview' by {@link Ext.grid.Panel Grid}
@@ -122,7 +121,7 @@ Ext.define('Ext.panel.Table', {
      * An xtype of selection model to use. This is used to create selection model if just
      * a config object or nothing at all given in {@link #selModel} config.
      *
-     * @deprecated 5.0.2 Use the {@link #selModel}'s `type` property. Or, if no other
+     * @deprecated 5.1.0 Use the {@link #selModel}'s `type` property. Or, if no other
      * configs are required, use the string form of selModel.
      */
 
@@ -132,7 +131,6 @@ Ext.define('Ext.panel.Table', {
      *
      * In latter case its `type` property determines to which type of selection model this config is applied.
      */
-    selModel: 'rowmodel',
 
     /**
      * @cfg {Boolean} [multiSelect=false]
@@ -155,7 +153,7 @@ Ext.define('Ext.panel.Table', {
      * @cfg {String/Boolean} scroll
      * Scrollers configuration. Valid values are 'both', 'horizontal' or 'vertical'.
      * True implies 'both'. False implies 'none'.
-     * @deprecated 5.0.2 Use {@link #scrollable} instead
+     * @deprecated 5.1.0 Use {@link #scrollable} instead
      */
 
     /**
@@ -355,7 +353,7 @@ Ext.define('Ext.panel.Table', {
      */
 
     /**
-     * @property {Ext.view.Table} ownerGrid
+     * @property {Ext.panel.Table} ownerGrid
      * A reference to the top-level owning grid component.
      * 
      * This is a reference to this GridPanel if this GridPanel is not part of a locked grid arrangement.
@@ -372,9 +370,11 @@ Ext.define('Ext.panel.Table', {
     hiddenHeaderCls: Ext.baseCSSPrefix + 'grid-header-hidden',
     resizeMarkerCls: Ext.baseCSSPrefix + 'grid-resize-marker',
     emptyCls: Ext.baseCSSPrefix + 'grid-empty',
-    
+
+    // The TablePanel claims to be focusable, but it does not place a tabIndex
+    // on any of its elements.
+    // Its focus implementation delegates to its view. TableViews are focusable.
     focusable: true,
-    tabIndex: 0,
 
     /**
      * @event viewready
@@ -585,9 +585,6 @@ Ext.define('Ext.panel.Table', {
 
         // Whatever kind of View we have, be it a TableView, or a LockingView, we are interested in the selection model
         me.selModel = me.view.getSelectionModel();
-        me.relayEvents(me.selModel, [
-            'selectionchange', 'beforeselect', 'beforedeselect', 'select', 'deselect'
-        ]);
         if (me.selModel.isRowModel) {
             me.selModel.on('selectionchange', me.updateBindSelection, me);
         }
@@ -942,95 +939,30 @@ Ext.define('Ext.panel.Table', {
         }
         me.callParent(arguments);
     },
-    
-    initFocusableEvents: function() {
-        var me = this,
-            view = me.getView();
 
-        me.callParent();
-        me.focusEnterLeaveListeners = view.getFocusEl().on({
-            focusenter: me.onFocusEnter,
-            focusleave: me.onFocusLeave,
-            scope: me,
-            destroyable: true
-        });
-    },
-
-    onFocus: function(e) {
-        this.callParent([e]);
-
-        // Focusing the main el delegates focus to a descendant cell.
-        this.handleFocusEnter(e);
+    focus: function() {
+        // TablePanel is not focusable, but allow a call to delegate into the view
+        this.getView().focus();
     },
     
-    onFocusEnter: function(e) {
-        this.handleFocusEnter(e);
+    /**
+     * Disables interaction with, and masks this grid's column headers.
+     */
+    disableColumnHeaders: function() {
+        this.headerCt.disable();
     },
 
-    handleFocusEnter: function(e) {
-        var me = this,
-            view = me.getView(),
-            targetView,
-            navigationModel = view.getNavigationModel(),
-            lastFocused,
-            focusPosition,
-            br = view.bufferedRenderer,
-            firstRecord;
-
-        if (!me.containsFocus && view.all.getCount()) {
-            lastFocused = focusPosition = view.getLastFocused();
-
-            // Default to the first cell if the NavigationModel has never focused anything
-            if (!focusPosition) {
-                targetView = view.isLockingView ? (view.lockedGrid.isVisible() ? view.lockedView : view.normalView) : view;
-                firstRecord = view.dataSource.getAt(br ? br.getFirstVisibleRowIndex() : 0);
-
-                // A non-row producing record like a collapsed placeholder.
-                // We cannot focus these yet.
-                if (!firstRecord.isNonData) {
-                    focusPosition = new Ext.grid.CellContext(targetView).setPosition({
-                        row: firstRecord,
-                        column: 0
-                    });
-                }
-            }
-
-            // Not a descendant which we allow to carry focus. Blur it.
-            if (!focusPosition) {
-                e.stopEvent();
-                e.getTarget().blur();
-                return;
-            }
-            navigationModel.setPosition(focusPosition, null, e, null, !!lastFocused);
-
-            // We now contain focus is that was successful
-            me.containsFocus = !!navigationModel.getPosition();
-        }
-        
-        if (me.containsFocus) {
-            this.getView().el.dom.setAttribute('tabindex', '-1');
-        }
+    /**
+     * Enables interaction with, and unmasks this grid's column headers after a call to {#disableColumnHeaders}.
+     */
+    enableColumnHeaders: function() {
+        this.headerCt.enable();
     },
 
-    onFocusLeave: function(e) {
-        var view = this.getView();
-
-        // Ignore this event if we do not actually contain focus.
-        // CellEditors are rendered into the view's encapculating element,
-        // So focusleave will fire when they are programatically blurred.
-        // We will not have focus at that point.
-        if (this.containsFocus) {
-
-            // Blur the focused cell
-            view.getNavigationModel().setPosition(null, null, e, null, true);
-
-            this.containsFocus = false;
-            view.focusEl = view.el;
-            view.focusEl.dom.setAttribute('tabindex', 0);
-        }
-    },
-
-    // Private. Determine if there are any columns with a locked configuration option
+    /*
+     * @private
+     * Determine if there are any columns with a locked configuration option.
+     */
     hasLockedColumns: function(columns) {
         var i,
             len,
@@ -1304,6 +1236,7 @@ Ext.define('Ext.panel.Table', {
      * @param {Boolean}         [options.animate] Pass `true` to animate the row into view.
      * @param {Boolean}         [options.highlight] Pass `true` to highlight the row with a glow animation when it is in view.
      * @param {Boolean}         [options.select] Pass as `true` to select the specified row.
+     * @param {Boolean}         [options.focus] Pass as `true` to focus the specified row.
      * @param {Function}        [options.callback] A function to execute when the record is in view. This may be necessary if the
      *                          first parameter is a record index and the view is backed by a {@link Ext.data.BufferedStore buffered store}
      *                          which does not contain that record.
@@ -1616,12 +1549,17 @@ Ext.define('Ext.panel.Table', {
         }
     },
 
+    /**
+     * A convenience method that fires {@link #reconfigure} with the store param.  To set the store AND change columns,
+     * use the {@link #reconfigure reconfigure method}.
+     *
+     * @param {Ext.data.Store} [store] The new store.
+     */
     setStore: function (store) {
         this.reconfigure(store);
     },
 
     /**
-     * @method reconfigure
      * Reconfigures the grid / tree with a new store/columns. Either the store or the 
      * columns can be omitted if you don't wish to change them.
      *
@@ -1650,7 +1588,9 @@ Ext.define('Ext.panel.Table', {
 
         me.reconfiguring = true;
         me.fireEvent('beforereconfigure', me, store, columns, oldStore, oldColumns);
+
         Ext.suspendLayouts();
+
         if (me.lockable) {
             me.reconfigureLockable(store, columns);
         } else {
@@ -1669,7 +1609,9 @@ Ext.define('Ext.panel.Table', {
                 me.getView().refreshView();
             }
         }
+
         Ext.resumeLayouts(true);
+
         me.fireEvent('reconfigure', me, store, columns, oldStore, oldColumns);
         delete me.reconfiguring;
     },
@@ -1706,6 +1648,10 @@ Ext.define('Ext.panel.Table', {
     },
 
     privates: {
+        // The focusable flag is set, but there is no focusable element.
+        // Focus is delegated to the view by the focus implementation.
+        initFocusableElement: function() {},
+
         doEnsureVisible: function(record, options) {
             // Handle the case where this is a lockable assembly
             if (this.lockable) {
@@ -1722,6 +1668,7 @@ Ext.define('Ext.panel.Table', {
                 animate,
                 highlight,
                 select,
+                doFocus,
                 view = me.getView(),
                 domNode = view.getNode(record);
 
@@ -1731,6 +1678,7 @@ Ext.define('Ext.panel.Table', {
                 animate = options.animate;
                 highlight = options.highlight;
                 select = options.select;
+                doFocus = options.focus;
             }
 
             // We found the DOM node associated with the record
@@ -1742,6 +1690,9 @@ Ext.define('Ext.panel.Table', {
                 if (select) {
                     view.getSelectionModel().select(record);
                 }
+                if (doFocus) {
+                    view.getNavigationModel().setPosition(record, 0);
+                }
                 Ext.callback(callback, scope || me, [true, record, domNode]);
             }
             // If we didn't find it, it's probably because of buffered rendering
@@ -1750,6 +1701,7 @@ Ext.define('Ext.panel.Table', {
                     animate: animate,
                     highlight: highlight,
                     select: select,
+                    focus: doFocus,
                     callback: function(recordIdx, record, domNode) {
                         Ext.callback(callback, scope || me, [true, record, domNode]);
                     }

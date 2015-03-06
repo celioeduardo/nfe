@@ -88,10 +88,10 @@ Ext.define('Ext.panel.Bar', {
         initOrientation: function() {
             var me = this,
                 dock = me.dock,
-                vertical = me.vertical = (dock ? dock in me._verticalSides : me.vertical);
+                vertical = (me.vertical = (dock ? dock in me._verticalSides : me.vertical));
 
             me.addClsWithUI([
-                this.vertical ? 'vertical' : 'horizontal',
+                vertical ? 'vertical' : 'horizontal',
                 me.getDockName()
             ]);
         }

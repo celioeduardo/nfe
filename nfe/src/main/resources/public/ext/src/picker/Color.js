@@ -201,7 +201,7 @@ Ext.define('Ext.picker.Color', {
         }
 
 
-        if (color != value || me.allowReselect) {
+        if (color !== value || me.allowReselect) {
             el = me.el;
 
             if (me.value) {

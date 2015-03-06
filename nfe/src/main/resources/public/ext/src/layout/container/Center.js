@@ -50,8 +50,8 @@ Ext.define('Ext.layout.container.Center', {
         var me = this,
             sizeModel = ownerSizeModel || me.owner.getSizeModel(),
             percentRe = me.percentRe,
-            mode = ((sizeModel.width.shrinkWrap || !percentRe.test(item.width)) ? 0 : 1) |
-                ((sizeModel.height.shrinkWrap || !percentRe.test(item.height)) ? 0 : 2);
+            mode = ((sizeModel.width.shrinkWrap || !percentRe.test(item.width)) ? 0 : 1) | // jshint ignore:line
+                  ((sizeModel.height.shrinkWrap || !percentRe.test(item.height)) ? 0 : 2);
 
         return me.sizePolicies[mode];
     },

@@ -200,6 +200,13 @@ Ext.define('Ext.data.PageMap', {
         return result;
     },
 
+    getByInternalId: function(internalId) {
+        var index = this.indexMap[internalId];
+        if (index !== -1) {
+            return this.getAt(index);
+        }
+    },
+
     indexOf: function(record) {
         var result = -1;
         if (record) {
@@ -241,7 +248,7 @@ Ext.define('Ext.data.PageMap', {
             if (me.fireEvent('beforepageremove', me, page, thePage) !== false) {
                 len = thePage.length;
                 for (i = 0; i < len; i++) {
-                    delete me.indexMap[thePage[i]];
+                    delete me.indexMap[thePage[i].internalId];
                 }
                 result = me.callParent(arguments);
                 me.fireEvent('pageremove', me, page, thePage);

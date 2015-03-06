@@ -136,5 +136,5 @@ Ext.define('Ext.container.Viewport', {
     }
 },
 function () {
-    Ext.plugin.Viewport.apply(this);
+    Ext.plugin.Viewport.decorate(this);
 });

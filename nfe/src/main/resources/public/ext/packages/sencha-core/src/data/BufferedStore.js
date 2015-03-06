@@ -138,7 +138,7 @@ Ext.define('Ext.data.BufferedStore', {
 
         // This store asks for pages.
         // If used with a MemoryProxy, it must work
-        if (proxy.setEnablePaging) {
+        if (proxy && proxy.setEnablePaging) {
             proxy.setEnablePaging(true);
         }
         return proxy;
@@ -169,12 +169,13 @@ Ext.define('Ext.data.BufferedStore', {
     //</debug>
 
     updateGroupField: function(field) {
-        if (this.isInitializing) {
-            this.blockLoad();
+        var me = this;
+        if (me.isInitializing) {
+            me.blockLoad();
         }
-        this.group(field);
-        if (this.isInitializing) {
-            this.unblockLoad();
+        me.group(field);
+        if (me.isInitializing) {
+            me.unblockLoad();
         }
     },
 
@@ -260,6 +261,11 @@ Ext.define('Ext.data.BufferedStore', {
             bufferZone,
             records,
             data = me.getData();
+
+        // Prevent re-emtering the load process if we are already in a wait state for a batch of pages.
+        if (me.loading) {
+            return;
+        }
 
         if (!options) {
             options = {};
@@ -447,7 +453,7 @@ Ext.define('Ext.data.BufferedStore', {
     /**
      * Get the Record with the specified id.
      *
-     * This method is not effected by filtering, lookup will be performed from all records
+     * This method is not affected by filtering, lookup will be performed from all records
      * inside the store, filtered or not.
      *
      * @param {Mixed} id The id of the Record to find.
@@ -457,12 +463,18 @@ Ext.define('Ext.data.BufferedStore', {
         var result = this.data.findBy(function(record) {
             return record.getId() === id;
         });
-        //<debug>
-        if (!result) {
-            Ext.Error.raise('getById called for ID that is not present in local cache');
-        }
-        //</debug>
         return result;
+    },
+
+    /**
+     * @inheritdoc
+     */
+    getAt: function(index) {
+        var data = this.getData();
+
+        if (data.hasRange(index, index)) {
+            return data.getAt(index);
+        }
     },
 
     /**
@@ -476,12 +488,7 @@ Ext.define('Ext.data.BufferedStore', {
      * @return {Ext.data.Model} The Record with the passed internalId. Returns null if not found.
      */
     getByInternalId: function(internalId) {
-        var result;
-
-        result = this.data.findBy(function(record) {
-            return record.internalId === internalId;
-        });
-        return result;
+        return this.data.getByInternalId(internalId);
     },
 
     /**
@@ -607,7 +614,7 @@ Ext.define('Ext.data.BufferedStore', {
         // Ensure that the purgePageCount allows enough pages to be kept cached to cover the
         // requested range. If the pageSize is very small we might need a lot of pages.
         if (purgePageCount) {
-            data.setMaxSize(purgePageCount = Math.max(purgePageCount, endPage - startPage + 1));
+            data.setMaxSize(purgePageCount ? (endPage - startPage + 1) + purgePageCount : 0);
         }
 
         if (me.fireEvent('beforeload', me, options) !== false) {
@@ -682,7 +689,7 @@ Ext.define('Ext.data.BufferedStore', {
             if (me.lastPageSize && pageSize != me.lastPageSize) {
                 Ext.Error.raise("pageSize cannot be dynamically altered");
             }
-            if (!data.pageSize) {
+            if (!data.getPageSize()) {
                 data.setPageSize(pageSize);
             }
         }
@@ -1040,5 +1047,11 @@ Ext.define('Ext.data.BufferedStore', {
     clearAndLoad: function(options) {
         this.getData().clear();
         this.loadPage(1, options);
+    },
+    
+    privates: {
+        isMoving: function () {
+            return false;
+        }
     }
 });

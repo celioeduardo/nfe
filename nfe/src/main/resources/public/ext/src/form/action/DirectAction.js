@@ -1,10 +1,9 @@
-/*
- * This tiny mixin contains methods specific to Ext.Direct actions shared
+/**
+ * @class Ext.form.action.DirectAction
+ * A mixin that contains methods specific to Ext.Direct actions shared
  * by DirectLoad and DirectSubmit.
- *
  * @private
  */
-
 Ext.define('Ext.form.action.DirectAction', {
     extend: 'Ext.Mixin',
     

@@ -340,7 +340,7 @@ Ext.define('Ext.util.Positionable', {
         }
 
         offset = offset || [0,0];
-        posSpec = (!posSpec || posSpec == "?" ? "tl-bl?" :
+        posSpec = (!posSpec || posSpec === "?" ? "tl-bl?" :
             (!(/-/).test(posSpec) && posSpec !== "" ? "tl-" + posSpec : posSpec || "tl-bl")).toLowerCase();
 
         posSpec = me.convertPositionSpec(posSpec);
@@ -769,9 +769,10 @@ Ext.define('Ext.util.Positionable', {
         x = box.x;
         y = box.y;
      
-        // Position to the contrained
-        me.setSize(box.width, box.height);
+        // Position to the contrained position
+        // Call setSize *last* so that any possible layout has the last word on position.
         me.setXY([x, y]);
+        me.setSize(box.width, box.height);
         me.afterSetPosition(x, y);
         return me;
     },

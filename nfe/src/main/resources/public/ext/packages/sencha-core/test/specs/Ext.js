@@ -1769,7 +1769,7 @@ describe("Ext", function() {
         });
 
         it("should call the elevateFunction when a delegated dom event is fired", function() {
-            var domPublisher = Ext.event.Dispatcher.getInstance().getPublisher('dom'),
+            var domPublisher = Ext.event.publisher.Dom.instance,
                 fakeEvent = { type: 'click' },
                 args;
 
@@ -1784,7 +1784,7 @@ describe("Ext", function() {
         });
 
         it("should call the elevateFunction when a direct dom event is fired", function() {
-            var domPublisher = Ext.event.Dispatcher.getInstance().getPublisher('dom'),
+            var domPublisher = Ext.event.publisher.Dom.instance,
                 fakeEvent = { type: 'click' },
                 args;
 
@@ -1794,12 +1794,29 @@ describe("Ext", function() {
             args = Ext.elevateFunction.mostRecentCall.args;
             expect(args[0]).toBe(domPublisher.self.prototype.doDirectEvent);
             expect(args[1]).toBe(domPublisher);
-            expect(args[2].length).toBe(1);
+            expect(args[2].length).toBe(2);
             expect(args[2][0]).toBe(fakeEvent);
+            expect(args[2][1]).toBe(false);
+        });
+
+        it("should call the elevateFunction when a direct capture dom event is fired", function() {
+            var domPublisher = Ext.event.publisher.Dom.instance,
+                fakeEvent = { type: 'click' },
+                args;
+
+            spyOn(Ext, 'elevateFunction');
+            domPublisher.onDirectCaptureEvent(fakeEvent);
+            expect(Ext.elevateFunction.callCount).toBe(1);
+            args = Ext.elevateFunction.mostRecentCall.args;
+            expect(args[0]).toBe(domPublisher.self.prototype.doDirectEvent);
+            expect(args[1]).toBe(domPublisher);
+            expect(args[2].length).toBe(2);
+            expect(args[2][0]).toBe(fakeEvent);
+            expect(args[2][1]).toBe(true);
         });
 
         it("should call the elevateFunction when Gesture#onTargetTouchMove is called", function() {
-            var gesturePublisher = Ext.event.Dispatcher.getInstance().getPublisher('gesture'),
+            var gesturePublisher = Ext.event.publisher.Gesture.instance,
                 fakeEvent = { type: 'click' },
                 args;
 
@@ -1814,7 +1831,7 @@ describe("Ext", function() {
         });
 
         it("should call the elevateFunction when Gesture#onTargetTouchEnd is called", function() {
-            var gesturePublisher = Ext.event.Dispatcher.getInstance().getPublisher('gesture'),
+            var gesturePublisher = Ext.event.publisher.Gesture.instance,
                 fakeEvent = { type: 'click' },
                 args;
 

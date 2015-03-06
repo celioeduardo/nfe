@@ -4,6 +4,8 @@
 Ext.define('Ext.event.gesture.Pinch', {
     extend: 'Ext.event.gesture.MultiTouch',
 
+    priority: 600,
+
     handledEvents: ['pinchstart', 'pinch', 'pinchend', 'pinchcancel'],
 
     /**
@@ -100,4 +102,7 @@ Ext.define('Ext.event.gesture.Pinch', {
         this.startDistance = 0;
         this.callParent();
     }
+}, function(Pinch) {
+    var gestures = Ext.manifest.gestures;
+    Pinch.instance = new Pinch(gestures && gestures.pinch);
 });

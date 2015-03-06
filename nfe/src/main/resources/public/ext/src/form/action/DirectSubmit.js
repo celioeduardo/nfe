@@ -1,4 +1,5 @@
 /**
+ * @class Ext.form.action.DirectSubmit
  * Provides Ext.direct support for submitting form data.
  *
  * This example illustrates usage of Ext.direct.Direct to **submit** a form through Ext.Direct.

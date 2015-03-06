@@ -276,7 +276,7 @@ Ext.define('Ext.draw.sprite.Sprite', {
                 constrainGradients: false
             },
 
-            dirtyTriggers: {
+            triggers: {
                 hidden: "canvas",
                 zIndex: "zIndex",
 
@@ -315,29 +315,27 @@ Ext.define('Ext.draw.sprite.Sprite', {
             },
 
             updaters: {
-                "bbox": function (attrs) {
-                    var hasRotation = attrs.rotationRads !== 0,
-                        hasScaling = attrs.scalingX !== 1 || attrs.scalingY !== 1,
-                        noRotationCenter = attrs.rotationCenterX === null || attrs.rotationCenterY === null,
-                        noScalingCenter = attrs.scalingCenterX === null || attrs.scalingCenterY === null;
+                bbox: function (attr) {
+                    var hasRotation = attr.rotationRads !== 0,
+                        hasScaling = attr.scalingX !== 1 || attr.scalingY !== 1,
+                        noRotationCenter = attr.rotationCenterX === null || attr.rotationCenterY === null,
+                        noScalingCenter = attr.scalingCenterX === null || attr.scalingCenterY === null;
 
-                    attrs.bbox.plain.dirty = true;
-                    attrs.bbox.transform.dirty = true;
+                    attr.bbox.plain.dirty = true;
+                    attr.bbox.transform.dirty = true;
 
                     if (hasRotation && noRotationCenter || hasScaling && noScalingCenter) {
-                        if (!attrs.dirtyFlags.transform) {
-                            attrs.dirtyFlags.transform = [];
-                        }
+                        this.scheduleUpdaters(attr, {transform: []});
                     }
                 },
 
-                "zIndex": function (attrs) {
-                    attrs.dirtyZIndex = true;
+                zIndex: function (attr) {
+                    attr.dirtyZIndex = true;
                 },
 
-                "transform": function (attrs) {
-                    attrs.dirtyTransform = true;
-                    attrs.bbox.transform.dirty = true;
+                transform: function (attr) {
+                    attr.dirtyTransform = true;
+                    attr.bbox.transform.dirty = true;
                 }
             }
         }
@@ -459,34 +457,94 @@ Ext.define('Ext.draw.sprite.Sprite', {
         me.topModifier.prepareAttributes(me.attr);
     },
 
-    updateDirtyFlags: function (attr) {
+    /**
+     * @private
+     * Calls updaters triggered by changes to sprite attributes.
+     * @param attr The attributes of a sprite or its instance.
+     */
+    callUpdaters: function (attr) {
         var me = this,
-            dirtyFlags = attr.dirtyFlags,
+            pendingUpdaters = attr.pendingUpdaters,
             updaters = me.self.def.getUpdaters(),
             any = false,
             dirty = false,
             flags, updater;
 
+        // If updaters set sprite attributes that trigger other updaters,
+        // those updaters are not called right away, but wait until all current
+        // updaters are called (till the next do/while loop iteration).
+
+        me.callUpdaters = Ext.emptyFn; // Hide class method from the instance.
+
         do {
             any = false;
-            for (updater in dirtyFlags) {
+            for (updater in pendingUpdaters) {
                 any = true;
-                flags = dirtyFlags[updater];
-                delete dirtyFlags[updater];
-                // To keep things predictable first call all existing updaters from dirtyFlags,
-                // then (on the next do/while loop iteration) call updaters for dirtyFlags
-                // that may have been added by updaters just called.
-                me.updateDirtyFlags = Ext.emptyFn;
+                flags = pendingUpdaters[updater];
+                delete pendingUpdaters[updater];
                 if (updaters[updater]) {
                     updaters[updater].call(me, attr, flags);
                 }
-                delete me.updateDirtyFlags;
             }
             dirty = dirty || any;
         } while (any);
 
+        delete me.callUpdaters; // Restore class method.
+
         if (dirty) {
             me.setDirty(true);
+        }
+    },
+
+    /**
+     * @private
+     * Schedules specified updaters to be called.
+     * Updaters are called implicitly as a result of a change to sprite attributes.
+     * But sometimes it may be required to call an updater without setting an attribute,
+     * and without messing up the updater call order (by calling the updater immediately).
+     * For example:
+     *
+     *     updaters: {
+     *          onDataX: function (attr) {
+     *              this.processDataX();
+     *              // Process data Y every time data X is processed.
+     *              // Call the onDataY updater as if changes to dataY attribute itself
+     *              // triggered the update.
+     *              this.scheduleUpdaters(attr, {onDataY: ['dataY']});
+     *              // Alternatively:
+     *              // this.scheduleUpdaters(attr, ['onDataY'], ['dataY']);
+     *          }
+     *     }
+     *
+     * @param {Object} attr The attributes object (not necesseraly of a sprite, but of its instance).
+     * @param {Object/String[]} updaters A map of updaters to be called to attributes that triggered the update.
+     * @param {String[]} [triggers] Attributes that triggered the update. An optional parameter.
+     * If used, the `updaters` parameter will be treated an array of updaters to be called.
+     */
+    scheduleUpdaters: function (attr, updaters, triggers) {
+        var pendingUpdaters = attr.pendingUpdaters,
+            updater;
+
+        function schedule() {
+            if (updater in pendingUpdaters) {
+                if (triggers.length) {
+                    pendingUpdaters[updater] = Ext.Array.merge(pendingUpdaters[updater], triggers);
+                }
+            } else {
+                pendingUpdaters[updater] = triggers;
+            }
+        }
+
+        if (triggers) {
+            for (var i = 0, ln = updaters.length; i < ln; i++) {
+                updater = updaters[i];
+                schedule();
+            }
+        } else {
+            for (updater in updaters) {
+                triggers = updaters[updater];
+                schedule();
+            }
         }
     },
 
@@ -499,15 +557,20 @@ Ext.define('Ext.draw.sprite.Sprite', {
      * The content of object may be destroyed.
      */
     setAttributes: function (changes, bypassNormalization, avoidCopy) {
-        var attributes = this.attr;
+        //if (changes && 'fillStyle' in changes) {
+        //    console.groupCollapsed('set fillStyle', this.getId(), this.attr.part);
+        //    console.trace();
+        //    console.groupEnd();
+        //}
+        var attr = this.attr;
         if (bypassNormalization) {
             if (avoidCopy) {
-                this.topModifier.pushDown(attributes, changes);
+                this.topModifier.pushDown(attr, changes);
             } else {
-                this.topModifier.pushDown(attributes, Ext.apply({}, changes));
+                this.topModifier.pushDown(attr, Ext.apply({}, changes));
             }
         } else {
-            this.topModifier.pushDown(attributes, this.self.def.normalize(changes));
+            this.topModifier.pushDown(attr, this.self.def.normalize(changes));
         }
     },
 
@@ -618,8 +681,8 @@ Ext.define('Ext.draw.sprite.Sprite', {
      */
     useAttributes: function (ctx, rect) {
         this.applyTransformations();
-        var attrs = this.attr,
-            canvasAttributes = attrs.canvasAttributes,
+        var attr = this.attr,
+            canvasAttributes = attr.canvasAttributes,
             strokeStyle = canvasAttributes.strokeStyle,
             fillStyle = canvasAttributes.fillStyle,
             lineDash = canvasAttributes.lineDash,
@@ -735,10 +798,29 @@ Ext.define('Ext.draw.sprite.Sprite', {
      * @param {Array} rect The clip rect (or called dirty rect) of the current rendering. Not to be confused
      * with `surface.getRect()`.
      *
-     * @return {*} returns `false` to stop rendering in this frame. All the sprite haven't been rendered
-     * will have their dirty flag untouched.
+     * @return {*} returns `false` to stop rendering in this frame.
+     * All the sprites that haven't been rendered will have their dirty flag untouched.
      */
     render: Ext.emptyFn,
+
+    /**
+     * Performs a hit test on the sprite.
+     * @param {Array} point A two-item array containing x and y coordinates of the point.
+     * @param {Object} options Hit testing options.
+     * @return {Object} A hit result object that contains more information about what
+     * exactly was hit or null if nothing was hit.
+     */
+    hitTest: function (point, options) {
+        var x = point[0],
+            y = point[1],
+            bbox = this.getBBox();
+        if (bbox && x >= bbox.left && x <= bbox.right && y >= bbox.top && y <= bbox.bottom) {
+            return {
+                sprite: this
+            }
+        }
+        return null;
+    },
 
     repaint: function () {
         var surface = this.getSurface();

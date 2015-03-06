@@ -190,7 +190,7 @@ Ext.define('Ext.grid.feature.Summary', {
         if (me.showSummaryRow) {
             record = me.summaryRecord;
 
-            out.push('<table class="' + Ext.baseCSSPrefix + 'table-plain ' + me.summaryItemCls + '">');
+            out.push('<table cellpadding="0" cellspacing="0" class="' +  me.summaryItemCls + '" style="table-layout: fixed; width: 100%;">');
             me.outputSummaryRecord((record && record.isModel) ? record : me.createSummaryRecord(view), values, out, parent);
             out.push('</table>');
         }

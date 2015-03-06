@@ -417,7 +417,7 @@ Ext.define('Ext.sparkline.Base', {
             entries = [],
             tipTpl = me.getTipTpl(),
             fields, showFields, showFieldsKey, newFields, fv,
-            formatter, fieldlen, j;
+            formatter, fieldlen, i, j;
 
         fields = me.getRegionFields(region);
         formatter = me.tooltipFormatter;
@@ -438,7 +438,7 @@ Ext.define('Ext.sparkline.Base', {
             newFields = [];
             for (i = fields.length; i--;) {
                 fv = fields[i][showFieldsKey];
-                if ((j = Ext.Array.indexOf(fv, showFields)) != -1) {
+                if ((j = Ext.Array.indexOf(fv, showFields)) !== -1) {
                     newFields[j] = fields[i];
                 }
             }
@@ -495,7 +495,7 @@ Ext.define('Ext.sparkline.Base', {
 }, function(cls) {
     var proto = cls.prototype;
 
-    Ext.onReady(function() {
+    Ext.onInternalReady(function() {
         proto.tooltip = new Ext.tip.ToolTip({
             id: 'sparklines-tooltip',
             target: document.body,

@@ -477,7 +477,8 @@ Ext.define('Ext.ComponentQuery', {
                 mustBeOwnProperty,
                 presenceOnly,
                 candidate, propValue,
-                j, propLen;
+                j, propLen,
+                config;
 
             // Prefixing property name with an @ means that the property must be in the candidate, not in its prototype
             if (property.charAt(0) === '@') {
@@ -493,38 +494,40 @@ Ext.define('Ext.ComponentQuery', {
             for (; i < length; i++) {
                 candidate = items[i];
 
-                // Check candidate hasOwnProperty is propName prefixed with a bang.
-                if (!mustBeOwnProperty || candidate.hasOwnProperty(property)) {
-
-                    // pull out property value to test
+                config = candidate.self.$config.configs[property];
+                if (config) {
+                    propValue = candidate[config.names.get]();
+                } else if (mustBeOwnProperty && !candidate.hasOwnProperty(property)) {
+                    continue;
+                } else {
                     propValue = candidate[property];
+                }
 
-                    if (presenceOnly) {
-                        result.push(candidate);
-                    }
-                    // implies property is an array, and we must compare value against each element.
-                    else if (operator === '~=') {
-                        if (propValue) {
-                            //We need an array
-                            if (!Ext.isArray(propValue)) {
-                                propValue = propValue.split(' ');
-                            }
+                if (presenceOnly) {
+                    result.push(candidate);
+                }
+                // implies property is an array, and we must compare value against each element.
+                else if (operator === '~=') {
+                    if (propValue) {
+                        //We need an array
+                        if (!Ext.isArray(propValue)) {
+                            propValue = propValue.split(' ');
+                        }
 
-                            for (j = 0, propLen = propValue.length; j < propLen; j++) {
-                                if (queryOperators[operator](Ext.coerce(propValue[j], compareTo), compareTo)) {
-                                    result.push(candidate);
-                                    break;
-                                }
+                        for (j = 0, propLen = propValue.length; j < propLen; j++) {
+                            if (queryOperators[operator](Ext.coerce(propValue[j], compareTo), compareTo)) {
+                                result.push(candidate);
+                                break;
                             }
                         }
                     }
-                    else if (operator === '/=') {
-                        if (candidate[property] !== undefined && compareTo.test(candidate[property])) {
-                            result.push(candidate);
-                        }
-                    } else if (!compareTo ? !!candidate[property] : queryOperators[operator](Ext.coerce(propValue, compareTo), compareTo)) {
+                }
+                else if (operator === '/=') {
+                    if (propValue != null && compareTo.test(propValue)) {
                         result.push(candidate);
                     }
+                } else if (!compareTo ? !!candidate[property] : queryOperators[operator](Ext.coerce(propValue, compareTo), compareTo)) {
+                    result.push(candidate);
                 }
             }
             return result;
@@ -589,7 +592,7 @@ Ext.define('Ext.ComponentQuery', {
                 var selector  = args[0],
                     property  = args[1],
                     operator  = args[2],
-                    quote     = args[3],
+                    //quote     = args[3],
                     compareTo = args[4],
                     compareRe;
                 
@@ -606,10 +609,10 @@ Ext.define('Ext.ComponentQuery', {
                               "value, escape the quote character in your pattern: (\\{1})",
                         match;
                 
-                    if (match = /^(['"]).*?[^'"]$/.exec(compareTo)) {
+                    if (match = /^(['"]).*?[^'"]$/.exec(compareTo)) { // jshint ignore:line
                         Ext.log.warn(format(msg, selector, match[1], 'beginning'));
                     }
-                    else if (match = /^[^'"].*?(['"])$/.exec(compareTo)) {
+                    else if (match = /^[^'"].*?(['"])$/.exec(compareTo)) { // jshint ignore:line
                         Ext.log.warn(format(msg, selector, match[1], 'end'));
                     }
                     //</debug>
@@ -870,16 +873,17 @@ Ext.define('Ext.ComponentQuery', {
             },
             "nth-child" : function(c, a) {
                 var result = [],
-                    m = nthRe.exec(a == "even" && "2n" || a == "odd" && "2n+1" || !nthRe2.test(a) && "n+" + a || a),
-                    f = (m[1] || 1) - 0, l = m[2] - 0,
+                    m = nthRe.exec(a === "even" && "2n" || a === "odd" && "2n+1" || !nthRe2.test(a) && "n+" + a || a),
+                    f = (m[1] || 1) - 0, len = m[2] - 0,
                     i, n, nodeIndex;
-                for (i = 0; n = c[i]; i++) {
+
+                for (i = 0; n = c[i]; i++) { // jshint ignore:line
                     nodeIndex = i + 1;
-                    if (f == 1) {
-                        if (l == 0 || nodeIndex == l) {
+                    if (f === 1) {
+                        if (len === 0 || nodeIndex === len) {
                             result.push(n);
                         }
-                    } else if ((nodeIndex + l) % f == 0){
+                    } else if ((nodeIndex + len) % f === 0){
                         result.push(n);
                     }
                 }

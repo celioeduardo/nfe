@@ -929,11 +929,11 @@ Ext.define('Ext.data.Connection', {
         var options = [function() {
             return new XMLHttpRequest();
         }, function() {
-            return new ActiveXObject('MSXML2.XMLHTTP.3.0');
+            return new ActiveXObject('MSXML2.XMLHTTP.3.0'); // jshint ignore:line
         }, function() {
-            return new ActiveXObject('MSXML2.XMLHTTP');
+            return new ActiveXObject('MSXML2.XMLHTTP'); // jshint ignore:line
         }, function() {
-            return new ActiveXObject('Microsoft.XMLHTTP');
+            return new ActiveXObject('Microsoft.XMLHTTP'); // jshint ignore:line
         }], i = 0,
             len = options.length,
             xhr;
@@ -1259,7 +1259,7 @@ Ext.define('Ext.data.Connection', {
             // In IE9p we can get the bytes by constructing a VBArray
             // using the responseBody and then converting it to an Array.
             try {
-                byteArray = new VBArray(responseBody).toArray();
+                byteArray = new VBArray(responseBody).toArray(); // jshint ignore:line
             } catch(e) {
                 // If the binary response is empty, the VBArray constructor will
                 // choke on the responseBody.  We can't simply do a null check
@@ -1276,7 +1276,7 @@ Ext.define('Ext.data.Connection', {
             if (!this.self.vbScriptInjected) {
                 this.injectVBScript();
             }
-            getIEByteArray(xhr.responseBody, byteArray = []);
+            getIEByteArray(xhr.responseBody, byteArray = []); // jshint ignore:line
         } else {
             // in other older browsers make a best-effort attempt to read the
             // bytes from responseText

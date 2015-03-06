@@ -52,7 +52,7 @@ Ext.define('Ext.layout.container.Fit', {
     getItemSizePolicy: function (item, ownerSizeModel) {
         // this layout's sizePolicy is derived from its owner's sizeModel:
         var sizeModel = ownerSizeModel || this.owner.getSizeModel(),
-            mode = (sizeModel.width.shrinkWrap ? 0 : 1) |
+            mode = (sizeModel.width.shrinkWrap ? 0 : 1) | // jshint ignore:line
                    (sizeModel.height.shrinkWrap ? 0 : 2);
 
        return this.sizePolicies[mode];
@@ -73,7 +73,7 @@ Ext.define('Ext.layout.container.Fit', {
         // settings affect the available size. This particularly effects self-sizing
         // containers such as fields, in which the target element is naturally sized,
         // and should not be stretched by a sized child item.
-        if (resetSizes && ownerContext.targetContext.el.dom.tagName.toUpperCase() != 'TD') {
+        if (resetSizes && ownerContext.targetContext.el.dom.tagName.toUpperCase() !== 'TD') {
             resetSizes = resetWidth = resetHeight = false;
         }
 
@@ -165,10 +165,12 @@ Ext.define('Ext.layout.container.Fit', {
 
             if (scrollbars) {
                 scrollbarSize = Ext.getScrollbarSize();
-                if (scrollbars & 1) { // if we need the hscrollbar, remove its height
+                if (scrollbars & 1) { // jshint ignore:line
+                    // if we need the hscrollbar, remove its height
                     containerSize.height -= scrollbarSize.height;
                 }
-                if (scrollbars & 2) { // if we need the vscrollbar, remove its width
+                if (scrollbars & 2) { // jshint ignore:line
+                    // if we need the vscrollbar, remove its width
                     containerSize.width -= scrollbarSize.width;
                 }
             }
@@ -199,7 +201,8 @@ Ext.define('Ext.layout.container.Fit', {
                     // the scrollbar flag (if set) will indicate that an overflow exists on
                     // the horz(1) or vert(2) axis... if not set, then there could never be
                     // an overflow...
-                    if (scrollbars & 2) { // if we need the vscrollbar, add its width
+                    if (scrollbars & 2) { // jshint ignore:line
+                        // if we need the vscrollbar, add its width
                         contentWidth += scrollbarSize.width;
                     }
                     if (!ownerContext.setContentWidth(contentWidth)) {
@@ -219,7 +222,8 @@ Ext.define('Ext.layout.container.Fit', {
                     // the scrollbar flag (if set) will indicate that an overflow exists on
                     // the horz(1) or vert(2) axis... if not set, then there could never be
                     // an overflow...
-                    if (scrollbars & 1) { // if we need the hscrollbar, add its height
+                    if (scrollbars & 1) { // jshint ignore:line
+                        // if we need the hscrollbar, add its height
                         contentHeight += scrollbarSize.height;
                     }
                     if (!ownerContext.setContentHeight(contentHeight)) {
@@ -245,7 +249,7 @@ Ext.define('Ext.layout.container.Fit', {
         me.fitItemHeight(itemContext, info);
 
         // If not all required dimensions have been satisfied, we're not done.
-        if (info.got != info.needed) {
+        if (info.got !== info.needed) {
             me.done = false;
         }
     },

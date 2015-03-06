@@ -3,16 +3,17 @@
  */
 Ext.define('Ext.event.publisher.Gesture', {
     extend: 'Ext.event.publisher.Dom',
-    alternateClassName: 'Ext.event.publisher.TouchGesture',
 
     requires: [
         'Ext.util.Point',
         'Ext.AnimationQueue'
     ],
 
-    config: {
-        recognizers: {},
+    uses: 'Ext.event.gesture.*',
 
+    type: 'gesture',
+
+    config: {
         /**
          * @private
          *
@@ -33,8 +34,14 @@ Ext.define('Ext.event.publisher.Gesture', {
         MSPointerCancel: 1
     },
 
+    handledEvents: [],
+    handledDomEvents: [],
+
     constructor: function(config) {
         var me = this,
+            handledDomEvents = me.handledDomEvents,
+            supports = Ext.supports,
+            supportsTouchEvents = supports.TouchEvents,
             Fn = Ext.Function,
             onTouchStart = me.onTouchStart,
             onTouchMove = me.onTouchMove,
@@ -104,16 +111,32 @@ Ext.define('Ext.event.publisher.Gesture', {
         };
 
         // A map that tracks names of the handledEvents of all registered recognizers
-        me.recognizedEvents = {};
-
         me.activeTouchesMap = {};
         me.activeTouches = [];
         me.changedTouches = [];
+        me.recognizers = [];
 
-        if (Ext.supports.TouchEvents) {
+        if (supportsTouchEvents) {
             // bind handlers that are only invoked when the browser has touchevents
             me.onTargetTouchMove = me.onTargetTouchMove.bind(me);
             me.onTargetTouchEnd = me.onTargetTouchEnd.bind(me);
+        }
+
+        if (supports.PointerEvents) {
+            handledDomEvents.push('pointerdown', 'pointermove', 'pointerup', 'pointercancel');
+        } else if (supports.MSPointerEvents) {
+            // IE10 uses vendor prefixed pointer events, IE11+ use unprefixed names.
+            handledDomEvents.push('MSPointerDown', 'MSPointerMove', 'MSPointerUp', 'MSPointerCancel');
+        } else if (supportsTouchEvents) {
+            handledDomEvents.push('touchstart', 'touchmove', 'touchend', 'touchcancel');
+        }
+
+        if (!handledDomEvents.length || (supportsTouchEvents && Ext.isWebKit && Ext.os.is.Desktop)) {
+            // If the browser doesn't have pointer events or touch events we use mouse events
+            // to trigger gestures.  The exception to this rule is touch enabled webkit
+            // browsers such as chrome on Windows 8.  These browsers accept both touch and
+            // mouse input, so we need to listen for both touch events and mouse events.
+            handledDomEvents.push('mousedown', 'mousemove', 'mouseup');
         }
 
         me.initConfig(config);
@@ -121,44 +144,37 @@ Ext.define('Ext.event.publisher.Gesture', {
         return me.callParent();
     },
 
-    applyRecognizers: function(recognizers) {
-        var name, recognizer;
+    onReady: function() {
+        this.callParent();
 
-        for (name in recognizers) {
-            recognizer = recognizers[name];
+        Ext.Array.sort(this.recognizers, function(recognizerA, recognizerB) {
+            var a = recognizerA.priority,
+                b = recognizerB.priority;
 
-            if (recognizer) {
-                this.registerRecognizer(recognizer);
-            }
-        }
-
-        return recognizers;
-    },
-
-    handles: function(eventName) {
-        var handledEvents = this.handledEventsMap;
-
-        return !!handledEvents[eventName] || !!handledEvents['*'] || eventName === '*' ||
-                this.recognizedEvents.hasOwnProperty(eventName);
+            return (a > b) ? 1 : (a < b) ? -1 : 0;
+        });
     },
 
     registerRecognizer: function(recognizer) {
         var me = this,
-            recognizedEvents = me.recognizedEvents,
-            handledEvents = recognizer.getHandledEvents(),
-            i, ln;
+            handledEvents = recognizer.handledEvents,
+            ln = handledEvents.length,
+            i;
 
         // The recognizer will call our onRecognized method when it determines that a
         // gesture has occurred.
         recognizer.setOnRecognized(me.onRecognized);
         recognizer.setCallbackScope(me);
 
-        // add the recognizer's handled events to our recognizedEvents map.  This enables
-        // the handles method to tell the outside world that this publisher handles not
-        // only its handledEvents, but also the handledEvents of all its recognizers
-        for (i = 0, ln = handledEvents.length; i < ln; i++) {
-            recognizedEvents[handledEvents[i]] = 1;
+        // the gesture publishers handledEvents array is derived from the handledEvents
+        // of all of its recognizers
+        for (i = 0; i < ln; i++) {
+            me.handledEvents.push(handledEvents[i]);
         }
+
+        me.registerEvents(handledEvents);
+
+        me.recognizers.push(recognizer);
     },
 
     onRecognized: function(eventName, e, info) {
@@ -244,17 +260,18 @@ Ext.define('Ext.event.publisher.Gesture', {
     },
 
     invokeRecognizers: function(methodName, e) {
-        var recognizers = this.getRecognizers(),
-            name, recognizer;
+        var recognizers = this.recognizers,
+            ln = recognizers.length,
+            i, recognizer;
 
         if (methodName === 'onStart') {
-            for (name in recognizers) {
-                recognizers[name].isActive = true;
+            for (i = 0; i < ln; i++) {
+                recognizers[i].isActive = true;
             }
         }
 
-        for (name in recognizers) {
-            recognizer = recognizers[name];
+        for (i = 0; i < ln; i++) {
+            recognizer = recognizers[i];
             if (recognizer.isActive && recognizer[methodName].call(recognizer, e) === false) {
                 recognizer.isActive = false;
             }
@@ -496,43 +513,22 @@ Ext.define('Ext.event.publisher.Gesture', {
      */
     reset: function() {
         var me = this,
-            recognizers = me.getRecognizers(),
-            name, recognizer;
+            recognizers = me.recognizers,
+            ln = recognizers.length,
+            i, recognizer;
 
         me.activeTouchesMap = {};
         me.activeTouches = [];
         me.changedTouches = [];
 
-        for (name in recognizers) {
-            recognizer = recognizers[name];
+        for (i = 0; i < ln; i++) {
+            recognizer = recognizers[i];
             recognizer.reset();
             recognizer.isActive = false;
         }
 
         this.callParent();
     }
-
-}, function() {
-    var handledEvents = [],
-        supports = Ext.supports,
-        supportsTouchEvents = supports.TouchEvents;
-
-    if (supports.PointerEvents) {
-        handledEvents.push('pointerdown', 'pointermove', 'pointerup', 'pointercancel');
-    } else if (supports.MSPointerEvents) {
-        // IE10 uses vendor prefixed pointer events, IE11+ use unprefixed names.
-        handledEvents.push('MSPointerDown', 'MSPointerMove', 'MSPointerUp', 'MSPointerCancel');
-    } else if (supportsTouchEvents) {
-        handledEvents.push('touchstart', 'touchmove', 'touchend', 'touchcancel');
-    }
-
-    if (!handledEvents.length || (supportsTouchEvents && Ext.isWebKit && Ext.os.is.Desktop)) {
-        // If the browser doesn't have pointer events or touch events we use mouse events
-        // to trigger gestures.  The exception to this rule is touch enabled webkit
-        // browsers such as chrome on Windows 8.  These browsers accept both touch and
-        // mouse input, so we need to listen for both touch events and mouse events.
-        handledEvents.push('mousedown', 'mousemove', 'mouseup');
-    }
-
-    this.prototype.handledEvents = handledEvents;
+}, function(Gesture) {
+    Gesture.instance = new Gesture();
 });

@@ -435,7 +435,7 @@ Ext.define("Ext.form.Labelable", {
                     beforeshow: function() {
                         this.minWidth = Ext.fly(this.anchorTarget).getWidth();
                     }
-                }
+                };
             }
             tip = this.tip = Ext.create('Ext.tip.QuickTip', cfg);
             copy = Ext.apply({}, tip.tagConfig);
@@ -476,7 +476,7 @@ Ext.define("Ext.form.Labelable", {
         }
 
         if (!me.activeErrorsTpl) {
-            if (me.msgTarget == 'title') {
+            if (me.msgTarget === 'title') {
                 me.activeErrorsTpl = me.plaintextActiveErrorsTpl;
             } else {
                 me.activeErrorsTpl = me.htmlActiveErrorsTpl;
@@ -588,7 +588,7 @@ Ext.define("Ext.form.Labelable", {
             value = this[name];
 
             if (value) {
-                if (typeof value != 'string') {
+                if (typeof value !== 'string') {
                     if (!value.isTemplate) {
                         value = Ext.XTemplate.getTpl(this, name);
                     }
@@ -825,7 +825,7 @@ Ext.define("Ext.form.Labelable", {
         activeError = me.activeError = tpl.apply({
             fieldLabel: me.fieldLabel,
             errors: errors,
-            listCls: Ext.plainListCls
+            listCls: Ext.baseCSSPrefix + 'list-plain'
         });
 
         me.renderActiveError();

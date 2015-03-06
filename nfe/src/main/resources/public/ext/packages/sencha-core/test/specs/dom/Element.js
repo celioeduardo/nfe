@@ -501,6 +501,34 @@ describe("Ext.dom.Element", function() {
                     });
                 });
             });
+            
+            describe("getAttributes", function() {
+                it("should return an empty object for element with no attributes", function() {
+                    var empty = document.createElement('div');
+                    
+                    var attrs = Ext.fly(empty).getAttributes();
+                    
+                    expect(attrs).toEqual({});
+                    
+                    Ext.fly(empty).destroy();
+                });
+                
+                it("should return all attributes", function() {
+                    var el = Ext.getBody().createChild({
+                        tag: 'div',
+                        foo: 42
+                    });
+                    
+                    var attrs = el.getAttributes();
+                    
+                    expect(attrs).toEqual({
+                        foo: '42',
+                        id: el.id
+                    });
+                    
+                    el.destroy();
+                });
+            });
 
             describe("update", function() {
                 beforeEach(function() {
@@ -704,7 +732,7 @@ describe("Ext.dom.Element", function() {
                                     '-moz-transform: rotate(90deg);',
                                     '-o-transform: rotate(90deg);',	
                                     'transform: rotate(90deg);',
-                                    'filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);',
+                                    'filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);'
                             ].join('');
                         if (styleSheet.insertRule) {
                             styleSheet.insertRule(selector + '{' + props + '}', 1);
@@ -1050,7 +1078,7 @@ describe("Ext.dom.Element", function() {
                         backup = oldFly;
                         return function (dom, named) {
                             return oldFly(dom, named || '_global');
-                        }
+                        };
                     }(Ext.fly));
                 });
 
@@ -1112,7 +1140,7 @@ describe("Ext.dom.Element", function() {
                 var dom = window,
                     el = Ext.fly(dom);
 
-                expect(el instanceof Ext.dom.Fly).toBe(true);
+                expect(el instanceof Ext.dom.Element).toBe(true);
                 expect(el.dom).toBe(dom);
             });
 
@@ -1120,7 +1148,7 @@ describe("Ext.dom.Element", function() {
                 var dom = document,
                     el = Ext.fly(dom);
 
-                expect(el instanceof Ext.dom.Fly).toBe(true);
+                expect(el instanceof Ext.dom.Element).toBe(true);
                 expect(el.dom).toBe(dom);
             });
 
@@ -1647,6 +1675,17 @@ describe("Ext.dom.Element", function() {
             element;
 
         beforeEach(function() {
+            this.addMatchers({
+                toBeWithin: function(deviation, value) {
+                    var actual = this.actual;
+
+                    if (deviation > 0) {
+                        return actual >= (value - deviation) && actual <= (value + deviation);
+                    } else {
+                        return actual >= (value + deviation) && actual <= (value - deviation);
+                    }
+                }
+            });
             element = Ext.getBody().createChild({
                 style: 'position:absolute;left:250px;top:150px;width:200px;height:100px;'
             });
@@ -1663,7 +1702,7 @@ describe("Ext.dom.Element", function() {
 
             expect(box.x).toBe(x + offsets.x);
             expect(box.y).toBe(y + offsets.y);
-            expect(box.width).toBe(w + offsets.w);
+            expect(box.width).toBeWithin(1, w + offsets.w);
             expect(box.height).toBe(h + offsets.h);
         }
 
@@ -2702,6 +2741,918 @@ describe("Ext.dom.Element", function() {
             element.enableShim();
 
             expectShimBox(220, 150, 260, 130);
+        });
+    });
+
+    describe("using flyweights", function() {
+        it("should be able to remove a class using a fly when the className is modified directly", function() {
+            var el = document.createElement('div');
+            Ext.fly(el).addCls(['foo', 'bar', 'baz']);
+            el.className += ' asdf';
+            Ext.fly(el).removeCls('asdf');
+            expect(el.className.indexOf('asdf')).toBe(-1);
+        });
+
+        it("should be able to check a class exists using a fly when the className is modified directly", function() {
+            var el = document.createElement('div');
+            Ext.fly(el).addCls(['foo', 'bar', 'baz']);
+            el.className += ' asdf';
+            expect(Ext.fly(el).hasCls('asdf')).toBe(true);
+        });
+    });
+
+    describe("events", function() {
+        function makeSuite(delegated) {
+
+            describe("element " + (delegated ? "(with delegated listeners)" : "(with direct listeners)"), function() {
+                var element, handler, handler2, scope, args, child, child2, grandchild;
+
+                function addListener(opt) {
+                    element.addListener(Ext.apply({
+                        click: handler,
+                        delegated: delegated,
+                        translate: false
+                    }, opt));
+                }
+
+                function removeListener(opt) {
+                    element.removeListener(Ext.apply({
+                        click: handler
+                    }, opt));
+                }
+
+                function fire(el, eventName) {
+                    jasmine.fireMouseEvent(el || element, eventName || 'click');
+                }
+
+                beforeEach(function() {
+                    handler = jasmine.createSpy();
+                    handler.andCallFake(function() {
+                        scope = this;
+                        args = arguments;
+                    });
+                    handler2 = jasmine.createSpy();
+
+                    element = Ext.getBody().createChild({
+                        id: 'parent',
+                        cn: [
+                            {
+                                id: 'child',
+                                cls: 'child',
+                                cn: { id: 'grandchild', cls: 'grandchild' }
+                            },
+                            {
+                                id: 'child2'
+                            }
+                        ]
+                    });
+
+                    child = document.getElementById('child');
+                    child2 = document.getElementById('child2');
+                    grandchild = document.getElementById('grandchild');
+                });
+
+                afterEach(function() {
+                    element.destroy();
+                });
+
+                describe("addListener", function() {
+                    it("should handle an event", function() {
+                        addListener();
+                        fire();
+                        expect(handler.callCount).toBe(1);
+                        expect(args[0] instanceof Ext.event.Event).toBe(true);
+                        expect(args[1]).toBe(element.dom);
+                        expect(args[2]).toEqual({
+                            click: handler,
+                            delegated: delegated,
+                            translate: false
+                        });
+                        expect(scope).toBe(element);
+                    });
+
+                    it("should handle an event that bubbled from a descendant element", function() {
+                        addListener();
+                        fire(grandchild);
+                        expect(handler.callCount).toBe(1);
+                        expect(args[0] instanceof Ext.event.Event).toBe(true);
+                        expect(args[1]).toBe(grandchild);
+                        expect(args[2]).toEqual({
+                            click: handler,
+                            delegated: delegated,
+                            translate: false
+                        });
+                        expect(scope).toBe(element);
+                    });
+
+                    it("should attach multiple handlers to the same event", function() {
+                        addListener();
+                        addListener({ click: handler2 });
+                        fire();
+                        expect(handler.callCount).toBe(1);
+                        expect(handler2.callCount).toBe(1);
+                    });
+
+                    it("should call the event handler with the correct scope when the scope option is used", function() {
+                        var obj = {};
+
+                        addListener({ scope: obj });
+                        fire();
+                        expect(scope).toBe(obj);
+                    });
+
+                    it("should call the handler multiple times if the event fires more than once", function() {
+                        addListener();
+                        fire();
+                        fire();
+                        fire();
+                        expect(handler.callCount).toBe(3);
+                    });
+
+                    it("should remove a single listener after the first fire", function() {
+                        addListener({ single: true });
+                        fire();
+                        expect(handler.callCount).toBe(1);
+                        // fire again
+                        fire();
+                        // still 1
+                        expect(handler.callCount).toBe(1);
+                    });
+
+                    it("should delay the listener", function() {
+                        addListener({ delay: 150 });
+                        fire();
+                        waits(100);
+                        runs(function() {
+                            expect(handler).not.toHaveBeenCalled();
+                        });
+                        waits(100);
+                        runs(function() {
+                            expect(handler).toHaveBeenCalled();
+                        });
+                    });
+
+                    it("should buffer the listener", function() {
+                        addListener({ buffer: 150 });
+                        fire();
+                        waits(100);
+                        runs(function() {
+                            expect(handler).not.toHaveBeenCalled();
+                            fire();
+                        });
+                        waits(100);
+                        runs(function() {
+                            expect(handler).not.toHaveBeenCalled();
+                        });
+                        waits(100);
+                        runs(function() {
+                            expect(handler).toHaveBeenCalled();
+                        });
+                    });
+
+                    it("should attach listeners with a delegate selector", function() {
+                        addListener({ delegate: '.grandchild' });
+                        fire(child);
+                        expect(handler).not.toHaveBeenCalled();
+                        fire(grandchild);
+                        expect(handler).toHaveBeenCalled();
+                    });
+
+                    it("should attach listeners with a descendant delegate selector as a direct child", function() {
+                        addListener({ delegate: '.child' });
+                        fire(child2);
+                        expect(handler).not.toHaveBeenCalled();
+                        fire(child);
+                        expect(handler).toHaveBeenCalled();
+                    });
+
+                    it("should attach listeners with a direct child delegate selector", function() {
+                        addListener({ delegate: '> .child' });
+                        fire(child2);
+                        expect(handler).not.toHaveBeenCalled();
+                        fire(child);
+                        expect(handler).toHaveBeenCalled();
+                    });
+
+                    it("should pass the target as the delegate item when the event occurs in a child and leave the event target untouched", function() {
+                        addListener({delegate: '.child'});
+                        fire(grandchild);
+                        expect(handler).toHaveBeenCalled();
+                        expect(handler.mostRecentCall.args[0].target).toBe(grandchild);
+                        expect(handler.mostRecentCall.args[1]).toBe(child);
+                    });
+
+                    describe("propagation", function() {
+                        var results;
+
+                        beforeEach(function() {
+                            results = [];
+                            grandchild = Ext.get('grandchild');
+                            child = Ext.get('child');
+                        });
+
+                        afterEach(function() {
+                            grandchild.destroy();
+                            child.destroy();
+                        });
+
+                        it("should fire bubble listeners in bottom-up order", function() {
+                            element.on({
+                                click: function() {
+                                    results.push(1);
+                                }
+                            });
+
+                            child.on({
+                                click: function() {
+                                    results.push(2);
+                                }
+                            });
+
+                            grandchild.on({
+                                click: function() {
+                                    results.push(3);
+                                }
+                            });
+
+                            fire(grandchild);
+
+                            expect(results).toEqual([3, 2, 1]);
+                        });
+
+                        it("should fire capture listeners in top-down order", function() {
+                            element.on({
+                                click: function() {
+                                    results.push(1);
+                                },
+                                capture: true
+                            });
+
+                            child.on({
+                                click: function() {
+                                    results.push(2);
+                                },
+                                capture: true
+                            });
+
+                            grandchild.on({
+                                click: function() {
+                                    results.push(3);
+                                },
+                                capture: true
+                            });
+
+                            fire(grandchild);
+
+                            expect(results).toEqual([1, 2, 3]);
+                        });
+
+                        it("should stop bubbling when stopPropagation is called", function() {
+                            element.on({
+                                click: handler
+                            });
+
+                            grandchild.on({
+                                click: function(e) {
+                                    e.stopPropagation();
+                                }
+                            });
+
+                            fire(grandchild);
+
+                            expect(handler).not.toHaveBeenCalled();
+                        });
+
+                        it("should stop propagating when stopPropagation is called during the capture phase", function() {
+                            element.on({
+                                click: function(e) {
+                                    e.stopPropagation();
+                                },
+                                capture: true
+                            });
+
+                            grandchild.on({
+                                click: handler,
+                                capture: true
+                            });
+
+                            fire(grandchild);
+
+                            expect(handler).not.toHaveBeenCalled();
+                        });
+
+                        it("should skip the entire bubble phase if stopPropagation is called during the capture phase", function() {
+                            element.on({
+                                click: function(e) {
+                                    e.stopPropagation();
+                                },
+                                capture: true
+                            });
+
+                            element.on({
+                                click: handler
+                            });
+
+                            grandchild.on({
+                                click: handler2
+                            });
+
+                            fire(grandchild);
+
+                            expect(handler).not.toHaveBeenCalled();
+                            expect(handler2).not.toHaveBeenCalled();
+                        });
+
+                        it("should propagate to elements that were not in the cache when propagation began", function() {
+                            // https://sencha.jira.com/browse/EXTJS-15953
+                            var parent = Ext.getBody().createChild({ cn: [{}] }, null, true),
+                                child = parent.firstChild,
+                                parentFired = false;
+
+                            Ext.get(child).on('click', function() {
+                                // Calling Ext.get() will add the parent element to the cache for the first time.
+                                Ext.get(parent).on('click', function() {
+                                    parentFired = true;
+                                });
+                            });
+
+                            jasmine.fireMouseEvent(child, 'click');
+
+                            expect(parentFired).toBe(true);
+
+                            Ext.get(parent).destroy();
+                        })
+                    });
+                });
+
+                describe("removeListener", function() {
+                    it("should remove the event listener", function() {
+                        addListener();
+                        removeListener();
+                        fire();
+                        expect(handler).not.toHaveBeenCalled();
+                    });
+
+                    it("should remove the event listener with scope", function() {
+                        var scope = {};
+                        addListener({ scope: scope });
+                        removeListener({ scope: scope });
+                        fire();
+                        expect(handler).not.toHaveBeenCalled();
+                    });
+
+                    it("should remove multiple handlers from the same event", function() {
+                        addListener();
+                        addListener({ click: handler2 });
+                        removeListener();
+                        fire();
+                        expect(handler).not.toHaveBeenCalled();
+                        expect(handler2.callCount).toBe(1);
+                        removeListener({ click: handler2 });
+                        fire();
+                        expect(handler2.callCount).toBe(1);
+                    });
+
+
+                    it("should remove a single event listener", function() {
+                        addListener({ single: true });
+                        removeListener();
+                        fire();
+                        expect(handler).not.toHaveBeenCalled();
+                    });
+
+                    it("should remove a delayed event listener", function() {
+                        addListener({ delay: 50 });
+                        removeListener();
+                        fire();
+                        waits(100);
+                        runs(function() {
+                            expect(handler).not.toHaveBeenCalled();
+                        });
+                    });
+
+                    it("should remove a buffered event listener", function() {
+                        addListener({ buffer: 50 });
+                        removeListener();
+                        fire();
+                        waits(100);
+                        runs(function() {
+                            expect(handler).not.toHaveBeenCalled();
+                        });
+                    });
+
+                    it("should remove listeners with a delegate selector", function() {
+                        addListener({ delegate: '.grandchild' });
+                        removeListener();
+                        fire(grandchild);
+                        expect(handler).not.toHaveBeenCalled();
+                    });
+
+                    it("should remove a capture listener", function() {
+                        addListener({ capture: true });
+                        removeListener();
+                        fire(grandchild);
+                        expect(handler).not.toHaveBeenCalled();
+                    });
+
+                    it("should remove a translated listener", function() {
+                        var eventMap = Ext.Element.prototype.eventMap;
+
+                        eventMap.foo = 'click';
+
+                        element.addListener({ foo: handler });
+                        element.removeListener({ foo: handler });
+                        fire(grandchild);
+                        expect(handler).not.toHaveBeenCalled();
+
+                        delete eventMap.foo;
+                    });
+                });
+
+                describe("clearListeners", function() {
+                    it("should remove all the listeners", function() {
+                        var handler3 = jasmine.createSpy(),
+                            handler4 = jasmine.createSpy();
+
+                        element.on({
+                            click: handler
+                        });
+
+                        element.on({
+                            click: handler2,
+                            delegate: '.grandchild'
+                        });
+
+                        element.on({
+                            click: handler3,
+                            capture: true
+                        });
+
+                        element.on({
+                            click: handler4
+                        });
+
+                        element.clearListeners();
+
+                        fire(grandchild);
+
+                        expect(handler).not.toHaveBeenCalled();
+                        expect(handler2).not.toHaveBeenCalled();
+                        expect(handler3).not.toHaveBeenCalled();
+                        expect(handler4).not.toHaveBeenCalled();
+                    });
+                });
+            });
+        }
+
+        makeSuite(true);
+        makeSuite(false);
+
+        describe("Event Normalization", function() {
+            var target, fire, events, secondaryEvents, listeners;
+
+            beforeEach(function() {
+                target = Ext.getBody().createChild();
+
+                listeners = {
+                    mousedown: jasmine.createSpy(),
+                    mousemove: jasmine.createSpy(),
+                    mouseup: jasmine.createSpy(),
+                    touchstart: jasmine.createSpy(),
+                    touchmove: jasmine.createSpy(),
+                    touchend: jasmine.createSpy(),
+                    pointerdown: jasmine.createSpy(),
+                    pointermove: jasmine.createSpy(),
+                    pointerup: jasmine.createSpy()
+                };
+
+                target.on(listeners);
+            });
+
+            afterEach(function() {
+                target.destroy();
+            });
+
+            if (Ext.supports.PointerEvents) {
+                events = {
+                    start: 'pointerdown',
+                    move: 'pointermove',
+                    end: 'pointerup'
+                };
+
+                fire = function(type) {
+                    jasmine.firePointerEvent(target, events[type]);
+                };
+            } else if (Ext.supports.MSPointerEvents) {
+                events = {
+                    start: 'MSPointerDown',
+                    move: 'MSPointerMove',
+                    end: 'MSPointerUp'
+                };
+
+                fire = function(type) {
+                    jasmine.firePointerEvent(target, events[type]);
+                };
+            } else if (Ext.supports.TouchEvents) {
+                events = {
+                    start: 'touchstart',
+                    move: 'touchmove',
+                    end: 'touchend'
+                };
+
+                secondaryEvents = {
+                    start: 'mousedown',
+                    move: 'mousemove',
+                    end: 'mouseup'
+                };
+
+                fire = function(type, secondary) {
+                    if (secondary) {
+                        jasmine.fireMouseEvent(target, secondaryEvents[type], 100, 100);
+                    } else {
+                        jasmine.fireTouchEvent(target, events[type], [{ pageX: 1, pageY: 1 }]);
+                    }
+                };
+            } else {
+                events = {
+                    start: 'mousedown',
+                    move: 'mousemove',
+                    end: 'mouseup'
+                };
+
+                fire = function(type) {
+                    jasmine.fireMouseEvent(target, events[type]);
+                };
+            }
+
+            it("should fire start events", function() {
+                fire('start');
+                expect(listeners.pointerdown.callCount).toBe(1);
+                expect(listeners.touchstart.callCount).toBe(1);
+                expect(listeners.mousedown.callCount).toBe(1);
+                expect(listeners.pointerdown.mostRecentCall.args[0].type).toBe('pointerdown');
+                expect(listeners.touchstart.mostRecentCall.args[0].type).toBe('touchstart');
+                expect(listeners.mousedown.mostRecentCall.args[0].type).toBe('mousedown');
+            });
+
+            it("should fire move events", function() {
+                fire('move');
+                expect(listeners.pointermove.callCount).toBe(1);
+                expect(listeners.touchmove.callCount).toBe(1);
+                expect(listeners.mousemove.callCount).toBe(1);
+                expect(listeners.pointermove.mostRecentCall.args[0].type).toBe('pointermove');
+                expect(listeners.touchmove.mostRecentCall.args[0].type).toBe('touchmove');
+                expect(listeners.mousemove.mostRecentCall.args[0].type).toBe('mousemove');
+            });
+
+            it("should fire end events", function() {
+                fire('end');
+                expect(listeners.pointerup.callCount).toBe(1);
+                expect(listeners.touchend.callCount).toBe(1);
+                expect(listeners.mouseup.callCount).toBe(1);
+                expect(listeners.pointerup.mostRecentCall.args[0].type).toBe('pointerup');
+                expect(listeners.touchend.mostRecentCall.args[0].type).toBe('touchend');
+                expect(listeners.mouseup.mostRecentCall.args[0].type).toBe('mouseup');
+            });
+
+            if (Ext.supports.TouchEvents && Ext.isWebKit && Ext.os.is.Desktop) {
+                // Touch Enabled webkit on windows 8 fires both mouse and touch events We already
+                // tested the touch events above, so make sure mouse events/ work as well.
+
+                it("should fire secondary start events", function() {
+                    fire('start', true);
+                    expect(listeners.pointerdown.callCount).toBe(1);
+                    expect(listeners.touchstart.callCount).toBe(1);
+                    expect(listeners.mousedown.callCount).toBe(1);
+                    expect(listeners.pointerdown.mostRecentCall.args[0].type).toBe('pointerdown');
+                    expect(listeners.touchstart.mostRecentCall.args[0].type).toBe('touchstart');
+                    expect(listeners.mousedown.mostRecentCall.args[0].type).toBe('mousedown');
+                });
+
+                it("should fire secondary move events", function() {
+                    fire('move', true);
+                    expect(listeners.pointermove.callCount).toBe(1);
+                    expect(listeners.touchmove.callCount).toBe(1);
+                    expect(listeners.mousemove.callCount).toBe(1);
+                    expect(listeners.pointermove.mostRecentCall.args[0].type).toBe('pointermove');
+                    expect(listeners.touchmove.mostRecentCall.args[0].type).toBe('touchmove');
+                    expect(listeners.mousemove.mostRecentCall.args[0].type).toBe('mousemove');
+                });
+
+                it("should fire secondary end events", function() {
+                    fire('end', true);
+                    expect(listeners.pointerup.callCount).toBe(1);
+                    expect(listeners.touchend.callCount).toBe(1);
+                    expect(listeners.mouseup.callCount).toBe(1);
+                    expect(listeners.pointerup.mostRecentCall.args[0].type).toBe('pointerup');
+                    expect(listeners.touchend.mostRecentCall.args[0].type).toBe('touchend');
+                    expect(listeners.mouseup.mostRecentCall.args[0].type).toBe('mouseup');
+                });
+            }
+        });
+
+        describe("delegates event order", function() {
+            var root, spy;
+
+            function doClick(el) {
+                jasmine.fireMouseEvent(el, 'click');
+            }
+
+            beforeEach(function() {
+                spy = jasmine.createSpy();
+            });
+
+            afterEach(function() {
+                root = spy = Ext.destroy(root);
+            });
+
+            it("should fire an event when the event target matches the selector", function() {
+                root = Ext.getBody().createChild({
+                    children: [{
+                        cls: 'foo'
+                    }]
+                });
+                root.on('click', spy, null, {delegate: '.foo'});
+                doClick(root.first());
+                expect(spy.callCount).toBe(1);
+            });
+
+            it("should not fire an event when the event target doesn't match the selector", function() {
+                root = Ext.getBody().createChild({
+                    children: [{
+                        cls: 'foo'
+                    }]
+                });
+                root.on('click', spy, null, {delegate: '.bar'});
+                doClick(root.first());
+                expect(spy).not.toHaveBeenCalled();
+            });
+
+            it("should have the element that triggered the event as the event target", function() {
+                root = Ext.getBody().createChild({
+                    children: [{
+                        cls: 'foo',
+                        children: [{
+                            cls: 'bar'
+                        }]
+                    }]
+                });
+                var bar = root.down('.bar').dom;
+                root.on('click', spy, null, {delegate: '.foo'});
+                doClick(bar);
+                expect(spy.mostRecentCall.args[0].target).toBe(bar);
+            });
+
+            it("should pass the delegate target as the second parameter", function() {
+                root = Ext.getBody().createChild({
+                    children: [{
+                        cls: 'foo',
+                        children: [{
+                            cls: 'bar'
+                        }]
+                    }]
+                });
+                var bar = root.down('.bar').dom,
+                    foo = root.down('.foo').dom;
+
+                root.on('click', spy, null, {delegate: '.foo'});
+                doClick(bar);
+                expect(spy.mostRecentCall.args[1]).toBe(foo);
+            });
+
+            describe("event order", function() {
+                it("should fire delegate events at the 'level' of the root", function() {
+                    root = Ext.getBody().createChild({
+                        children: [{
+                            cls: 'foo',
+                            children: [{
+                                cls: 'bar',
+                                children: [{
+                                    cls: 'baz'
+                                }]
+                            }]
+                        }]
+                    });
+
+                    var foo = root.down('.foo'),
+                        bar = root.down('.bar'),
+                        baz = root.down('.baz'),
+                        order = [];
+
+                    root.on('click', function() { order.push('baz'); }, null, {delegate: '.baz'});
+                    bar.on('click', function() { order.push('bar'); });
+                    foo.on('click', function() { order.push('foo'); });
+
+                    doClick(baz.dom);
+                    expect(order).toEqual(['bar', 'foo', 'baz']);
+                });
+
+                it("should fire delegate events in DOM order", function() {
+                    root = Ext.getBody().createChild({
+                        id: 'root',
+                        children: [{
+                            id: 'child1',
+                            children: [{
+                                id: 'child1_1',
+                                children: [{
+                                    cls: 'foo'
+                                }]
+                            }, {
+                                cls: 'foo'
+                            }]
+                        }, {
+                            id: 'child2',
+                            children: [{
+                                cls: 'foo'
+                            }]
+                        }, {
+                            cls: 'foo'
+                        }]
+                    });
+
+                    var child1 = Ext.get('child1'),
+                        child2 = Ext.get('child2'),
+                        child1_1 = Ext.get('child1_1'),
+                        order = [];
+
+
+                    root.on('click', function() { order.push('root'); }, null, {delegate: '.foo'});
+                    child1.on('click', function() { order.push('child1'); }, null, {delegate: '.foo'});
+                    child1_1.on('click', function() { order.push('child1_1'); }, null, {delegate: '.foo'});
+                    child2.on('click', function() { order.push('child2'); }, null, {delegate: '.foo'});
+
+                    doClick(child1_1.down('.foo', true), 'click');
+                    expect(order).toEqual(['child1_1', 'child1', 'root']);
+                    Ext.destroy(child1_1, child1, child2);
+                });
+            });
+        });
+
+        describe('listener arguments', function() {
+            it('should fire an event with the correct signature on every element in the bubble stack', function() {
+                https://sencha.jira.com/browse/EXTJS-15735
+                var c1 = Ext.getBody().appendChild({
+                        id: 'c1',
+                        cn: {
+                            id: 'c2',
+                            cn: {
+                                id: 'c3',
+                                cn: {
+                                    id: 'c4'
+                                }
+                            }
+                        }
+                    }),
+                    c2 = Ext.get(c1.dom.firstChild),
+                    c3 = Ext.get(c2.dom.firstChild),
+                    c4 = Ext.get(c3.dom.firstChild),
+                    c1opts = { el: c1 },
+                    c2opts = { el: c2 },
+                    c3opts = { el: c3 },
+                    c4opts = { el: c4 },
+                    argLen;
+
+                c1.on('click', function(e, t, o) {
+                    // Arg list must be same length as at start of bubble
+                    expect(arguments.length).toBe(argLen);
+                    // Element DOM event signature is event, target, options
+                    expect(e.$className).toBe("Ext.event.Event");
+                    expect(t).toBe(c4.dom);
+                    expect(o.el === c1).toBe(true);
+                }, null, c1opts);
+                c2.on('click', function(e, t, o) {
+                    expect(arguments.length).toBe(argLen);
+                    expect(e.$className).toBe("Ext.event.Event");
+                    expect(t).toBe(c4.dom);
+                    expect(o.el === c2).toBe(true);
+                }, null, c2opts);
+                c3.on('click', function(e, t, o) {
+                    expect(arguments.length).toBe(argLen);
+                    expect(e.$className).toBe("Ext.event.Event");
+                    expect(t).toBe(c4.dom);
+                    expect(o.el === c3).toBe(true);
+                }, null, c3opts);
+                c4.on('click', function(e, t, o) {
+                    // Arguments length should be the same in all listeners as it bubbles
+                    argLen = arguments.length;
+
+                    expect(e.$className).toBe("Ext.event.Event");
+                    expect(t).toBe(c4.dom);
+                    expect(o.el === c4).toBe(true);
+                }, null, c4opts);
+                jasmine.fireMouseEvent(c4, 'click');
+
+                c1.destroy();
+            });
+        });
+
+        it("should fire delegated, non-delegated, capture and bubble events in the correct order", function() {
+            var parent = Ext.getBody().createChild({
+                    cn: [{
+                        id: 'child',
+                        cn: [{
+                            id: 'grandchild'
+                        }]
+                    }]
+                }),
+                child = Ext.get('child'),
+                grandchild = Ext.get('grandchild'),
+                result = [];
+
+            parent.on({
+                mousedown: function() {
+                    result.push('p');
+                }
+            });
+
+            parent.on({
+                mousedown: function() {
+                    result.push('pc');
+                },
+                capture: true
+            });
+
+            parent.on({
+                mousedown: function() {
+                    result.push('pd');
+                },
+                delegated: false
+            });
+
+            parent.on({
+                mousedown: function() {
+                    result.push('pdc');
+                },
+                delegated: false,
+                capture: true
+            });
+
+            child.on({
+                mousedown: function() {
+                    result.push('c');
+                }
+            });
+
+            child.on({
+                mousedown: function() {
+                    result.push('cc');
+                },
+                capture: true
+            });
+
+            child.on({
+                mousedown: function() {
+                    result.push('cd');
+                },
+                delegated: false
+            });
+
+            child.on({
+                mousedown: function() {
+                    result.push('cdc');
+                },
+                delegated: false,
+                capture: true
+            });
+
+            grandchild.on({
+                mousedown: function() {
+                    result.push('g');
+                }
+            });
+
+            grandchild.on({
+                mousedown: function() {
+                    result.push('gc');
+                },
+                capture: true
+            });
+
+            grandchild.on({
+                mousedown: function() {
+                    result.push('gdc');
+                },
+                delegated: false,
+                capture: true
+            });
+
+            grandchild.on({
+                mousedown: function() {
+                    result.push('gd');
+                },
+                delegated: false
+            });
+
+            jasmine.fireMouseEvent(grandchild, 'mousedown');
+
+            if (Ext.isIE9m) {
+                // Since we don't support "direct capture" on IE9m the order is a bit different
+                expect(result).toEqual(['gd', 'gdc', 'cdc', 'cd', 'pdc', 'pd', 'pc', 'cc', 'gc', 'g', 'c', 'p'])
+            } else {
+                expect(result).toEqual(['pdc', 'cdc', 'gdc', 'gd', 'cd', 'pd', 'pc', 'cc', 'gc', 'g', 'c', 'p'])
+            }
+
+            parent.destroy();
         });
     });
 

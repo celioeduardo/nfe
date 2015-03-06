@@ -245,6 +245,17 @@ Ext.define('Ext.data.NodeInterface', {
             }, silently = {
                 silent: true
             };
+
+            // bulkUpdate usage:
+            // This is used in 3 contexts:
+            // a) When registering nodes. When bulk updating, we don't want to descend down the tree
+            // recursively making calls to register which is redundant. We do need to call it for each node
+            // because they need to be findable via id as soon as append events fire, so we only do the minimum needed.
+            // b) When setting a data property on the model. We only need to go through set (and the subsequent event chain)
+            // so that the UI can update. If we're doing a bulk update, the UI will update regardless.
+            // c) triggerUIUpdate. This is because we know "something has changed", but not exactly what, so we allow the UI to redraw itself.
+            // It has no purpose as far as data goes, so skip it when we can
+
             return {
                 /**
                  * @property {Boolean} isNode
@@ -252,12 +263,17 @@ Ext.define('Ext.data.NodeInterface', {
                  */
                 isNode: true,
 
+                firstChild: null,
+                lastChild: null,
+                parentNode: null,
+                previousSibling: null,
+                nextSibling: null,
+
                 constructor: function() {
                     var me = this;
 
                     me.mixins.observable.constructor.call(me);
                     me.callParent(arguments);
-                    me.firstChild = me.lastChild = me.parentNode = me.previousSibling = me.nextSibling = null;
                     me.childNodes = [];
 
                     // These events are fired on this node, and programatically bubble up the parentNode axis, ending up 
@@ -275,6 +291,10 @@ Ext.define('Ext.data.NodeInterface', {
                      * @param {Ext.data.NodeInterface} this This node
                      * @param {Ext.data.NodeInterface} node The removed node
                      * @param {Boolean} isMove `true` if the child node is being removed so it can be moved to another position in the tree.
+                     * @param {Object} context An object providing information about where the removed node came from. It contains the following properties:
+                     * @param {Ext.data.NodeInterface} context.parentNode The node from which the removed node was removed.
+                     * @param {Ext.data.NodeInterface} context.previousSibling The removed node's former previous sibling.
+                     * @param {Ext.data.NodeInterface} context.nextSibling The removed node's former next sibling.
                      * (a side effect of calling {@link Ext.data.NodeInterface#appendChild appendChild} or
                      * {@link Ext.data.NodeInterface#insertBefore insertBefore} with a node that already has a parentNode)
                      */
@@ -447,20 +467,19 @@ Ext.define('Ext.data.NodeInterface', {
                  */
                 updateInfo: function(commit, info) {
                     var me = this,
-                        oldDepth = me.data.depth,
+                        dataObject = me.data,
+                        oldDepth = dataObject.depth,
                         childInfo = {},
                         children = me.childNodes,
                         childCount = children.length,
-                        i,
                         phantom = me.phantom,
-                        dataObject = me.data,
                         fields = me.fields,
                         modified = me.modified || (me.modified = {}),
                         propName, newValue,
                         field, currentValue, key,
                         newParentId = info.parentId,
                         settingIndexInNewParent,
-                        persistentField;
+                        persistentField, i;
 
                     //<debug>
                     if (!info) {
@@ -606,7 +625,8 @@ Ext.define('Ext.data.NodeInterface', {
                             depth: (me.data.depth||0) + 1
                         },
                         result,
-                        treeStore = me.getTreeStore();
+                        treeStore = me.getTreeStore(),
+                        bulkUpdate = treeStore && treeStore.bulkUpdate;
 
                     // Coalesce all layouts caused by node append
                     Ext.suspendLayouts();
@@ -628,6 +648,7 @@ Ext.define('Ext.data.NodeInterface', {
                         node = me.createNode(node);
 
                         if (suppressEvents !== true && me.fireEventArgs('beforeappend', [me, node]) === false) {
+                            Ext.resumeLayouts(true);
                             return false;
                         }
 
@@ -636,8 +657,13 @@ Ext.define('Ext.data.NodeInterface', {
 
                         // it's a move, make sure we move it cleanly
                         if (oldParent) {
+                            if (suppressEvents !== true && node.fireEventArgs('beforemove', [node, oldParent, me, index]) === false) {
+                                Ext.resumeLayouts(true);
+                                return false;
+                            }
                             // Return false if a beforeremove listener vetoed the remove
                             if (oldParent.removeChild(node, false, suppressEvents, oldParent.getTreeStore() === treeStore) === false) {
+                                Ext.resumeLayouts(true);
                                 return false;
                             }
                         }
@@ -664,7 +690,10 @@ Ext.define('Ext.data.NodeInterface', {
                             previousSibling.updateInfo(commit, {
                                 isLast: false
                             });
-                            previousSibling.triggerUIUpdate();
+                            // No need to trigger a ui update if we're doing a bulk update
+                            if (!bulkUpdate) {
+                                previousSibling.triggerUIUpdate();
+                            }
                         } else {
                             node.previousSibling = null;
                         }
@@ -681,21 +710,31 @@ Ext.define('Ext.data.NodeInterface', {
 
                         // As soon as we append a child to this node, we are loaded
                         if (!me.isLoaded()) {
-                            me.set('loaded', true);
-                        } else if (me.childNodes.length === 1) {
+                            if (bulkUpdate) {
+                                me.data.loaded = true;
+                            } else {
+                                me.set('loaded', true);
+                            }
+                        } else if (me.childNodes.length === 1 && !bulkUpdate) {
                             me.triggerUIUpdate();
                         }
 
                         // Ensure connectors are correct by updating the UI on all intervening nodes (descendants) between last sibling and new node.
-                        if (index && me.childNodes[index - 1].isExpanded()) {
+                        if (index && me.childNodes[index - 1].isExpanded() && !bulkUpdate) {
                             me.childNodes[index - 1].cascadeBy(me.triggerUIUpdate);
                         }
 
                         // We register the subtree before we proceed so relayed events
                         // (like nodeappend) from our TreeStore (if we have one) will be
-                        // able to use getNodeById.
+                        // able to use getNodeById. The node also needs to be added since 
+                        // we're passing it in the events below. If we're not bulk updating, it
+                        // means we're just appending a node (with possible children), so do it
+                        // deeply here to ensure everything is captured.
                         if (treeStore) {
-                            treeStore.registerNode(me, true);
+                            treeStore.registerNode(me, !bulkUpdate);
+                            if (bulkUpdate) {
+                                treeStore.registerNode(node);
+                            }
                         }
 
                         // This node MUST fire its events first, so that if the TreeStore's
@@ -764,7 +803,9 @@ Ext.define('Ext.data.NodeInterface', {
                         index = me.indexOf(node),
                         i, childCount,
                         previousSibling,
-                        treeStore = me.getTreeStore();
+                        treeStore = me.getTreeStore(),
+                        bulkUpdate = treeStore && treeStore.bulkUpdate,
+                        removeContext;
 
                     if (index === -1 || (suppressEvents !== true && me.fireEventArgs('beforeremove', [me, node, !!isMove]) === false)) {
                         return false;
@@ -821,17 +862,19 @@ Ext.define('Ext.data.NodeInterface', {
 
                         // We're removing the last child.
                         // Ensure connectors are correct by updating the UI on all intervening nodes (descendants) between previous sibling and new node.
-                        if (previousSibling.isExpanded()) {
-                            previousSibling.cascadeBy(me.triggerUIUpdate);
-                        }
-                        // No intervening descendant nodes, just update the previous sibling
-                        else {
-                            previousSibling.triggerUIUpdate();
+                        if (!bulkUpdate) {
+                            if (previousSibling.isExpanded()) {
+                                previousSibling.cascadeBy(me.triggerUIUpdate);
+                            }
+                            // No intervening descendant nodes, just update the previous sibling
+                            else {
+                                previousSibling.triggerUIUpdate();
+                            }
                         }
                     }
 
                     // If this node suddenly doesnt have childnodes anymore, update myself
-                    if (!me.childNodes.length) {
+                    if (!me.childNodes.length && !bulkUpdate) {
                         me.triggerUIUpdate();
                     }
 
@@ -839,13 +882,18 @@ Ext.define('Ext.data.NodeInterface', {
                     Ext.resumeLayouts(true);
 
                     if (suppressEvents !== true) {
-
+                        // Context argument to events.
+                        removeContext = {
+                            parentNode: node.parentNode,
+                            previousSibling: node.previousSibling,
+                            nextSibling: node.nextSibling
+                        };
                         // Inform the TreeStore so that descendant nodes can be removed.
                         me.callTreeStore('beforeNodeRemove', [[node], !!isMove]);
 
                         node.previousSibling = node.nextSibling = node.parentNode = null;
 
-                        me.fireEventArgs('remove', [me, node, !!isMove]);
+                        me.fireEventArgs('remove', [me, node, !!isMove, removeContext]);
 
                         // Inform the TreeStore so that the node unregistered and unjoined.
                         me.callTreeStore('onNodeRemove', [[node], !!isMove]);
@@ -889,7 +937,7 @@ Ext.define('Ext.data.NodeInterface', {
                  */
                 copy: function(newId, deep) {
                     var me = this,
-                        result = me.callParent([newId, deep]),
+                        result = me.callParent([newId]),
                         len = me.childNodes ? me.childNodes.length : 0,
                         i;
 
@@ -1009,7 +1057,8 @@ Ext.define('Ext.data.NodeInterface', {
                         oldParent = node.parentNode,
                         refIndex  = index,
                         childCount, previousSibling, i,
-                        treeStore = me.getTreeStore();
+                        treeStore = me.getTreeStore(),
+                        bulkUpdate = treeStore && treeStore.bulkUpdate;
 
                     if (!refNode) { // like standard Dom, refNode can be null for append
                         return me.appendChild(node);
@@ -1034,6 +1083,9 @@ Ext.define('Ext.data.NodeInterface', {
 
                     // it's a move, make sure we move it cleanly
                     if (oldParent) {
+                        if (suppressEvents !== true && node.fireEventArgs('beforemove', [node, oldParent, me, index, refNode]) === false) {
+                            return false;
+                        }
                         // Return false if a beforeremove listener vetoed the remove
                         if (oldParent.removeChild(node, false, suppressEvents, oldParent.getTreeStore() === treeStore) === false) {
                             return false;
@@ -1081,10 +1133,14 @@ Ext.define('Ext.data.NodeInterface', {
                     }
 
                     if (!me.isLoaded()) {
-                        me.set('loaded', true);
+                        if (bulkUpdate) {
+                            me.data.loaded = true;
+                        } else {
+                            me.set('loaded', true);
+                        }
                     }
                     // If this node didnt have any childnodes before, update myself
-                    else if (me.childNodes.length === 1) {
+                    else if (me.childNodes.length === 1 && !bulkUpdate) {
                         me.triggerUIUpdate();
                     }
 
@@ -1092,7 +1148,7 @@ Ext.define('Ext.data.NodeInterface', {
                     // (like nodeappend) from our TreeStore (if we have one) will be
                     // able to use getNodeById.
                     if (treeStore) {
-                        treeStore.registerNode(me, true);
+                        treeStore.registerNode(me, !bulkUpdate);
                     }
 
                     // This node MUST fire its events first, so that if the TreeStore's
@@ -1219,6 +1275,11 @@ Ext.define('Ext.data.NodeInterface', {
                         // Coalesce sync operations across this operation
                         treeStore && treeStore.beginUpdate();
 
+                        // The remove of visible descendants is handled by the top level
+                        // call to onNodeRemove, so suspend firing the remove event so
+                        // that every descendant remove does not update the UI.
+                        treeStore.suspendEvent('remove');
+
                         me.callTreeStore('beforeNodeRemove', [childNodes, false]);
                     }
 
@@ -1240,6 +1301,7 @@ Ext.define('Ext.data.NodeInterface', {
 
                     // Inform the TreeStore so that all descendants are unregistered and unjoined.
                     if (!fromParent) {
+                        treeStore.resumeEvent('remove');
                         me.callTreeStore('onNodeRemove', [childNodes, false]);
 
                         // Coalesce sync operations across this operation
@@ -1551,6 +1613,27 @@ Ext.define('Ext.data.NodeInterface', {
                 isLoaded: function() {
                     return this.get('loaded');
                 },
+                
+                /**
+                 * Returns true if this node is a branch node, and the entire branch is fully loaded.
+                 *
+                 * Using this method, it is possible to ascertain whether an {@link #expandAll} call
+                 * will have access to all descendant nodes without incurring a store load.
+                 * @return {Boolean}
+                 */
+                isBranchLoaded: function() {
+                    var isBranchLoaded = !this.isLeaf() && this.isLoaded();
+
+                    if (isBranchLoaded) {
+                        this.cascadeBy(function(node) {
+                            if (!node.isLeaf()) {
+                                isBranchLoaded = isBranchLoaded || node.isBranchLoaded();
+                            }
+                            return isBranchLoaded;
+                        });
+                    }
+                    return isBranchLoaded;
+                },
 
                 /**
                  * Returns true if this node is loading
@@ -1593,7 +1676,9 @@ Ext.define('Ext.data.NodeInterface', {
                  * @param {Object} [scope] The scope to run the callback in
                  */
                 expand: function(recursive, callback, scope) {
-                    var me = this;
+                    var me = this,
+                        treeStore,
+                        resumeAddEvent;
 
                     // all paths must call the callback (eventually) or things like
                     // selectPath fail
@@ -1611,9 +1696,44 @@ Ext.define('Ext.data.NodeInterface', {
 
                                 if (me.fireEventArgs('beforeexpand', [me]) !== false) {
 
+                                    // Here we are testing if all the descendant nodes required by a recursive expansion
+                                    // are available without an asynchronous store load.
+                                    //
+                                    // That is either all branch nodes are loaded, or the store loads synchronously.
+                                    //
+                                    // If that is the case, then we do not want the TreeStore to fire add events
+                                    // and update the UI (and layout) for every batch of child nodes inserted.
+                                    // Instead, we suspend the add event, and at the end, fire a data refresh
+                                    // so that the UI gets only one update. It will be a view refresh, but will
+                                    // still be more efficient.
+                                    if (recursive) {
+                                        // Only the topmost node in a recursive expand should suspend the add event
+                                        // and fire the refresh event, so if our parent is synchronously, recursively expanding,
+                                        // we just flag that we are doing likewise.
+                                        if (me.parentNode && me.parentNode.isSynchronousRecursiveExpand) {
+                                            me.isSynchronousRecursiveExpand = true;
+                                        }
+                                        else {
+                                            treeStore = me.getTreeStore();
+                                            if (treeStore.getProxy().isSynchronous || me.isBranchLoaded()) {
+                                                me.isSynchronousRecursiveExpand = true;
+                                                treeStore.suspendEvent('add');
+                                                resumeAddEvent = true;
+                                            }
+                                        }
+                                    }
+
                                     // Inform the TreeStore that we intend to expand, and that it should call onChildNodesAvailable
                                     // when the child nodes are available
                                     me.callTreeStore('onBeforeNodeExpand', [me.onChildNodesAvailable, me, [recursive, callback, scope]]);
+
+                                    // If we suspended the add event so that all additions of descendant nodes
+                                    // did not update the UI, then resume the event here, and refresh the data
+                                    if (resumeAddEvent) {
+                                        treeStore.resumeEvent('add');
+                                        treeStore.fireEvent('refresh', treeStore);
+                                    }
+                                    me.isSynchronousRecursiveExpand = false;
                                 }
 
                             } else if (recursive) {
@@ -1635,6 +1755,8 @@ Ext.define('Ext.data.NodeInterface', {
                  */
                 onChildNodesAvailable: function(records, recursive, callback, scope) {
                     var me = this,
+                        treeStore = me.getTreeStore(),
+                        bulkUpdate = treeStore && treeStore.bulkUpdate,
                         ancestor,
                         i,
                         collapsedAncestors;
@@ -1653,7 +1775,12 @@ Ext.define('Ext.data.NodeInterface', {
                     }
 
                     // Not structural. The TreeView's onUpdate listener just updates the [+] icon to [-] in response.
-                    me.set('expanded', true);
+                    
+                    if (bulkUpdate) {
+                        me.data.expanded = true;
+                    } else {
+                        me.set('expanded', true);
+                    }
 
                     // Set the intervening collapsed nodes to expanded state, then expand the topmost.
                     // The whole descendant tree will be inserted into the collection below the topmost ancestor.
@@ -1661,7 +1788,12 @@ Ext.define('Ext.data.NodeInterface', {
                         // Ensure intervening collapsed nodes have their status set to expanded
                         // Not structural. The TreeView's onUpdate listener just updates the [+] icon to [-] in response.
                         for (i = 1; i < collapsedAncestors.length; i++) {
-                            collapsedAncestors[i].set('expanded', true);
+                            ancestor = collapsedAncestors[i];
+                            if (bulkUpdate) {
+                                ancestor.data.expanded = true;
+                            } else {
+                                ancestor.set('expanded', true);
+                            }
                         }
 
                         // Expand the topmost collapeed one.
@@ -1746,6 +1878,8 @@ Ext.define('Ext.data.NodeInterface', {
                 collapse: function(recursive, callback, scope) {
                     var me = this,
                         expanded = me.isExpanded(),
+                        treeStore = me.getTreeStore(),
+                        bulkUpdate = treeStore && treeStore.bulkUpdate,
                         len = me.childNodes.length,
                         i, collapseChildren;
 
@@ -1782,7 +1916,11 @@ Ext.define('Ext.data.NodeInterface', {
                             }
 
                             // Not structural. The TreeView's onUpdate listener just updates the [+] icon to [-] in response.
-                            me.set('expanded', false);
+                            if (bulkUpdate) {
+                                me.data.expanded = false;
+                            } else {
+                                me.set('expanded', false);
+                            }
 
                             // Call the TreeStore's onNodeCollapse which removes all descendant nodes to achieve UI collapse
                             // and passes callback on in its beforecollapse event which is poked into the animWrap for
@@ -1935,18 +2073,20 @@ Ext.define('Ext.data.NodeInterface', {
                 /**
                  * Creates an object representation of this node including its children.
                  */
-                serialize: function() {
-                    var result = Ext.data.writer.Json.prototype.getRecordData(this),
+                serialize: function(writerParam) {
+                    var writer = writerParam || new Ext.data.writer.Json({
+                            writeAllFields: true
+                        }),
+                        result = writer.getRecordData(this),
                         childNodes = this.childNodes,
                         len = childNodes.length,
                         children, i;
 
                     if (len > 0) {
-                        children = [];
+                        result.children = children = [];
                         for (i = 0; i < len; i++) {
-                            children.push(childNodes[i].serialize());
+                            children.push(childNodes[i].serialize(writer));
                         }
-                        result.children = children;
                     }
                     return result;
                 },

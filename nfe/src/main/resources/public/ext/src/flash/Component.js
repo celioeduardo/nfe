@@ -176,7 +176,7 @@ Ext.define('Ext.flash.Component', {
             allowedDomain: document.location.hostname
         }, flashVars);
 
-        new swfobject.embedSWF(
+        new swfobject.embedSWF( // jshint ignore:line
             me.url,
             me.getSwfId(),
             me.swfWidth,
@@ -226,7 +226,7 @@ Ext.define('Ext.flash.Component', {
         var me = this,
             swf = me.swf;
         if (swf) {
-            swfobject.removeSWF(me.getSwfId());
+            swfobject.removeSWF(me.getSwfId()); // jshint ignore:line
             Ext.destroy(swf);
             delete me.swf;
         }

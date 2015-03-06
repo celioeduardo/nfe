@@ -1,6 +1,6 @@
 /**
  * The Store class encapsulates a client side cache of {@link Ext.data.Model Model} objects. Stores load data via a
- * {@link Ext.data.proxy.Proxy Proxy}, and also provide functions for {@link #sort sorting}, {@link #filter filtering}
+ * {@link Ext.data.proxy.Proxy Proxy}, and also provide functions for {@link #method-sort sorting}, {@link #filter filtering}
  * and querying the {@link Ext.data.Model model} instances contained within it.
  *
  * Creating a Store is easy - we just tell it the Model and the Proxy to use for loading and saving its data:
@@ -117,7 +117,7 @@
  *
  * Stores can be sorted and filtered - in both cases either remotely or locally. The {@link #cfg-sorters} and
  * {@link #cfg-filters} are held inside {@link Ext.util.MixedCollection MixedCollection} instances to make them easy to manage.
- * Usually it is sufficient to either just specify sorters and filters in the Store configuration or call {@link #sort}
+ * Usually it is sufficient to either just specify sorters and filters in the Store configuration or call {@link #method-sort}
  * or {@link #filter}:
  *
  *      var store = Ext.create('Ext.data.Store', {
@@ -146,11 +146,11 @@
  *
  *     store.filter('eyeColor', 'Brown');
  *
- * Change the sorting at any time by calling {@link #sort}:
+ * Change the sorting at any time by calling {@link #method-sort}:
  *
  *     store.sort('height', 'ASC');
  *
- * Note that all existing sorters will be removed in favor of the new sorter data (if {@link #sort} is called with no
+ * Note that all existing sorters will be removed in favor of the new sorter data (if {@link #method-sort} is called with no
  * arguments, the existing sorters are just reapplied instead of being removed). To keep existing sorters and add new
  * ones, just add them to the MixedCollection:
  *
@@ -298,6 +298,8 @@ Ext.define('Ext.data.Store', {
      */
     complete: false,
 
+    moveMapCount: 0,
+
     /**
      * Creates the store.
      * @param {Object} [config] Config object.
@@ -365,6 +367,31 @@ Ext.define('Ext.data.Store', {
 
     },
 
+    /**
+     * @method getData   
+     * Returns the store's records.
+     *
+     * **Note:** If your store has been filtered, getData() will return a filtered collection.
+     *
+     * @return {Ext.util.Collection} An Ext.util.Collection of records 
+     * (an empty Collection if no records are held by the store).
+     */
+    
+    /**
+     * @method setData
+     * Loads an array of data directly into the Store.
+     *
+     * setData() is ideal if your data's format is already in its appropriate format (e.g. it doesn't need to be
+     * processed by a reader). If your data's structure requires processing, use a
+     * {@link Ext.data.proxy.Memory MemoryProxy} or {@link #loadRawData}.
+     *
+     * Use {@link #loadData}, {@link #add}, or {@link #insert} if records need to be 
+     * appended to the current recordset.
+     *
+     * @param {Ext.data.Model[]/Object[]} data Array of data to load. Any non-model instances will be cast
+     * into model instances first.
+     */
+
     onCollectionBeginUpdate: function() {
         this.beginUpdate();
     },
@@ -420,14 +447,16 @@ Ext.define('Ext.data.Store', {
 
         if (proxy && proxy.isMemoryProxy) {
             proxy.setData(data);
-            blocked = me.unblockLoad(true); // fully unblock
+            blocked = me.blockLoadCounter;
+
+            me.blockLoadCounter = 0;
 
             // Allow a memory proxy to trigger a load initially
             me.suspendEvents();
             me.read();
             me.resumeEvents();
 
-            me.blockLoad(blocked);
+            me.blockLoadCounter = blocked;
         } else {
             // We make it silent because we don't want to fire a refresh event
             me.removeAll(true);
@@ -471,15 +500,22 @@ Ext.define('Ext.data.Store', {
      */
     
     onCollectionAdd: function(collection, info) {
+        this.onCollectionAddItems(collection, info.items, info);
+    },
+
+    onCollectionFilterAdd: function(collection, items) {
+        this.onCollectionAddItems(collection, items);
+    },
+
+    onCollectionAddItems: function(collection, records, info) {
         var me = this,
-            records = info.items,
             len = records.length,
-            lastChunk = !info.next,
+            lastChunk = info ? !info.next : false,
             removed = me.getRemovedRecords(),
             ignoreAdd = me.ignoreCollectionAdd,
             session = me.getSession(),
-            i, sync, record;
-
+            replaced = info && info.replaced,
+            i, sync, record, replacedItems;
 
         for (i = 0; i < len; ++i) {
             record = records[i];
@@ -502,13 +538,30 @@ Ext.define('Ext.data.Store', {
         if (ignoreAdd) {
             return;
         }
+
+        if (replaced) {
+            replacedItems = [];
+
+            do {
+                Ext.Array.push(replacedItems, replaced.items);
+                replaced = replaced.next;
+            } while (replaced);
+
+            me.setMoving(replacedItems, true);
+        }
         
-        me.fireEvent('add', me, records, info.at);
-        // If there is a next property, that means there is another range that needs
-        // to be removed after this. Wait until everything is gone before firing datachanged
-        // since it should be a bulk operation
-        if (lastChunk) {
-            me.fireEvent('datachanged', me);
+        if (info) {
+            me.fireEvent('add', me, records, info.at);
+            // If there is a next property, that means there is another range that needs
+            // to be removed after this. Wait until everything is gone before firing datachanged
+            // since it should be a bulk operation
+            if (lastChunk) {
+                me.fireEvent('datachanged', me);
+            }
+        }
+
+        if (replacedItems) {
+            me.setMoving(replacedItems, false);
         }
 
         // Addition means a sync is needed.
@@ -533,35 +586,25 @@ Ext.define('Ext.data.Store', {
         me.fireEvent('update', me, record, type, modifiedFieldNames, info);
     },
 
+    afterChange: function(record, modifiedFieldNames, type) {
+        this.getData().itemChanged(record, modifiedFieldNames || null, undefined, type);
+    },
+
     afterCommit: function(record, modifiedFieldNames) {
-        this.getData().itemChanged(record, modifiedFieldNames || null, undefined, Ext.data.Model.COMMIT);
+        this.afterChange(record, modifiedFieldNames, Ext.data.Model.COMMIT);
     },
 
     afterEdit: function(record, modifiedFieldNames) {
         this.needsSync = this.needsSync || record.dirty;
-        this.getData().itemChanged(record, modifiedFieldNames || null, undefined, Ext.data.Model.EDIT);
+        this.afterChange(record, modifiedFieldNames, Ext.data.Model.EDIT);
     },
 
     afterReject: function(record) {
-        this.getData().itemChanged(record, null, undefined, Ext.data.Model.REJECT);
+        this.afterChange(record, null, Ext.data.Model.REJECT);
     },
 
     afterDrop: function(record) {
         this.getData().remove(record);
-    },
-    
-    onCollectionFilterAdd: function(collection, items) {
-        var len = items.length,
-            session = this.getSession(),
-            i, record;
-        
-        for (i = 0; i < len; ++i) {
-            record = items[i];
-            record.join(this);
-            if (session) {
-                session.adopt(record);
-            }
-        }
     },
 
     /**
@@ -652,15 +695,20 @@ Ext.define('Ext.data.Store', {
             // but on removal of child nodes on onNodeRemove,
             removed = me.removed,
             records = info.items,
-            index = info.at,
             len = records.length,
+            index = info.at,
             isMove = me.removeIsMove,
             silent = me.removeIsSilent,
             lastChunk = !info.next,
+            replacement = info.replacement,
             i, record;
         
         if (me.ignoreCollectionRemove) {
             return;
+        }
+
+        if (replacement) {
+            me.setMoving(replacement.items, true);
         }
         
         for (i = 0; i < len; ++i) {
@@ -688,6 +736,10 @@ Ext.define('Ext.data.Store', {
             if (lastChunk) {
                 me.fireEvent('datachanged', me);
             }
+        }
+
+        if (replacement) {
+            me.setMoving(replacement.items, false);
         }
     },
 
@@ -822,9 +874,9 @@ Ext.define('Ext.data.Store', {
         }
 
         if (pageSize || 'start' in options || 'limit' in options || 'page' in options) {
-            options.page = options.page || me.currentPage;
+            options.page  = options.page != null ? options.page : me.currentPage;
             options.start = (options.start !== undefined) ? options.start : (options.page - 1) * pageSize;
-            options.limit = options.limit || pageSize;
+            options.limit = options.limit != null ? options.limit : pageSize;
         }
 
         options.addRecords = options.addRecords || false;
@@ -847,8 +899,7 @@ Ext.define('Ext.data.Store', {
         var me = this,
             resultSet = operation.getResultSet(),
             records = operation.getRecords(),
-            successful = operation.wasSuccessful(),
-            session, associatedEntity;
+            successful = operation.wasSuccessful();
 
         if (me.isDestroyed) {
             return;
@@ -859,11 +910,7 @@ Ext.define('Ext.data.Store', {
         }
 
         if (successful) {
-            session = me.getSession();
-            associatedEntity = me.getAssociatedEntity();
-            if (session && associatedEntity && !associatedEntity.phantom) {
-                records = me.getRole().validateAssociationRecords(session, associatedEntity, records);
-            }
+            records = me.processAssociation(records);
             me.loadRecords(records, operation.getAddRecords() ? {
                 addRecords: true
             } : undefined);
@@ -904,16 +951,19 @@ Ext.define('Ext.data.Store', {
      * to remove the old ones first.
      */
     loadData: function(data, append) {
-        var length = data.length,
+        var me = this,
+            length = data.length,
             newData = [],
             i;
 
         //make sure each data element is an Ext.data.Model instance
         for (i = 0; i < length; i++) {
-            newData.push(this.createModel(data[i]));
+            newData.push(me.createModel(data[i]));
         }
 
-        this.loadRecords(newData, append ? this.addRecordsOptions : undefined);
+        newData = me.processAssociation(newData);
+
+        me.loadRecords(newData, append ? me.addRecordsOptions : undefined);
     },
 
     /**
@@ -958,15 +1008,14 @@ Ext.define('Ext.data.Store', {
         var me     = this,
             length = records.length,
             data   = me.getData(),
-            addRecords, autoSort, skipSort, i;
+            addRecords, i, skipSort;
 
         if (options) {
             addRecords = options.addRecords;
         }
-        
-        skipSort = me.getRemoteSort() || !me.getSortOnLoad();
-        if (skipSort) {
-            autoSort = data.getAutoSort();
+
+        if (!me.getRemoteSort() && !me.getSortOnLoad()) {
+            skipSort = true;
             data.setAutoSort(false);
         }
 
@@ -983,13 +1032,14 @@ Ext.define('Ext.data.Store', {
         data.add(records);
         me.ignoreCollectionAdd = false;
 
+        if (skipSort) {
+            data.setAutoSort(true);
+        }
+
         for (i = 0; i < length; i++) {
             records[i].join(me);
         }
 
-        if (skipSort) {
-            data.setAutoSort(autoSort);
-        }
         ++me.loadCount;
         me.complete = true;
         me.fireEvent('datachanged', me);
@@ -1169,6 +1219,75 @@ Ext.define('Ext.data.Store', {
     privates: {
         onBeforeLoad: function(operation) {
             this.callObservers('BeforeLoad', [operation]);
+        },
+
+        /**
+         * Checks whether records are being moved within the store. This can be used in conjunction with the
+         * {@link #event-add} and {@link #event-remove} events to determine whether the records are being removed/added
+         * or just having the position changed.
+         * @param {Ext.data.Model[]/Ext.data.Model} [records] The record(s).
+         * @return {Number} The number of records being moved. `0` if no records are moving. If records are passed
+         * the number will refer to how many of the passed records are moving.
+         *
+         * @private
+         */
+        isMoving: function(records, getMap) {
+            var map = this.moveMap,
+                moving = 0,
+                len, i;
+
+            if (map) {
+                if (records) {
+                    if (Ext.isArray(records)) {
+                        for (i = 0, len = records.length; i < len; ++i) {
+                            moving += map[records[i].id] ? 1 : 0;
+                        }
+                    } else if (map[records.id]) {
+                        ++moving;
+                    }
+                } else {
+                    moving = getMap ? map : this.moveMapCount;
+                }
+            }
+            return moving;
+        },
+
+        setMoving: function(records, isMoving) {
+            var me = this,
+                map = me.moveMap || (me.moveMap = {}),
+                len = records.length,
+                i, id;
+
+            for (i = 0; i < len; ++i) {
+                id = records[i].id;
+                if (isMoving) {
+                    if (map[id]) {
+                        ++map[id];
+                    } else {
+                        map[id] = 1;
+                        ++me.moveMapCount;
+                    }
+                } else {
+                    if (--map[id] === 0) {
+                        delete map[id];
+                        --me.moveMapCount;
+                    }
+                }
+            }
+
+            if (me.moveMapCount === 0) {
+                me.moveMap = null;
+            }
+        },
+
+        processAssociation: function(records) {
+            var me = this,
+                associatedEntity = me.getAssociatedEntity();
+
+            if (associatedEntity) {
+                records = me.getRole().processLoad(me, associatedEntity, records, me.getSession());
+            }
+            return records;
         }
     }
 

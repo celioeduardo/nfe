@@ -4,6 +4,8 @@
 Ext.define('Ext.event.gesture.Drag', {
     extend: 'Ext.event.gesture.SingleTouch',
 
+    priority: 100,
+
     isStarted: false,
 
     startPoint: null,
@@ -23,7 +25,7 @@ Ext.define('Ext.event.gesture.Drag', {
     },
 
     constructor: function() {
-        this.callSuper(arguments);
+        this.callParent(arguments);
 
         this.initInfo();
     },
@@ -64,7 +66,7 @@ Ext.define('Ext.event.gesture.Drag', {
     },
 
     onTouchStart: function(e) {
-        if (this.callSuper(arguments) === false) {
+        if (this.callParent(arguments) === false) {
             if (this.isStarted && this.lastMoveEvent !== null) {
                 this.lastMoveEvent.isStopped = false;
                 this.onTouchEnd(this.lastMoveEvent);
@@ -243,4 +245,7 @@ Ext.define('Ext.event.gesture.Drag', {
 
         me.initInfo();
     }
+}, function(Drag) {
+    var gestures = Ext.manifest.gestures;
+    Drag.instance = new Drag(gestures && gestures.drag);
 });

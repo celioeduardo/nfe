@@ -206,10 +206,24 @@ Ext.define('Ext.window.MessageBox', {
         });
     },
 
-    btnCallback: function(btn) {
+    btnCallback: function(btn, event) {
         var me = this,
             value,
             field;
+
+        // If this is caused by a keydown event (eg: SPACE on a Button), then the
+        // hide will throw focus back to the previously focused element which will
+        // then recieve an unexpected keyup event.
+        // So defer callback handling until the upcoming keyup event.
+        if (event && event.type === 'keydown' && !event.isSpecialKey()) {
+            event.getTarget(null, null, true).on({
+                keyup: function(e) {
+                    me.btnCallback(btn, e);
+                },
+                single: true
+            });
+            return;
+        }
 
         if (me.cfg.prompt || me.cfg.multiline) {
             if (me.cfg.multiline) {
@@ -360,12 +374,14 @@ Ext.define('Ext.window.MessageBox', {
             headerCfg = header && !header.isHeader,
             message = cfg && (cfg.message || cfg.msg),
             resizeTracker, width, height, i, textArea,
-            textField, msg, progressBar, msgButtons;
+            textField, msg, progressBar, msgButtons, wait;
 
         // Restore default buttonText before reconfiguring.
         me.updateButtonText();
 
         me.cfg = cfg = cfg || {};
+
+        wait = cfg.wait;
         if (cfg.width) {
             width = cfg.width;
         }
@@ -426,8 +442,7 @@ Ext.define('Ext.window.MessageBox', {
         // During the on render, or size resetting layouts, and in subsequent hiding and showing, we need to
         // suspend layouts, and flush at the end when the Window's children are at their final visibility.
         Ext.suspendLayouts();
-        delete me.width;
-        delete me.height;
+        me.width = me.height = null;
         if (width || height) {
             if (width) {
                 me.setWidth(width);
@@ -443,7 +458,7 @@ Ext.define('Ext.window.MessageBox', {
         }
 
         // Hide or show the close tool
-        me.closable = cfg.closable !== false && !cfg.wait;
+        me.closable = cfg.closable !== false && !wait;
 
         // We need to redefine `header` because me.setIconCls() could create a Header instance.
         header = me.header;
@@ -502,11 +517,11 @@ Ext.define('Ext.window.MessageBox', {
 
         // Hide or show the progress bar
         progressBar = me.progressBar;
-        if (cfg.progress || cfg.wait) {
+        if (cfg.progress || wait) {
             progressBar.show();
             me.updateProgress(0, cfg.progressText);
-            if (cfg.wait === true) {
-                progressBar.wait(cfg.waitConfig);
+            if (wait) {
+                progressBar.wait(wait === true ? cfg.waitConfig : wait);
             }
         } else {
             progressBar.hide();
@@ -556,7 +571,7 @@ Ext.define('Ext.window.MessageBox', {
                     if (me.cfg && me.cfg.buttonText) {
                         buttons = buttons | Math.pow(2, Ext.Array.indexOf(me.buttonIds, btnId));
                     }
-                    if (btn.text != buttonText[btnId]) {
+                    if (btn.text !== buttonText[btnId]) {
                         btn.setText(buttonText[btnId]);
                     }
                 }
@@ -699,8 +714,8 @@ Ext.define('Ext.window.MessageBox', {
      * @param {String} config.value
      * The string value to set into the active textbox element if displayed
      *
-     * @param {Boolean} config.wait
-     * True to display a progress bar (defaults to false)
+     * @param {Object/Boolean} [config.wait=false]
+     * `true` to display a progress bar, or a configuration for {@link Ext.ProgressBar#wait}.
      *
      * @param {Object} config.waitConfig
      * A {@link Ext.ProgressBar#wait} config object (applies only if wait = true)
@@ -951,7 +966,7 @@ Ext.define('Ext.window.MessageBox', {
         }
         return this.show(title);
     }
-}, function() {
+}, function(MessageBox) {
     /**
      * @class Ext.MessageBox
      * @alternateClassName Ext.Msg
@@ -959,5 +974,9 @@ Ext.define('Ext.window.MessageBox', {
      * @singleton
      * @inheritdoc Ext.window.MessageBox
      */
-    Ext.MessageBox = Ext.Msg = new this();
+    // We want to defer creating Ext.MessageBox and Ext.Msg instances
+    // until overrides have been applied.
+    Ext.onInternalReady(function() {
+        Ext.MessageBox = Ext.Msg = new MessageBox();
+    });
 });

@@ -154,6 +154,7 @@ Ext.define('Ext.grid.column.Widget', {
     },
 
     /**
+     * @cfg
      * @inheritdoc
      */
     sortable: false,
@@ -292,15 +293,24 @@ Ext.define('Ext.grid.column.Widget', {
     },
 
     onAdded: function() {
-        var view;
+        var me = this,
+            view;
 
-        this.callParent(arguments);
+        me.callParent(arguments);
 
-        view = this.getView();
+        view = me.getView();
 
         // If we are being added to a rendered HeaderContainer
         if (view) {
-            this.setupViewListeners(view);
+            me.setupViewListeners(view);
+
+            if (view && view.viewReady && me.rendered && view.getEl().down(me.getCellSelector())) {
+                // If the view is ready, it means we're already rendered.
+                // At this point the view may refresh "soon", however we don't have
+                // a way of knowing that the view is pending a refresh, so we need
+                // to ensure the widgets get hooked up correctly here
+                me.onViewRefresh(view, view.getViewRange());
+            }
         }
     },
 
@@ -311,10 +321,7 @@ Ext.define('Ext.grid.column.Widget', {
             id, widget;
 
         if (me.rendered) {
-            if (viewListeners) {
-                viewListeners.destroy();
-                this.viewListeners = null;
-            }
+            me.viewListeners = viewListeners && Ext.destroy(viewListeners);
 
             // If we are being removed, we have to move all widget elements into the detached body
             if (!isDestroying) {
@@ -380,6 +387,11 @@ Ext.define('Ext.grid.column.Widget', {
                 result.getWidgetColumn = me.widgetColumnDecorator;
                 result.dataIndex = me.dataIndex;
                 result.measurer = me;
+                result.ownerCmp = me;
+                // The ownerCmp of the widget is the column, which means it will be considered
+                // as a layout child, but it isn't really, we always need the layout on the
+                // component to run if asked.
+                result.isLayoutChild = me.returnFalse;
             }
             return result;
         },
@@ -433,8 +445,8 @@ Ext.define('Ext.grid.column.Widget', {
                         Ext.fly(cell).empty();
 
                         // Call the appropriate setter with this column's data field
-                        if (widget.defaultBindProperty && me.dataIndex) {
-                            widget.setConfig(widget.defaultBindProperty, record.get(me.dataIndex));
+                        if (widget.defaultBindProperty && dataIndex) {
+                            widget.setConfig(widget.defaultBindProperty, record.get(dataIndex));
                         }
                         widget.$widgetColumn = me;
                         widget.$widgetRecord = record;
@@ -442,7 +454,8 @@ Ext.define('Ext.grid.column.Widget', {
                             Ext.callback(me.onWidgetAttach, me.scope, [me, widget, record], 0, me);
                         }
 
-                        if (el = (widget.el || widget.element)) {
+                        el = widget.el || widget.element;
+                        if (el) {
                             cell.appendChild(el.dom);
                             if (!isFixedSize) {
                                 widget.setWidth(width);
@@ -485,7 +498,7 @@ Ext.define('Ext.grid.column.Widget', {
                 dataIndex = me.dataIndex,
                 isFixedSize = me.isFixedSize,
                 cell, widget, el, width, recordId, 
-                itemIndex, recordIndex, record, id, lastBox;
+                itemIndex, recordIndex, record, id, lastBox, dom;
 
             if (me.rendered && !me.hidden) {
                 me.liveWidgets = {};
@@ -508,8 +521,6 @@ Ext.define('Ext.grid.column.Widget', {
                         width = lastBox.width - parseInt(me.getCachedStyle(cell, 'padding-left'), 10) - parseInt(me.getCachedStyle(cell, 'padding-right'), 10);
                     }
 
-                    Ext.fly(cell).empty();
-
                     // Call the appropriate setter with this column's data field
                     if (widget.defaultBindProperty && dataIndex) {
                         widget.setConfig(widget.defaultBindProperty, records[recordIndex].get(dataIndex));
@@ -520,8 +531,13 @@ Ext.define('Ext.grid.column.Widget', {
                         Ext.callback(me.onWidgetAttach, me.scope, [me, widget, record], 0, me);
                     }
 
-                    if (el = (widget.el || widget.element)) {
-                        cell.appendChild(el.dom);
+                    el = widget.el || widget.element;
+                    if (el) {
+                        dom = el.dom;
+                        if (dom.parentNode !== cell) {
+                            Ext.fly(cell).empty();
+                            cell.appendChild(el.dom);
+                        }
                         if (!isFixedSize) {
                             widget.setWidth(width);
                         }
@@ -529,6 +545,7 @@ Ext.define('Ext.grid.column.Widget', {
                         if (!isFixedSize) {
                             widget.width = width;
                         }
+                        Ext.fly(cell).empty();
                         widget.render(cell);
                     }
                 }
@@ -544,6 +561,10 @@ Ext.define('Ext.grid.column.Widget', {
                     Ext.detachedBodyEl.dom.appendChild((widget.el || widget.element).dom);
                 }
             }
+        },
+
+        returnFalse: function() {
+            return false;
         },
 
         setupViewListeners: function(view) {

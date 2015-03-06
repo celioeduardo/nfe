@@ -48,7 +48,11 @@ Ext.define('Ext.picker.Date', {
     ],
     
     border: true,
-
+    
+    /**
+     * @cfg
+     * @inheritdoc
+     */
     renderTpl: [
         '<div id="{id}-innerEl" data-ref="innerEl">',
             '<div class="{baseCls}-header">',
@@ -58,6 +62,9 @@ Ext.define('Ext.picker.Date', {
             '</div>',
             '<table role="grid" id="{id}-eventEl" data-ref="eventEl" class="{baseCls}-inner" {%',
                 // If the DatePicker is focusable, make its eventEl tabbable.
+                // Note that we're looking at the `focusable` property because
+                // calling `isFocusable()` will always return false at that point
+                // as the picker is not yet rendered.
                 'if (values.$comp.focusable) {out.push("tabindex=\\\"0\\\"");}',
             '%} cellspacing="0">',
                 '<thead><tr role="row">',
@@ -70,7 +77,7 @@ Ext.define('Ext.picker.Date', {
                 '<tbody><tr role="row">',
                     '<tpl for="days">',
                         '{#:this.isEndOfWeek}',
-                        '<td role="gridcell" id="{[Ext.id()]}">',
+                        '<td role="gridcell">',
                             '<div hidefocus="on" class="{parent.baseCls}-date"></div>',
                         '</td>',
                     '</tpl>',
@@ -637,17 +644,15 @@ Ext.define('Ext.picker.Date', {
             cells = me.cells,
             cls = me.selectedCls,
             cellItems = cells.elements,
-            c,
             cLen = cellItems.length,
-            cell;
+            cell, c;
 
         cells.removeCls(cls);
 
         for (c = 0; c < cLen; c++) {
-            cell = Ext.fly(cellItems[c]);
-
-            if (cell.dom.firstChild.dateValue == t) {
-                return cell.dom.firstChild;
+            cell = cellItems[c].firstChild;
+            if (cell.dateValue === t) {
+                return cell;
             }
         }
         return null;
@@ -810,14 +815,11 @@ Ext.define('Ext.picker.Date', {
      * @param {Boolean} isHide True if it's a hide operation
      */
     runAnimation: function(isHide){
-        var me = this,
-            picker = this.monthPicker,
+        var picker = this.monthPicker,
             options = {
                 duration: 200,
                 callback: function() {
                     picker.setVisible(!isHide);
-                    // See showMonthPicker
-                    picker.ownerCmp = isHide ? null : me;
                 }
             };
 
@@ -844,8 +846,6 @@ Ext.define('Ext.picker.Date', {
                 me.runAnimation(true);
             } else {
                 picker.hide();
-                // See showMonthPicker
-                picker.ownerCmp = null;
             }
         }
         return me;
@@ -880,16 +880,14 @@ Ext.define('Ext.picker.Date', {
             if (!picker.isVisible()) {
                 picker.setValue(me.getActive());
                 picker.setSize(el.getSize());
+
+                // Null out floatParent so that the [-1, -1] position is not made relative to this
+                picker.floatParent = null;
                 picker.setPosition(-el.getBorderWidth('l'), -el.getBorderWidth('t'));
                 if (me.shouldAnimate(animate)) {
                     me.runAnimation(false);
                 } else {
                     picker.show();
-                    // We need to set the ownerCmp so that owns() can correctly
-                    // match up the component hierarchy, however when positioning the picker
-                    // we don't want it to position like a normal floater because we render it to 
-                    // month picker element itself.
-                    picker.ownerCmp = me;
                 }
             }
         }
@@ -918,6 +916,10 @@ Ext.define('Ext.picker.Date', {
         if (!picker) {
             me.monthPicker = picker = new Ext.picker.Month({
                 renderTo: me.el,
+                // We need to set the ownerCmp so that owns() can correctly
+                // match up the component hierarchy so that focus does not leave
+                // an owning picker field if/when this gets focus.
+                ownerCmp: me,
                 floating: true,
                 padding: me.padding,
                 shadow: false,
@@ -1096,7 +1098,7 @@ Ext.define('Ext.picker.Date', {
         for (c = 0; c < cLen; c++) {
             cell = cells.item(c);
 
-            if (me.textNodes[c].dateValue == t) {
+            if (me.textNodes[c].dateValue === t) {
                 me.activeCell = cell.dom;
                 me.eventEl.dom.setAttribute('aria-activedescendant', cell.dom.id);
                 cell.dom.setAttribute('aria-selected', true);
@@ -1149,7 +1151,7 @@ Ext.define('Ext.picker.Date', {
             tempDate = eDate.clearTime(new Date());
             disableToday = (tempDate < min || tempDate > max ||
                 (ddMatch && format && ddMatch.test(eDate.dateFormat(tempDate, format))) ||
-                (ddays && ddays.indexOf(tempDate.getDay()) != -1));
+                (ddays && ddays.indexOf(tempDate.getDay()) !== -1));
 
             if (!me.disabled) {
                 me.todayBtn.setDisabled(disableToday);
@@ -1163,7 +1165,7 @@ Ext.define('Ext.picker.Date', {
             cell.setAttribute('aria-label', eDate.format(current, ariaTitleDateFormat));
             // store dateValue number as an expando
             cell.firstChild.dateValue = value;
-            if (value == today) {
+            if (value === today) {
                 cls += ' ' + me.todayCls;
                 cell.firstChild.title = me.todayText;
                 
@@ -1174,7 +1176,7 @@ Ext.define('Ext.picker.Date', {
                     html: me.todayText
                 }, true);
             }
-            if (value == newDate) {
+            if (value === newDate) {
                 me.activeCell = cell;
                 me.eventEl.dom.setAttribute('aria-activedescendant', cell.id);
                 cell.setAttribute('aria-selected', true);
@@ -1237,7 +1239,9 @@ Ext.define('Ext.picker.Date', {
 
         if (me.rendered) {
             me.activeDate = date;
-            if(!forceRefresh && active && me.el && active.getMonth() == date.getMonth() && active.getFullYear() == date.getFullYear()){
+            if (!forceRefresh && active && me.el &&
+                    active.getMonth() === date.getMonth() &&
+                    active.getFullYear() === date.getFullYear()) {
                 me.selectedUpdate(date, active);
             } else {
                 me.fullUpdate(date, active);

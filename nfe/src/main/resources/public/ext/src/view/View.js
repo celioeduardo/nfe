@@ -53,6 +53,7 @@ Ext.define('Ext.view.View', {
     alias: 'widget.dataview',
 
     inputTagRe: /^textarea$|^input$/i,
+    keyEventRe: /^key/,
 
     inheritableStatics: {
         EventMap: {
@@ -539,11 +540,11 @@ Ext.define('Ext.view.View', {
 
     handleEvent: function(e) {
         var me = this,
-            isKeyEvent = Ext.String.startsWith(e.type, 'key'),
-            key = isKeyEvent && e.getKey(),
+            isKeyEvent = me.keyEventRe.test(e.type),
             nm = me.getNavigationModel();
 
         e.view = me;
+        
         if (isKeyEvent) {
             e.item = nm.getItem();
             e.record = nm.getRecord();
@@ -561,13 +562,14 @@ Ext.define('Ext.view.View', {
         if (me.processUIEvent(e) !== false) {
             me.processSpecialEvent(e);
         }
-
-        // After all listeners have processed the event, then unless the user is typing into an input field,
-        // prevent browser's default action on SPACE which is to focus the event's target element.
+        
+        // We need to prevent default action on navigation keys
+        // that can cause View element scroll unless the event is from an input field.
+        // We MUST prevent browser's default action on SPACE which is to focus the event's target element.
         // Focusing causes the browser to attempt to scroll the element into view.
-        if (key === e.SPACE) {
-            if (!me.inputTagRe.test(e.getTarget().tagName)) {
-                e.stopEvent();
+        if (isKeyEvent && !Ext.fly(e.target).isInputField()) {
+            if (e.getKey() === e.SPACE || e.isNavKeyPress(true)) {
+                e.preventDefault();
             }
         }
     },

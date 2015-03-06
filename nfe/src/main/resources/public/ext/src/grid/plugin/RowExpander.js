@@ -258,6 +258,7 @@ Ext.define('Ext.grid.plugin.RowExpander', {
         // If this is the locked side of a lockable grid which is shrinkwrapping the locked width, increment its width.
         if (expanderGrid.isLocked && expanderGrid.ownerLockable.shrinkWrapLocked) {
             expanderGrid.width += expanderHeader.width;
+            me.grid = expanderGrid;
         }
         me.expanderColumn = expanderGrid.headerCt.insert(0, expanderHeader);
 
@@ -424,6 +425,7 @@ Ext.define('Ext.grid.plugin.RowExpander', {
         if (lockedColumns.length === 1) {
             if (lockedColumns[0] === me.expanderColumn) {
                 lockable.unlock(me.expanderColumn);
+                me.grid = lockable.normalGrid;
             } else {
                 lockable.lock(me.expanderColumn, 0);
             }
@@ -432,14 +434,16 @@ Ext.define('Ext.grid.plugin.RowExpander', {
 
     onColumnLock: function(lockable, column) {
         var me = this,
-            lockedColumns;
+            lockedColumns,
+            lockedGrid;
         
         lockable = me.grid.ownerLockable;
         lockedColumns = lockable.lockedGrid.visibleColumnManager.getColumns();
         
         // User has unlocked all columns and left only the expander column in the locked side.
         if (lockedColumns.length === 1) {
-            lockable.lockedGrid.headerCt.insert(0, me.expanderColumn);
+            me.grid = lockedGrid = lockable.lockedGrid;
+            lockedGrid.headerCt.insert(0, me.expanderColumn);
         }
     },
 
@@ -473,7 +477,7 @@ Ext.define('Ext.grid.plugin.RowExpander', {
             // This column always migrates to the locked side if the locked side is visible.
             // It has to report this correctly so that editors can position things correctly
             isLocked: function() {
-                return lockable.lockedGrid.isVisible() || this.locked;
+                return lockable && (lockable.lockedGrid.isVisible() || this.locked);
             },
 
             // In an editor, this shows nothing.

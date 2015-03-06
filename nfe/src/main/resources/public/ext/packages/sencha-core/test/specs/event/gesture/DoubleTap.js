@@ -6,7 +6,7 @@
 // These specs also fail in FF, although double tap seems to work fine when triggered manually
 ((Ext.isIE9m || Ext.isFirefox) ? xdescribe : describe)("Ext.event.gesture.DoubleTap", function() {
     var helper = Ext.testHelper,
-        recognizer = Ext.event.Dispatcher.getInstance().getPublisher('gesture').getRecognizers().doubleTap,
+        recognizer = Ext.event.gesture.DoubleTap.instance,
         moveDistance = recognizer.getMoveDistance(),
         tapDistance = recognizer.getTapDistance(),
         maxDuration = 60,

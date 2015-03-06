@@ -5,22 +5,19 @@
  * A sprite that represents text.
  *
  *     @example
- *     Ext.create('Ext.Container', {
- *         renderTo: Ext.getBody(),
- *         width: 600,
- *         height: 400,
- *         layout: 'fit',
- *         items: {
- *             xtype: 'draw',
- *             sprites: [{
- *                 type: 'text',
- *                 x: 50,
- *                 y: 50,
- *                 text: 'Sencha',
- *                 fontSize: 18,
- *                 fillStyle: 'blue'
- *             }]
- *         }
+ *     Ext.create({
+ *        xtype: 'draw', 
+ *        renderTo: document.body,
+ *        width: 600,
+ *        height: 400,
+ *        sprites: [{
+ *            type: 'text',
+ *            x: 50,
+ *            y: 50,
+ *            text: 'Sencha',
+ *            fontSize: 30,
+ *            fillStyle: '#1F6D91'
+ *        }]
  *     });
  */
 Ext.define('Ext.draw.sprite.Text', {
@@ -56,22 +53,26 @@ Ext.define('Ext.draw.sprite.Text', {
             },
             processors: {
                 /**
-                 * @cfg {Number} [x=0] The position of the sprite on the x-axis.
+                 * @cfg {Number} [x=0]
+                 * The position of the sprite on the x-axis.
                  */
                 x: 'number',
 
                 /**
-                 * @cfg {Number} [y=0] The position of the sprite on the y-axis.
+                 * @cfg {Number} [y=0]
+                 * The position of the sprite on the y-axis.
                  */
                 y: 'number',
 
                 /**
-                 * @cfg {String} [text=''] The text represented in the sprite.
+                 * @cfg {String} [text='']
+                 * The text represented in the sprite.
                  */
                 text: 'string',
 
                 /**
-                 * @cfg {String/Number} [fontSize='10px'] The size of the font displayed.
+                 * @cfg {String/Number} [fontSize='10px']
+                 * The size of the font displayed.
                  */
                 fontSize: function (n) {
                     if (!isNaN(n)) {
@@ -82,17 +83,20 @@ Ext.define('Ext.draw.sprite.Text', {
                 },
 
                 /**
-                 * @cfg {String} [fontStyle=''] The style of the font displayed. {normal, italic, oblique}
+                 * @cfg {String} [fontStyle='']
+                 * The style of the font displayed. {normal, italic, oblique}
                  */
                 fontStyle: 'enums(,italic,oblique)',
 
                 /**
-                 * @cfg {String} [fontVariant=''] The variant of the font displayed. {normal, small-caps}
+                 * @cfg {String} [fontVariant='']
+                 * The variant of the font displayed. {normal, small-caps}
                  */
                 fontVariant: 'enums(,small-caps)',
 
                 /**
-                 * @cfg {String} [fontWeight=''] The weight of the font displayed. {normal, bold, bolder, lighter}
+                 * @cfg {String} [fontWeight='']
+                 * The weight of the font displayed. {normal, bold, bolder, lighter}
                  */
                 fontWeight: (function (fontWeights) {
                     return function (n) {
@@ -117,12 +121,14 @@ Ext.define('Ext.draw.sprite.Text', {
                 }),
 
                 /**
-                 * @cfg {String} [fontFamily='sans-serif'] The family of the font displayed.
+                 * @cfg {String} [fontFamily='sans-serif']
+                 * The family of the font displayed.
                  */
                 fontFamily: 'string',
 
                 /**
-                 * @cfg {String} [textAlign='start'] The alignment of the text displayed. {left, right, center, start, end}
+                 * @cfg {String} [textAlign='start']
+                 * The alignment of the text displayed. {left, right, center, start, end}
                  */
                 textAlign: (function (textAligns) {
                     return function (n) {
@@ -138,7 +144,8 @@ Ext.define('Ext.draw.sprite.Text', {
                 }),
 
                 /**
-                 * @cfg {String} [textBaseline="alphabetic"] The baseline of the text displayed. {top, hanging, middle, alphabetic, ideographic, bottom}
+                 * @cfg {String} [textBaseline="alphabetic"]
+                 * The baseline of the text displayed. {top, hanging, middle, alphabetic, ideographic, bottom}
                  */
                 textBaseline: (function (textBaselines) {
                     return function (n) {
@@ -155,7 +162,8 @@ Ext.define('Ext.draw.sprite.Text', {
                 }),
 
                 /**
-                 * @cfg {String} [font='10px sans-serif'] The font displayed.
+                 * @cfg {String} [font='10px sans-serif']
+                 * The font displayed.
                  */
                 font: "string"
                 //<debug>
@@ -184,7 +192,7 @@ Ext.define('Ext.draw.sprite.Text', {
                 y: 0,
                 text: ''
             },
-            dirtyTriggers: {
+            triggers: {
                 fontStyle: 'font,bbox',
                 fontVariant: 'font,bbox',
                 fontWeight: 'font,bbox',

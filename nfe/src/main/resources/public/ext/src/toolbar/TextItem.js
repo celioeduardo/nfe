@@ -15,7 +15,9 @@
  */
 Ext.define('Ext.toolbar.TextItem', {
     extend: 'Ext.toolbar.Item',
-    requires: ['Ext.XTemplate'],
+    // Toolbar required here because we'll try to decorate it's alternateClassName
+    // with this class' alternate name
+    requires: ['Ext.toolbar.Toolbar', 'Ext.XTemplate'],
     alias: 'widget.tbtext',
     alternateClassName: 'Ext.Toolbar.TextItem',
 
@@ -23,7 +25,7 @@ Ext.define('Ext.toolbar.TextItem', {
      * @cfg {String} text
      * The text to be used as innerHTML (html tags are accepted).
      *
-     * @deprecated 5.0.2 Use {@link #html}
+     * @deprecated 5.1.0 Use {@link #html}
      */
     text: '',
 
@@ -45,7 +47,7 @@ Ext.define('Ext.toolbar.TextItem', {
      * Updates this item's text, setting the text to be used as innerHTML.
      * @param {String} text The text to display (html accepted).
      *
-     * @deprecated 5.0.2 Use {@link #update}
+     * @deprecated 5.1.0 Use {@link #update}
      */
     setText : function(text) {
         this.update(text);

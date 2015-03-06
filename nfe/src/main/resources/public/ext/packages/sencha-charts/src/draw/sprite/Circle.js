@@ -5,21 +5,18 @@
  * A sprite that represents a circle.
  *
  *     @example
- *     Ext.create('Ext.Container', {
- *         renderTo: Ext.getBody(),
- *         width: 600,
- *         height: 400,
- *         layout: 'fit',
- *         items: {
- *             xtype: 'draw',
- *             sprites: [{
- *                  type: 'circle',
- *                  cx: 100,
- *                  cy: 100,
- *                  r: 25,
- *                  fillStyle: 'blue'
- *              }]
- *         }
+ *     Ext.create({
+ *        xtype: 'draw', 
+ *        renderTo: document.body,
+ *        width: 600,
+ *        height: 400,
+ *        sprites: [{
+ *            type: 'circle',
+ *            cx: 100,
+ *            cy: 100,
+ *            r: 50,
+ *            fillStyle: '#1F6D91'
+ *        }]
  *     });
  */
 Ext.define('Ext.draw.sprite.Circle', {
@@ -56,7 +53,7 @@ Ext.define('Ext.draw.sprite.Circle', {
                 cy: 0,
                 r: 4
             },
-            dirtyTriggers: {
+            triggers: {
                 cx: 'path',
                 cy: 'path',
                 r: 'path'

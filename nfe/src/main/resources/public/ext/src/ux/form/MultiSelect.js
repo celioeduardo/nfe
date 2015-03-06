@@ -135,6 +135,8 @@ Ext.define('Ext.ux.form.MultiSelect', {
     initComponent: function(){
         var me = this;
 
+        me.items = me.setupItems();
+
         me.bindStore(me.store, true);
 
         if (me.store.autoCreated) {
@@ -147,8 +149,6 @@ Ext.define('Ext.ux.form.MultiSelect', {
         if (!Ext.isDefined(me.valueField)) {
             me.valueField = me.displayField;
         }
-
-        me.items = me.setupItems();
 
         me.callParent();
         me.initField();

@@ -21,15 +21,17 @@ Ext.define('Ext.draw.sprite.Instancing', {
     applyTemplate: function (template) {
         //<debug>
         if (!Ext.isObject(template)) {
-            Ext.Error.raise("A template of an instancing sprite must either be a sprite instance " +
-                " or a valid config object from which a template sprite will be created.");
-        } else if (template.isInstancing) {
-            Ext.Error.raise("Can't use an instancing sprite as a template for an instancing sprite.");
+            Ext.Error.raise("A template of an instancing sprite must either be " +
+                "a sprite instance or a valid config object from which a template " +
+                "sprite will be created.");
+        } else if (template.isInstancing || template.isComposite) {
+            Ext.Error.raise("Can't use an instancing or composite sprite " +
+                "as a template for an instancing sprite.");
         }
         //</debug>
         if (!template.isSprite) {
             if (!template.xclass && !template.type) {
-                // For compatibility with ExtJS
+                // For compatibility with legacy charts.
                 template.type = 'circle';
             }
             template = Ext.create(template.xclass || 'sprite.' + template.type, template);
@@ -172,7 +174,6 @@ Ext.define('Ext.draw.sprite.Instancing', {
             changes = template.self.def.normalize(changes);
         }
         template.topModifier.pushDown(attr, changes);
-        template.updateDirtyFlags(attr);
         template.attr = originalAttr;
     },
 

@@ -32,11 +32,13 @@ Ext.define('Ext.grid.filters.filter.String', {
 
     operator: 'like',
 
+    //<locale>
     /**
      * @cfg {String} emptyText
      * The empty text to show for each field.
      */
     emptyText: 'Enter Filter Text...',
+    //</locale>
 
     itemDefaults: {
         xtype: 'textfield',
@@ -86,10 +88,6 @@ Ext.define('Ext.grid.filters.filter.String', {
         });
     },
 
-    getValue: function (field) {
-        return field.getValue();
-    },
-
     /**
      * @private
      * Template method that is to set the value of the filter.
@@ -105,7 +103,8 @@ Ext.define('Ext.grid.filters.filter.String', {
         me.filter.setValue(value);
 
         if (value && me.active) {
-            me.updateStoreFilter(me.filter);
+            me.value = value;
+            me.updateStoreFilter();
         } else {
             me.setActive(!!value);
         }

@@ -231,6 +231,42 @@ Ext.define('Ext.mixin.Inheritable', {
     },
 
     /**
+     * Returns the default listener scope for a "satellite" of this component.
+     * Used for resolving scope for observable objects that are not part of the normal
+     * Container/Component hierarchy (for example, plugins)
+     *
+     * @param {Ext.mixin.Observable} satellite
+     * @param {Object} [defaultScope]
+     * @return {Object} The listener scope
+     * @protected
+     * @since 5.1.1
+     */
+    resolveSatelliteListenerScope: function(satellite, defaultScope) {
+        var me = this,
+            namedScope = Ext._namedScopes[defaultScope],
+            ret;
+
+        // The logic here is the same as that in resolveListenerScope with a couple of
+        // exceptions:
+        // 1. If scope resolution failed, fall back to the satellite instance, not "this"
+        //    for class-declared listeners, for instance-declared use "this"
+        // 2. Never pass skipThis to getInheritedConfig.  The satellite is essentially
+        //    treated as a "child" of this component and therefore should always consider
+        //    its component/component's controller as candidates for listener scope
+        if (!namedScope) {
+            ret = me.getInheritedConfig('defaultListenerScope') || defaultScope || me;
+        } else if (namedScope.isController) {
+            ret = me.getInheritedConfig('controller');
+        } else if (namedScope.isSelf) {
+            ret = me.getInheritedConfig('defaultListenerScope') || satellite;
+        } else if (namedScope.isThis) {
+            ret = satellite;
+        }
+
+        return ret || null;
+    },
+
+    /**
      * Gets the Controller or Component that is used as the reference holder for this view.
      *
      * @param {Boolean} [skipThis=true] `false` to return this as the reference holder if

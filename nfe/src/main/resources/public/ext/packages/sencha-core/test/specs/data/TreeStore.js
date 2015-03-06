@@ -1623,15 +1623,22 @@ describe("Ext.data.TreeStore", function() {
         });
 
         it('should fire remove event', function() {
+            var context;
 
             // Node events are NOT bubbled up to the TreeStore level, only as far as the root
             spy = spyOnEvent(root, "remove").andCallThrough();
-            removedNode = root.removeChild(root.firstChild);
+            removedNode = root.removeChild(root.childNodes[1]);
             spyArgs = spy.calls[0].args;
             expect(spy.calls.length).toBe(1);
             expect(spyArgs[0]).toBe(root);
             expect(spyArgs[1]).toBe(removedNode);
             expect(spyArgs[2]).toBe(false);
+
+            // Context arguments: where the removed node came from
+            context = spyArgs[3];
+            expect(context.parentNode).toBe(root);
+            expect(context.previousSibling).toBe(root.childNodes[0]);
+            expect(context.nextSibling).toBe(root.childNodes[1]);
         });
 
         it('should fire update event', function() {
@@ -1646,12 +1653,12 @@ describe("Ext.data.TreeStore", function() {
         });
 
 
-        it('should fire "load" event with valid 7-argument signature', function() {
+        it('should fire "load" event with valid 5-argument signature', function() {
             spy = spyOnEvent(store, "load").andCallThrough();
             loadStore(store);
             spyArgs = spy.calls[0].args;
             expect(spy.calls.length).toBe(1);
-            expect(spyArgs.length).toBe(7);
+            expect(spyArgs.length).toBe(5);
 
             // validating args: [ store, records[], success, operation, node]
             expect(spyArgs[0]).toBe(store);
@@ -1662,12 +1669,12 @@ describe("Ext.data.TreeStore", function() {
 
         });
 
-        it('should fire "beforeload" event with valid 4-argument signature', function() {
+        it('should fire "beforeload" event with valid 2-argument signature', function() {
             spy = spyOnEvent(store, "beforeload").andCallThrough();
             loadStore(store);
             spyArgs = spy.calls[0].args;
             expect(spy.calls.length).toBe(1);
-            expect(spyArgs.length).toBe(4);
+            expect(spyArgs.length).toBe(2);
 
             // validating args: [ store, data.Operation, object, eOptsObject ]
             expect(spyArgs[0]).toBe(store);
@@ -1927,6 +1934,426 @@ describe("Ext.data.TreeStore", function() {
                 name: 'eee-child'
             });
             expect(leaf.isLeaf()).toBe(false);
+        });
+    });
+
+    describe("filtering", function() {
+        function vis(node) {
+            if (Ext.isNumber(node)) {
+                node = byId(node);
+            }
+            return store.isVisible(node);
+        }
+
+        function expandify(nodes) {
+            if (Ext.isNumber(nodes[0])) {
+                nodes = Ext.Array.map(nodes, function(id) {
+                    return {
+                        id: id,
+                        leaf: true
+                    };
+                });
+            }
+            Ext.Array.forEach(nodes, function(node) {
+                if (node.children || node.leaf === false) {
+                    node.expanded = true;
+                    if (node.children) {
+                        node.children = expandify(node.children);
+                    } else {
+                        node.children = [];
+                    }
+                } else {
+                    node.leaf = true;
+                }
+            });
+            return nodes;
+        }
+
+        function makeStore(nodes, cfg) {
+            store = new Ext.data.TreeStore(Ext.apply({
+                root: {
+                    expanded: true,
+                    children: expandify(nodes)
+                }
+            }, cfg));
+        }
+
+        function idFilter(ids) {
+            store.filter({
+                filterFn: function(node) {
+                    return Ext.Array.indexOf(ids, node.id) > -1;
+                }
+            });
+        }
+
+        describe("basic filtering", function() {
+            it("should be able to provide a filter in the constructor", function() {
+                makeStore([{
+                    id: 1
+                }, {
+                    id: 2
+                }], {
+                    filters: [{
+                        fn: function(rec) {
+                            return rec.get('id') === 1;
+                        }
+                    }]
+                });
+                expect(vis(1)).toBe(true);
+                expect(vis(2)).toBe(false);
+            });
+
+            it("should not show children of non matching nodes", function() {
+                makeStore([{
+                    id: 1,
+                    children: [2, 3]
+                }, {
+                    id: 4,
+                    children: [5, 6]
+                }]);
+                idFilter([2, 3, 4, 5, 6]);
+                expect(vis(1)).toBe(false);
+                expect(vis(2)).toBe(false);
+                expect(vis(3)).toBe(false);
+                expect(vis(4)).toBe(true);
+                expect(vis(5)).toBe(true);
+                expect(vis(6)).toBe(true);
+            });
+
+            it("should hide non-matching leaves", function() {
+                makeStore([{
+                    id: 1,
+                    children: [2, 3]
+                }, {
+                    id: 4,
+                    children: [5, 6]
+                }]);
+                idFilter([1, 4]);
+                expect(vis(1)).toBe(true);
+                expect(vis(2)).toBe(false);
+                expect(vis(3)).toBe(false);
+                expect(vis(4)).toBe(true);
+                expect(vis(5)).toBe(false);
+                expect(vis(6)).toBe(false);
+            });
+
+            it("should hide non-matching nodes at all levels", function() {
+                makeStore([{
+                    id: 1,
+                    children: [{
+                        id: 2,
+                        children: [{
+                            id: 3,
+                            children: [{
+                                id: 4,
+                                children: [{
+                                    id: 5
+                                }]
+                            }]
+                        }]
+                    }]
+                }]);
+                idFilter([1, 2]);
+                expect(vis(1)).toBe(true);
+                expect(vis(2)).toBe(true);
+                expect(vis(3)).toBe(false);
+                expect(vis(4)).toBe(false);
+                expect(vis(5)).toBe(false);
+            });
+
+            it("should run the filters on all nodes (even if the parent is not visible) bottom up", function() {
+                makeStore([{
+                    id: 'n',
+                    children: [{
+                        id: 'h',
+                        children: [{
+                            id: 'c',
+                            children: [{
+                                id: 'a'
+                            }, {
+                                id: 'b'
+                            }]
+                        }, {
+                            id: 'f',
+                            children: [{
+                                id: 'd'
+                            }, {
+                                id: 'e'
+                            }]
+                        }, {
+                            id: 'g'
+                        }]
+                    }, {
+                        id: 'm',
+                        children: [{
+                            id: 'i'
+                        }, {
+                            id: 'l',
+                            children: [{
+                                id: 'j'
+                            }, {
+                                id: 'k'
+                            }]
+                        }]
+                    }]
+                }, {
+                    id: 'v',
+                    children: [{
+                        id: 'r',
+                        children: [{
+                            id: 'p',
+                            children: [{
+                                id: 'o'
+                            }]
+                        }, {
+                            id: 'q'
+                        }]
+                    }, {
+                        id: 'u',
+                        children: [{
+                            id: 's'
+                        }, {
+                            id: 't'
+                        }]
+                    }]
+                }, {
+                    id: 'z',
+                    children: [{
+                        id: 'x',
+                        children: [{
+                            id: 'w'
+                        }]
+                    }, {
+                        id: 'y'
+                    }]
+                }]);
+
+                var order = [];
+                store.getFilters().add({
+                    filterFn: function(node) {
+                        if (!node.isRoot()) {
+                            order.push(node.id);
+                        }
+                        return node.id !== 'h';
+                    }
+                });
+                expect(order.join('')).toBe('abcdefghijklmnopqrstuvwxyz');
+            });
+        });
+
+        describe("clearing filters", function() {
+            it("should reset node visibility after clearing filters", function() {
+                makeStore([{
+                    id: 1,
+                    children: [{
+                        id: 2,
+                        children: [3, 4]
+                    }, {
+                        id: 5
+                    }, {
+                        id: 6,
+                        children: [{
+                            id: 7,
+                            children: [8, 9]
+                        }]
+                    }]
+                }]);
+                idFilter([1, 6]);
+                expect(vis(1)).toBe(true);
+                expect(vis(2)).toBe(false);
+                expect(vis(3)).toBe(false);
+                expect(vis(4)).toBe(false);
+                expect(vis(5)).toBe(false);
+                expect(vis(6)).toBe(true);
+                expect(vis(7)).toBe(false);
+                expect(vis(8)).toBe(false);
+                expect(vis(9)).toBe(false);
+                store.getFilters().removeAll();
+                expect(vis(1)).toBe(true);
+                expect(vis(2)).toBe(true);
+                expect(vis(3)).toBe(true);
+                expect(vis(4)).toBe(true);
+                expect(vis(5)).toBe(true);
+                expect(vis(6)).toBe(true);
+                expect(vis(7)).toBe(true);
+                expect(vis(8)).toBe(true);
+                expect(vis(9)).toBe(true);
+            });
+        });
+
+        describe("root visibility", function() {
+            describe("with rootVisible: true", function() {
+                it("should show the root if any root childNodes are visible", function() {
+                    makeStore([{
+                        id: 1
+                    }, {
+                        id: 2
+                    }, {
+                        id: 3
+                    }], {rootVisible: true});
+                    idFilter([2]);
+                    expect(vis(store.getRoot())).toBe(true);
+                });
+
+                it("should not show the root if no children match", function() {
+                    makeStore([{
+                        id: 1
+                    }, {
+                        id: 2
+                    }], {rootVisible: true});
+                    idFilter([3]);
+                    expect(vis(store.getRoot())).toBe(false);
+                });
+            });
+        });
+
+        describe("dynamic manipulation", function() {
+            describe("adding", function() {
+                it("should not show nodes that are added to a filtered out node", function() {
+                    makeStore([{
+                        id: 1,
+                        leaf: false
+                    }]);
+                    idFilter([2]);
+                    byId(1).appendChild({
+                        id: 2
+                    });
+                    expect(vis(2)).toBe(false);
+                });
+
+                it("should not show a node that does match the filter", function() {
+                    makeStore([{
+                        id: 1,
+                        leaf: false
+                    }]);
+                    idFilter([1]);
+                    byId(1).appendChild({
+                        id: 2
+                    });
+                    expect(vis(2)).toBe(false);
+                });
+
+                it("should show if the added node matches the filter", function() {
+                    makeStore([{
+                        id: 1,
+                        leaf: false
+                    }]);
+                    idFilter([1, 2]);
+                    byId(1).appendChild({
+                        id: 2
+                    });
+                    expect(vis(2)).toBe(true);
+                });
+
+                it("should filter out deep nodes that do not match", function() {
+                    makeStore([{
+                        id: 1,
+                        leaf: false
+                    }]);
+                    idFilter([1, 2, 3, 4]);
+
+                    var main = new Ext.data.TreeModel({
+                        id: 2,
+                        leaf: false,
+                        expanded: true,
+                        children: []
+                    });
+                    main.appendChild({
+                        id: 3,
+                        leaf: false,
+                        expanded: true,
+                        children: []
+                    }).appendChild({
+                        id: 4,
+                        leaf: false,
+                        expanded: true,
+                        children: []
+                    }).appendChild({
+                        id: 5,
+                        leaf: true
+                    });
+
+                    byId(1).appendChild(main);
+                    expect(vis(2)).toBe(true);
+                    expect(vis(3)).toBe(true);
+                    expect(vis(4)).toBe(true);
+                    expect(vis(5)).toBe(false);
+                });
+            });
+
+            describe("updating", function() {
+                it("should exclude a node when modifying it to not match the filter", function() {
+                    makeStore([{
+                        id: 1,
+                        text: 'Foo'
+                    }]);
+                    store.getFilters().add({
+                        property: 'text',
+                        value: 'Foo'
+                    });
+                    byId(1).set('text', 'Bar');
+                    expect(vis(1)).toBe(false);
+                });
+
+                it("should exclude children when the parent is filtered out", function() {
+                    makeStore([{
+                        id: 1,
+                        text: 'Foo',
+                        children: [{
+                            id: 2,
+                            text: 'Leaf'
+                        }]
+                    }]);
+                    store.getFilters().add({
+                        filterFn: function(node) {
+                            if (node.isLeaf()) {
+                                return true;
+                            } else {
+                                return node.data.text === 'Foo';
+                            }
+                        }
+                    });
+                    byId(1).set('text', 'Bar');
+                    expect(vis(1)).toBe(false);
+                    expect(vis(2)).toBe(false);
+                });
+
+                it("should include a node when modifying it to match the filter", function() {
+                    makeStore([{
+                        id: 1,
+                        text: 'Foo'
+                    }]);
+                    store.getFilters().add({
+                        property: 'text',
+                        value: 'Bar'
+                    });
+                    byId(1).set('text', 'Bar');
+                    expect(vis(1)).toBe(true);
+                });
+
+                it("should include children when the parent is filtered in", function() {
+                    makeStore([{
+                        id: 1,
+                        text: 'Bar',
+                        children: [{
+                            id: 2,
+                            text: 'Leaf'
+                        }]
+                    }]);
+                    store.getFilters().add({
+                        filterFn: function(node) {
+                            if (node.isLeaf()) {
+                                return true;
+                            } else {
+                                return node.data.text === 'Foo';
+                            }
+                        }
+                    });
+                    byId(1).set('text', 'Foo');
+                    expect(vis(1)).toBe(true);
+                    expect(vis(2)).toBe(true);
+                });
+            });
         });
     });
     

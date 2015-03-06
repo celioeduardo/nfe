@@ -31,8 +31,8 @@
  *
  * # Loading Nested Data
  *
- * Readers have the ability to automatically load deeply-nested data objects based on the {@link Ext.data.association.Association
- * associations} configured on each Model. Below is an example demonstrating the flexibility of these associations in a
+ * Readers have the ability to automatically load deeply-nested data objects based on the {@link Ext.data.schema.Association associations}
+ * configured on each Model. Below is an example demonstrating the flexibility of these associations in a
  * fictional CRM system which manages a User, their Orders, OrderItems and Products. First we'll define the models:
  *
  *     Ext.define("User", {
@@ -141,7 +141,7 @@
  *                 //iterate over the OrderItems for each Order
  *                 order.orderItems().each(function(orderItem) {
  *                     //we know that the Product data is already loaded, so we can use the synchronous getProduct
- *                     //usually, we would use the asynchronous version (see {@link Ext.data.association.BelongsTo})
+ *                     //usually, we would use the asynchronous version (see {@link Ext.data.Model#BelongsTo})
  *                     var product = orderItem.getProduct();
  *
  *                     console.log(orderItem.get('quantity') + ' orders of ' + product.get('name'));

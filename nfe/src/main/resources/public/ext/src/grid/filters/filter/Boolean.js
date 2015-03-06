@@ -15,17 +15,21 @@ Ext.define('Ext.grid.filters.filter.Boolean', {
      */
     defaultValue: false,
 
+    //<locale>
     /**
      * @cfg {String} yesText
      * Defaults to 'Yes'.
      */
     yesText: 'Yes',
+    //</locale>
 
+    //<locale>
     /**
      * @cfg {String} noText
      * Defaults to 'No'.
      */
     noText: 'No',
+    //</locale>
 
     updateBuffer: 0,
 
@@ -77,7 +81,8 @@ Ext.define('Ext.grid.filters.filter.Boolean', {
         me.filter.setValue(value);
 
         if (value !== undefined && me.active) {
-            me.updateStoreFilter(me.filter);
+            me.value = value;
+            me.updateStoreFilter();
         } else {
             me.setActive(true);
         }

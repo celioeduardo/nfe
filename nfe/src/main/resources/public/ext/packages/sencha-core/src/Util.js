@@ -30,12 +30,10 @@ Ext.apply(Ext, {
             };
 
         return function(id) {
-            return validIdRe.test(id)
-                ? id
+            return validIdRe.test(id) ? id :
                 // replace the number portion last to keep the trailing ' '
                 // from being escaped
-                : id.replace(escapeRx, escapeFn)
-                    .replace(leadingNumRx, numEscapeFn);
+                id.replace(escapeRx, escapeFn).replace(leadingNumRx, numEscapeFn);
         };
     }()),
 
@@ -530,7 +528,7 @@ Ext.apply(Ext, {
 
         if (aliasNamespace) {
              // If config is a string value, treat it as an alias
-            if (typeof config == 'string') {
+            if (typeof config === 'string') {
                 return manager.instantiateByAlias(aliasNamespace + '.' + config);
             }
             // Same if 'type' is given in config
@@ -543,7 +541,7 @@ Ext.apply(Ext, {
             return instance || Ext.create(classReference);
         }
 
-        //<debug error>
+        //<debug>
         if (!Ext.isObject(config)) {
             Ext.Logger.error("Invalid config, must be a valid config object");
         }
@@ -666,12 +664,12 @@ Ext.apply(Ext, {
                         value = object[name];
 
                         type = typeof value;
-                        if (type == 'function') {
+                        if (type === 'function') {
                             if (!withFunctions) {
                                 continue;
                             }
                             member = type;
-                        } else if (type == 'undefined') {
+                        } else if (type === 'undefined') {
                             member = type;
                         } else if (value === null || primitiveRe.test(type) || Ext.isDate(value)) {
                             member = Ext.encode(value);
@@ -702,7 +700,7 @@ Ext.apply(Ext, {
 
                 log.indent = indent;
 
-                if (typeof message != 'string') {
+                if (typeof message !== 'string') {
                     options = message;
                     message = options.msg || '';
                     level = options.level || level;
@@ -727,7 +725,7 @@ Ext.apply(Ext, {
 
                 message = indent ? Ext.String.repeat(' ', log.indentSize * indent) + message : message;
                 // w/o console, all messages are equal, so munge the level into the message:
-                if (level != 'log') {
+                if (level !== 'log') {
                     message = '[' + level.charAt(0).toUpperCase() + '] ' + message;
                 }
 
@@ -747,12 +745,12 @@ Ext.apply(Ext, {
 
                     if (stack && con.trace) {
                         // Firebug's console.error() includes a trace already...
-                        if (!con.firebug || level != 'error') {
+                        if (!con.firebug || level !== 'error') {
                             con.trace();
                         }
                     }
                 } else if (Ext.isOpera) {
-                    opera.postError(message);
+                    opera.postError(message); // jshint ignore:line
                 } else {
                     out = log.out;
                     max = log.max;
@@ -772,7 +770,7 @@ Ext.apply(Ext, {
             }
 
             function logx (level, args) {
-                if (typeof args[0] == 'string') {
+                if (typeof args[0] === 'string') {
                     args.unshift({});
                 }
                 args[0].level = level;

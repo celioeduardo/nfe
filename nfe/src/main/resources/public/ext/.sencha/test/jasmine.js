@@ -2491,12 +2491,31 @@ jasmine.StringPrettyPrinter.prototype.append = function(value) {
         superFormat = prototype.format;
 
     prototype.format = function(value) {
-        if (value && value.$className) {
-            // support for pretty printing instances of Ext classes
-            this.emitScalar(value.$className + '#' + value.id);
-        } else {
-            superFormat.call(this, value);
+        var className, superclass;
+
+        if (value) {
+            className = value.$className;
+
+            if (className !== undefined) {
+                // support for pretty printing instances of Ext classes
+
+                if (!className) {
+                    // support for anonymous classes - Ext.define(null, ...)
+                    // loop up the inheritance chain to find nearest non-anonymous ancestor
+                    superclass = value.superclass;
+                    while (superclass && !superclass.$className) {
+                        superclass = superclass.superclass;
+                    }
+                    if (superclass) {
+                        className = superclass.$className;
+                    }
+                }
+                this.emitScalar(className + '#' + (value.id || (value.getId && value.getId())));
+                return;
+            }
         }
+
+        superFormat.call(this, value);
     };
 })();jasmine.Queue = function(env) {
   this.env = env;
@@ -3064,6 +3083,7 @@ jasmine.Spec.prototype.removeAllSpies = function() {
     allowedGlobals._firebug =
     // IE10+ F12 dev tools adds these properties when opened.
     allowedGlobals.__IE_DEVTOOLBAR_CONSOLE_COMMAND_LINE =
+    allowedGlobals.__BROWSERTOOLS_CONSOLE_BREAKMODE_FUNC =
     allowedGlobals.__BROWSERTOOLS_CONSOLE_SAFEFUNC =
     // in IE8 jasmine's overrides of setTimeout/setInterval make them iterable
     allowedGlobals.setTimeout =
@@ -3118,7 +3138,7 @@ jasmine.Spec.prototype.removeAllSpies = function() {
         // clean up orphan elements and re-enable this at some point.
         // this.collectGarbage();
 
-        Ext.event.Dispatcher.getInstance().getPublisher('gesture').reset();
+        Ext.event.publisher.Gesture.instance.reset();
 
         this.env.reporter.reportSpecResults(this);
     };
@@ -3289,6 +3309,9 @@ function waitsForSpy(spy, timeoutMessage, timeout) {
 
     currentSpec.waitsFor.call(currentSpec, function() { return !!spy.callCount }, timeoutMessage, timeout);
 };
+
+var waitForSpy = waitsForSpy;
+
 /**
  * Internal representation of a Jasmine suite.
  *
@@ -3779,10 +3802,10 @@ jasmine.pointerEventsMap = Ext.supports.MSPointerEvents && !Ext.supports.Pointer
     pointerleave: 'mouseleave'
 } : {};
 
- /**
+/**
  * Utility function to fire a fake mouse event to a given target element
  */
-jasmine.fireMouseEvent = function (target, type, x, y, button) {
+jasmine.fireMouseEvent = function (target, type, x, y, button, shiftKey, ctrlKey, altKey) {
     var e, doc, docEl, body, ret, pointerEventType;
 
     target = Ext.getDom(target);
@@ -3806,8 +3829,19 @@ jasmine.fireMouseEvent = function (target, type, x, y, button) {
             screenY: y,
             clientX: x,
             clientY: y,
-            button: button || 1
+            button: button || 1,
+            shiftKey: !!shiftKey,
+            ctrlKey: !!ctrlKey,
+            altKey: !!altKey
         });
+        if (type === 'click') {
+            target.fireEvent('onmousedown', e);
+            target.fireEvent('onmouseup', e);
+        } else if (type === 'dblclick') {
+            jasmine.fireMouseEvent(target, 'click', x, y, button, shiftKey, ctrlKey, altKey);
+            target.fireEvent('onmousedown', e);
+            target.fireEvent('onmouseup', e);
+        }
         ret = target.fireEvent('on' + type, e);
     } else {
         if (Ext.supports.PointerEvents || Ext.supports.MSPointerEvents) {
@@ -3821,19 +3855,19 @@ jasmine.fireMouseEvent = function (target, type, x, y, button) {
                 // In IE10+ the framework translates click to tap, which means we must
                 // fire the events from which tap is sythesized (pointerdown/pointerup)
                 // if we want our listeners to run.
-                jasmine.firePointerEvent(target, 'pointerdown', 1, x, y, button);
-                jasmine.doFireMouseEvent(target, 'mousedown', x, y, button);
-                jasmine.firePointerEvent(target, 'pointerup', 1, x, y, button);
-                jasmine.doFireMouseEvent(target, 'mouseup', x, y, button);
+                jasmine.firePointerEvent(target, 'pointerdown', 1, x, y, button, shiftKey, ctrlKey, altKey);
+                jasmine.doFireMouseEvent(target, 'mousedown', x, y, button, shiftKey, ctrlKey, altKey);
+                jasmine.firePointerEvent(target, 'pointerup', 1, x, y, button, shiftKey, ctrlKey, altKey);
+                jasmine.doFireMouseEvent(target, 'mouseup', x, y, button, shiftKey, ctrlKey, altKey);
             } else if (type === 'dblclick') {
                 // click (which triggers its own (pointerdown/mousdown/pointerup/mouseup
                 // sequence) followed by a second pointerdown/mousedown/pointerup/mouseup
                 // sequence always precedes dblclick
-                jasmine.fireMouseEvent(target, 'click', x, y, button);
-                jasmine.firePointerEvent(target, 'pointerdown', 1, x, y, button);
-                jasmine.doFireMouseEvent(target, 'mousedown', x, y, button);
-                jasmine.firePointerEvent(target, 'pointerup', 1, x, y, button);
-                jasmine.doFireMouseEvent(target, 'mouseup', x, y, button);
+                jasmine.fireMouseEvent(target, 'click', x, y, button, shiftKey, ctrlKey, altKey);
+                jasmine.firePointerEvent(target, 'pointerdown', 1, x, y, button, shiftKey, ctrlKey, altKey);
+                jasmine.doFireMouseEvent(target, 'mousedown', x, y, button, shiftKey, ctrlKey, altKey);
+                jasmine.firePointerEvent(target, 'pointerup', 1, x, y, button, shiftKey, ctrlKey, altKey);
+                jasmine.doFireMouseEvent(target, 'mouseup', x, y, button, shiftKey, ctrlKey, altKey);
             } else {
                 // plain old mouse event (mousedown, mousemove, etc.) - fire the corresponding
                 // pointer event before dispatching the mouse event
@@ -3844,27 +3878,27 @@ jasmine.fireMouseEvent = function (target, type, x, y, button) {
             }
         } else if (type === 'click') {
             // simulate a mousedown/mouseup sequence before firing a click event
-            jasmine.fireMouseEvent(target, 'mousedown', x, y, button);
-            jasmine.fireMouseEvent(target, 'mouseup', x, y, button);
+            jasmine.fireMouseEvent(target, 'mousedown', x, y, button, shiftKey, ctrlKey, altKey);
+            jasmine.fireMouseEvent(target, 'mouseup', x, y, button, shiftKey, ctrlKey, altKey);
         } else if (type === 'dblclick') {
             // click (which includes its own mousedown/mouseup sequence) followed by a second
             // mousedown/mouseup always precedes dblclick
-            jasmine.fireMouseEvent(target, 'click', x, y, button);
-            jasmine.fireMouseEvent(target, 'mousedown', x, y, button);
-            jasmine.fireMouseEvent(target, 'mouseup', x, y, button);
+            jasmine.fireMouseEvent(target, 'click', x, y, button, shiftKey, ctrlKey, altKey);
+            jasmine.fireMouseEvent(target, 'mousedown', x, y, button, shiftKey, ctrlKey, altKey);
+            jasmine.fireMouseEvent(target, 'mouseup', x, y, button, shiftKey, ctrlKey, altKey);
         }
 
-        ret = jasmine.doFireMouseEvent(target, type, x, y, button);
+        ret = jasmine.doFireMouseEvent(target, type, x, y, button, shiftKey, ctrlKey, altKey);
     }
 
     return (ret === false) ? ret : e;
 };
 
-jasmine.doFireMouseEvent = function(target, type, x, y, button) {
+jasmine.doFireMouseEvent = function(target, type, x, y, button, shiftKey, ctrlKey, altKey) {
     var doc = target.ownerDocument || document,
         e = doc.createEvent("MouseEvents");
 
-    e.initMouseEvent(type, true, true, doc.defaultView || doc.parentWindow, 1, x, y, x, y, false, false, false, false, button || 0, null);
+    e.initMouseEvent(type, true, true, doc.defaultView || doc.parentWindow, 1, x, y, x, y, !!ctrlKey, !!altKey, !!shiftKey, false, button || 0, null);
     return target.dispatchEvent(e);
 };
 
@@ -3881,7 +3915,7 @@ jasmine.doFireMouseEvent = function(target, type, x, y, button) {
  * @param {Number} button
  * @return {Boolean} true if the event was successfully dispatched
  */
-jasmine.firePointerEvent = function(target, type, pointerId, x, y, button) {
+jasmine.firePointerEvent = function(target, type, pointerId, x, y, button, shiftKey, ctrlKey, altKey) {
     var doc = document,
         e = doc.createEvent("MouseEvents"),
         target = Ext.getDom(target),
@@ -3903,9 +3937,9 @@ jasmine.firePointerEvent = function(target, type, pointerId, x, y, button) {
         y, // screenY
         x, // clientX
         y, // clientY
-        false, // ctrlKey
-        false, // altKey
-        false, // shiftKey
+        !!ctrlKey, // ctrlKey
+        !!altKey,   // altKey
+        !!shiftKey, // shiftKey
         false, // metaKey
         button || 0, // button
         null // relatedTarget
@@ -4059,7 +4093,7 @@ jasmine.simulateTabKey = function(from, forward) {
     jasmine.fireKeyEvent(from, 'keyup',   9, forward);
 
     return to;
-}
+};
 
 jasmine.simulateArrowKey = function(from, key) {
     var keyCode = Ext.event.Event[key.toUpperCase()];
@@ -4074,25 +4108,32 @@ jasmine.simulateArrowKey = function(from, key) {
 
     jasmine.fireKeyEvent(target, 'keydown', keyCode);
     jasmine.fireKeyEvent(target, 'keyup',   keyCode);
-}
+};
 
 // In IE, focus events are asynchronous so we often have to wait
 // after attempting to focus something. Otherwise tests will fail.
-jasmine.waitForFocus = function(cmp, desc, timeout) {
-    var dom = cmp.isComponent ? cmp.getFocusEl().dom
-            : cmp.isElement   ? cmp.dom
-            :                   cmp
-        ;
+jasmine.waitForFocus = jasmine.waitsForFocus = function(cmp, desc, timeout) {
+    var isComponent = cmp.isComponent,
+        dom = isComponent   ? cmp.getFocusEl().dom
+            : cmp.isElement ? cmp.dom
+            :                 cmp,
+        id = isComponent ? (cmp.itemId || cmp.id) : dom.id;
+    
+    if (!desc) {
+        desc = id + ' to focus';
+    }
 
-    desc    = desc    || dom.id;
-    timeout = timeout || 100;
+    // Default to Jasmine's default timeout.
+    timeout = timeout || 5000;
 
     waitsFor(
-        function() { return document.activeElement === dom },
-        desc + ' to focus',
+        function() {
+            return document.activeElement === dom;
+        },
+        desc,
         timeout
     );
-}
+};
 
 // In IE (all of 'em), focus/blur events are asynchronous. To us it means
 // not only that we have to wait for the actual element to focus but
@@ -4104,13 +4145,13 @@ jasmine.waitForFocus = function(cmp, desc, timeout) {
 // Note that the timeout value is not important here because effectively
 // we just want to yield enough cycles to unwind all the async event handlers
 // before the test checks done in the specs, so we default to 1 ms.
-jasmine.waitAWhile = function(timeout) {
+jasmine.waitAWhile = jasmine.waitsAWhile = function(timeout) {
     timeout = timeout != null ? timeout : 1;
 
     waits(timeout);
     waits(timeout);
     waits(timeout);
-}
+};
 
 jasmine.focusAndWait = function(cmp, waitFor) {
     runs(function() {
@@ -4120,7 +4161,7 @@ jasmine.focusAndWait = function(cmp, waitFor) {
     jasmine.waitForFocus(waitFor || cmp);
 
     jasmine.waitAWhile();
-}
+};
 
 jasmine.pressTabKey = function(from, forward) {
     jasmine.focusAndWait(from);
@@ -4130,7 +4171,7 @@ jasmine.pressTabKey = function(from, forward) {
     });
 
     jasmine.waitAWhile();
-}
+};
 
 jasmine.pressArrowKey = function(from, key) {
     jasmine.focusAndWait(from);
@@ -4140,24 +4181,26 @@ jasmine.pressArrowKey = function(from, key) {
     });
 
     jasmine.waitAWhile();
-}
+};
 
 // Can't add this one and below as simple matchers,
 // because there's async waiting involved
-jasmine.expectFocused = function(want) {
-    jasmine.waitForFocus(want);
+jasmine.expectFocused = jasmine.expectsFocused = function(want, noWait) {
+    if (!noWait) {
+        jasmine.waitForFocus(want);
+    }
 
     runs(function() {
-        var have = want.isComponent ? Ext.Component.getActiveComponent()
-                : want.isElement   ? Ext.fly(document.activeElement)
-                :                    document.activeElement
-            ;
-
+        var have = want.isComponent ? Ext.ComponentManager.getActiveComponent()
+                 : want.isElement   ? Ext.fly(document.activeElement)
+                 :                    document.activeElement
+                 ;
+        
         expect(have).toBe(want);
     });
-}
+};
 
-jasmine.expectTabIndex = function(wantIndex, el) {
+jasmine.expectTabIndex = jasmine.expectsTabIndex = function(wantIndex, el) {
     runs(function() {
         if (el && el.isComponent) {
             el = el.getFocusEl();
@@ -4167,7 +4210,7 @@ jasmine.expectTabIndex = function(wantIndex, el) {
 
         expect(haveIndex - 0).toBe(wantIndex);
     });
-}
+};
 
 /*
 This version is commented out because there is a bug in WebKit that prevents
@@ -4439,9 +4482,12 @@ MockAjax.prototype.xmlDOM = function(xml) {
         };
     } 
 
-    try {
-        return (new DOMParser()).parseFromString(xml, "text/xml");
-    } catch (e) {
-        return null;
+    if (xml && xml.substr(0, 1) === '<') {
+        try {
+            return (new DOMParser()).parseFromString(xml, "text/xml");
+        }
+        catch (e) {}
     }
+    
+    return null;
 };

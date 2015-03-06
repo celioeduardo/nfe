@@ -57,6 +57,67 @@ Ext.define('Ext.draw.overrides.sprite.Path', {
         return result;
     },
 
+    //@inheritdoc
+    hitTest: function (point, options) {
+        var me = this,
+            attr = me.attr,
+            path = attr.path,
+            bbox = me.getBBox(),
+            matrix = attr.matrix,
+            x = point[0],
+            y = point[1],
+            hasFill = attr.fillStyle !== Ext.draw.Color.NONE &&
+                attr.fillStyle !== Ext.draw.Color.RGBA_NONE,
+            bboxHit = bbox && x >= bbox.left && x <= bbox.right &&
+                              y >= bbox.top && y <= bbox.bottom,
+            result = null,
+            params;
+
+
+        if (!bboxHit) {
+            return result;
+        }
+
+        if (!matrix.isIdentity()) {
+            params = path.params.slice(0);
+            path.transform(attr.matrix);
+        }
+
+        if (options.fill && options.stroke) {
+            if (hasFill) {
+                if (path.isPointInPath(x, y)) {
+                    result = {
+                        sprite: me
+                    };
+                }
+            } else {
+                if (path.isPointInPath(x, y) || path.isPointOnPath(x, y)) {
+                    result = {
+                        sprite: me
+                    };
+                }
+            }
+        } else if (options.stroke && !options.fill) {
+            if (path.isPointOnPath(x, y)) {
+                result = {
+                    sprite: me
+                };
+            }
+        } else if (options.fill && !options.stroke) {
+            if (path.isPointInPath(x, y)) {
+                result = {
+                    sprite: me
+                };
+            }
+        }
+
+        if (params) {
+            path.params = params;
+        }
+
+        return result;
+    },
+
     /**
      * Returns all points where this sprite intersects the given sprite.
      * The given sprite must be an instance of the {@link Ext.draw.sprite.Path} class

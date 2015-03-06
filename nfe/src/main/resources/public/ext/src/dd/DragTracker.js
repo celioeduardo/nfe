@@ -431,7 +431,7 @@ Ext.define('Ext.dd.DragTracker', {
             me.fireEvent('dragend', me, e);
         }
         // Private property calculated when first required and only cached during a drag
-        me._constrainRegion =  null
+        me._constrainRegion = null;
     },
 
     triggerStart: function(e) {

@@ -594,19 +594,22 @@ describe("Ext.data.schema.ManyToMany", function() {
 
     describe("nested loading", function() {
         var User, Group;
-        beforeEach(function() {
-            Ext.data.Model.schema.setNamespace('spec');
 
+        function makeAssociations(cfg) {
             Group = Ext.define('spec.Group', {
                 extend: 'Ext.data.Model',
                 fields: ['id', 'name'],
-                manyToMany: 'User'
+                manyToMany: cfg || 'User'
             });
 
             User = Ext.define('spec.User', {
                 extend: 'Ext.data.Model',
                 fields: ['id', 'name']
             });
+        }
+
+        beforeEach(function() {
+            Ext.data.Model.schema.setNamespace('spec');
             MockAjaxManager.addMethods();
         });
 
@@ -625,7 +628,64 @@ describe("Ext.data.schema.ManyToMany", function() {
             });
         }
 
+        describe("associationKey", function() {
+            beforeEach(function() {
+                makeAssociations({
+                    GroupUsers: {
+                        type: 'Group',
+                        role: 'groups',
+                        associationKey: 'groups.data',
+                        right: {
+                            type: 'User',
+                            role: 'users',
+                            associationKey: 'users.data'
+                        }
+                    }
+                });
+            });
+
+            it("should use the associatioKey when loading the left", function() {
+                var group = Group.load(1);
+                complete({
+                    id: 1,
+                    users: {
+                        data: [{
+                            id: 101
+                        }, {
+                            id: 102
+                        }]
+                    }
+                });
+                var users = group.users();
+                expect(users.getCount()).toBe(2);
+                expect(users.getAt(0).getId()).toBe(101);
+                expect(users.getAt(1).getId()).toBe(102);
+            });
+
+            it("should use the associatioKey when loading the right", function() {
+                var user = User.load(1);
+                complete({
+                    id: 1,
+                    groups: {
+                        data: [{
+                            id: 101
+                        }, {
+                            id: 102
+                        }]
+                    }
+                });
+                var groups = user.groups();
+                expect(groups.getCount()).toBe(2);
+                expect(groups.getAt(0).getId()).toBe(101);
+                expect(groups.getAt(1).getId()).toBe(102);
+            });
+        });
+
         describe("without session", function() {
+            beforeEach(function() {
+                makeAssociations();
+            });
+
             it("should load child records of the left", function() {
                 var group = Group.load(1);
                 complete({
@@ -674,6 +734,7 @@ describe("Ext.data.schema.ManyToMany", function() {
         describe("with session", function() {
             var session;
             beforeEach(function() {
+                makeAssociations();
                 session = new Ext.data.Session();
             });
 
@@ -786,6 +847,94 @@ describe("Ext.data.schema.ManyToMany", function() {
                 users = groups.getAt(2).users();
                 expect(users.getCount()).toBe(1);
                 expect(users.getAt(0)).toBe(user);
+            });
+        });
+    });
+
+    describe("store membership", function() {
+        var User, Group, session;
+
+        beforeEach(function() {
+            Ext.data.Model.schema.setNamespace('spec');
+            Group = Ext.define('spec.Group', {
+                extend: 'Ext.data.Model',
+                fields: ['id', 'name'],
+                manyToMany: 'User'
+            });
+
+            User = Ext.define('spec.User', {
+                extend: 'Ext.data.Model',
+                fields: ['id', 'name']
+            });
+
+            session = new Ext.data.Session();
+        });
+
+        afterEach(function() {
+            Ext.undefine('spec.Group');
+            Ext.undefine('spec.User');
+            Ext.data.Model.schema.clear(true);
+            session.destroy();
+            session = User = Group = null;
+        });
+
+        describe("adding", function() {
+            describe("with the inverse store not created", function() {
+                it("should exist in the inverse store", function() {
+                    var user = session.createRecord('User', 1),
+                        group = session.createRecord('Group', 1),
+                        users;
+
+                    user.groups().add(group);
+                    users = group.users();
+
+                    expect(users.getCount()).toBe(1);
+                    expect(users.getAt(0)).toBe(user);
+                });
+            });
+
+            describe("with the inverse store created", function() {
+                it("should exist in the inverse store", function() {
+                    var user = session.createRecord('User', 1),
+                        group = session.createRecord('Group', 1),
+                        users = group.users();
+
+                    user.groups().add(group);
+
+                    expect(users.getCount()).toBe(1);
+                    expect(users.getAt(0)).toBe(user);
+                });
+            });
+        });
+
+        describe("removing", function() {
+            describe("with the inverse store not created", function() {
+                it("should not exist in the inverse store", function() {
+                    var user = session.createRecord('User', 1),
+                        group = session.createRecord('Group', 1),
+                        groups = user.groups(),
+                        users;
+
+                    groups.add(group);
+                    groups.remove(group);
+                    users = group.users();
+
+                    expect(users.getCount()).toBe(0);
+                });
+            });
+
+            describe("with the inverse store created", function() {
+                it("should not exist in the inverse store", function() {
+                    var user = session.createRecord('User', 1),
+                        group = session.createRecord('Group', 1),
+                        groups = user.groups(),
+                        users = group.users();
+
+                    groups.add(group);
+                    groups.remove(group);
+
+                    expect(users.getCount()).toBe(0);
+                });
             });
         });
     });

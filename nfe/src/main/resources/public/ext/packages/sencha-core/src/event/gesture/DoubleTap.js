@@ -5,6 +5,8 @@ Ext.define('Ext.event.gesture.DoubleTap', {
 
     extend: 'Ext.event.gesture.SingleTouch',
 
+    priority: 300,
+
     inheritableStatics: {
         DIFFERENT_TARGET: 'Different Target'
     },
@@ -145,4 +147,7 @@ Ext.define('Ext.event.gesture.DoubleTap', {
 
         me.lastStartPoint = me.startPoint = me.singleTapTimer = null;
     }
+}, function(DoubleTap) {
+    var gestures = Ext.manifest.gestures;
+    DoubleTap.instance = new DoubleTap(gestures && gestures.doubleTap);
 });

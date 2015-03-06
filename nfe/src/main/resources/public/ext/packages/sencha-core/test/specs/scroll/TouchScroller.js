@@ -3,7 +3,8 @@ describe('Ext.scroll.TouchScroller', function() {
 
     function makeScroller(config) {
         scroller = new Ext.scroll.TouchScroller(Ext.apply({
-            element: el
+            element: el,
+            autoRefresh: false
         }, config));
     }
 
@@ -40,6 +41,19 @@ describe('Ext.scroll.TouchScroller', function() {
             expect(el.first()).toBe(innerElement);
             expect(Ext.fly('foo').parent()).toBe(innerElement);
             expect(Ext.fly('bar').parent()).toBe(innerElement);
+        });
+
+        it("should wrap the content in a scroller element when the first child is a text node", function() {
+            // https://sencha.jira.com/browse/EXTJS-16075
+            // When using a container with a layout that does not provide a innerElement
+            // for the scroller (such as fit layout) we need to wrap the content in an
+            // innerElement (even if that content is just a text node)
+            el.setHtml('foo');
+
+            makeScroller();
+
+            innerElement = scroller.getInnerElement();
+            expect(innerElement.dom.innerHTML).toBe('foo');
         });
 
         it("should use the first child of the element as the innerElement if it has the scrollerCls", function() {
@@ -480,6 +494,41 @@ describe('Ext.scroll.TouchScroller', function() {
                 x: 300,
                 y: 200
             });
+        });
+
+        it("should allow absolutely positioned elements to contribute to the size", function() {
+            el.appendChild({
+                style: 'position:absolute;height:50px;width:50px;left:400px;top:0px;'
+            });
+
+            el.appendChild({
+                style: 'position:absolute;height:50px;width:50px;top:500px;left:0px;'
+            });
+
+            makeScroller();
+
+            expect(scroller.getSize()).toEqual({
+                x: 450,
+                y: 550
+            });
+        });
+    });
+
+    describe("container sizing", function()  {
+        it("should be able to shrink wrap around the inner element", function() {
+            var style = el.dom.style;
+            style.height = 'auto';
+            style.width = 'auto';
+            style.position = 'absolute';
+
+            el.appendChild({
+                style: 'height:400px;width:600px;'
+            });
+
+            makeScroller();
+
+            expect(el.getHeight()).toBe(400);
+            expect(el.getWidth()).toBe(600);
         });
     });
 
@@ -960,7 +1009,8 @@ describe('Ext.scroll.TouchScroller', function() {
             });
 
             scroller2 = new Ext.scroll.TouchScroller({
-                element: el2
+                element: el2,
+                autoRefresh: false
             });
         }
 
@@ -973,7 +1023,8 @@ describe('Ext.scroll.TouchScroller', function() {
             });
 
             scroller3 = new Ext.scroll.TouchScroller({
-                element: el3
+                element: el3,
+                autoRefresh: false
             });
         }
 
@@ -1191,7 +1242,8 @@ describe('Ext.scroll.TouchScroller', function() {
             }, true);
 
             scroller = new Ext.scroll.TouchScroller(Ext.apply({
-                element: el
+                element: el,
+                autoRefresh: false
             }, config));
 
             innerElement = scroller.getInnerElement();

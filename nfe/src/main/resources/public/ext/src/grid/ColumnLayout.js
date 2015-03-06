@@ -88,6 +88,20 @@ Ext.define('Ext.grid.ColumnLayout', {
         }
     },
 
+    moveItemBefore: function (item, before) {
+        var prevOwner = item.ownerCt;
+
+        // Due to the nature of grid headers, index calculation for
+        // moving items is complicated, especially since removals can trigger
+        // groups to be removed (and thus alter indexes). As such, the logic
+        // is simplified by removing the item first, then calculating the index
+        // and inserting it
+        if (item !== before && prevOwner) {
+            prevOwner.remove(item, false);
+        }
+        return this.callParent([item, before]);
+    },
+
     determineScrollbarWidth: function (ownerContext) {
         var me = this,
             owner = me.owner,
@@ -349,7 +363,7 @@ Ext.define('Ext.grid.ColumnLayout', {
                 height: height,
                 needed: needed,
                 got: got,
-                gotAll: got == needed,
+                gotAll: got === needed,
                 gotWidth: gotWidth,
                 gotHeight: gotHeight
             };

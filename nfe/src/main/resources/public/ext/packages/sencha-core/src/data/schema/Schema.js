@@ -486,7 +486,7 @@ Ext.define('Ext.data.schema.Schema', {
     // Protected
 
     /**
-     * Adds an entry from a {@link Ext.data.Model#manyToMany matrix config} declared by an
+     * Adds an entry from a {@link Ext.data.Schema#ManyToMany matrix config} declared by an
      * entity.
      * 
      * This is the ideal method to override in a derived class if the standard, default
@@ -499,7 +499,7 @@ Ext.define('Ext.data.schema.Schema', {
      * @param {String} matrixName The name of the matrix association.
      *
      * @param {String} [relation] A base name for the matrix. For information about the
-     * meaning of this see {@link Ext.data.Model#manyToMany}.
+     * meaning of this see {@link Ext.data.Schema#ManyToMany}.
      * 
      * @param {Object} left The descriptor for the "left" of the matrix.
      * @param {String} left.type The type of the entity on the "left" of the matrix.
@@ -555,22 +555,27 @@ Ext.define('Ext.data.schema.Schema', {
                 cls: leftEntry.cls,
                 type: leftType,
                 role: leftRole,
-                field: leftField
+                field: leftField,
+                associationKey: left.associationKey
             },
             right: {
                 cls: rightEntry.cls,
                 type: rightType,
                 role: rightRole,
-                field: rightField
+                field: rightField,
+                associationKey: right.associationKey
             }
         });
 
         leftEntry.associations[matrix.right.role] = matrix.right;
         rightEntry.associations[matrix.left.role] = matrix.left;
 
-        me.associationEntityMap[entityType.entityName] = true;
         if (leftEntry.cls) {
             me.associationEntityMap[leftEntry.cls.entityName] = true;
+        }
+
+        if (rightEntry.cls) {
+            me.associationEntityMap[rightEntry.cls.entityName] = true;
         }
 
         me.decorateModel(matrix);
@@ -801,12 +806,12 @@ Ext.define('Ext.data.schema.Schema', {
         },
 
         /**
-         * Adds an entry from a {@link Ext.data.Model#manyToMany matrix config} declared by an
+         * Adds an entry from a {@link Ext.data.Schema#ManyToMany matrix config} declared by an
          * {@link Ext.data.Model entity}.
          *
          * @param {Ext.Class} entityType A class derived from {@link Ext.data.Model Entity}.
          * @param {String} [matrixName] The name of the matrix association.
-         * @param {String/Object} matrixDef A {@link Ext.data.Model#manyToMany matrix config}
+         * @param {String/Object} matrixDef A {@link Ext.data.Schema#ManyToMany matrix config}
          * declared by an {@link Ext.data.Model entity}.
          * @private
          */

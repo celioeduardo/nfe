@@ -193,7 +193,7 @@ Ext.define('Ext.view.AbstractView', {
         /**
          * @cfg {Object/Ext.selection.DataViewModel} selectionModel
          * The {@link Ext.selection.Model selection model} [dataviewmodel] config or alias to use.
-         * @since 5.0.2
+         * @since 5.1.0
          */
         selectionModel: {
             type: 'dataviewmodel'
@@ -437,7 +437,7 @@ Ext.define('Ext.view.AbstractView', {
      */
 
     constructor: function(config) {
-        if (config.selModel) {
+        if (config && config.selModel) {
             config.selectionModel = config.selModel;
         }
         this.callParent([config]);
@@ -612,9 +612,8 @@ Ext.define('Ext.view.AbstractView', {
         this.callParent(arguments);
 
         // Subclasses may set focusable to false.
-        // BoundList and Table are not focusable.
-        // BoundList processes key events from its boundField, Table defers focus processing to
-        // its owning GridPanel.
+        // BoundList is not focusable.
+        // BoundList processes key events from its boundField.
         if (this.focusable) {
             this.focusEl = this.el;
         }
@@ -669,43 +668,43 @@ Ext.define('Ext.view.AbstractView', {
 
     applySelectionModel: function(selModel, oldSelModel) { 
         var me = this,
-            mode = 'SINGLE';
+            mode;
 
         if (oldSelModel) {
             oldSelModel.un('selectionchange', me.updateBindSelection, me);
             Ext.destroy(me.selModelRelayer);
+            selModel = Ext.Factory.selection(selModel);
         }
+        // If this is the initial configuration, pull overriding configs in from this view
+        else {
+            if (selModel && selModel.isSelectionModel) {
+                selModel.locked = me.disableSelection;
+            } else {
+                if (me.simpleSelect) {
+                    mode = 'SIMPLE';
+                } else if (me.multiSelect) {
+                    mode = 'MULTI';
+                } else {
+                    mode = 'SINGLE';
+                }
 
-        if (me.simpleSelect) {
-            mode = 'SIMPLE';
-        } else if (me.multiSelect) {
-            mode = 'MULTI';
-        }
-
-        // No selModel specified, or it's just a config; Instantiate
-        if (!selModel || !selModel.isSelectionModel) {
-            if (typeof selModel === 'string') {
-                selModel = {
-                    type: selModel
-                };
+                if (typeof selModel === 'string') {
+                    selModel = {
+                        type: selModel
+                    };
+                }
+                selModel = Ext.Factory.selection(Ext.apply({
+                    allowDeselect: me.allowDeselect || me.multiSelect,
+                    mode: mode,
+                    locked: me.disableSelection
+                }, selModel));
             }
-            selModel = Ext.Factory.selection(Ext.apply({
-                allowDeselect: me.allowDeselect,
-                mode: mode,
-                locked: me.disableSelection
-            }, selModel));
         }
 
         me.selModelRelayer = me.relayEvents(selModel, [
             'selectionchange', 'beforeselect', 'beforedeselect', 'select', 'deselect', 'focuschange'
         ]);
         selModel.on('selectionchange', me.updateBindSelection, me);
-
-        // lock the selection model if user
-        // has disabled selection
-        if (me.disableSelection) {
-            selModel.locked = true;
-        }
 
         return selModel;
     },
@@ -719,44 +718,21 @@ Ext.define('Ext.view.AbstractView', {
         return Ext.Factory.viewNavigation(navigationModel);
     },
 
-    initFocusableEvents: function() {
-        var me = this;
-
-        this.mixins.focusable.initFocusableEvents.call(this);
-        me.focusEnterLeaveListeners = me.el.on({
-            focusenter: me.onFocusEnter,
-            focusleave: me.onFocusLeave,
-            scope: me,
-            destroyable: true
-        });
-    },
-
-    onFocus: function(e) {
-        this.callParent([e]);
-
-        // Focusing the main el delegates focus to a descendant view item
-        this.handleFocusEnter(e);
-    },
-
     onFocusEnter: function(e) {
-        this.handleFocusEnter(e);
-    },
-
-    handleFocusEnter: function(e) {
         var me = this,
             navigationModel = me.getNavigationModel(),
             focusPosition;
 
-        if (!me.containsFocus && me.all.getCount()) {
+        if (!me.itemFocused && me.all.getCount()) {
             focusPosition = navigationModel.getLastFocused();
-            navigationModel.setPosition(focusPosition || 0, e, null, !focusPosition);
+            navigationModel.setPosition(focusPosition || 0, e.event, null, !focusPosition);
 
             // We now contain focus is that was successful
-            me.containsFocus = navigationModel.getPosition() != null;
+            me.itemFocused = navigationModel.getPosition() != null;
         }
 
-        if (me.containsFocus) {
-            this.focusEl.dom.setAttribute('tabindex', '-1');
+        if (me.itemFocused) {
+            this.el.dom.setAttribute('tabindex', '-1');
         }
     },
 
@@ -764,13 +740,13 @@ Ext.define('Ext.view.AbstractView', {
         var me = this;
 
         // Ignore this event if we do not actually contain focus.
-        if (me.containsFocus) {
+        if (me.itemFocused) {
 
             // Blur the focused cell
-            me.getNavigationModel().setPosition(null, e, null, true);
+            me.getNavigationModel().setPosition(null, e.event, null, true);
 
-            me.containsFocus = false;
-            me.focusEl.dom.setAttribute('tabindex', 0);
+            me.itemFocused = false;
+            me.el.dom.setAttribute('tabindex', 0);
         }
     },
 
@@ -778,7 +754,7 @@ Ext.define('Ext.view.AbstractView', {
         this.callParent([isDestroying]);
 
         // IE does not fire focusleave on removal from DOM
-        this.onFocusLeave();
+        this.onFocusLeave({});
     },
     
     /**
@@ -796,6 +772,7 @@ Ext.define('Ext.view.AbstractView', {
             records,
             hasFirstRefresh,
             selModel = me.getSelectionModel(),
+            navModel = me.getNavigationModel(),
 
             // If there are items in the view, and there isn't a scroll range stretcher (bufferedRenderer), then honour preserveScrollOnRefresh
             preserveScroll = refreshCounter && rows.getCount() && me.preserveScrollOnRefresh && !me.bufferedRenderer,
@@ -809,6 +786,9 @@ Ext.define('Ext.view.AbstractView', {
 
             // So that listeners to itemremove events know that its because of a refresh
             me.refreshing = true;
+
+            // Allow the NavigationModel to cache the focus position.
+            navModel.beforeViewRefresh();
 
             targetEl = me.getTargetEl();
             records = me.getViewRange();
@@ -844,6 +824,9 @@ Ext.define('Ext.view.AbstractView', {
                 me.collectNodes(targetEl.dom);
                 me.updateIndexes(0);
             }
+
+            // Allow the NavigationModel to restore lost focus into the view
+            navModel.onViewRefresh();
 
             // Some subclasses do not need to do this. TableView does not need to do this - it renders selected class using its tenmplate.
             if (me.refreshSelmodelOnRefresh !== false) {

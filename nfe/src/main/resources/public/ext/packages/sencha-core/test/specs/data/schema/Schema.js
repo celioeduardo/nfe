@@ -153,30 +153,60 @@ describe("Ext.data.schema.Schema", function() {
                 Ext.undefine('spec.Group');
             });
 
-            it("should have associations when declaring the left first", function() {
-                Ext.define('spec.User', {
-                    extend: 'Ext.data.Model',
-                    manyToMany: 'Group'
-                });
-                Ext.define('spec.Group', {
-                    extend: 'Ext.data.Model'
+            describe("association on the left", function() {
+                it("should have associations when declaring the right first", function() {
+                    Ext.define('spec.User', {
+                        extend: 'Ext.data.Model'
+                    });
+                    Ext.define('spec.Group', {
+                        extend: 'Ext.data.Model',
+                        manyToMany: 'User'
+                    });
+
+                    expect(schema.hasAssociations(spec.User)).toBe(true);
+                    expect(schema.hasAssociations(spec.Group)).toBe(true);
                 });
 
-                expect(schema.hasAssociations(spec.User)).toBe(true);
-                expect(schema.hasAssociations(spec.Group)).toBe(true);
+                it("should have associations when declaring the left first", function() {
+                    Ext.define('spec.Group', {
+                        extend: 'Ext.data.Model',
+                        manyToMany: 'User'
+                    });
+                    Ext.define('spec.User', {
+                        extend: 'Ext.data.Model'
+                    });
+
+                    expect(schema.hasAssociations(spec.User)).toBe(true);
+                    expect(schema.hasAssociations(spec.Group)).toBe(true);
+                });
             });
 
-            it("should have associations when declaring the right first", function() {
-                Ext.define('spec.Group', {
-                    extend: 'Ext.data.Model'
-                });
-                Ext.define('spec.User', {
-                    extend: 'Ext.data.Model',
-                    manyToMany: ['Group']
+            describe("association on the right", function() {
+                it("should have associations when declaring the right first", function() {
+                    Ext.define('spec.User', {
+                        extend: 'Ext.data.Model',
+                        manyToMany: 'Group'
+                    });
+                    Ext.define('spec.Group', {
+                        extend: 'Ext.data.Model'
+                    });
+
+                    expect(schema.hasAssociations(spec.User)).toBe(true);
+                    expect(schema.hasAssociations(spec.Group)).toBe(true);
                 });
 
-                expect(schema.hasAssociations(spec.User)).toBe(true);
-                expect(schema.hasAssociations(spec.Group)).toBe(true);
+                it("should have associations when declaring the left first", function() {
+                    Ext.define('spec.Group', {
+                        extend: 'Ext.data.Model'
+                    });
+                    Ext.define('spec.User', {
+                        extend: 'Ext.data.Model',
+                        manyToMany: 'Group'
+                    });
+
+                    expect(schema.hasAssociations(spec.User)).toBe(true);
+                    expect(schema.hasAssociations(spec.Group)).toBe(true);
+                });
             });
         });
     });

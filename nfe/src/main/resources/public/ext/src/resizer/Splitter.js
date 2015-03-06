@@ -148,8 +148,7 @@ Ext.define('Ext.resizer.Splitter', {
 
     onRender: function() {
         var me = this,
-            collapseEl,
-            cfg;
+            collapseEl;
 
         me.callParent(arguments);
 

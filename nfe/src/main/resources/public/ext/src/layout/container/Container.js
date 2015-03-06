@@ -280,7 +280,7 @@ Ext.define('Ext.layout.container.Container', {
         if (!ownerContext.widthModel.shrinkWrap) {
             ++needed;
             width = inDom ? targetContext.getDomProp('width') : targetContext.getProp('width');
-            gotWidth = (typeof width == 'number');
+            gotWidth = (typeof width === 'number');
             if (gotWidth) {
                 ++got;
                 width -= frameInfo.width + padding.width;
@@ -293,7 +293,7 @@ Ext.define('Ext.layout.container.Container', {
         if (!ownerContext.heightModel.shrinkWrap) {
             ++needed;
             height = inDom ? targetContext.getDomProp('height') : targetContext.getProp('height');
-            gotHeight = (typeof height == 'number');
+            gotHeight = (typeof height === 'number');
             if (gotHeight) {
                 ++got;
                 height -= frameInfo.height + padding.height;
@@ -308,7 +308,7 @@ Ext.define('Ext.layout.container.Container', {
             height: height,
             needed: needed,
             got: got,
-            gotAll: got == needed,
+            gotAll: got === needed,
             gotWidth: gotWidth,
             gotHeight: gotHeight
         };
@@ -444,8 +444,8 @@ Ext.define('Ext.layout.container.Container', {
 
     getScrollbarsNeeded: function (width, height, contentWidth, contentHeight) {
         var scrollbarSize = Ext.getScrollbarSize(),
-            hasWidth = typeof width == 'number',
-            hasHeight = typeof height == 'number',
+            hasWidth = typeof width === 'number',
+            hasHeight = typeof height === 'number',
             needHorz = 0,
             needVert = 0;
 
@@ -485,7 +485,7 @@ Ext.define('Ext.layout.container.Container', {
      * @return {Array} All matching items
      */
     getVisibleItems: function() {
-        var target   = this.getRenderTarget(),
+        var target = this.getRenderTarget(),
             items = this.getLayoutItems(),
             ln = items.length,
             visibleItems = [],
@@ -502,80 +502,29 @@ Ext.define('Ext.layout.container.Container', {
     },
 
     getMoveAfterIndex: function (after) {
-        var owner = this.owner,
-            items = owner.items;
-
-        return items.indexOf(after) + 1;
-    },
-
-    checkNestedHeader: function (item, target) {
-        // Here we need to prevent the removal of ancestor group headers from occuring if a flag is set. This
-        // is needed when there are stacked group headers and only the deepest nested group header has leaf items
-        // in its collection. In this specific scenario, the group headers above it only have 1 item, which is its
-        // child nested group header.
-        //
-        // If we don't set this flag, then all of the grouped headers will be recursively removed all the way up to
-        // the root container b/c Ext.grid.header.Container#onRemove will remove all containers that don't contain
-        // any items.
-        //
-        // Note that if an ownerCt only has one item, then we know that this item is the group header that we're
-        // currently dragging.
-        //
-        // Also, note that we mark the owner as the target header because everything up to that should be removed.
-        target.ownerCt.isStackedTargetHeaderParent = !!(item.ownerCt.items.length === 1 && target.ownerCt.items.length === 1);
-
-        // In addition, empty grouped headers are removed from their containers when their last child item has been
-        // removed, so we need to cache the index now before `item` is removed.
-        if (target.items.length === 1) {
-           return this.owner.items.indexOf(target);
-        }
+        return this.owner.items.indexOf(after) + 1;
     },
 
     moveItemBefore: function (item, before) {
         var owner = this.owner,
-            prevOwner = item.ownerCt,
             items = owner.items,
-            toIndex, beforeParent;
+            toIndex;
 
         if (item === before) {
             return item;
         }
 
-        if (prevOwner) {
-            if (before) {
-                beforeParent = before.ownerCt;
-
-                // Only check the nested group headers if isStackedTargetHeaderParent hasn't been previously set.
-                // checkNestedHeader() could also be called from moveAfter(), so let's not do it twice.
-                if (before.isGroupHeader && (before.ownerCt && before.ownerCt.isStackedTargetHeaderParent === undefined)) {
-                    // We need the index (if applicable) before the item is removed!
-                    toIndex = this.checkNestedHeader(item, before);
-                }
-            }
-
-            prevOwner.remove(item, false);
-
-            if (before) {
-                // We need to remove this now since it's used to check when group headers should be removed!
-                delete beforeParent.isStackedTargetHeaderParent;
-            }
-        }
-
-        if (before && toIndex === undefined) {
-            toIndex = items.indexOf(before);
-        } else if (!before) {
-            toIndex = items.length;
-        }
+        toIndex = before ?
+            items.indexOf(before) :
+            items.length;
 
         return owner.insert(toIndex, item);
     },
 
     setupRenderTpl: function (renderTpl) {
-        var me = this;
-
-        renderTpl.renderBody = me.doRenderBody;
-        renderTpl.renderContainer = me.doRenderContainer;
-        renderTpl.renderItems = me.doRenderItems;
+        renderTpl.renderBody = this.doRenderBody;
+        renderTpl.renderContainer = this.doRenderContainer;
+        renderTpl.renderItems = this.doRenderItems;
     },
 
     getContentTarget: function(){

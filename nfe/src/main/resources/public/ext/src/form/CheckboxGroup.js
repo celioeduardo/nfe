@@ -352,12 +352,13 @@ Ext.define('Ext.form.CheckboxGroup', {
             cbValue;
 
         me.batchChanges(function() {
+            Ext.suspendLayouts();
             for (b = 0; b < bLen; b++) {
                 box = boxes[b];
                 name = box.getName();
                 cbValue = false;
 
-                if (value && value.hasOwnProperty(name)) {
+                if (value) {
                     if (Ext.isArray(value[name])) {
                         cbValue = Ext.Array.contains(value[name], box.inputValue);
                     } else {
@@ -368,6 +369,7 @@ Ext.define('Ext.form.CheckboxGroup', {
 
                 box.setValue(cbValue);
             }
+            Ext.resumeLayouts(true);
         });
         return me;
     },

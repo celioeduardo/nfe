@@ -504,6 +504,10 @@ Ext.define('Ext.form.field.Text', {
             el = me.inputEl;
 
         me.callParent();
+
+        // Workaround for https://code.google.com/p/chromium/issues/detail?id=4505
+        // On mousedown, add a single: true mouseup listener which prevents default.
+        // That will prevent deselection of the text that was selected in the onFocus method.
         if(me.selectOnFocus || me.emptyText){
             me.mon(el, 'mousedown', me.onMouseDown, me);
         }
@@ -622,13 +626,17 @@ Ext.define('Ext.form.field.Text', {
 
         me.autoSize();
         me.callParent();
-        this.invokeTriggers('afterFieldRender');
+        me.invokeTriggers('afterFieldRender');
     },
 
     onMouseDown: function(){
         var me = this;
-        if(!me.hasFocus){
-            me.mon(me.inputEl, 'mouseup', Ext.emptyFn, me, { single: true, preventDefault: true });
+        if(!me.hasFocus) {
+            // On the next mouseup, prevent default.
+            // 99% of the time, it will be the mouseup of the click into the field, and 
+            // We will be preventing deselection of selected text: https://code.google.com/p/chromium/issues/detail?id=4505
+            // Listener is on the doc in case the pointer moves out before user lets go.
+            Ext.getDoc().on('mouseup', Ext.emptyFn, me, { single: true, preventDefault: true });
         }
     },
 
@@ -662,7 +670,8 @@ Ext.define('Ext.form.field.Text', {
                 me.trigger1Cls = me.triggerCls;
             }
 
-            for (i = 1; triggerCls = me['trigger' + i + 'Cls']; i++) {
+            // Assignment in conditional test is deliberate here
+            for (i = 1; triggerCls = me['trigger' + i + 'Cls']; i++) { // jshint ignore:line
                 triggers['trigger' + i] = {
                     cls: triggerCls,
                     extraCls: Ext.baseCSSPrefix + 'trigger-index-' + i,
@@ -878,6 +887,9 @@ Ext.define('Ext.form.field.Text', {
             if (isEmpty) {
                 me.inputEl.addCls(me.emptyUICls);
             }
+            else {
+                me.inputEl.removeCls(me.emptyUICls);
+            }
 
             me.autoSize();
         }
@@ -919,34 +931,15 @@ Ext.define('Ext.form.field.Text', {
         } else if (Ext.supports.Placeholder) {
             inputEl.removeCls(me.emptyUICls);
         }
-
-        if (me.selectOnFocus || isEmpty) {
-            // see: http://code.google.com/p/chromium/issues/detail?id=4505
-            if (Ext.isWebKit) {
-                if (!me.inputFocusTask) {
-                    me.inputFocusTask = new Ext.util.DelayedTask(me.focusInput, me);
-                }
-                me.inputFocusTask.delay(1);
-            } else {
-                me.focusInput();
-            }
-        }
-    },
-
-    focusInput: function(){
-        var input = this.inputEl;
-        if (input) {
-            input = input.dom;
-            if (input) {
-                input.select();
-            }
-        }
     },
 
     onFocus: function(e) {
         var me = this;
 
         me.callParent(arguments);
+        if (me.selectOnFocus) {
+            me.inputEl.dom.select();
+        }
 
         if (me.emptyText) {
             me.autoSize();
@@ -968,22 +961,11 @@ Ext.define('Ext.form.field.Text', {
         me.triggerWrap.removeCls(me.triggerWrapFocusCls);
         me.inputWrap.removeCls(me.inputWrapFocusCls);
         me.invokeTriggers('onFieldBlur', [e]);
-        
-        me.postBlur();
     },
 
-    // private
-    postBlur: function() {
-        var task = this.inputFocusTask;
-
-        this.callParent(arguments);
+    completeEdit: function(e) {
+        this.callParent([e]);
         this.applyEmptyText();
-        // Once we blur, cancel any pending select events from focus
-        // We need this because of the WebKit bug detailed in beforeFocus
-        if (task) {
-            task.cancel();
-        }
-
     },
 
     // private
@@ -1172,31 +1154,28 @@ Ext.define('Ext.form.field.Text', {
      * @param {Number} [start=0] The index where the selection should start
      * @param {Number} [end] The index where the selection should end (defaults to the text length)
      */
-    selectText : function(start, end){
+    selectText: function (start, end) {
         var me = this,
             v = me.getRawValue(),
-            doFocus = true,
+            len = v.length,
             el = me.inputEl.dom,
-            undef,
             range;
 
-        if (v.length > 0) {
-            start = start === undef ? 0 : start;
-            end = end === undef ? v.length : end;
+        if (len > 0) {
+            start = start === undefined ? 0 : Math.min(start, len);
+            end = end === undefined ? len : Math.min(end, len);
+
             if (el.setSelectionRange) {
                 el.setSelectionRange(start, end);
-            }
-            else if(el.createTextRange) {
+            } else if (el.createTextRange) {
                 range = el.createTextRange();
                 range.moveStart('character', start);
-                range.moveEnd('character', end - v.length);
+                range.moveEnd('character', end - len);
                 range.select();
             }
-            doFocus = Ext.isGecko || Ext.isOpera;
         }
-        if (doFocus) {
-            me.focus();
-        }
+
+        // TODO: Reinvestigate FF and Opera.
     },
 
     // Template method, override in Combobox.
@@ -1211,7 +1190,7 @@ Ext.define('Ext.form.field.Text', {
      */
     autoSize: function() {
         var me = this,
-            triggers, triggerId, trigger, triggerWidth, inputEl, inputWidth, width, value;
+            triggers, triggerId, triggerWidth, inputEl, width, value;
 
         if (me.grow && me.rendered && me.getSizeModel().width.auto) {
             inputEl = me.inputEl;
@@ -1249,11 +1228,6 @@ Ext.define('Ext.form.field.Text', {
         Ext.destroy(me.triggerRepeater);
 
         me.callParent();
-
-        if (me.inputFocusTask) {
-            me.inputFocusTask.cancel();
-            me.inputFocusTask = null;
-        }
     },
 
     onTriggerClick: Ext.emptyFn,

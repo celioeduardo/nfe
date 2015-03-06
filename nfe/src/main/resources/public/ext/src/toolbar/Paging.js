@@ -14,17 +14,16 @@
  *
  * Paging Toolbar is typically used as one of the Grid's toolbars:
  *
- *     @example
- *     var itemsPerPage = 2;   // set the number of items you want per page
- *
- *     var store = Ext.create('Ext.data.Store', {
- *         id:'simpsonsStore',
+ *     var itemsPerPage = 2; // set the number of items you want per page
+ * 
+ *     Ext.create('Ext.data.Store', {
+ *         id: 'simpsonsStore',
  *         autoLoad: false,
- *         fields:['name', 'email', 'phone'],
+ *         fields: ['name', 'email', 'phone'],
  *         pageSize: itemsPerPage, // items per page
  *         proxy: {
  *             type: 'ajax',
- *             url: 'pagingstore.js',  // url that will load data with respect to start and limit params
+ *             url: 'pagingstore.js', // url that will load data with respect to start and limit params
  *             reader: {
  *                 type: 'json',
  *                 rootProperty: 'items',
@@ -32,28 +31,34 @@
  *             }
  *         }
  *     });
- *
+ * 
  *     // specify segment of data you want to load using params
  *     store.load({
- *         params:{
- *             start:0,
+ *         params: {
+ *             start: 0,
  *             limit: itemsPerPage
  *         }
  *     });
- *
+ * 
  *     Ext.create('Ext.grid.Panel', {
  *         title: 'Simpsons',
- *         store: store,
- *         columns: [
- *             { header: 'Name',  dataIndex: 'name' },
- *             { header: 'Email', dataIndex: 'email', flex: 1 },
- *             { header: 'Phone', dataIndex: 'phone' }
- *         ],
+ *         store: 'simpsonsStore',
+ *         columns: [{
+ *             text: 'Name',
+ *             dataIndex: 'name'
+ *         }, {
+ *             text: 'Email',
+ *             dataIndex: 'email',
+ *             flex: 1
+ *         }, {
+ *             text: 'Phone',
+ *             dataIndex: 'phone'
+ *         }],
  *         width: 400,
  *         height: 125,
  *         dockedItems: [{
  *             xtype: 'pagingtoolbar',
- *             store: store,   // same store GridPanel is using
+ *             store: 'simpsonsStore', // same store GridPanel is using
  *             dock: 'bottom',
  *             displayInfo: true
  *         }],
@@ -529,12 +534,12 @@ Ext.define('Ext.toolbar.Paging', {
     
     processKeyEvent: function(field, e) {
         var me = this,
-            k = e.getKey(),
+            key = e.getKey(),
             pageData = me.getPageData(),
             increment = e.shiftKey ? 10 : 1,
             pageNum;
 
-        if (k == e.RETURN) {
+        if (key === e.RETURN) {
             e.stopEvent();
             pageNum = me.readPageFromInput(pageData);
             if (pageNum !== false) {
@@ -543,15 +548,15 @@ Ext.define('Ext.toolbar.Paging', {
                     me.store.loadPage(pageNum);
                 }
             }
-        } else if (k == e.HOME || k == e.END) {
+        } else if (key === e.HOME || key === e.END) {
             e.stopEvent();
-            pageNum = k == e.HOME ? 1 : pageData.pageCount;
+            pageNum = key === e.HOME ? 1 : pageData.pageCount;
             field.setValue(pageNum);
-        } else if (k == e.UP || k == e.PAGE_UP || k == e.DOWN || k == e.PAGE_DOWN) {
+        } else if (key === e.UP || key === e.PAGE_UP || key === e.DOWN || key === e.PAGE_DOWN) {
             e.stopEvent();
             pageNum = me.readPageFromInput(pageData);
             if (pageNum) {
-                if (k == e.DOWN || k == e.PAGE_DOWN) {
+                if (key === e.DOWN || key === e.PAGE_DOWN) {
                     increment *= -1;
                 }
                 pageNum += increment;

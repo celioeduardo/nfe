@@ -75,7 +75,7 @@ Ext.define('Ext.grid.filters.filter.Base', {
      * The prefix for id's used to track stateful Store filters.
      * @private
      */
-    filterIdPrefix: 'x-gridfilter',
+    filterIdPrefix: Ext.baseCSSPrefix + 'gridfilter',
 
     /**
      * @event activate
@@ -100,9 +100,15 @@ Ext.define('Ext.grid.filters.filter.Base', {
      * @param {Object} config
      */
     constructor: function (config) {
-        var me = this;
+        var me = this,
+            column;
 
         me.initConfig(config);
+
+        column = me.column;
+        column.on('destroy', me.destroy, me);
+        me.dataIndex = me.dataIndex || column.dataIndex;
+
         me.task = new Ext.util.DelayedTask(me.setValue, me);
     },
 
@@ -110,22 +116,24 @@ Ext.define('Ext.grid.filters.filter.Base', {
      * Destroys this filter by purging any event listeners, and removing any menus.
      */
     destroy: function() {
-        this.menu = Ext.destroy(this.menu);
+        this.grid = this.menu = Ext.destroy(this.menu);
     },
 
     addStoreFilter: function (filter) {
-        this.getStore().getFilters().add(filter);
+        this.getGridStore().getFilters().add(filter);
     },
 
     createFilter: function (config, key) {
         return new Ext.util.Filter(this.getFilterConfig(config, key));
     },
 
+    // Note that some derived classes may need to do specific processing and will have its own version of this method
+    // beforing calling parent (see the List filter).
     getFilterConfig: function(config, key) {
         config.id = this.getBaseIdPrefix();
 
         if (!config.property) {
-            config.property = this.column.dataIndex;
+            config.property = this.dataIndex;
         }
 
         if (!config.root) {
@@ -145,20 +153,25 @@ Ext.define('Ext.grid.filters.filter.Base', {
      * @return {Ext.menu.Menu}
      */
     createMenu: function () {
-        var config = this.getMenuConfig();
+        this.menu = Ext.widget(this.getMenuConfig());
+    },
 
-        this.menu = Ext.widget(config);
+    getActiveState: function (config, value) {
+        // An `active` config must take precedence over a `value` config.
+        var active = config.active;
+
+        return (active !== undefined) ? active : value !== undefined;
     },
 
     getBaseIdPrefix: function () {
-        return this.filterIdPrefix + '-' + this.column.dataIndex;
+        return this.filterIdPrefix + '-' + this.dataIndex;
     },
 
     getMenuConfig: function () {
         return Ext.apply({}, this.getMenuDefaults());
     },
 
-    getStore: function() {
+    getGridStore: function() {
         return this.grid.getStore();
     },
 
@@ -169,28 +182,48 @@ Ext.define('Ext.grid.filters.filter.Base', {
             id += '-' + key;
         }
 
-        return this.getStore().getFilters().get(id);
+        return this.getGridStore().getFilters().get(id);
     },
-
-    getValue: Ext.emptyFn,
 
     /**
      * @private
      * Handler method called when there is a significant event on an input item.
      */
     onValueChange: function (field, e) {
-        var me = this;
+        var me = this,
+            updateBuffer = me.updateBuffer;
 
-        if (e.getKey() === e.RETURN && field.isValid()) {
-            me.menu.hide();
-            return;
+        //<debug>
+        if (!field.isFormField) {
+            Ext.Error.raise('`field` should be a form field instance.');
         }
+        //</debug>
 
-        me.task.delay(me.updateBuffer, null, null, [me.getValue(field)]);
+        if (field.isValid()) {
+            if (e.getKey() === e.RETURN) {
+                me.menu.hide();
+                return;
+            }
+
+            if (updateBuffer) {
+                me.task.delay(updateBuffer, null, null, [me.getValue(field)]);
+            } else {
+                me.setValue(me.getValue(field));
+            }
+        }
     },
 
+    /**
+     * @private
+     * @method preprocess
+     * Template method to be implemented by all subclasses that need to perform
+     * any operations before the column filter has finished construction.
+     * @template
+     */
+    preprocess: Ext.emptyFn,
+
     removeStoreFilter: function (filter) {
-        this.getStore().getFilters().remove(filter);
+        this.getGridStore().getFilters().remove(filter);
     },
 
     /**
@@ -201,6 +234,7 @@ Ext.define('Ext.grid.filters.filter.Base', {
      * @return {Object} The 'serialized' form of this filter
      * @template
      */
+    getValue: Ext.emptyFn,
 
     /**
      * @private
@@ -232,9 +266,12 @@ Ext.define('Ext.grid.filters.filter.Base', {
         if (me.active !== active) {
             me.active = active;
 
-            filterCollection = me.getStore().getFilters();
-            filterCollection.beginUpdate();
+            // The store filter will be updated, but we don't want to recreate the list store or the menu items in the
+            // onDataChanged listener so we need to set this flag.
+            me.preventDefault = true;
 
+            filterCollection = me.getGridStore().getFilters();
+            filterCollection.beginUpdate();
             if (active) {
                 me.activate();
             } else {
@@ -243,12 +280,14 @@ Ext.define('Ext.grid.filters.filter.Base', {
 
             filterCollection.endUpdate();
 
+            me.preventDefault = false;
+
             // Make sure we update the 'Filters' menu item.
             if (menuItem && menuItem.activeFilter === me) {
                 menuItem.setChecked(active);
             }
 
-            me.setColumnActive(active)
+            me.setColumnActive(active);
             // TODO: fire activate/deactivate
         }
     },
@@ -258,23 +297,23 @@ Ext.define('Ext.grid.filters.filter.Base', {
     },
 
     showMenu: function (menuItem) {
-        if (!this.menu) {
-            this.createMenu();
+        var me = this;
+
+        if (!me.menu) {
+            me.createMenu();
         }
 
-        menuItem.activeFilter = this;
+        menuItem.activeFilter = me;
 
-        menuItem.setMenu(this.menu, false);
-        menuItem.setChecked(this.active);
+        menuItem.setMenu(me.menu, false);
+        menuItem.setChecked(me.active);
         // Disable the menu if filter.disabled explicitly set to true.
-        menuItem.setDisabled(this.disabled === true);
+        menuItem.setDisabled(me.disabled === true);
 
-        if (this.active) {
-            this.activate(/*showingMenu*/ true);
-        }
+        me.activate(/*showingMenu*/ true);
     },
 
-    updateStoreFilter: function (filter) {
-        this.getStore().getFilters().notify('endupdate');
+    updateStoreFilter: function () {
+        this.getGridStore().getFilters().notify('endupdate');
     }
 });

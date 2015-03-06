@@ -220,10 +220,7 @@ Ext.define('Ext.grid.RowEditor', {
         });
 
         // Ensure that the editor width always matches the total header width
-        me.mon(grid, {
-            resize: me.onGridResize,
-            scope: me
-        });
+        me.mon(grid, 'resize', me.onGridResize, me);
 
         if (me.lockable) {
             grid.lockedGrid.view.on('resize', 'onGridResize', me);
@@ -254,7 +251,7 @@ Ext.define('Ext.grid.RowEditor', {
             plugin = me.editingPlugin;
 
         me.keyNav = new Ext.util.KeyNav(me.el, {
-            enter: plugin.completeEdit,
+            enter: plugin.onEnterKey,
             esc: plugin.onEscKey,
             scope: plugin
         });
@@ -306,7 +303,6 @@ Ext.define('Ext.grid.RowEditor', {
             scrollingView = me.scrollingView,
             scrollTop  = scrollingView.getScrollY(),
             scrollLeft = scrollingView.getScrollX(),
-            scrollLeftChanged = scrollLeft !== me.lastScrollLeft,
             scrollTopChanged = scrollTop !== me.lastScrollTop,
             row;
 
@@ -479,10 +475,8 @@ Ext.define('Ext.grid.RowEditor', {
         }
     },
 
-    // Because we implement getRefOwner to return the grid, this makes this a descendant of the grid and the layout system
-    // does not queue an independent layout for this while it's a descendant of a component which itself is pending a layout.
-    // This is floating and not a descendant of anything.
-    isDescendantOf: function() {
+    isLayoutChild: function(ownerCandidate) {
+        // RowEditor is not a floating component, but won't be laid out by the grid
         return false;
     },
 
@@ -828,9 +822,11 @@ Ext.define('Ext.grid.RowEditor', {
             me.onViewScroll();
         }
         
-        // Select the record before showing the editor, since
-        // selecting will steal focus
-        context.grid.getSelectionModel().select(record);
+        // Select at the clicked position.
+        context.grid.getSelectionModel().selectByPosition({
+            row: record,
+            column: columnHeader
+        });
 
         // Make sure the container el is correctly sized.
         me.onGridResize();
@@ -945,7 +941,7 @@ Ext.define('Ext.grid.RowEditor', {
         if (column && !column.isDestroyed) {   
             if (column.isVisible()) {
                 field = this.getEditor(column);   
-                if (field && field.focusable) {
+                if (field && field.isFocusable(true)) {
                     didFocus = true;
                     field.focus();
                 }
@@ -1011,16 +1007,19 @@ Ext.define('Ext.grid.RowEditor', {
     onHide: function() {
         var me = this;
 
+        // Prevent hiding from focusing the body element.
+        if (me.el.contains(Ext.Element.getActiveElement())) {
+            if (me.context) {
+                me.context.view.grid.focus();
+                me.context = null;
+            } else {
+                me.previousFocus.focus();
+            }
+        }
         me.wrapEl.hide();
         me.callParent(arguments);
         if (me.tooltip) {
             me.hideToolTip();
-        }
-        if (me.context) {
-            me.context.view.grid.focus();
-            me.context = null;
-        } else {
-            me.previousFocus.focus();
         }
     },
 
@@ -1033,15 +1032,31 @@ Ext.define('Ext.grid.RowEditor', {
     },
 
     getToolTip: function() {
-        return this.tooltip || (this.tooltip = new Ext.tip.ToolTip({
-            cls: Ext.baseCSSPrefix + 'grid-row-editor-errors',
-            title: this.errorsText,
-            autoHide: false,
-            closable: true,
-            closeAction: 'disable',
-            anchor: 'left',
-            anchorToTarget: false
-        }));
+        var me = this,
+            tip = me.tooltip,
+            grid = me.editingPlugin.grid;
+
+        if (!tip) {
+            me.tooltip = tip = new Ext.tip.ToolTip({
+                cls: Ext.baseCSSPrefix + 'grid-row-editor-errors',
+                title: me.errorsText,
+                autoHide: false,
+                closable: true,
+                closeAction: 'disable',
+                anchor: 'left',
+                anchorToTarget: true,
+                constrainPosition: true,
+                constrainTo: document.body
+            });
+            grid.add(tip);
+
+            // Layout may change the grid's positioning.
+            me.mon(grid, {
+                afterlayout: me.onGridLayout,
+                scope: me
+            });
+        }
+        return tip;
     },
 
     hideToolTip: function() {
@@ -1057,10 +1072,15 @@ Ext.define('Ext.grid.RowEditor', {
         var me = this,
             tip = me.getToolTip();
 
-        tip.showAt([0, 0]);
         tip.update(me.getErrors());
         me.repositionTip();
         tip.enable();
+    },
+
+    onGridLayout: function() {
+        if (this.tooltip && this.tooltip.isVisible()) {
+            this.repositionTip();
+        }
     },
 
     repositionTip: function() {
@@ -1077,7 +1097,14 @@ Ext.define('Ext.grid.RowEditor', {
             rowBottom = rowTop + rowHeight;
 
         if (rowBottom > viewTop && rowTop < viewBottom) {
-            tip.showAt(tip.getAlignToXY(viewEl, 'tl-tr', [15, row.getOffsetsTo(viewEl)[1]]));
+
+            // Use the ToolTip's anchoring to get the left/right positioning correct with
+            // respect to space available on the default (right) side.
+            tip.anchorTarget = me.editingPlugin.grid.view.el;
+            tip.mouseOffset = [0, row.getOffsetsTo(viewEl)[1]];
+
+            // The tip will realign itself based upon its new offset
+            tip.show();
             me.hiddenTip = false;
         } else {
             tip.hide();
@@ -1090,7 +1117,7 @@ Ext.define('Ext.grid.RowEditor', {
             errors    = [],
             fields    = me.query('>[isFormField]'),
             length    = fields.length,
-            i, msg, fieldErrors, field;
+            i, fieldErrors, field;
 
         for (i = 0; i < length; i++) {
             field = fields[i];
@@ -1105,7 +1132,7 @@ Ext.define('Ext.grid.RowEditor', {
             errors[0] = me.createErrorListItem(me.dirtyText);
         }
 
-        return '<ul class="' + Ext.plainListCls + '">' + errors.join('') + '</ul>';
+        return '<ul class="' + Ext.baseCSSPrefix + 'list-plain">' + errors.join('') + '</ul>';
     },
 
     createErrorListItem: function(e, name) {

@@ -447,7 +447,7 @@ Ext.define('Ext.util.Format', function () {
          * @param {Object} value The text from which to strip tags
          * @return {String} The stripped text
          */
-        stripTags : function(v) {
+        stripTags: function(v) {
             return !v ? v : String(v).replace(me.stripTagsRe, "");
         },
 

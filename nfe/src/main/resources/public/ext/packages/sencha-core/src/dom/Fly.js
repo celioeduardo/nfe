@@ -113,7 +113,7 @@ Ext.define('Ext.dom.Fly', {
     Ext.fly = function(dom, named) {
         var fly = null,
             fn = Ext.fly,
-            nodeType;
+            nodeType, data;
 
         // name the flyweight after the calling method name if possible.
         named = named || (fn.caller && fn.caller.$name) || '_global';
@@ -135,7 +135,10 @@ Ext.define('Ext.dom.Fly', {
                 if (!fly || fly.dom !== dom) {
                     fly = flyweights[named] || (flyweights[named] = new Fly());
                     fly.dom = dom;
-                    fly.isSynchronized = false;
+                    data = fly.getData(true);
+                    if (data) {
+                        data.isSynchronized = false;
+                    }
                 }
             }
         }

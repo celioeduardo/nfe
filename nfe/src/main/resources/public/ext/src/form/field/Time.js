@@ -147,6 +147,7 @@ Ext.define('Ext.form.field.Time', {
     snapToIncrement: false,
 
     /**
+     * @cfg
      * @inheritdoc
      */
     valuePublishEvent: ['select', 'blur'],
@@ -186,11 +187,14 @@ Ext.define('Ext.form.field.Time', {
             formatDate: me.formatDate.bind(me)
         });
 
-        // Forcibly create the picker, since we need the store it creates.
-        // the parent initComponent will bind it.
-        me.store = me.getPicker().store;
+        // Create a store of times.
+        me.store = Ext.picker.Time.createStore(me.format, me.increment);
 
         me.callParent();
+
+        // Ensure time constraints are applied to the store.
+        // TimePicker does this on create.
+        me.getPicker();
     },
 
     /**
@@ -418,7 +422,7 @@ Ext.define('Ext.form.field.Time', {
         return me.callParent();
     },
 
-    postBlur: function() {
+    completeEdit: function() {
         var me = this,
             val = me.getValue();
 

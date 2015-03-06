@@ -210,7 +210,6 @@ Ext.define('Ext.tree.Panel', {
         'Ext.tree.NavigationModel'
     ],
     viewType: 'treeview',
-    selType: 'treemodel',
 
     treeCls: Ext.baseCSSPrefix + 'tree-panel',
 
@@ -702,6 +701,7 @@ Ext.define('Ext.tree.Panel', {
      * @param {String}          [options.field] The field to get the data from. Defaults to the model idProperty.
      * @param {String}          [options.separator='/'] A separator to use.
      * @param {Boolean}         [options.select] Pass as `true` to select the specified row.
+     * @param {Boolean}         [options.focus] Pass as `true` to focus the specified row.
      * @param {Function}        [options.callback] A function to execute when the expand finishes.
      * @param {Boolean}         options.callback.success `true` if the node expansion was successful.
      * @param {Ext.data.Model}  options.callback.record If successful, the target record.
@@ -715,6 +715,7 @@ Ext.define('Ext.tree.Panel', {
             view = me.view,
             field = (options && options.field) || me.store.model.idProperty,
             select,
+            doFocus,
             separator = (options && options.separator) || '/',
             callback,
             scope,
@@ -730,7 +731,8 @@ Ext.define('Ext.tree.Panel', {
             separator = options.separator || '/';
             callback = options.callback;
             scope = options.scope;
-            select = options.select
+            select = options.select;
+            doFocus = options.focus;
         }
         // Old multi argument API
         else {
@@ -775,6 +777,9 @@ Ext.define('Ext.tree.Panel', {
                 if (select) {
                     view.getSelectionModel().select(node);
                 }
+                if (doFocus) {
+                    view.getNavigationModel().setPosition(node, 0);
+                }
                 return Ext.callback(callback, scope || me, [true, node, view.getNode(node)]);
             }
 
@@ -808,6 +813,7 @@ Ext.define('Ext.tree.Panel', {
      * @param {Boolean}         [options.animate] Pass `true` to animate the row into view.
      * @param {Boolean}         [options.highlight] Pass `true` to highlight the row with a glow animation when it is in view.
      * @param {Boolean}         [options.select] Pass as `true` to select the specified row.
+     * @param {Boolean}         [options.focus] Pass as `true` to focus the specified row.
      * @param {Function}        [options.callback] A function to execute when the expand finishes.
      * @param {Boolean}         options.callback.success `true` if the node expansion was successful.
      * @param {Ext.data.Model}  options.callback.record If successful, the target record.

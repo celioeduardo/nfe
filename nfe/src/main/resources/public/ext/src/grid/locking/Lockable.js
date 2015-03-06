@@ -207,8 +207,6 @@ Ext.define('Ext.grid.locking.Lockable', {
 
             lockedGrid,
             normalGrid,
-            lockedViewConfig,
-            normalViewConfig,
             i,
             columns,
             lockedHeaderCt,
@@ -310,7 +308,7 @@ Ext.define('Ext.grid.locking.Lockable', {
 
         me.addStateEvents(['lockcolumn', 'unlockcolumn']);
 
-        columns = me.processColumns(me.columns, lockedGrid);
+        columns = me.processColumns(me.columns || [], lockedGrid);
 
         lockedGrid.columns = columns.locked;
 
@@ -361,9 +359,6 @@ Ext.define('Ext.grid.locking.Lockable', {
         if (me.layout.type === 'border') {
             if (me.split) {
                 lockedGrid.split = true;
-            }
-            if (!normalGrid.title) {
-                lockedGrid.header = false;
             }
             if (!lockedGrid.region) {
                 lockedGrid.region = 'west';
@@ -688,7 +683,7 @@ Ext.define('Ext.grid.locking.Lockable', {
         this.lock();
     },
 
-    showMenuBy: function(t, header) {
+    showMenuBy: function(clickEvent, t, header) {
         var menu = this.getMenu(),
             unlockItem  = menu.down('#unlockItem'),
             lockItem = menu.down('#lockItem'),
@@ -789,8 +784,8 @@ Ext.define('Ext.grid.locking.Lockable', {
             lockedView = locked.view,
             lockedViewEl = lockedView.el.dom,
             normal = me.normalGrid,
-            lockedColCount = locked.headerCt.getVisibleGridColumns().length,
-            normalColCount = normal.headerCt.getVisibleGridColumns().length,
+            lockedColCount = locked.getVisibleColumnManager().getColumns().length,
+            normalColCount = normal.getVisibleColumnManager().getColumns().length,
             task = me.syncLockedWidthTask;
 
         // If we are called directly, veto any existing task.
@@ -829,7 +824,8 @@ Ext.define('Ext.grid.locking.Lockable', {
                 }
             }
 
-            if (Ext.supports.touchScroll !== 2) {
+            // Only if there is going to be an upcoming layout to correct the horizontal scrollbar setting.
+            if (Ext.supports.touchScroll !== 2 && Ext.Component.pendingLayouts) {
                 // We may have previously set horizontal placeholder scrollbar on the locked
                 // view to match the unlocked side.  Undo this before continuing, so that
                 // the horizontal scrollbar does not affect the layout of the columns by
@@ -883,9 +879,11 @@ Ext.define('Ext.grid.locking.Lockable', {
             lockedView = lockedGrid.view,
             normalHCt  = normalGrid.headerCt,
             refreshFlags,
-            ownerCt;
+            ownerCt,
+            hadFocus;
 
         activeHd = activeHd || normalHCt.getMenu().activeHeader;
+        hadFocus = activeHd.hasFocus;
         toCt = toCt || lockedGrid.headerCt;
         ownerCt = activeHd.ownerCt;
 
@@ -915,13 +913,11 @@ Ext.define('Ext.grid.locking.Lockable', {
         activeHd.locked = true;
 
         // Flag to the locked column add listener to do nothing
-        me.ignoreAddLockedColumn = true;
         if (Ext.isDefined(toIdx)) {
             toCt.insert(toIdx, activeHd);
         } else {
             toCt.add(activeHd);
         }
-        me.ignoreAddLockedColumn = false;
         normalView.blockRefresh = lockedView.blockRefresh = false;
 
         refreshFlags = me.syncLockedWidth();
@@ -933,6 +929,9 @@ Ext.define('Ext.grid.locking.Lockable', {
         }
         Ext.resumeLayouts(true);
 
+        if (hadFocus) {
+            activeHd.focus();
+        }
         me.fireEvent('lockcolumn', me, activeHd);
     },
 
@@ -952,13 +951,15 @@ Ext.define('Ext.grid.locking.Lockable', {
             normalView = normalGrid.view,
             lockedView = lockedGrid.view,
             lockedHCt  = lockedGrid.headerCt,
-            refreshFlags;
+            refreshFlags,
+            hadFocus;
 
         // Unlocking; user expectation is that the unlocked column is inserted at the beginning.
         if (!Ext.isDefined(toIdx)) {
             toIdx = 0;
         }
         activeHd = activeHd || lockedHCt.getMenu().activeHeader;
+        hadFocus = activeHd.hasFocus;
         toCt = toCt || normalGrid.headerCt;
 
         Ext.suspendLayouts();
@@ -982,6 +983,9 @@ Ext.define('Ext.grid.locking.Lockable', {
         }
         Ext.resumeLayouts(true);
 
+        if (hadFocus) {
+            activeHd.focus();
+        }
         me.fireEvent('unlockcolumn', me, activeHd);
     },
 
@@ -993,7 +997,6 @@ Ext.define('Ext.grid.locking.Lockable', {
             normalGrid = me.normalGrid,
             view;
 
-        Ext.suspendLayouts();
         if (columns) {
             // Both grids must not react to the headers being changed (See panel/Table#onHeadersChanged)
             lockedGrid.reconfiguring = normalGrid.reconfiguring = true;
@@ -1003,9 +1006,7 @@ Ext.define('Ext.grid.locking.Lockable', {
             columns = me.processColumns(columns, lockedGrid);
 
             // Flag to the locked column add listener to do nothing
-            me.ignoreAddLockedColumn = true;
             lockedGrid.headerCt.add(columns.locked.items);
-            me.ignoreAddLockedColumn = false;
             normalGrid.headerCt.add(columns.normal.items);
 
             lockedGrid.reconfiguring = normalGrid.reconfiguring = false;
@@ -1059,9 +1060,9 @@ Ext.define('Ext.grid.locking.Lockable', {
             me.view.bindStore(normalGrid.view.dataSource, false, 'dataSource');
             lockedGrid.view.blockRefresh = normalGrid.view.blockrefresh = false;
         }
+
         lockedGrid.getView().refreshView();
         normalGrid.getView().refreshView();
-        Ext.resumeLayouts(true);
     },
 
     constructLockableFeatures: function() {

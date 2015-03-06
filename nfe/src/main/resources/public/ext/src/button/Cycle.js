@@ -130,7 +130,9 @@ Ext.define('Ext.button.Cycle', {
                 item.setChecked(true, false);
             }
             if (!suppressEvent) {
-                Ext.callback(me.changeHandler, me.scope, [me, item], 0, me);
+                if (changeHandler) {
+                    Ext.callback(changeHandler, me.scope, [me, item], 0, me);
+                }
                 me.fireEvent('change', me, item);
             }
         }

@@ -230,7 +230,7 @@ Ext.define('Ext.form.field.Radio', {
      */
     setValue: function(value) {
         var me = this,
-            container, active;
+            active;
 
         if (Ext.isBoolean(value)) {
             me.callParent(arguments);

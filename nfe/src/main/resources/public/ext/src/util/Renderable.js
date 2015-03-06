@@ -77,7 +77,7 @@ Ext.define('Ext.util.Renderable', {
         '</tpl>',
         '<tpl if="left"><div id="{fgid}ML" data-ref="frameML" class="{frameCls}-ml {baseCls}-ml {baseCls}-{ui}-ml<tpl for="uiCls"> {parent.baseCls}-{parent.ui}-{.}-ml</tpl>{frameElCls}" role="presentation"></tpl>',
             '<tpl if="right"><div id="{fgid}MR" data-ref="frameMR" class="{frameCls}-mr {baseCls}-mr {baseCls}-{ui}-mr<tpl for="uiCls"> {parent.baseCls}-{parent.ui}-{.}-mr</tpl>{frameElCls}" role="presentation"></tpl>',
-                '<div id="{fgid}Body" data-ref="frameBody" class="{frameCls}-mc {baseCls}-mc {baseCls}-{ui}-mc<tpl for="uiCls"> {parent.baseCls}-{parent.ui}-{.}-mc</tpl>{frameElCls}" role="presentation">',
+                '<div id="{fgid}Body" data-ref="frameBody" class="{frameBodyCls} {frameCls}-mc {baseCls}-mc {baseCls}-{ui}-mc<tpl for="uiCls"> {parent.baseCls}-{parent.ui}-{.}-mc</tpl>{frameElCls}" role="presentation">',
                     '{%this.applyRenderTpl(out, values)%}',
                 '</div>',
             '<tpl if="right"></div></tpl>',
@@ -104,7 +104,7 @@ Ext.define('Ext.util.Renderable', {
             '</tpl>',
             '<tr role="presentation">',
                 '<tpl if="left"><td id="{fgid}ML" data-ref="frameML" class="{frameCls}-ml {baseCls}-ml {baseCls}-{ui}-ml<tpl for="uiCls"> {parent.baseCls}-{parent.ui}-{.}-ml</tpl>{frameElCls}" role="presentation"></td></tpl>',
-                '<td id="{fgid}Body" data-ref="frameBody" class="{frameCls}-mc {baseCls}-mc {baseCls}-{ui}-mc<tpl for="uiCls"> {parent.baseCls}-{parent.ui}-{.}-mc</tpl>{frameElCls}" style="{mcStyle}" role="presentation">',
+                '<td id="{fgid}Body" data-ref="frameBody" class="{frameBodyCls} {frameCls}-mc {baseCls}-mc {baseCls}-{ui}-mc<tpl for="uiCls"> {parent.baseCls}-{parent.ui}-{.}-mc</tpl>{frameElCls}" style="{mcStyle}" role="presentation">',
                     '{%this.applyRenderTpl(out, values)%}',
                 '</td>',
                 '<tpl if="right"><td id="{fgid}MR" data-ref="frameMR" class="{frameCls}-mr {baseCls}-mr {baseCls}-{ui}-mr<tpl for="uiCls"> {parent.baseCls}-{parent.ui}-{.}-mr</tpl>{frameElCls}" role="presentation"></td></tpl>',
@@ -241,7 +241,7 @@ Ext.define('Ext.util.Renderable', {
             data = {},
             protoEl = me.protoEl,
             target = me.el,
-            item, pre, hidden, contentEl;
+            controller, item, pre, hidden, contentEl;
 
         me.finishRenderChildren();
         me._renderState = 4;
@@ -297,17 +297,20 @@ Ext.define('Ext.util.Renderable', {
         if (Ext.enableAria) {
             me.ariaApplyAfterRenderAttributes();
         }
+
+        controller = me.controller;
+        if (controller && controller.afterRender) {
+            controller.afterRender(me);
+        }
     },
 
     afterFirstLayout: function(width, height) {
         var me = this,
             x = me.x,
             y = me.y,
-            hasX,
-            hasY,
-            pos, xy,
             alignSpec = me.defaultAlign,
-            alignOffset = me.alignOffset;
+            alignOffset = me.alignOffset,
+            controller, hasX, hasY, pos, xy;
 
         // We only have to set absolute position here if there is no ownerlayout which should take responsibility.
         // Consider the example of rendered components outside of a viewport - these might need their positions setting.
@@ -338,15 +341,25 @@ Ext.define('Ext.util.Renderable', {
         }
 
         me.onBoxReady(width, height);
+
+        controller = me.controller;
+        if (controller && controller.boxReady) {
+            controller.boxReady(me);
+        }
     },
 
     beforeRender: function () {
         var me = this,
             floating = me.floating,
             layout = me.getComponentLayout(),
-            cls;
+            cls, controller;
 
         me._renderState = 1;
+
+        controller = me.controller;
+        if (controller && controller.beforeRender) {
+            controller.beforeRender(me);
+        }
 
         // Force bindings to be created
         me.initBindable();
@@ -419,10 +432,16 @@ Ext.define('Ext.util.Renderable', {
                 tag: 'div',
                 tpl: frameInfo ? me.initFramingTpl(frameInfo.table) : me.initRenderTpl()
             },
+            layoutTargetCls = me.layoutTargetCls,
             protoEl = me.protoEl,
             frameData;
 
         me.initStyles(protoEl);
+        // If we're not framing, then just add to the element, otherwise we need to add
+        // it to the frameBody, since it's our targetEl, but we don't have a handle on it yet.
+        if (layoutTargetCls && !frameInfo) {
+            protoEl.addCls(layoutTargetCls);
+        }
         protoEl.writeTo(config);
         protoEl.flush();
 
@@ -709,7 +728,7 @@ Ext.define('Ext.util.Renderable', {
             if (runLayout) {
                 comp.updateLayout();
             }
-            if (typeof comp.x == 'number' || typeof comp.y == 'number') {
+            if (typeof comp.x === 'number' || typeof comp.y === 'number') {
                 comp.setPosition(comp.x, comp.y);
             }
         }
@@ -764,7 +783,7 @@ Ext.define('Ext.util.Renderable', {
             for (i = 0; i < len; i++) {
                 ref = refs[i];
                 if (!cache[ref.id]) {
-                    new El(ref);
+                    new El(ref); // jshint ignore:line
                 }
             }
         },
@@ -1005,20 +1024,21 @@ Ext.define('Ext.util.Renderable', {
             //</feature>
 
             return {
-                $comp:      me,
-                fgid:       me.id + '-frame',
-                ui:         me.ui,
-                uiCls:      me.uiCls,
-                frameCls:   me.frameCls,
-                baseCls:    me.baseCls,
-                top:        !!frameInfo.top,
-                left:       !!frameInfo.left,
-                right:      !!frameInfo.right,
-                bottom:     !!frameInfo.bottom,
-                mcStyle: mcStyle,
+                $comp:        me,
+                fgid:         me.id + '-frame',
+                ui:           me.ui,
+                uiCls:        me.uiCls,
+                frameCls:     me.frameCls,
+                frameBodyCls: me.layoutTargetCls || '',
+                baseCls:      me.baseCls,
+                top:          !!frameInfo.top,
+                left:         !!frameInfo.left,
+                right:        !!frameInfo.right,
+                bottom:       !!frameInfo.bottom,
+                mcStyle:      mcStyle,
                 // can be optionally set by a subclass or override to be an extra class to
                 // be applied to all framing elements (used by RTL)
-                frameElCls: ''
+                frameElCls:   ''
             };
         },
 
@@ -1039,7 +1059,7 @@ Ext.define('Ext.util.Renderable', {
                 frameInfoCache = me.frameInfoCache,
                 cls = me.getFramingInfoCls() + '-frameInfo',
                 frameInfo = frameInfoCache[cls],
-                styleEl, info, frameTop, frameRight, frameBottom, frameLeft, frameMax,
+                styleEl, info, frameTop, frameRight, frameBottom, frameLeft,
                 borderTopWidth, borderRightWidth, borderBottomWidth, borderLeftWidth,
                 paddingTop, paddingRight, paddingBottom, paddingLeft;
 
@@ -1117,7 +1137,7 @@ Ext.define('Ext.util.Renderable', {
                     frameInfo = false;
                 }
 
-                //<debug error>
+                //<debug>
                 // This happens when you set frame: true explicitly without using the x-frame mixin in sass.
                 // This way IE can't figure out what sizes to use and thus framing can't work.
                 if (me.frame === true && !frameInfo) {

@@ -19,7 +19,7 @@
  *
  * The store provides filtering and sorting support. This sorting/filtering can happen on the client side
  * or can be completed on the server. This is controlled by the {@link Ext.data.Store#remoteSort remoteSort} and
- * {@link Ext.data.Store#remoteFilter remoteFilter} config options. For more information see the {@link #sort} and
+ * {@link Ext.data.Store#remoteFilter remoteFilter} config options. For more information see the {@link #method-sort} and
  * {@link Ext.data.Store#filter filter} methods.
  */
 Ext.define('Ext.data.ProxyStore', {
@@ -107,7 +107,13 @@ Ext.define('Ext.data.ProxyStore', {
          * This config controls whether removed records are remembered by this store for
          * later saving to the server.
          */
-        trackRemoved: true
+        trackRemoved: true,
+
+        /**
+         * @private.
+         * The delay time to kick of the initial autoLoad task
+         */
+        autoLoadDelay: 1
     },
 
     onClassExtended: function(cls, data, hooks) {
@@ -137,6 +143,7 @@ Ext.define('Ext.data.ProxyStore', {
     implicitModel: false,
     
     blockLoadCounter: 0,
+    loadsWhileBlocked: 0,
 
     /**
      * @property {Object} lastOptions
@@ -247,7 +254,7 @@ Ext.define('Ext.data.ProxyStore', {
             task = me.loadTask || (me.loadTask = new Ext.util.DelayedTask(null, null, null, null, false));
 
             // Defer the load until the store (and probably the view) is fully constructed
-            task.delay(1, me.attemptLoad, me, Ext.isObject(autoLoad) ? [autoLoad] : undefined);
+            task.delay(me.autoLoadDelay, me.attemptLoad, me, Ext.isObject(autoLoad) ? [autoLoad] : undefined);
         }
     },
 
@@ -291,52 +298,66 @@ Ext.define('Ext.data.ProxyStore', {
         // If no model, ensure that the fields config is converted to a model.
         else {
             this.getFields();
-            return this.getModel();
+            model = this.getModel();
         }
         return model;
     },
 
     applyProxy: function(proxy) {
-        var me = this,
-            model = me.getModel();
+        var model = this.getModel();
 
-        if (proxy) {
-            if (proxy.isProxy) {
-                proxy.setModel(model);
-            } else {
-                if (Ext.isString(proxy)) {
-                    proxy = {
-                        type: proxy,
-                        model: model
-                    };
-                } else if (!proxy.model) {
-                    proxy = Ext.apply({
-                        model: model
-                    }, proxy);
+        if (proxy !== null) {
+            if (proxy) {
+                if (proxy.isProxy) {
+                    proxy.setModel(model);
+                } else {
+                    if (Ext.isString(proxy)) {
+                        proxy = {
+                            type: proxy,
+                            model: model
+                        };
+                    } else if (!proxy.model) {
+                        proxy = Ext.apply({
+                            model: model
+                        }, proxy);
+                    }
+
+                    proxy = Ext.createByAlias('proxy.' + proxy.type, proxy);
+                    proxy.autoCreated = true;
                 }
-
-                proxy = Ext.createByAlias('proxy.' + proxy.type, proxy);
+            } else if (model) {
+                proxy = model.getProxy();
             }
-        } else if (model) {
-            proxy = model.getProxy();
-        }
         
-        if (!proxy) {
-            proxy = Ext.createByAlias('proxy.memory');
+            if (!proxy) {
+                proxy = Ext.createByAlias('proxy.memory');
+                proxy.autoCreated = true;
+            }
         }
-        
+
+        return proxy;
+    },
+
+    updateProxy: function(proxy, oldProxy) {
+        var me = this,
+            listeners = {
+                scope: me,
+                beginprocessresponse: me.beginUpdate,
+                endprocessresponse: me.endUpdate
+            };
+
         if (!me.disableMetaChangeEvent) {
-             proxy.on('metachange', me.onMetaChange, me); 
+            listeners.metachange = me.onMetaChange;
+        }
+
+        if (oldProxy) {
+            oldProxy.un(listeners);
         }
 
         // Bracket Proxy's processing of response with begin/end update.
-        proxy.on({
-            beginprocessresponse: me.beginUpdate,
-            endprocessresponse: me.endUpdate,
-            scope: me
-        });
-
-        return proxy;
+        if (proxy) {
+            proxy.on(listeners);
+        }
     },
 
     updateTrackRemoved: function (track) {
@@ -649,7 +670,7 @@ Ext.define('Ext.data.ProxyStore', {
                 complete: me.onBatchComplete
             };
 
-        if (me.batchUpdateMode == 'operation') {
+        if (me.batchUpdateMode === 'operation') {
             listeners.operationcomplete = me.onBatchOperationComplete;
         }
 
@@ -662,45 +683,6 @@ Ext.define('Ext.data.ProxyStore', {
      */
     save: function() {
         return this.sync.apply(this, arguments);
-    },
-
-    /**
-     * @private
-     * @param {Boolean} value
-     */
-    blockLoad: function (value) {
-        if (value !== undefined) {
-            this.blockLoadCounter = value;
-        } else {
-            ++this.blockLoadCounter;
-        }
-    },
-
-    /**
-     * @private
-     * @param {Boolean} full
-     */
-    unblockLoad: function (full) {
-        var me = this,
-            ret = me.blockLoadCounter;
-
-        if (full) {
-            me.blockLoadCounter = 0;
-        } else if (ret) {
-            --me.blockLoadCounter;
-        }
-
-        return ret;
-    },
-    
-    isLoadBlocked: function () {
-        return !!this.blockLoadCounter;
-    },
-    
-    attemptLoad: function(options) {
-        if (!this.isLoadBlocked()) {
-            this.load(options);
-        }
     },
 
     /**
@@ -866,11 +848,15 @@ Ext.define('Ext.data.ProxyStore', {
 
     // private
     onDestroy: function() {
-        var me = this;
+        var me = this,
+            proxy = me.getProxy();
         
         me.blockLoad();
         me.clearData();
         me.setProxy(null);
+        if (proxy.autoCreated) {
+            proxy.destroy();
+        }
         me.setModel(null);
     },
 
@@ -943,6 +929,18 @@ Ext.define('Ext.data.ProxyStore', {
     clearData: Ext.emptyFn,
 
     privates: {
+        attemptLoad: function(options) {
+            if (this.isLoadBlocked()) {
+                ++this.loadsWhileBlocked;
+                return;
+            }
+            this.load(options);
+        },
+
+        blockLoad: function (value) {
+            ++this.blockLoadCounter;
+        },
+
         clearLoadTask: function() {
             var loadTask = this.loadTask;
             if (loadTask) {
@@ -951,11 +949,28 @@ Ext.define('Ext.data.ProxyStore', {
             }
         },
 
+        isLoadBlocked: function () {
+            return !!this.blockLoadCounter;
+        },
+
         loadsSynchronously: function() {
             return this.getProxy().isSynchronous;
         },
 
-        onBeforeLoad: Ext.privateFn
+        onBeforeLoad: Ext.privateFn,
+
+        unblockLoad: function (doLoad) {
+            var me = this,
+                loadsWhileBlocked = me.loadsWhileBlocked;
+
+            --me.blockLoadCounter;
+            if (!me.blockLoadCounter) {
+                me.loadsWhileBlocked = 0;
+                if (doLoad && loadsWhileBlocked) {
+                    me.load();
+                }
+            }
+        }
     }
 
 });

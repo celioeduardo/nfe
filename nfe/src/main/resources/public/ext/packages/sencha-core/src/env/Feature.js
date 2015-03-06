@@ -10,7 +10,6 @@
  *
  * See the {@link #has} property/method for details of the features that can be detected.
  *
- * @aside guide environment_package
  */
 Ext.feature = {
 // @define Ext.env.Feature
@@ -71,8 +70,8 @@ Ext.feature = {
         var elementStyle = this.getTestElement(tag).style,
             cName = Ext.String.capitalize(name);
 
-        if (typeof elementStyle[name] !== 'undefined'
-            || typeof elementStyle[Ext.browser.getStylePrefix(name) + cName] !== 'undefined') {
+        if (typeof elementStyle[name] !== 'undefined' ||
+            typeof elementStyle[Ext.browser.getStylePrefix(name) + cName] !== 'undefined') {
             return true;
         }
 
@@ -119,9 +118,9 @@ Ext.feature = {
     // use this instead of element references to check for styling info
     getStyle: function (element, styleName) {
         var view = element.ownerDocument.defaultView,
-            style = (view ? view.getComputedStyle(element, null) : element.currentStyle) 
-                        || element.style;
-        return style[styleName];
+            style = (view ? view.getComputedStyle(element, null) : element.currentStyle);
+
+        return (style || element.style)[styleName];
     },
 
     getSupportedPropertyName: function(object, name) {
@@ -242,6 +241,8 @@ Ext.feature = {
         /**
          * @property CSSPointerEvents `true` if document environment supports the CSS3
          * pointer-events style.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'CSSPointerEvents',
@@ -252,6 +253,8 @@ Ext.feature = {
         /**
          * @property CSS3BoxShadow `true` if document environment supports the CSS3 
          * box-shadow style.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'CSS3BoxShadow',
@@ -262,6 +265,8 @@ Ext.feature = {
         /**
          * @property ClassList `true` if document environment supports the HTML5 
          * classList API.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'ClassList',
@@ -271,6 +276,8 @@ Ext.feature = {
     },{
         /**
          * @property Canvas `true` if the device supports Canvas.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'Canvas',
@@ -281,6 +288,8 @@ Ext.feature = {
     },{
         /**
          * @property Svg `true` if the device supports SVG.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'Svg',
@@ -291,6 +300,8 @@ Ext.feature = {
         /**
          * @property Vml `true` if the device supports VML.
          * @type {Boolean}
+         *
+         * This property is available at application boot time, before document ready.
          */
         name: 'Vml',
         fn: function() {
@@ -327,6 +338,7 @@ Ext.feature = {
          * CSS, and {@link Ext.scroll.Indicator scroll indicators} will be shown while
          * scrolling since there are no native scrollbars in this mode.
          *
+         * This property is available at application boot time, before document ready.
          * @private
          */
         name: 'touchScroll',
@@ -345,6 +357,8 @@ Ext.feature = {
     },{
         /**
          * @property Touch`true` if the browser supports touch input.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'Touch',
@@ -365,6 +379,8 @@ Ext.feature = {
         /**
          * @property TouchEvents `true` if the device supports touch events (`touchstart`,
          * `touchmove`, `touchend`).
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'TouchEvents',
@@ -385,6 +401,8 @@ Ext.feature = {
         /**
          * @property Orientation `true` if the device supports different orientations.
          * @type {Boolean}
+         *
+         * This property is available at application boot time, before document ready.
          */
         name: 'Orientation',
         fn: function() {
@@ -394,6 +412,8 @@ Ext.feature = {
         /**
          * @property OrientationChange `true` if the device supports the `orientationchange`
          * event.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'OrientationChange',
@@ -404,6 +424,8 @@ Ext.feature = {
         /**
          * @property DeviceMotion `true` if the device supports device motion (acceleration
          * and rotation rate).
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'DeviceMotion',
@@ -414,6 +436,8 @@ Ext.feature = {
         /**
          * @property Geolocation `true` if the device supports GeoLocation.
          * @type {Boolean}
+         *
+         * This property is available at application boot time, before document ready.
          */
         /**
          * @property GeoLocation `true` if the device supports Geo-location.
@@ -438,6 +462,8 @@ Ext.feature = {
         /**
          * @property Range `true` if browser support document.createRange native method.
          * See https://developer.mozilla.org/en/DOM/range.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'Range',
@@ -449,6 +475,8 @@ Ext.feature = {
          * @property CreateContextualFragment `true` if browser support CreateContextualFragment
          * range native methods.
          * See https://developer.mozilla.org/en/DOM/range.createContextualFragment
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'CreateContextualFragment',
@@ -460,6 +488,8 @@ Ext.feature = {
         /**
          * @property History `true` if the device supports HTML5 history. See
          * https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'History',
@@ -480,6 +510,8 @@ Ext.feature = {
         /**
          * @property Css3DTransforms `true` if the device supports CSS3DTransform.
          * @type {Boolean}
+         *
+         * This property is available at application boot time, before document ready.
          */
         name: 'Css3dTransforms',
         fn: function() {
@@ -496,7 +528,9 @@ Ext.feature = {
         }
     },{
         /**
-         * @property Transitions True if the device supports CSS3 Transitions.
+         * @property Transitions `true` if the device supports CSS3 Transitions.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         names: [ 'CssTransitions', 'Transitions' ],
@@ -506,6 +540,8 @@ Ext.feature = {
     },{
         /**
          * @property Audio `true` if the device supports the HTML5 `audio` tag.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         /**
@@ -520,6 +556,8 @@ Ext.feature = {
     },{
         /**
          * @property Video `true` if the device supports the HTML5 `video` tag.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'Video',
@@ -529,6 +567,8 @@ Ext.feature = {
     },{
         /**
          * @property LocalStorage `true` if localStorage is supported.
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'LocalStorage',
@@ -536,7 +576,7 @@ Ext.feature = {
             try {
                 // IE10/Win8 throws "Access Denied" accessing window.localStorage, so
                 // this test needs to have a try/catch
-                if ('localStorage' in window && window['localStorage'] !== null) {
+                if ('localStorage' in window && window['localStorage'] !== null) { // jshint ignore:line
                     //this should throw an error in private browsing mode in iOS as well
                     localStorage.setItem('sencha-localstorage-test', 'test success');
                     //clean up if setItem worked
@@ -552,17 +592,21 @@ Ext.feature = {
     },{
         /**
          * @property XHR2 `true` if the browser supports XMLHttpRequest 
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'XHR2',
         fn: function() {
           return window.ProgressEvent && window.FormData && window.XMLHttpRequest &&
-              ('withCredentials' in new XMLHttpRequest);
+              ('withCredentials' in new XMLHttpRequest());
         }
     }, {
         /**
          * @property XHRUploadProgress `true` if the browser supports XMLHttpRequest
          * upload progress info 
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'XHRUploadProgress',
@@ -577,6 +621,8 @@ Ext.feature = {
         /**
          * @property NumericInputPlaceHolder `true` if the browser supports placeholders
          * on numeric input fields
+         *
+         * This property is available at application boot time, before document ready.
          * @type {Boolean}
          */
         name: 'NumericInputPlaceHolder',
@@ -607,6 +653,8 @@ Ext.feature = {
     /**
      * @property {String} matchesSelector
      * The method name which matches an element against a selector if implemented in this environment.
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'matchesSelector',
@@ -619,13 +667,14 @@ Ext.feature = {
 
             return el[w3] ? w3 : el[wk] ? wk : el[ms] ? ms : el[mz] ? mz : null;
         }
-    }
+    },
 
     //<feature legacyBrowser>
-    ,
     /**
      * @property RightMargin `true` if the device supports right margin.
      * See https://bugs.webkit.org/show_bug.cgi?id=13343 for why this is needed.
+     *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      * @type {Boolean}
      */
     {
@@ -633,7 +682,7 @@ Ext.feature = {
         ready: true,
         fn: function(doc, div) {
             var view = doc.defaultView;
-            return !(view && view.getComputedStyle(div.firstChild.firstChild, null).marginRight != '0px');
+            return !(view && view.getComputedStyle(div.firstChild.firstChild, null).marginRight !== '0px');
         }
     },
 
@@ -646,6 +695,8 @@ Ext.feature = {
      * bug. This has been observed in Safari 4.0.4 and older, and appears to be fixed
      * in Safari 5. It's not clear if Safari 4.1 has the bug, but it has the same WebKit
      * version number as Safari 5 (according to http://unixpapa.com/js/gecko.html).
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'DisplayChangeInputSelectionBug',
@@ -664,6 +715,8 @@ Ext.feature = {
      * This bug is encountered due to the work around in place for the {@link #RightMargin}
      * bug. This has been observed in Chrome 10 and Safari 5 and older, and appears to
      * be fixed in Chrome 11.
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'DisplayChangeTextAreaSelectionBug',
@@ -693,19 +746,23 @@ Ext.feature = {
     /**
      * @property TransparentColor `true` if the device supports transparent color.
      * @type {Boolean}
+     *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      */
     {
         name: 'TransparentColor',
         ready: true,
         fn: function(doc, div, view) {
             view = doc.defaultView;
-            return !(view && view.getComputedStyle(div.lastChild, null).backgroundColor != 'transparent');
+            return !(view && view.getComputedStyle(div.lastChild, null).backgroundColor !== 'transparent');
         }
     },
 
     /**
      * @property ComputedStyle `true` if the browser supports document.defaultView.getComputedStyle().
      * @type {Boolean}
+     *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      */
     {
         name: 'ComputedStyle',
@@ -719,6 +776,8 @@ Ext.feature = {
     /**
      * @property Float `true` if the device supports CSS float.
      * @type {Boolean}
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'Float',
@@ -730,6 +789,8 @@ Ext.feature = {
     /**
      * @property CSS3BorderRadius `true` if the device supports CSS3 border radius.
      * @type {Boolean}
+     *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      */
     {
         name: 'CSS3BorderRadius',
@@ -751,6 +812,8 @@ Ext.feature = {
     /**
      * @property CSS3LinearGradient `true` if the device supports CSS3 linear gradients.
      * @type {Boolean}
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'CSS3LinearGradient',
@@ -770,8 +833,10 @@ Ext.feature = {
     },
 
     /**
-     * @property MouseEnterLeave True if the browser supports mouseenter and mouseleave events
+     * @property MouseEnterLeave `true` if the browser supports mouseenter and mouseleave events
      * @type {Boolean}
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'MouseEnterLeave',
@@ -781,8 +846,10 @@ Ext.feature = {
     },
 
     /**
-     * @property MouseWheel True if the browser supports the mousewheel event
+     * @property MouseWheel `true` if the browser supports the mousewheel event
      * @type {Boolean}
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'MouseWheel',
@@ -792,8 +859,10 @@ Ext.feature = {
     },
 
     /**
-     * @property Opacity True if the browser supports normal css opacity
+     * @property Opacity `true` if the browser supports normal css opacity
      * @type {Boolean}
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'Opacity',
@@ -803,13 +872,15 @@ Ext.feature = {
                 return false;
             }
             div.firstChild.style.cssText = 'opacity:0.73';
-            return div.firstChild.style.opacity == '0.73';
+            return div.firstChild.style.opacity == '0.73'; // jshint ignore:line
         }
     },
 
     /**
-     * @property Placeholder True if the browser supports the HTML5 placeholder attribute on inputs
+     * @property Placeholder `true` if the browser supports the HTML5 placeholder attribute on inputs
      * @type {Boolean}
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'Placeholder',
@@ -819,8 +890,10 @@ Ext.feature = {
     },
 
     /**
-     * @property Direct2DBug True if when asking for an element's dimension via offsetWidth or offsetHeight,
+     * @property Direct2DBug `true` if when asking for an element's dimension via offsetWidth or offsetHeight,
      * getBoundingClientRect, etc. the browser returns the subpixel width rounded to the nearest pixel.
+     *
+     * This property is available at application boot time, before document ready.
      * @type {Boolean}
      */
     {
@@ -831,8 +904,10 @@ Ext.feature = {
     },
 
     /**
-     * @property BoundingClientRect True if the browser supports the getBoundingClientRect method on elements
+     * @property BoundingClientRect `true` if the browser supports the getBoundingClientRect method on elements
      * @type {Boolean}
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'BoundingClientRect',
@@ -842,9 +917,11 @@ Ext.feature = {
     },
 
     /**
-     * @property RotatedBoundingClientRect True if the BoundingClientRect is
+     * @property RotatedBoundingClientRect `true` if the BoundingClientRect is
      * rotated when the element is rotated using a CSS transform.
      * @type {Boolean}
+     *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      */
     {
         name: 'RotatedBoundingClientRect',
@@ -869,24 +946,47 @@ Ext.feature = {
             return supports;
         }
     },
+    /**
+     * @property ChildContentClearedWhenSettingInnerHTML `true` if created child elements
+     * lose their innerHTML when modifying the innerHTML of the parent element.
+     * @type {Boolean}
+     *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
+     */
+    {
+        name: 'ChildContentClearedWhenSettingInnerHTML',
+        ready: true,
+        fn: function() {
+            var el = this.getTestElement(),
+                child;
+
+            el.innerHTML = '<div>a</div>';
+            child = el.firstChild;
+            el.innerHTML = '<div>b</div>';
+            return child.innerHTML !== 'a';
+
+        }
+    },
     {
         name: 'IncludePaddingInWidthCalculation',
         ready: true,
         fn: function(doc, div){
-            return div.childNodes[1].firstChild.offsetWidth == 210;
+            return div.childNodes[1].firstChild.offsetWidth === 210;
         }
     },
     {
         name: 'IncludePaddingInHeightCalculation',
         ready: true,
         fn: function(doc, div){
-            return div.childNodes[1].firstChild.offsetHeight == 210;
+            return div.childNodes[1].firstChild.offsetHeight === 210;
         }
     },
 
     /**
-     * @property TextAreaMaxLength True if the browser supports maxlength on textareas.
+     * @property TextAreaMaxLength `true` if the browser supports maxlength on textareas.
      * @type {Boolean}
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'TextAreaMaxLength',
@@ -895,8 +995,10 @@ Ext.feature = {
         }
     },
     /**
-     * @property GetPositionPercentage True if the browser will return the left/top/right/bottom
+     * @property GetPositionPercentage `true` if the browser will return the left/top/right/bottom
      * position as a percentage when explicitly set as a percentage value.
+     *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      * @type {Boolean}
      */
     // Related bug: https://bugzilla.mozilla.org/show_bug.cgi?id=707691#c7
@@ -904,7 +1006,7 @@ Ext.feature = {
         name: 'GetPositionPercentage',
         ready: true,
         fn: function(doc, div){
-           return Ext.feature.getStyle(div.childNodes[2], 'left') == '10%';
+           return Ext.feature.getStyle(div.childNodes[2], 'left') === '10%';
         }
     },
     /**
@@ -914,6 +1016,7 @@ Ext.feature = {
      * of its parent element.  This method returns true if the browser is affected
      * by this bug.
      *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      * @private
      */
     {
@@ -960,6 +1063,7 @@ Ext.feature = {
      *
      * This method returns true if the browser is affected by this bug.
      *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      * @private
      */
     {
@@ -988,6 +1092,8 @@ Ext.feature = {
      * overflowing element.
      * 
      * This method returns true if the browser is affected by this bug.
+     *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      */
     {
         name: 'ScrollWidthInlinePaddingBug',
@@ -1023,6 +1129,7 @@ Ext.feature = {
      * scrollbar, it must have some extra padding.
      * See https://sencha.jira.com/browse/EXTJSIV-11245
      *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      * @private
      */
     {
@@ -1048,6 +1155,7 @@ Ext.feature = {
      * See {@link Ext.grid.ColumnLayout#publishInnerCtSize}
      * TODO: Remove this when all supported Chrome versions are fixed.
      *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      * @private
      */
     {
@@ -1083,9 +1191,9 @@ Ext.feature = {
             }
 
             // Apply a polyfill:
-            XMLHttpRequest = function() {
+            XMLHttpRequest = function() { // jshint ignore:line
                 try {
-                    return new ActiveXObject('MSXML2.XMLHTTP.3.0');
+                    return new ActiveXObject('MSXML2.XMLHTTP.3.0'); // jshint ignore:line
                 }
                 catch (ex) {
                     return null;
@@ -1105,6 +1213,8 @@ Ext.feature = {
      * http://unixpapa.com/js/key.html)
      * note 3: Opera 12 behaves like other modern browsers so this workaround does not
      * work anymore
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'SpecialKeyDownRepeat',
@@ -1117,6 +1227,8 @@ Ext.feature = {
     /**
      * @property {Boolean} EmulatedMouseOver
      * True if the browser emulates a mouseover event on tap (mobile safari)
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'EmulatedMouseOver',
@@ -1128,6 +1240,8 @@ Ext.feature = {
 
     /**
      * @property Hashchange True if the user agent supports the hashchange event
+     *
+     * This property is available at application boot time, before document ready.
      * @type {Boolean}
      */
     {
@@ -1145,6 +1259,8 @@ Ext.feature = {
      * @private
      * @type {Boolean}
      * `true` if the browser has this bug: https://bugs.webkit.org/show_bug.cgi?id=130239
+     *
+     * This property is *NOT* available at application boot time. Only after the document ready event.
      */
     {
         name: 'FixedTableWidthBug',
@@ -1165,7 +1281,7 @@ Ext.feature = {
             document.body.appendChild(outer);
 
             // must poke offsetWidth to trigger a reflow before setting width
-            outer.offsetWidth;
+            outer.offsetWidth; // jshint ignore:line
 
             outer.style.width = '25px';
 
@@ -1185,6 +1301,8 @@ Ext.feature = {
      * https://developer.mozilla.org/en-US/docs/Web/Events/focusin
      * At this point, only Firefox does not, see this bug:
      * https://bugzilla.mozilla.org/show_bug.cgi?id=687787
+     *
+     * This property is available at application boot time, before document ready.
      */
     {
         name: 'FocusinFocusoutEvents',
@@ -1195,11 +1313,14 @@ Ext.feature = {
         fn: function() {
             return !Ext.isGecko;
         }
-    }
-    
+    },
+
     //</feature>
-    ]
+
+    0] // placeholder so legacy browser detectors can come/go cleanly
 };
+
+Ext.feature.tests.pop(); // remove the placeholder
 
 Ext.supports = {};
 

@@ -52,7 +52,7 @@ Ext.define('Ext.fx.target.Sprite', {
 
     getAttr: function (attr, val) {
         return [
-            [this.target, val != undefined ? val : this.getFromPrim(this.target, attr)]
+            [this.target, val !== undefined ? val : this.getFromPrim(this.target, attr)]
         ];
     },
 
@@ -111,7 +111,7 @@ Ext.define('Ext.fx.target.Sprite', {
                         value = attrs;
                     }
                     idx = Ext.Array.indexOf(spriteArr, sprite);
-                    if (idx == -1) {
+                    if (idx === -1) {
                         spriteArr.push([sprite, {}]);
                         idx = spriteArr.length - 1;
                     }

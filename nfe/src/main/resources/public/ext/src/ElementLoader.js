@@ -193,12 +193,15 @@ Ext.define('Ext.ElementLoader', {
      * Note that if the target is changed, any active requests will be aborted.
      * @param {String/HTMLElement/Ext.dom.Element} target The element or its ID.
      */
-    setTarget: function(target){
+    setTarget: function (target) {
         var me = this;
+
         target = Ext.get(target);
-        if (me.target && me.target != target) {
+
+        if (me.target && me.target !== target) {
             me.abort();
         }
+
         me.target = target;
     },
 

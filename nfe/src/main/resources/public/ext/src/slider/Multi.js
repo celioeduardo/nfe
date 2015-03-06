@@ -462,7 +462,7 @@ Ext.define('Ext.slider.Multi', {
 
         //see if the click was on any of the thumbs
         for (; !thumbClicked && i < len; i++) {
-            thumbClicked = thumbClicked || e.target == thumbs[i].el.dom;
+            thumbClicked = thumbClicked || e.target === thumbs[i].el.dom;
         }
 
         if (me.clickToChange && !thumbClicked) {
@@ -628,19 +628,19 @@ Ext.define('Ext.slider.Multi', {
      * Programmatically sets the value of the Slider. Ensures that the value is constrained within the minValue and
      * maxValue.
      *
-     * Setting a single value:
-     *     // Set the second slider value, don't animate
+     * Setting the second slider's value without animation:
+     *
      *     mySlider.setValue(1, 50, false);
      *
-     * Setting multiple values at once
-     *     // Set 3 thumb values, animate
+     * Setting multiple values with animation:
+     *
      *     mySlider.setValue([20, 40, 60], true);
      *
      * @param {Number/Number[]} index Index of the thumb to move. Alternatively, it can be an array of values to set
      * for each thumb in the slider.
      * @param {Number} value The value to set the slider to. (This will be constrained within minValue and maxValue)
      * @param {Object/Boolean} [animate] `false` to not animate. `true` to use the default animation. This may also be an
-     * animate configuration object, see {@link #animate}. If this configuration is omitted, the {@link #animate} configuration
+     * animate configuration object, see {@link #cfg-animate}. If this configuration is omitted, the {@link #cfg-animate} configuration
      * will be used.
      * @return {Ext.slider.Multi} this
      */

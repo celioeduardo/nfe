@@ -77,20 +77,23 @@ Ext.define('Ext.form.field.FileButton', {
      * button's clicks.
      */
     createFileInput : function(isTemporary) {
-        var me = this;
-        me.fileInputEl = me.el.createChild({
-            name: me.inputName,
-            id: !isTemporary ? me.id + '-fileInputEl' : undefined,
-            cls: me.inputCls,
-            tag: 'input',
-            type: 'file',
-            size: 1,
-            role: 'button'
-        });
+        var me = this,
+            fileInputEl = me.fileInputEl = me.el.createChild({
+                name: me.inputName,
+                id: !isTemporary ? me.id + '-fileInputEl' : undefined,
+                cls: me.inputCls,
+                tag: 'input',
+                type: 'file',
+                size: 1,
+                role: 'button'
+            });
+
+        // This is our focusEl
+        fileInputEl.dom.setAttribute(Ext.Component.componentIdAttribute, me.id);
         
         // We place focus and blur listeners on fileInputEl to activate Button's
         // focus and blur style treatment
-        me.fileInputEl.on({
+        fileInputEl.on({
             scope: me,
             change: me.fireChange,
             focus: me.onFocus,
@@ -99,27 +102,23 @@ Ext.define('Ext.form.field.FileButton', {
     },
     
     reset: function(remove) {
-        // Because we're replacing the focusEl, we need to handle
-        // resetting the listeners
+        // We do not add listeners to focusEls now.
+        // The Focus event publisher calls into Components on focus and blur
         var me = this;
-        me.clearFocusListeners();
         if (remove) {
             me.fileInputEl.destroy();
         }
         me.createFileInput(!remove);
-        me.addFocusListener();
     },
     
     restoreInput: function(el) {
-        // Because we're replacing the focusEl, we need to handle
-        // resetting the listeners
+        // We do not add listeners to focusEls now.
+        // The Focus event publisher calls into Components on focus and blur
         var me = this;
-        me.clearFocusListeners();
         me.fileInputEl.destroy();
         el = Ext.get(el);
         me.el.appendChild(el);
         me.fileInputEl = el;
-        me.addFocusListener();
     },
     
     onDisable: function(){

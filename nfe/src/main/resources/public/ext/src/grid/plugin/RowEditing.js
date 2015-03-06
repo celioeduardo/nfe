@@ -38,7 +38,7 @@
  *             },
  *             {header: 'Phone', dataIndex: 'phone'}
  *         ],
- *         selType: 'rowmodel',
+ *         selModel: 'rowmodel',
  *         plugins: {
  *             ptype: 'rowediting',
  *             clicksToEdit: 1

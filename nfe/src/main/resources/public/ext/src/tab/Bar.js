@@ -65,16 +65,6 @@ Ext.define('Ext.tab.Bar', {
         activateOnFocus: true
     },
 
-    /**
-     * @cfg {String} title @hide
-     */
-    
-    /**
-     * @cfg {String} iconCls @hide
-     *
-     * There are no default icon classes that come with Ext JS.
-     */
-
     // @private
     defaultType: 'tab',
 
@@ -138,8 +128,7 @@ Ext.define('Ext.tab.Bar', {
         var me = this,
             initialLayout = me.initialConfig.layout,
             initialAlign = initialLayout && initialLayout.align,
-            initialOverflowHandler = initialLayout && initialLayout.overflowHandler,
-            layout;
+            initialOverflowHandler = initialLayout && initialLayout.overflowHandler;
 
         if (me.plain) {
             me.addCls(me.baseCls + '-plain');
@@ -496,15 +485,20 @@ Ext.define('Ext.tab.Bar', {
         var me = this;
 
         if (!tab.disabled && tab !== me.activeTab) {
+            // Deactivate the previous tab, and ensure this FocusableContainer knows about it
             if (me.activeTab) {
                 if (me.activeTab.isDestroyed) {
                     me.previousTab = null;
                 } else {
                     me.previousTab = me.activeTab;
                     me.activeTab.deactivate();
+                    me.deactivateFocusable(me.activeTab);
                 }
             }
+
+            // Activate the new tab, and ensure this FocusableContainer knows about it
             tab.activate();
+            me.activateFocusable(tab);
 
             me.activeTab = tab;
             me.needsScroll = true;
@@ -568,7 +562,6 @@ Ext.define('Ext.tab.Bar', {
 
         onClick: function(e, target) {
             var me = this,
-                tabPanel = me.tabPanel,
                 tabEl, tab, isCloseClick, tabInfo;
 
             if (e.getTarget('.' + Ext.baseCSSPrefix + 'box-scroller')) {
@@ -589,14 +582,20 @@ Ext.define('Ext.tab.Bar', {
             if (isCloseClick) {
                 e.preventDefault();
             }
+            
             if (tab && tab.isDisabled && !tab.isDisabled()) {
+                // This will focus the tab; we do it before activating the card
+                // because the card may attempt to focus itself or a child item.
+                // We need to focus the tab explicitly because click target is
+                // the Bar, not the Tab.
+                tab.beforeClick(isCloseClick);
+                
                 if (tab.closable && isCloseClick) {
                     tab.onCloseClick();
-                } else {
+                }
+                else {
                     me.doActivateTab(tab);
                 }
-
-                tab.afterClick(isCloseClick);
             }
         },
         

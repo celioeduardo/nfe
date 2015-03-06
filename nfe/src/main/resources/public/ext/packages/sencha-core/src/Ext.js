@@ -39,7 +39,7 @@
  *
  * @singleton
  */
-var Ext = Ext || {};
+var Ext = Ext || {}; // jshint ignore:line
 // @define Ext
 Ext._startTime = Date.now ? Date.now() : (+ new Date());
 (function() {
@@ -71,7 +71,7 @@ Ext._startTime = Date.now ? Date.now() : (+ new Date());
 
     // These are emptyFn's in core and are redefined only in Ext JS (we use this syntax
     // so Cmd does not detect them):
-    Ext['suspendLayouts'] = Ext['resumeLayouts'] = emptyFn;
+    Ext['suspendLayouts'] = Ext['resumeLayouts'] = emptyFn; // jshint ignore:line
 
     for (i in { toString: 1 }) {
         enumerables = null;
@@ -291,6 +291,13 @@ Ext._startTime = Date.now ? Date.now() : (+ new Date());
         validIdRe: /^[a-z_][a-z0-9\-_]*$/i,
 
         /**
+         * @property {String} BLANK_IMAGE_URL
+         * URL to a 1x1 transparent gif image used by Ext to create inline icons with
+         * CSS background images.
+         */
+        BLANK_IMAGE_URL: 'data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
+
+        /**
          * Converts an id (`'foo'`) into an id selector (`'#foo'`).  This method is used
          * internally by the framework whenever an id needs to be converted into a selector
          * and is provided as a hook for those that need to escape IDs selectors since,
@@ -347,7 +354,7 @@ Ext._startTime = Date.now ? Date.now() : (+ new Date());
          * A zero length string which will pass a truth test. Useful for passing to methods
          * which use a truth test to reject <i>falsy</i> values where a string value must be cleared.
          */
-        emptyString: new String(),
+        emptyString: new String(), // jshint ignore:line
 
         /**
          * @property {String} [baseCSSPrefix='x-']
@@ -411,7 +418,7 @@ Ext._startTime = Date.now ? Date.now() : (+ new Date());
          * @method
          */
         now: (global.performance && global.performance.now) ? function() {
-            return performance.now();
+            return performance.now(); // jshint ignore:line
         } : (Date.now || (Date.now = function() {
             return +new Date();
         })),
@@ -498,7 +505,7 @@ Ext._startTime = Date.now ? Date.now() : (+ new Date());
         override: function (target, overrides) {
             if (target.$isClass) {
                 target.override(overrides);
-            } else if (typeof target == 'function') {
+            } else if (typeof target === 'function') {
                 Ext.apply(target.prototype, overrides);
             } else {
                 var owner = target.self,
@@ -518,8 +525,9 @@ Ext._startTime = Date.now ? Date.now() : (+ new Date());
 
                                 value.$name = name;
                                 value.$owner = owner;
-                                value.$previous = target.hasOwnProperty(name)
-                                    ? target[name] // already hooked, so call previous hook
+
+                                value.$previous = target.hasOwnProperty(name) ?
+                                    target[name] // already hooked, so call previous hook
                                     : callOverrideParent; // calls by name on prototype
                             }
 
@@ -992,7 +1000,7 @@ Ext._startTime = Date.now ? Date.now() : (+ new Date());
                 }
     
                 return result;
-            }
+            };
         })()
     }); // Ext.apply(Ext
 

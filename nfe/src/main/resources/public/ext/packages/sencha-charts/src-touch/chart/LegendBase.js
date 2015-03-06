@@ -48,7 +48,6 @@ Ext.define('Ext.chart.LegendBase', {
     },
 
     setDocked: function (docked) {
-        this.callParent(arguments);
         if (docked === 'top' || docked === 'bottom') {
             this.setLayout({type: 'hbox', pack: 'center'});
             this.setInline(true);

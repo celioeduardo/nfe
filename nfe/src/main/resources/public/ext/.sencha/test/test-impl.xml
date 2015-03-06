@@ -166,13 +166,15 @@ Ext.Boot.load([
             return decodeURIComponent(name[1]);
     }
     
-    var cmdTestChunk = getParam('cmd-test-chunk'),
-        cmdTestChunks = getParam('cmd-test-chunks'),
+    var cmdTestSplit = getParam('cmd-test-split'),
+        cmdTestChunk, cmdTestChunks,
         url = [
 ${specfiles.list}
         ];
 
-    if (cmdTestChunks) {
+    if (cmdTestSplit) {
+        cmdTestChunk = cmdTestSplit.split("/")[0],
+        cmdTestChunks = cmdTestSplit.split("/")[1],
         url = split(url, cmdTestChunks)[cmdTestChunk];
     }
     

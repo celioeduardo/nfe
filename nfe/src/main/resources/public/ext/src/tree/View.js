@@ -5,6 +5,12 @@ Ext.define('Ext.tree.View', {
     extend: 'Ext.view.Table',
     alias: 'widget.treeview',
 
+    config: {
+        selectionModel: {
+            type: 'treemodel'
+        }
+    },
+    
     /**
      * @property {Boolean} isTreeView
      * `true` in this class to identify an object as an instantiated TreeView, or subclass thereof.
@@ -51,7 +57,24 @@ Ext.define('Ext.tree.View', {
     stripeRows: false,
 
     // fields that will trigger a change in the ui that aren't likely to be bound to a column
-    uiFields: ['expanded', 'loaded', 'checked', 'expandable', 'leaf', 'icon', 'iconCls', 'loading', 'qtip', 'qtitle'],
+    uiFields: {
+        expanded: 1,
+        loaded: 1,
+        checked: 1,
+        expandable: 1,
+        leaf: 1,
+        icon: 1,
+        iconCls: 1,
+        loading: 1,
+        qtip: 1,
+        qtitle: 1
+    },
+
+    // fields that requires a full row render
+    rowFields: {
+        qtip: 1,
+        qtitle: 1
+    },
 
     // treeRowTpl which is inserted into the rowTpl chain before the base rowTpl. Sets tree-specific classes and attributes
     treeRowTpl: [
@@ -492,9 +515,17 @@ Ext.define('Ext.tree.View', {
                     // Move all the nodes out of the anim wrap to their proper location
                     // Must do this in afteranimate because lastframe does not fire if the
                     // animation is stopped.
-                    var items = targetEl.dom.childNodes;
+                    var items = targetEl.dom.childNodes,
+                        activeEl = Ext.Element.getActiveElement();
+
                     if (items.length) {
+                        if (!targetEl.contains(activeEl)) {
+                            activeEl = null;
+                        }
                         animWrap.el.insertSibling(items, 'before', true);
+                        if (activeEl) {
+                            activeEl.focus();
+                        }
                     }
                     animWrap.el.destroy();
                     me.animWraps[animWrap.record.internalId] = queue[id] = null;
@@ -774,14 +805,22 @@ Ext.define('Ext.tree.View', {
         }
     },
 
-    shouldUpdateCell: function(record, column, changedFieldNames){
-        if (changedFieldNames) {
+    shouldUpdateCell: function(record, column, changedFieldNames) {
+        // For the TreeColumn, if any of the known tree column UI affecting fields are updated
+        // the cell should be updated in whatever way. 1 if a custom renderer (not our default tree cell renderer), else 2.
+        if (column.isTreeColumn && changedFieldNames) {
             var i = 0,
                 len = changedFieldNames.length;
 
             for (; i < len; ++i) {
-                if (Ext.Array.contains(this.uiFields, changedFieldNames[i])) {
-                    return true;
+                // Check for fields which always require a full row update
+                if (this.rowFields[changedFieldNames[i]]) {
+                    return 1;
+                }
+                // Check for fields which require this column to be updated.
+                // The TreeColumn's treeRenderer is not a custom renderer.
+                if (this.uiFields[changedFieldNames[i]]) {
+                    return 2;
                 }
             }
         }

@@ -90,9 +90,12 @@ Ext.define('Ext.mixin.Bindable', {
 
         /**
          * @cfg {String/String[]/Object} publishes
-         * One or more names of config properties that this component should publish to
-         * its `ViewModel`. Some components override this and publish their most useful
-         * configs by default.
+         * One or more names of config properties that this component should publish 
+         * to its ViewModel. Some components override this and publish their most useful 
+         * configs by default.  
+         * 
+         * Values determined to be invalid by component (often form fields and model validations) 
+         * will not be published to the ViewModel.
          *
          * This config uses the `{@link #cfg-reference}` to determine the name of the data
          * object to place in the `ViewModel`. If `reference` is not set then this config
@@ -704,9 +707,7 @@ Ext.define('Ext.mixin.Bindable', {
 
         onBindNotify: function (value, oldValue, binding) {
             binding.syncing = (binding.syncing + 1) || 1;
-
             this[binding._config.names.set](value);
-
             --binding.syncing;
         },
 

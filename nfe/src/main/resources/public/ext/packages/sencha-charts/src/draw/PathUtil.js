@@ -18,27 +18,9 @@ Ext.define('Ext.draw.PathUtil', function () {
 
         requires: [
             'Ext.draw.overrides.Path',
-            'Ext.draw.overrides.sprite.Path'
+            'Ext.draw.overrides.sprite.Path',
+            'Ext.draw.overrides.Surface'
         ],
-
-        /**
-         * @private
-         * Sign function.
-         * http://en.wikipedia.org/wiki/Sign_function
-         * @param x {Number}
-         * @returns {Number}
-         */
-        sign: function (x) {
-            if (x > 0) {
-                return 1;
-            } else if (x < 0) {
-                return -1;
-            } else if (x === 0) {
-                return 0;
-            } else {
-                Ext.Error.raise('The argument is not a valid number.');
-            }
-        },
 
         /**
          * @private
@@ -69,7 +51,7 @@ Ext.define('Ext.draw.PathUtil', function () {
                 t = [],
                 S, T, Im, th, i,
 
-                sign = this.sign;
+                sign = Ext.Number.sign;
 
             if (D >= 0) { // Complex or duplicate roots.
                 S = sign(R + sqrt(D)) * pow(abs(R + sqrt(D)), 1/3);

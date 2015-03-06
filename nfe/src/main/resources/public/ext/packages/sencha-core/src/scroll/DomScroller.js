@@ -1,6 +1,12 @@
+/**
+ * @class Ext.scroll.DomScroller
+ * @private
+ */
 Ext.define('Ext.scroll.DomScroller', {
     extend: 'Ext.scroll.Scroller',
     alias: 'scroller.dom',
+
+    isDomScroller: true,
 
     constructor: function(config) {
         var me = this;
@@ -187,6 +193,13 @@ Ext.define('Ext.scroll.DomScroller', {
 
             if (element) {
                 element.setStyle('overflow-y', y);
+            }
+        },
+
+        stopAnimation: function() {
+            var anim = this.getElement().getActiveAnimation();
+            if (anim) {
+                anim.end();
             }
         }
     }

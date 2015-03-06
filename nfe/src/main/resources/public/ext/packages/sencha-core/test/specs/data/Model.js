@@ -281,16 +281,6 @@ describe("Ext.data.Model", function() {
                     
                 });
                 
-                it("should create a new idField if it differs from the superclass", function() {
-                    defineA(['id']);
-                    defineB([], {
-                        idProperty: 'name'
-                    });
-                    var fields = B.getFields();
-                    expect(fields.length).toBe(2);
-                    expect(fields[1].getName()).toBe('name');
-                });
-                
                 it("should copy fields for deep subclasses", function() {
                     defineA(['id']);
                     defineB(['bField']);    
@@ -314,6 +304,187 @@ describe("Ext.data.Model", function() {
                     
                     Ext.undefine('spec.C');
                     Ext.undefine('spec.D');
+                });
+
+                describe("id field", function() {
+                    describe("not changing the idProperty", function() {
+                        it("should inherit the idProperty & keep the generated idField in position", function() {
+                            defineA(['foo', 'bar']);
+                            defineB(['baz']);
+
+                            var fields = spec.A.getFields();
+                            expect(fields.length).toBe(3);
+                            expect(fields[0].name).toBe('foo');
+                            expect(fields[1].name).toBe('bar');
+                            expect(fields[2].name).toBe('id');
+
+                            fields = spec.B.getFields();
+                            expect(fields.length).toBe(4);
+                            expect(fields[0].name).toBe('foo');
+                            expect(fields[1].name).toBe('bar');
+                            expect(fields[2].name).toBe('id');
+                            expect(fields[3].name).toBe('baz');
+
+                            expect(spec.A.idField.name).toBe('id');
+                            expect(spec.B.idField.name).toBe('id');
+                        });
+
+                        it("should inherit the idProperty & keep a defined idField in position", function() {
+                            defineA(['foo', 'id', 'bar']);
+                            defineB(['baz']);
+
+                            var fields = spec.A.getFields();
+                            expect(fields.length).toBe(3);
+                            expect(fields[0].name).toBe('foo');
+                            expect(fields[1].name).toBe('id');
+                            expect(fields[2].name).toBe('bar');
+
+                            fields = spec.B.getFields();
+                            expect(fields.length).toBe(4);
+                            expect(fields[0].name).toBe('foo');
+                            expect(fields[1].name).toBe('id');
+                            expect(fields[2].name).toBe('bar');
+                            expect(fields[3].name).toBe('baz');
+
+                            expect(spec.A.idField.name).toBe('id');
+                            expect(spec.B.idField.name).toBe('id');
+                        });
+                    });
+
+                    describe("changing the idProperty", function() {
+                        describe("id declared as a field in superclass & subclass", function() {
+                            it("should keep both idFields in the defined order", function() {
+                                defineA(['foo', 'id', 'bar']);
+                                defineB(['customId', 'baz'], {idProperty: 'customId'});
+
+                                var fields = spec.A.getFields();
+                                expect(fields.length).toBe(3);
+                                expect(fields[0].name).toBe('foo');
+                                expect(fields[1].name).toBe('id');
+                                expect(fields[2].name).toBe('bar');
+
+                                fields = spec.B.getFields();
+                                expect(fields.length).toBe(5);
+                                expect(fields[0].name).toBe('foo');
+                                expect(fields[1].name).toBe('id');
+                                expect(fields[2].name).toBe('bar');
+                                expect(fields[3].name).toBe('customId');
+                                expect(fields[4].name).toBe('baz');
+
+                                expect(spec.A.idField.name).toBe('id');
+                                expect(spec.B.idField.name).toBe('customId');
+                            });
+                        });
+
+                        describe("id declared as field only in superclass", function() {
+                            it("should keep a defined idField from the parent, but it should not be the idField", function() {
+                                defineA(['foo', 'id', 'bar']);
+                                defineB(['baz'], {idProperty: 'customId'});
+
+                                var fields = spec.A.getFields();
+                                expect(fields.length).toBe(3);
+                                expect(fields[0].name).toBe('foo');
+                                expect(fields[1].name).toBe('id');
+                                expect(fields[2].name).toBe('bar');
+
+                                fields = spec.B.getFields();
+                                expect(fields.length).toBe(5);
+                                expect(fields[0].name).toBe('foo');
+                                expect(fields[1].name).toBe('id');
+                                expect(fields[2].name).toBe('bar');
+                                expect(fields[3].name).toBe('baz');
+                                expect(fields[4].name).toBe('customId');
+
+                                expect(spec.A.idField.name).toBe('id');
+                                expect(spec.B.idField.name).toBe('customId');
+                            });
+                        });
+
+                        describe("id declared as a field only in subclass", function() {
+                            it("should remove the generated id field and leave the declared idField in place", function() {
+                                defineA(['foo']);
+                                defineB(['bar', 'customId', 'baz'], {idProperty: 'customId'});
+
+                                var fields = spec.A.getFields();
+                                expect(fields.length).toBe(2);
+                                expect(fields[0].name).toBe('foo');
+                                expect(fields[1].name).toBe('id');
+
+                                fields = spec.B.getFields();
+                                expect(fields.length).toBe(4);
+                                expect(fields[0].name).toBe('foo');
+                                expect(fields[1].name).toBe('bar');
+                                expect(fields[2].name).toBe('customId');
+                                expect(fields[3].name).toBe('baz');
+
+                                expect(spec.A.idField.name).toBe('id');
+                                expect(spec.B.idField.name).toBe('customId');
+                            });
+                        });
+
+                        describe("id not declared as a field", function() {
+                            it("should replace a generated idField from the parent", function() {
+                                defineA(['foo', 'bar']);
+                                defineB(['baz'], {idProperty: 'customId'});
+
+                                var fields = spec.A.getFields();
+                                expect(fields.length).toBe(3);
+                                expect(fields[0].name).toBe('foo');
+                                expect(fields[1].name).toBe('bar');
+                                expect(fields[2].name).toBe('id');
+
+                                fields = spec.B.getFields();
+                                expect(fields.length).toBe(4);
+                                expect(fields[0].name).toBe('foo');
+                                expect(fields[1].name).toBe('bar');
+                                expect(fields[2].name).toBe('customId');
+                                expect(fields[3].name).toBe('baz');
+
+                                expect(spec.A.idField.name).toBe('id');
+                                expect(spec.B.idField.name).toBe('customId');
+                            });
+                        });
+                    });
+                });
+
+                describe("versionProperty", function() {
+                    it("should append versionProperty if it's not declared as a field", function() {
+                        defineA(['foo'], {
+                            versionProperty: 'version'
+                        });
+
+                        var fields = spec.A.getFields(),
+                            version = fields[2];
+
+                        expect(fields.length).toBe(3);
+                        expect(fields[0].name).toBe('foo');
+                        expect(fields[1].name).toBe('id');
+                        expect(fields[2].name).toBe('version');
+
+                        expect(version.critical).toBe(true);
+                        expect(version.defaultValue).toBe(1);
+                    });
+
+                    it("should leave a declared versionProperty in position", function() {
+                        defineA(['foo', {
+                            name: 'version',
+                            type: 'int'
+                        }, 'bar'], {
+                            versionProperty: 'version'
+                        });
+
+                        var fields = spec.A.getFields(),
+                            version = fields[1];
+
+                        expect(fields.length).toBe(4);
+                        expect(fields[0].name).toBe('foo');
+                        expect(fields[1].name).toBe('version');
+                        expect(fields[2].name).toBe('bar');
+                        expect(fields[3].name).toBe('id');
+
+                        expect(version.critical).toBe(true);
+                        expect(version.defaultValue).toBe(1);
+                    });
                 });
             });
             
@@ -1501,13 +1672,6 @@ describe("Ext.data.Model", function() {
                 });
             }
 
-            it("should throw if the model is a phantom", function() {
-                make();
-                expect(function() {
-                    rec.load();
-                }).toThrow();
-            });
-
             it("should throw if the returned id is different", function() {
                 make(3, {});
                 expect(function() {
@@ -1525,6 +1689,23 @@ describe("Ext.data.Model", function() {
             it("should return the operation", function() {
                 make(3);
                 expect(rec.load().isOperation).toBe(true);
+            });
+
+            describe("with phantoms", function() {
+                it("should not be a phantom after loading", function() {
+                    make();
+                    expect(rec.phantom).toBe(true);
+                    rec.load();
+                    complete({id: 1});
+                    expect(rec.phantom).toBe(false);
+                });
+
+                it("should set the id on the new record", function() {
+                    make();
+                    rec.load();
+                    complete({id: 200});
+                    expect(rec.getId()).toBe(200);
+                });
             });
 
             describe("while loading", function() {
@@ -4187,6 +4368,224 @@ describe("Ext.data.Model", function() {
             });
         });
     });
+
+    describe("model state", function() {
+        var User, convertSpy;
+
+        beforeEach(function() {
+            convertSpy = jasmine.createSpy();
+            User = Ext.define('spec.User', {
+                extend: 'Ext.data.Model',
+                fields: ['name', 'age', {
+                    name: 'withConvert',
+                    convert: convertSpy
+                }]
+            });
+        });
+
+        afterEach(function() {
+            Ext.undefine('spec.User');
+            convertSpy = User = null;
+        });
+
+        describe("commit", function() {
+            it("should clear the dirty state", function() {
+                var rec = new User();
+                rec.set('name', 'Foo');
+                expect(rec.dirty).toBe(true);
+                rec.commit();
+                expect(rec.dirty).toBe(false);
+            });
+
+            it("should not modify any field values", function() {
+                var rec = new User();
+                rec.set('name', 'Foo');
+                rec.set('age', 100);
+                rec.commit();
+                expect(rec.get('name')).toBe('Foo');
+                expect(rec.get('age')).toBe(100);
+            });
+
+            it("should clear the modified state", function() {
+                var rec = new User();
+                rec.set('name', 'Foo');
+                expect(rec.isModified('name')).toBe(true);
+                rec.commit();
+                expect(rec.isModified('name')).toBe(false);
+            });
+
+            it("should clear any editing state", function() {
+                var rec = new User();
+                rec.beginEdit();
+                expect(rec.editing).toBe(true);
+                rec.commit();
+                expect(rec.editing).toBe(false);
+            });
+
+            it("should clear the phantom state", function() {
+                var rec = new User();
+                expect(rec.phantom).toBe(true);
+                rec.commit();
+                expect(rec.phantom).toBe(false);
+            });
+
+            it("should set dropped records to be erased", function() {
+                var rec = new User({
+                    id: 1
+                });
+                rec.drop();
+                expect(rec.erased).toBe(false);
+                rec.commit();
+                expect(rec.erased).toBe(true);
+            });
+
+            describe("notifying joined parties", function() {
+                describe("data commits", function() {
+                    it("should notify after a commit", function() {
+                        var rec = new User(),
+                            spy = spyOn(rec, 'callJoined');
+
+                        rec.commit();
+                        expect(spy.callCount).toBe(1);
+                        expect(spy.mostRecentCall.args[0]).toBe('afterCommit');
+                    });
+
+                    it("should pass along any modified fields", function() {
+                        var rec = new User(),
+                            spy = spyOn(rec, 'callJoined');
+
+                        rec.commit(false, ['foo', 'bar']);
+                        expect(spy.callCount).toBe(1);
+                        expect(spy.mostRecentCall.args[1]).toEqual([['foo', 'bar']]);
+                    });
+
+                    it("should not notify with silent: true", function() {
+                        var rec = new User(),
+                            spy = spyOn(rec, 'callJoined');
+
+                        rec.commit(true);
+                        expect(spy).not.toHaveBeenCalled();
+                    });
+                });
+
+                describe("via an erase", function() {
+                    it("should notify after an erase", function() {
+                        var rec = new User(),
+                            spy;
+
+                        rec.drop();
+                        spy = spyOn(rec, 'callJoined');
+                        rec.commit();
+                        expect(spy.callCount).toBe(1);
+                        expect(spy.mostRecentCall.args[0]).toBe('afterErase');
+                    });
+
+                    it("should not notify with silent: true", function() {
+                        var rec = new User(),
+                            spy;
+
+                        rec.drop();
+                        spy = spyOn(rec, 'callJoined');
+                        rec.commit(true);
+                        expect(spy).not.toHaveBeenCalled();
+                    });
+                });
+            });
+        });
+
+        describe("reject", function() {
+            it("should clear the dirty state", function() {
+                var rec = new User();
+                rec.set('name', 'Foo');
+                expect(rec.dirty).toBe(true);
+                rec.reject();
+                expect(rec.dirty).toBe(false);
+            });
+
+            it("should return field values to their original states", function() {
+                var rec = new User({
+                    name: 'Foo',
+                    age: 1
+                });
+                rec.set('name', 'Bar');
+                rec.set('age', 100);
+                rec.reject();
+                expect(rec.get('name')).toBe('Foo');
+                expect(rec.get('age')).toBe(1);
+            });
+
+            it("should not run converters when restoring data", function() {
+                var rec = new User({
+                    name: 'Foo',
+                    age: 1
+                });
+                rec.set('name', 'Bar');
+                rec.set('age', 100);
+                convertSpy.reset();
+                rec.reject();
+                expect(convertSpy).not.toHaveBeenCalled();
+            });
+
+            it("should clear the modified state", function() {
+                var rec = new User();
+                rec.set('name', 'Foo');
+                expect(rec.isModified('name')).toBe(true);
+                rec.reject();
+                expect(rec.isModified('name')).toBe(false);
+            });
+
+            it("should clear any editing state", function() {
+                var rec = new User();
+                rec.beginEdit();
+                expect(rec.editing).toBe(true);
+                rec.reject();
+                expect(rec.editing).toBe(false);
+            });
+
+            it("should clear the dropped state", function() {
+                var rec = new User({
+                    id: 1
+                });
+                rec.drop();
+                rec.reject();
+                expect(rec.dropped).toBe(false);
+            });
+
+            describe("notifying joined parties", function() {
+                it("should not call afterEdit when restoring values", function() {
+                    var rec = new User({
+                        name: 'Foo'
+                    }), spy;
+                    rec.set('name', 'Bar');
+                    spy = spyOn(rec, 'callJoined');
+                    rec.reject();
+                    expect(spy.callCount).toBe(1);
+                    expect(spy.mostRecentCall.args[0]).not.toBe('afterEdit');
+                });
+
+                it("should call afterReject", function() {
+                    var rec = new User({
+                        name: 'Foo'
+                    }), spy;
+                    rec.set('name', 'Bar');
+                    spy = spyOn(rec, 'callJoined');
+                    rec.reject();
+                    expect(spy.callCount).toBe(1);
+                    expect(spy.mostRecentCall.args[0]).toBe('afterReject');
+                });
+
+                it("should not call afterReject with silent: true", function() {
+                    var rec = new User({
+                        name: 'Foo'
+                    }), spy;
+                    rec.set('name', 'Bar');
+                    spy = spyOn(rec, 'callJoined');
+                    rec.reject(true);
+                    expect(spy).not.toHaveBeenCalled();
+                });
+            });
+        });
+    });
     
     describe("getData", function() {
         var A; 
@@ -6498,6 +6897,54 @@ describe("Ext.data.Model", function() {
                 expect(address.dropped).toBe(false);
                 expect(orderItem.dropped).toBe(false);
             });
+        });
+    });
+
+    describe("versionProperty", function() {
+        var User;
+
+        beforeEach(function() {
+            User = Ext.define('spec.User', {
+                extend: 'Ext.data.Model',
+                fields: ['name'],
+                versionProperty: 'version'
+            })
+        });
+
+        afterEach(function() {
+            Ext.undefine('spec.User');
+            User = null;
+        });
+
+        it("should increment the versionProperty when commiting", function() {
+            var user = new User({
+                id: 1,
+                name: 'Foo',
+                version: 5
+            });
+            user.set('name', 'Bar');
+            user.commit();
+            expect(user.get('version')).toBe(6);
+        });
+
+        it("should not increment the versionProperty when committing a phantom", function() {
+            var user = new User({
+                name: 'Foo'
+            });
+            expect(user.get('version')).toBe(1);
+            user.set('name', 'Bar');
+            user.commit();
+            expect(user.get('version')).toBe(1);
+        });
+
+        it("should not increment the versionProperty when rejecting", function() {
+            var user = new User({
+                id: 1,
+                name: 'X'
+            });
+            user.set('name', 'Bar');
+            user.reject();
+            expect(user.get('version')).toBe(1);
         });
     });
 });

@@ -61,7 +61,6 @@ Ext.define('Ext.overrides.dom.Element', (function() {
         VISIBILITY = 'visibility',
         DISPLAY = 'display',
         NONE = 'none',
-        HIDDEN = 'hidden',
         OFFSETS = 'offsets',
         ORIGINALDISPLAY = 'originalDisplay',
         VISMODE = 'visibilityMode',
@@ -97,7 +96,6 @@ Ext.define('Ext.overrides.dom.Element', (function() {
         XMASKED = Ext.baseCSSPrefix + "masked",
         XMASKEDRELATIVE = Ext.baseCSSPrefix + "masked-relative",
         EXTELMASKMSG = Ext.baseCSSPrefix + "mask-msg",
-        mouseEnterLeaveRe = /^(?:mouseenter|mouseleave)$/,
         bodyRe = /^body/i,
         propertyCache = {},
         getDisplay = function(el) {
@@ -119,7 +117,11 @@ Ext.define('Ext.overrides.dom.Element', (function() {
             return visMode;
         },
         garbageBin,
-        emptyRange      = DOC.createRange ? DOC.createRange() : null;
+        emptyRange      = DOC.createRange ? DOC.createRange() : null,
+        inputTags = {
+            INPUT: true,
+            TEXTAREA: true
+        };
 
     return {
         override: 'Ext.dom.Element',
@@ -128,13 +130,11 @@ Ext.define('Ext.overrides.dom.Element', (function() {
             'Ext.util.Animate'
         ],
 
-        requires: [
-            'Ext.dom.GarbageCollector',
-            'Ext.dom.Fly'
-        ],
-
         uses: [
-            'Ext.fx.Manager', 
+            'Ext.dom.GarbageCollector',
+            'Ext.dom.Fly',
+            'Ext.event.publisher.MouseEnterLeave',
+            'Ext.fx.Manager',
             'Ext.fx.Anim'
         ],
 
@@ -148,6 +148,16 @@ Ext.define('Ext.overrides.dom.Element', (function() {
             selectableCls: Ext.baseCSSPrefix + 'selectable',
             unselectableCls: Ext.baseCSSPrefix + 'unselectable',
             
+            /**
+             * tabIndex attribute name for DOM lookups; needed in IE8 because
+             * it has a bug: dom.getAttribute('tabindex') will return null
+             * while dom.getAttribute('tabIndex') will return the actual value.
+             * IE9+ and all other browsers normalize attribute names to lowercase.
+             *
+             * @private
+             */
+            tabIndexAttributeName: Ext.isIE8 ? 'tabIndex' : 'tabindex',
+            
             tabbableSelector: 'a[href],button,iframe,input,select,textarea,[tabindex],[contenteditable="true"]',
             
             // Anchor and link tags are special; they are only naturally focusable (and tabbable)
@@ -160,7 +170,8 @@ Ext.define('Ext.overrides.dom.Element', (function() {
                 INPUT: true,
                 OBJECT: true,
                 SELECT: true,
-                TEXTAREA: true
+                TEXTAREA: true,
+                HTML: Ext.isIE ? true : false
             },
 
             // <object> element is naturally tabbable only in IE8 and below
@@ -673,7 +684,11 @@ Ext.define('Ext.overrides.dom.Element', (function() {
             //<feature legacyBrowser>
             // prevent memory leaks in IE8
             // see http://social.msdn.microsoft.com/Forums/ie/en-US/c76967f0-dcf8-47d0-8984-8fe1282a94f5/ie-appendchildremovechild-memory-problem?forum=iewebdevelopment
-            if (dom && Ext.isIE8) {
+            // must not be document, documentElement, body or window object
+            // Have to use != instead of !== for IE8 or it will not recognize that the window
+            // objects are equal
+            if (dom && Ext.isIE8 && (dom.window != dom) && (dom.nodeType !== 9) &&
+                    (dom.tagName !== 'BODY') && (dom.tagName !== 'HTML')) {
                 garbageBin = garbageBin || DOC.createElement('div');
                 garbageBin.appendChild(dom);
                 garbageBin.innerHTML = '';
@@ -1250,6 +1265,26 @@ Ext.define('Ext.overrides.dom.Element', (function() {
             
             return focusable;
         },
+
+        /**
+         * Returns `true` if this Element is an input field, or is editable in any way.
+         * @returns {Boolean} `true` if this Element is an input field, or is editable in any way.
+         */
+        isInputField: function() {
+            var dom = this.dom,
+                contentEditable = dom.contentEditable;
+
+            // contentEditable will default to inherit if not specified, only check if the
+            // attribute has been set or explicitly set to true
+            // http://html5doctor.com/the-contenteditable-attribute/
+            // Also skip <input> tags of type="button", we use them for checkboxes
+            // and radio buttons
+            if ((inputTags[dom.tagName] && dom.type !== 'button') ||
+                (contentEditable === '' || contentEditable === 'true')) {
+                return true;
+            }
+            return false;
+        },
         
         /**
          * Checks whether this element participates in the sequential focus navigation,
@@ -1394,9 +1429,9 @@ Ext.define('Ext.overrides.dom.Element', (function() {
                 dom = me.dom,
                 data = me.getData(),
                 maskEl = data.maskEl,
-                maskMsg = data.maskMsg;
+                maskMsg;
 
-            if (!(bodyRe.test(dom.tagName) && me.getStyle('position') == 'static')) {
+            if (!(bodyRe.test(dom.tagName) && me.getStyle('position') === 'static')) {
                 me.addCls(XMASKEDRELATIVE);
             }
 
@@ -1405,34 +1440,27 @@ Ext.define('Ext.overrides.dom.Element', (function() {
                 maskEl.destroy();
             }
 
-            if (maskMsg) {
-                maskMsg.destroy();
-            }
-
-            Ext.DomHelper.append(dom, [{
+            maskEl = Ext.DomHelper.append(dom, {
                 role: 'presentation',
-                cls : Ext.baseCSSPrefix + "mask",
-                style: 'top:0;left:0;'
-            }, {
-                role: 'presentation',
-                cls : msgCls ? EXTELMASKMSG + " " + msgCls : EXTELMASKMSG,
-                cn  : {
-                    tag: 'div',
+                cls : Ext.baseCSSPrefix + "mask " + Ext.baseCSSPrefix + "border-box",
+                children: {
                     role: 'presentation',
-                    cls: Ext.baseCSSPrefix + 'mask-msg-inner',
-                    cn: {
+                    cls : msgCls ? EXTELMASKMSG + " " + msgCls : EXTELMASKMSG,
+                    cn  : {
                         tag: 'div',
                         role: 'presentation',
-                        cls: Ext.baseCSSPrefix + 'mask-msg-text',
-                        html: msg || ''
+                        cls: Ext.baseCSSPrefix + 'mask-msg-inner',
+                        cn: {
+                            tag: 'div',
+                            role: 'presentation',
+                            cls: Ext.baseCSSPrefix + 'mask-msg-text',
+                            html: msg || ''
+                        }
                     }
                 }
-            }]);
+            }, true);
+            maskMsg = Ext.get(maskEl.dom.firstChild);
 
-            maskMsg = Ext.get(dom.lastChild);
-            maskEl = Ext.get(maskMsg.dom.previousSibling);
-
-            data.maskMsg = maskMsg;
             data.maskEl = maskEl;
 
             me.addCls(XMASKED);
@@ -1499,55 +1527,6 @@ Ext.define('Ext.overrides.dom.Element', (function() {
             me.on(listeners);
             return listeners;
         },
-
-        //<feature legacyBrowser>
-        /**
-         * Normalize cross browser event differences
-         * @private
-         * @param {Object} eventName The event name
-         * @param {Object} fn The function to execute
-         * @return {Object} The new event name/function
-         */
-        normalizeEvent: function(eventName) {
-            var fn, newName;
-
-            if (!Ext.supports.MouseEnterLeave && mouseEnterLeaveRe.test(eventName)) {
-                fn = this.normalizeWithin;
-                newName = eventName == 'mouseenter' ? 'mouseover' : 'mouseout';
-            } else if (eventName == 'mousewheel' && !Ext.supports.MouseWheel && !Ext.isOpera) {
-                newName = 'DOMMouseScroll';
-            }
-            return newName ? {
-                eventName: newName,
-                normalizeFn: fn
-            } : null;
-        },
-
-        /**
-         * Checks whether the event's relatedTarget is contained inside (or is) the target
-         * Used for adding mousenter/mouseleave support in older browser.
-         * (see normalizeEvent)
-         * @private
-         * @param {Object} event
-         */
-        normalizeWithin: function(event) {
-            var parent = event.currentTarget,
-                child = event.getRelatedTarget();
-
-            if (parent && parent.firstChild) {
-                while (child) {
-                    if (child === parent) {
-                        return false;
-                    }
-                    child = child.parentNode;
-                    if (child && (child.nodeType !== 1)) {
-                        child = null;
-                    }
-                }
-            }
-            return true;
-        },
-        //</feature>
 
         /**
          * Fades the element out while slowly expanding it in all directions. When the effect is completed, the element will
@@ -1819,11 +1798,7 @@ Ext.define('Ext.overrides.dom.Element', (function() {
                        }
                        hd.appendChild(s);
                     } else if (match[2] && match[2].length > 0) {
-                        if (WIN.execScript) {
-                           WIN.execScript(match[2]);
-                        } else {
-                           WIN.eval(match[2]);
-                        }
+                        (WIN.execScript || WIN.eval)(match[2]); // jshint ignore:line
                     }
                 }
                 Ext.callback(callback, me);
@@ -2632,7 +2607,6 @@ Ext.define('Ext.overrides.dom.Element', (function() {
             var me = this,
                 data = me.getData(),
                 maskEl = data.maskEl,
-                maskMsg = data.maskMsg,
                 style;
 
             if (maskEl) {
@@ -2646,11 +2620,6 @@ Ext.define('Ext.overrides.dom.Element', (function() {
                 if (maskEl) {
                     maskEl.destroy();
                     delete data.maskEl;
-                }
-
-                if (maskMsg) {
-                    maskMsg.destroy();
-                    delete data.maskMsg;
                 }
 
                 me.removeCls([XMASKED, XMASKEDRELATIVE]);
@@ -2698,7 +2667,6 @@ Ext.define('Ext.overrides.dom.Element', (function() {
                 if (y != null) {
                     this.dom.style.top = y + 'px';
                 }
-                this.dom.style.position = 'absolute';
             }
         },
 
@@ -3253,7 +3221,7 @@ Ext.define('Ext.overrides.dom.Element', (function() {
         styleHooks = proto.styleHooks,
         supports = Ext.supports,
         removeNode, garbageBin, verticalStyleHooks90, verticalStyleHooks270, edges, k,
-        edge, borderWidth;
+        edge, borderWidth, getBorderWidth;
 
     proto._init(Element);
     delete proto._init;
@@ -3444,12 +3412,12 @@ Ext.define('Ext.overrides.dom.Element', (function() {
 
     // override getStyle for border-*-width
     if (Ext.isIE8) {
-        function getBorderWidth (dom, el, inline, style) {
+        getBorderWidth = function (dom, el, inline, style) {
             if (style[this.styleName] === 'none') {
                 return '0px';
             }
             return style[this.name];
-        }
+        };
 
         edges = ['Top','Right','Bottom','Left'];
         k = edges.length;
@@ -3537,7 +3505,7 @@ Ext.define('Ext.overrides.dom.Element', (function() {
          */
         addBehaviors: function(o){
             if(!Ext.isReady){
-                Ext.onReady(function(){
+                Ext.onInternalReady(function(){
                     Ext.addBehaviors(o);
                 });
             } else {
@@ -3612,7 +3580,7 @@ Ext.define('Ext.overrides.dom.Element', (function() {
                                 entry.destroy();
                             }
                         }
-                        ret = ret || new Ext.Element(el)
+                        ret = ret || new Ext.Element(el);
                     }
                 }
             }
@@ -3647,7 +3615,7 @@ Ext.define('Ext.overrides.dom.Element', (function() {
                     type;
             if (ns) {
                 type = typeof d[ns + ":" + name];
-                if (type != 'undefined' && type != 'unknown') {
+                if (type !== 'undefined' && type !== 'unknown') {
                     return d[ns + ":" + name] || null;
                 }
                 return null;
@@ -3659,7 +3627,7 @@ Ext.define('Ext.overrides.dom.Element', (function() {
         };
     }
 
-    Ext.onReady(function () {
+    Ext.onInternalReady(function () {
         var transparentRe = /^(?:transparent|(?:rgba[(](?:\s*\d+\s*[,]){3}\s*0\s*[)]))$/i,
             bodyCls = [],
             //htmlCls = [],
@@ -3693,7 +3661,8 @@ Ext.define('Ext.overrides.dom.Element', (function() {
                     style.width = value;
 
                     if (needsFix) {
-                        dom.scrollWidth; // repaint
+                        // repaint
+                        dom.scrollWidth; // jshint ignore:line
                         style.display = origDisplay;
                     }
                 }
@@ -3712,7 +3681,8 @@ Ext.define('Ext.overrides.dom.Element', (function() {
                 origSetWidth.call(me, width, animate);
 
                 if (needsFix && !animate) {
-                    dom.scrollWidth; // repaint
+                    // repaint
+                    dom.scrollWidth; // jshint ignore:line
                     style.display = origDisplay;
                 }
                 return me;
@@ -3731,7 +3701,8 @@ Ext.define('Ext.overrides.dom.Element', (function() {
                 origSetSize.call(me, width, height, animate);
 
                 if (needsFix && !animate) {
-                    dom.scrollWidth; // repaint
+                    // repaint
+                    dom.scrollWidth; // jshint ignore:line
                     style.display = origDisplay;
                 }
                 return me;

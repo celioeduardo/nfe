@@ -353,10 +353,10 @@ Ext.define('Ext.layout.container.Auto', {
 
     calculateContentSize: function (ownerContext) {
         var me = this,
-            containerDimensions = ((ownerContext.widthModel.shrinkWrap ? 1 : 0) |
+            containerDimensions = ((ownerContext.widthModel.shrinkWrap ? 1 : 0) | // jshint ignore:line
                                    (ownerContext.heightModel.shrinkWrap ? 2 : 0)),
-            calcWidth = (containerDimensions & 1) || undefined,
-            calcHeight = (containerDimensions & 2) || undefined,
+            calcWidth = (containerDimensions & 1) || undefined, // jshint ignore:line
+            calcHeight = (containerDimensions & 2) || undefined, // jshint ignore:line
             needed = 0,
             props = ownerContext.props;
 
@@ -415,16 +415,16 @@ Ext.define('Ext.layout.container.Auto', {
 
             if (targetEl.scrollWidth > targetEl.clientWidth) {
                 // has horizontal scrollbar
-                scrollbars |= 1;
+                scrollbars |= 1; // jshint ignore:line
             }
 
             if (targetEl.scrollHeight > targetEl.clientHeight) {
                 // has vertical scrollbar
-                scrollbars |= 2;
+                scrollbars |= 2; // jshint ignore:line
             }
 
-            width = (yauto && (scrollbars & 2)) ? scrollbarSize.width : 0;
-            height = (xauto && (scrollbars & 1)) ? scrollbarSize.height : 0;
+            width = (yauto && (scrollbars & 2)) ? scrollbarSize.width : 0; // jshint ignore:line
+            height = (xauto && (scrollbars & 1)) ? scrollbarSize.height : 0; // jshint ignore:line
 
             if (width !== me.lastOverflowAdjust.width || height !== me.lastOverflowAdjust.height) {
                 me.done = false;
@@ -495,7 +495,7 @@ Ext.define('Ext.layout.container.Auto', {
             // the normal repaint() method doesn't seem to do the trick, but tweaking
             // the position property in combination with reading scrollWidth does.
             innerCt.setStyle('position', 'relative');
-            innerCt.dom.scrollWidth;
+            innerCt.dom.scrollWidth; // jshint ignore:line
             innerCt.setStyle('position', '');
         }
     },
@@ -651,9 +651,9 @@ Ext.define('Ext.layout.container.Auto', {
             style = dom.style;
             old = style.display;
             
-            if (old == 'table-cell') {
+            if (old === 'table-cell') {
                 style.display = '';
-                dom.offsetWidth;
+                dom.offsetWidth; // jshint ignore:line
                 style.display = old;
             }    
         }
@@ -667,7 +667,7 @@ Ext.define('Ext.layout.container.Auto', {
             dom = this.outerCt.dom;
             style = dom.style;
             style.display = 'table-cell';
-            dom.offsetWidth;
+            dom.offsetWidth; // jshint ignore:line
             dom.style.display = '';
         }
 

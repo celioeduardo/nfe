@@ -3,7 +3,7 @@
  * Ext.dom.Element Element} to prevent windowed objects from showing through.
  * 
  * Not meant to be used directly. To apply a shim to an Element use the
- * {@link Ext.dom.Element#createShadow createShim} method.
+ * {@link Ext.dom.Element#createShim createShim} method.
  * @private
  */
 Ext.define('Ext.dom.Shim', {

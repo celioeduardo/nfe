@@ -160,7 +160,7 @@ Ext.define('Ext.layout.container.Table', {
             i = 0,
             len = items.length,
             hiddenItems = me.getHiddenItems(),
-            cells, curCell, rowIdx, cellIdx, item, trEl, tdEl, itemCt, el;
+            cells, curCell, rowIdx, cellIdx, item, trEl, tdEl, itemCt;
 
         // Calculate the correct cell structure for the current items
         cells = me.calculateCells(items);
@@ -236,7 +236,7 @@ Ext.define('Ext.layout.container.Table', {
     ensureInDocument: function(el){
         var dom = el.dom.parentNode;
         while (dom) {
-            if (dom.tagName.toUpperCase() == 'BODY') {
+            if (dom.tagName.toUpperCase() === 'BODY') {
                 return;
             }
             dom = dom.parentNode;

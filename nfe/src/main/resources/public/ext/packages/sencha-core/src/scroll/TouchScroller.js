@@ -1,6 +1,6 @@
 /**
- * @class Ext.scroll.Scroller
- *
+ * @class Ext.scroll.TouchScroller
+ * @private
  * Momentum scrolling is one of the most important parts of the user experience on touch-screen
  * devices.  Depending on the device and browser, Ext JS will select one of several different
  * scrolling implementations for best performance.
@@ -30,6 +30,8 @@ Ext.define('Ext.scroll.TouchScroller', {
         'Ext.scroll.Indicator',
         'Ext.GlobalEvents'
     ],
+
+    isTouchScroller: true,
 
     config: {
         /**
@@ -208,16 +210,17 @@ Ext.define('Ext.scroll.TouchScroller', {
 
     constructor: function(config) {
         var me = this,
-            onEvent = 'onEvent',
-            elementListeners =  me.elementListeners = {
-                touchstart: onEvent,
-                touchmove: onEvent,
-                touchend: onEvent,
-                dragstart: onEvent,
-                drag: onEvent,
-                dragend: onEvent,
-                scope: me
-            };
+            onEvent = 'onEvent';
+
+        me.elementListeners = {
+            touchstart: onEvent,
+            touchmove: onEvent,
+            touchend: onEvent,
+            dragstart: onEvent,
+            drag: onEvent,
+            dragend: onEvent,
+            scope: me
+        };
 
         me.minPosition = { x: 0, y: 0 };
 
@@ -379,8 +382,10 @@ Ext.define('Ext.scroll.TouchScroller', {
             dom = el.dom;
             scrollerDom = this.getInnerElement().dom;
 
-            x = Math.max(scrollerDom.offsetWidth, dom.clientWidth);
-            y = Math.max(scrollerDom.offsetHeight, dom.clientHeight);
+            // using scrollWidth/scrollHeight instead of offsetWidth/offsetHeight ensures
+            // that the size includes any contained absolutely positioned items
+            x = Math.max(scrollerDom.scrollWidth, dom.clientWidth);
+            y = Math.max(scrollerDom.scrollHeight, dom.clientHeight);
         } else if (typeof size === 'number') {
             x = size;
             y = size;
@@ -396,7 +401,7 @@ Ext.define('Ext.scroll.TouchScroller', {
     },
 
     applySlotSnapOffset: function(snapOffset) {
-        if (typeof snapOffset == 'number') {
+        if (typeof snapOffset === 'number') {
             return {
                 x: snapOffset,
                 y: snapOffset
@@ -407,7 +412,7 @@ Ext.define('Ext.scroll.TouchScroller', {
     },
 
     applySlotSnapSize: function(snapSize) {
-        if (typeof snapSize == 'number') {
+        if (typeof snapSize === 'number') {
             return {
                 x: snapSize,
                 y: snapSize
@@ -525,7 +530,8 @@ Ext.define('Ext.scroll.TouchScroller', {
                 innerElement = innerElement.dom.firstChild;
             }
 
-            if (!innerElement || !Ext.fly(innerElement).hasCls(me.scrollerCls)) {
+            if (!innerElement || innerElement.nodeType !== 1 ||
+                    !Ext.fly(innerElement).hasCls(me.scrollerCls)) {
                 // no scrollerEl found, generate one now
                 innerElement = me.wrapContent(element);
             }
@@ -601,13 +607,11 @@ Ext.define('Ext.scroll.TouchScroller', {
     },
 
     updateTranslatable: function(translatable) {
-        translatable.setConfig({
-            element: this.getInnerElement(),
-            listeners: {
-                animationframe: 'onAnimationFrame',
-                animationend: 'onAnimationEnd',
-                scope: this
-            }
+        translatable.setElement(this.getInnerElement());
+        translatable.on({
+            animationframe: 'onAnimationFrame',
+            animationend: 'onAnimationEnd',
+            scope: this
         });
     },
 
@@ -633,12 +637,10 @@ Ext.define('Ext.scroll.TouchScroller', {
         },
 
         constrainX: function(x) {
-            var maxX = this.getMaxPosition().x;
             return Math.min(this.getMaxPosition().x, Math.max(x, 0));
         },
 
         constrainY: function(y) {
-            var maxY = this.getMaxPosition().y;
             return Math.min(this.getMaxPosition().y, Math.max(y, 0));
         },
 
@@ -706,7 +708,7 @@ Ext.define('Ext.scroll.TouchScroller', {
                 translationX, translationY;
 
             if (!isDragging || me.isAxisEnabled('x')) {
-                if (isNaN(x) || typeof x != 'number') {
+                if (isNaN(x) || typeof x !== 'number') {
                     x = position.x;
                 } else {
 
@@ -724,7 +726,7 @@ Ext.define('Ext.scroll.TouchScroller', {
             }
 
             if (!isDragging || me.isAxisEnabled('y')) {
-                if (isNaN(y) || typeof y != 'number') {
+                if (isNaN(y) || typeof y !== 'number') {
                     y = position.y;
                 } else {
                     if (!allowOverscroll) {
@@ -970,8 +972,8 @@ Ext.define('Ext.scroll.TouchScroller', {
                 dragDirection[axis] = -1;
             }
 
-            if ((lastDirection !== 0 && (dragDirection[axis] !== lastDirection))
-                || (now - flickStartTime[axis]) > startMomentumResetTime) {
+            if ((lastDirection !== 0 && (dragDirection[axis] !== lastDirection)) ||
+                    (now - flickStartTime[axis]) > startMomentumResetTime) {
                 flickStartPosition[axis] = old;
                 flickStartTime[axis] = now;
             }
@@ -1053,8 +1055,8 @@ Ext.define('Ext.scroll.TouchScroller', {
             me.isDragging = true;
 
             if (directionLock && direction !== 'both') {
-                if ((direction === 'horizontal' && absDeltaX > absDeltaY)
-                    || (direction === 'vertical' && absDeltaY > absDeltaX)) {
+                if ((direction === 'horizontal' && absDeltaX > absDeltaY) ||
+                    (direction === 'vertical' && absDeltaY > absDeltaX)) {
                     e.stopPropagation();
                 }
                 else {
@@ -1270,7 +1272,7 @@ Ext.define('Ext.scroll.TouchScroller', {
                     xIndicator.hide();
                 }
             } else if (x === 'scroll') {
-                flags.x = true
+                flags.x = true;
             }
 
             if (y === true || y === 'auto') {
@@ -1286,7 +1288,7 @@ Ext.define('Ext.scroll.TouchScroller', {
                     yIndicator.hide();
                 }
             } else if (y === 'scroll') {
-                flags.y = true
+                flags.y = true;
             }
 
             me.setMaxUserPosition({
@@ -1382,11 +1384,12 @@ Ext.define('Ext.scroll.TouchScroller', {
 
         toggleResizeListeners: function(on) {
             var me = this,
-                element = me.getElement();
+                element = me.getElement(),
+                method = on ? 'on' : 'un';
 
             if (element) {
-                element.toggleListener(on, 'resize', 'onElementResize', me);
-                me.getInnerElement().toggleListener(on, 'resize', 'onInnerElementResize', me);
+                element[method]('resize', 'onElementResize', me);
+                me.getInnerElement()[method]('resize', 'onInnerElementResize', me);
             }
         },
 
@@ -1411,7 +1414,7 @@ Ext.define('Ext.scroll.TouchScroller', {
                 dom = element.dom,
                 child;
 
-            while (child = dom.lastChild) {
+            while (child = dom.lastChild) { // jshint ignore:line
                 wrap.insertBefore(child, wrap.firstChild);
             }
 

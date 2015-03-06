@@ -1,8 +1,7 @@
 /**
- * The Draw Container is a surface in which sprites can be rendered. The Draw Container
- * manages and holds a `Surface` instance: an interface that has
- * an SVG or Canvas implementation depending on the browser capabilities and where
- * Sprites can be appended.
+ * The container that holds and manages instances of the {@link Ext.draw.Surface}
+ * in which sprites are rendered.
+ *
  * One way to create a draw container is:
  *
  *      var drawContainer = Ext.create('Ext.draw.Container', {
@@ -20,6 +19,9 @@
  *
  * In this case we created a draw container and added a sprite to it.
  * The *type* of the sprite is *circle*, so if you run this code you'll see a green-ish circle.
+ *
+ * One can attach sprite event listners to the draw container with the help of the
+ * {@link Ext.draw.plugin.SpriteEvents} plugin.
  *
  * For more information on Sprites, the core elements added to a draw container's surface,
  * refer to the {@link Ext.draw.sprite.Sprite} documentation.
@@ -41,20 +43,79 @@ Ext.define('Ext.draw.Container', {
      * Defines the engine (type of surface) used to render draw container contents.  
      * 
      * The render engine is selected automatically depending on the platform used. Priority 
-     * is given to the canvas engine due to its performance advantage.
+     * is given to the {@link Ext.draw.engine.Canvas} engine due to its performance advantage.
      *
      * You may also set the engine config to be `Ext.draw.engine.Svg` if so desired.
      */    
     engine: 'Ext.draw.engine.Canvas',
 
+    /**
+     * @event spritemousemove
+     * Fires when the mouse is moved on a sprite.
+     * @param {Object} sprite
+     * @param {Event} event
+     */
+
+    /**
+     * @event spritemouseup
+     * Fires when a mouseup event occurs on a sprite.
+     * @param {Object} sprite
+     * @param {Event} event
+     */
+
+    /**
+     * @event spritemousedown
+     * Fires when a mousedown event occurs on a sprite.
+     * @param {Object} sprite
+     * @param {Event} event
+     */
+
+    /**
+     * @event spritemouseover
+     * Fires when the mouse enters a sprite.
+     * @param {Object} sprite
+     * @param {Event} event
+     */
+
+    /**
+     * @event spritemouseout
+     * Fires when the mouse exits a sprite.
+     * @param {Object} sprite
+     * @param {Event} event
+     */
+
+    /**
+     * @event spriteclick
+     * Fires when a click event occurs on a sprite.
+     * @param {Object} sprite
+     * @param {Event} event
+     */
+
+    /**
+     * @event spritedblclick
+     * Fires when a double click event occurs on a sprite.
+     * @param {Object} sprite
+     * @param {Event} event
+     */
+
+    /**
+     * @event spritetap
+     * Fires when a tap event occurs on a sprite.
+     * @param {Object} sprite
+     * @param {Event} event
+     */
+
     config: {
         cls: Ext.baseCSSPrefix + 'draw-container',
 
         /**
-         * @cfg {Function} [resizeHandler] The resize function that can be configured to have a behavior.
+         * @cfg {Function} [resizeHandler]
+         * The resize function that can be configured to have a behavior,
+         * e.g. resize draw surfaces based on new draw container dimensions.
          *
          * __Note:__ since resize events trigger {@link #renderFrame} calls automatically,
-         * return `false` from the resize function, if it also calls `renderFrame`, to prevent double rendering.
+         * return `false` from the resize function, if it also calls `renderFrame`,
+         * to prevent double rendering.
          */
         resizeHandler: null,
 
@@ -222,9 +283,12 @@ Ext.define('Ext.draw.Container', {
     onPlaceWatermark: Ext.emptyFn,
 
     onBodyResize: function () {
+        if (!this.element) {
+            return;
+        }
         var me = this,
             size = me.element.getSize(),
-            resizeHandler = me.getResizeHandler() || me.resizeHandler,
+            resizeHandler = me.getResizeHandler(),
             result;
         me.fireEvent('resize', me, size);
         result = resizeHandler.call(me, size);
@@ -252,7 +316,7 @@ Ext.define('Ext.draw.Container', {
             surface = surfaces.get(id);
         if (!surface) {
             surface = me.add({xclass: me.engine, id: id});
-            surface.renderFrame();
+            me.onBodyResize();
         }
         return surface;
     },

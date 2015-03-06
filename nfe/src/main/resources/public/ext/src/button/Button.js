@@ -175,7 +175,7 @@ Ext.define('Ext.button.Button', {
         /**
          * @cfg {Boolean}
          * `false` to hide the button arrow.  Only applicable for {@link Ext.button.Split
-         * Split Buttons} and buttons configured with a {@link #menu}.
+         * Split Buttons} and buttons configured with a {@link #cfg-menu}.
          */
         arrowVisible: true
     },
@@ -415,8 +415,7 @@ Ext.define('Ext.button.Button', {
 
     /**
      * @cfg {String/Number} value
-     * The value of this button.  Only applicable when used as an item of a {@link
-     * Ext.button.Segmented Segmented Button}.
+     * The value of this button.  Only applicable when used as an item of a {@link Ext.button.Segmented Segmented Button}.
      */
     
     focusable: true,
@@ -742,7 +741,7 @@ Ext.define('Ext.button.Button', {
     },
 
     /**
-     * Get the {@link #menu} for this button.
+     * Get the {@link #cfg-menu} for this button.
      * @return {Ext.menu.Menu} The menu. `null` if no menu is configured.
      */
     getMenu: function() {
@@ -801,6 +800,7 @@ Ext.define('Ext.button.Button', {
                 me._removeSplitCls();
                 me.updateLayout();
             }
+
             me.split = false;
             me.menu = null;
         }
@@ -813,7 +813,6 @@ Ext.define('Ext.button.Button', {
             btn,
             btnListeners;
 
-        me.doc = Ext.getDoc();
         me.callParent(arguments);
 
         // Set btn as a local variable for easy access
@@ -881,6 +880,13 @@ Ext.define('Ext.button.Button', {
         }
 
         Ext.button.Manager.register(me);
+    },
+
+    onFocusLeave: function(e) {
+        this.callParent([e]);
+        if (this.menu) {
+            this.menu.hide();
+        }
     },
 
     /**
@@ -1056,7 +1062,7 @@ Ext.define('Ext.button.Button', {
             oldIcon = me.icon || '';
 
         me.icon = icon;
-        if (icon != oldIcon) {
+        if (icon !== oldIcon) {
             if (btnIconEl) {
                 btnIconEl.setStyle('background-image', icon ? 'url(' + icon + ')': '');
                 me._syncHasIconCls();
@@ -1082,7 +1088,7 @@ Ext.define('Ext.button.Button', {
             oldCls = me.iconCls || '';
 
         me.iconCls = cls;
-        if (oldCls != cls) {
+        if (oldCls !== cls) {
             if (btnIconEl) {
                 // Remove the previous iconCls from the button
                 btnIconEl.removeCls(oldCls);
@@ -1123,7 +1129,7 @@ Ext.define('Ext.button.Button', {
             if (!glyph) {
                 btnIconEl.dom.innerHTML = '';
                 btnIconEl.removeCls(glyphCls);
-            } else if (oldGlyph != glyph) {
+            } else if (oldGlyph !== glyph) {
                 btnIconEl.dom.innerHTML = '&#' + glyph + ';';
                 btnIconEl.addCls(glyphCls);
             }
@@ -1213,7 +1219,7 @@ Ext.define('Ext.button.Button', {
     },
 
     getTipAttr: function(){
-        return this.tooltipType == 'qtip' ? 'data-qtip' : 'title';
+        return this.tooltipType === 'qtip' ? 'data-qtip' : 'title';
     },
 
     // @private
@@ -1243,26 +1249,29 @@ Ext.define('Ext.button.Button', {
     // @private
     beforeDestroy: function() {
         var me = this;
+
         if (me.rendered) {
             me.clearTip();
         }
-        if (me.menu && me.destroyMenu) {
-            me.menu.destroy();
-        }
+
         Ext.destroy(me.repeater);
         me.callParent();
     },
 
     // @private
     onDestroy: function() {
-        var me = this;
-        if (me.rendered) {
-            me.doc.un('mouseover', me.monitorMouseOver, me);
-            delete me.doc;
+        var me = this,
+            menu = me.menu;
 
+        if (me.rendered) {
             Ext.destroy(me.keyMap);
             delete me.keyMap;
         }
+
+        if (menu && me.destroyMenu) {
+            me.menu = Ext.destroy(menu);
+        }
+
         Ext.button.Manager.unregister(me);
         me.callParent();
     },
@@ -1290,7 +1299,7 @@ Ext.define('Ext.button.Button', {
             btnEl = me.btnEl,
             oldText = me.text || '';
 
-        if (text != oldText) {
+        if (text !== oldText) {
             me.text = text;
             if (me.rendered) {
                 btnInnerEl.setHtml(text || '&#160;');
@@ -1347,29 +1356,36 @@ Ext.define('Ext.button.Button', {
         return me;
     },
 
-    maybeShowMenu: function(){
+    maybeShowMenu: function(e) {
         var me = this;
-        if (me.menu && !me.hasVisibleMenu() && !me.ignoreNextClick) {
-            me.showMenu(true);
+        if (me.menu && !me.ignoreNextClick) {
+            me.showMenu(e);
         }
     },
 
     /**
      * Shows this button's menu (if it has one)
      */
-    showMenu: function(/* private */ fromEvent) {
+    showMenu: function(/* private */ clickEvent) {
         var me = this,
-            menu = me.menu;
+            menu = me.menu,
+            isPointerEvent = !clickEvent || clickEvent.pointerType;
 
-        if (me.rendered) {
-            if (me.tooltip && Ext.quickTipsActive && me.getTipAttr() != 'title') {
+        if (menu && me.rendered) {
+            if (me.tooltip && Ext.quickTipsActive && me.getTipAttr() !== 'title') {
                 Ext.tip.QuickTipManager.getQuickTip().cancelShow(me.el);
             }
             if (menu.isVisible()) {
-                menu.hide();
+                // Click/tap toggles the menu visibility.
+                if (isPointerEvent) {
+                    menu.hide();
+                } else {
+                    menu.focus();
+                }
             }
-
-            if (!fromEvent || me.showEmptyMenu || menu.items.getCount() > 0) {
+            else if (!clickEvent || me.showEmptyMenu || menu.items.getCount() > 0) {
+                // Pointer-invoked menus do not auto focus, key invoked ones do.
+                menu.autoFocus = !isPointerEvent;
                 menu.showBy(me.el, me.menuAlign);
             }
         }
@@ -1418,7 +1434,7 @@ Ext.define('Ext.button.Button', {
         }
         if (!me.disabled) {
             me.doToggle();
-            me.maybeShowMenu();
+            me.maybeShowMenu(e);
             me.fireHandler(e);
         }
     },
@@ -1674,9 +1690,10 @@ Ext.define('Ext.button.Button', {
     onMouseDown: function(e) {
         var me = this;
 
-        if (Ext.isIE) {
+        if (Ext.isIE || e.pointerType === 'touch') {
             // In IE the use of unselectable on the button's elements causes the element
             // to not receive focus, even when it is directly clicked.
+            // On Touch devices, we need to explicitly focus on touchstart.
             me.getFocusEl().focus();
         }
 
@@ -1685,6 +1702,7 @@ Ext.define('Ext.button.Button', {
             me.addCls(me._pressedCls);
         }
     },
+
     // @private
     onMouseUp: function(e) {
         var me = this;
@@ -1696,6 +1714,7 @@ Ext.define('Ext.button.Button', {
             }
         }
     },
+
     // @private
     onMenuShow: function() {
         var me = this;
@@ -1714,7 +1733,6 @@ Ext.define('Ext.button.Button', {
             me.ignoreNextClick = Ext.defer(me.restoreClick, menuClickBuffer, me);
         }
         me.fireEvent('menuhide', me, me.menu);
-        me.focus();
     },
 
     // @private
@@ -1727,7 +1745,7 @@ Ext.define('Ext.button.Button', {
         var me = this;
 
         if (me.menu && !me.disabled) {
-            me.showMenu();
+            me.showMenu(e);
             e.stopEvent();
             return false;
         }

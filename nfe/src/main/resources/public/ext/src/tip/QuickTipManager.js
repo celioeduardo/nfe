@@ -110,7 +110,7 @@ Ext.define('Ext.tip.QuickTipManager', {
 
         if (!me.tip) {
             if (!Ext.isReady) {
-                Ext.onReady(function(){
+                Ext.onInternalReady(function(){
                     Ext.tip.QuickTipManager.init(autoRender, config);
                 });
                 return false;
@@ -138,7 +138,7 @@ Ext.define('Ext.tip.QuickTipManager', {
                 tipConfig.renderTo = document.body;
 
                 //<debug>
-                if (tipConfig.renderTo.tagName.toUpperCase() != 'BODY') { // e.g., == 'FRAMESET'
+                if (tipConfig.renderTo.tagName.toUpperCase() !== 'BODY') { // e.g., == 'FRAMESET'
                     Ext.Error.raise({
                         sourceClass: 'Ext.tip.QuickTipManager',
                         sourceMethod: 'init',

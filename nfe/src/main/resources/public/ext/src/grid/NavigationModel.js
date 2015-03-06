@@ -55,10 +55,11 @@ Ext.define('Ext.grid.NavigationModel', {
         me.keyNav = new Ext.util.KeyNav({
             target: view,
             ignoreInputFields: true,
-            eventName: 'cellkeydown',
+            eventName: 'itemkeydown',
+            defaultEventAction: 'stopEvent',
 
-            // Every key event is tagged wit hthe source view, so the NavigationModel is independent.
-            processEvent: function(view, cell, cellIndex, record, row, recordIndex, event) {
+            // Every key event is tagged with the source view, so the NavigationModel is independent.
+            processEvent: function(view, record, row, recordIndex, event) {
                 return event;
             },
             up: me.onKeyUp,
@@ -135,16 +136,36 @@ Ext.define('Ext.grid.NavigationModel', {
         }
     },
 
-    deferSetPosition: function(delay, recordIndex, columnIndex, keyEvent, suppressEvent, fromSelectionModel) {
+    beforeViewRefresh: function() {
+    // Override at TableView level because NavigationModel is shared between two sides of a lockable
+    // So we have to check that the focus position applies to us before cacheing
+        var position = this.getPosition();
+
+        if (position && position.view === this) {
+            this.focusRestorePosition = position;
+        } else {
+            this.focusRestorePosition = null;
+        }
+    },
+
+    // On record remove, it might have bumped the selection upwards.
+    // Pass the "preventSelection" flag.
+    onStoreRemove: function() {
+        if (this.position) {
+            this.setPosition(this.getPosition(), null, null, null, true);
+        }
+    },
+
+    deferSetPosition: function(delay, recordIndex, columnIndex, keyEvent, suppressEvent, preventNavigation) {
         var setPositionTask = this.view.getFocusTask();
 
         // This is essentially a focus operation. Use the singleton focus task used by Focusable Components
         // to schedule a setPosition call. This way it can be superceded programatically by regular Component focus calls.
-        setPositionTask.delay(delay, this.setPosition, this, [recordIndex, columnIndex, keyEvent, suppressEvent, fromSelectionModel]);
+        setPositionTask.delay(delay, this.setPosition, this, [recordIndex, columnIndex, keyEvent, suppressEvent, preventNavigation]);
         return setPositionTask;
     },
 
-    setPosition: function(recordIndex, columnIndex, keyEvent, suppressEvent, fromSelectionModel) {
+    setPosition: function(recordIndex, columnIndex, keyEvent, suppressEvent, preventNavigation) {
         var me = this,
             view,
             selModel,
@@ -277,7 +298,7 @@ Ext.define('Ext.grid.NavigationModel', {
         // No movement; just ensure the correct item is focused and return early.
         // Do not push current position into previous position, do not fire events.
         if (newRecordIndex === me.recordIndex && newColumnIndex === me.columnIndex) {
-            return me.focusPosition(me.position, fromSelectionModel);
+            return me.focusPosition(me.position);
         }
 
         if (me.cell) {
@@ -307,7 +328,7 @@ Ext.define('Ext.grid.NavigationModel', {
             me.item = me.cell = null;
         }
         else {
-            me.focusPosition(me.position, fromSelectionModel);
+            me.focusPosition(me.position, preventNavigation);
         }
 
         // Legacy API is that the SelectionModel fires focuschange events and the TableView fires rowfocus and cellfocus events.
@@ -318,7 +339,7 @@ Ext.define('Ext.grid.NavigationModel', {
         }
 
         // If we have moved, fire an event
-        if (!fromSelectionModel && me.cell !== me.previousCell) {
+        if (keyEvent && !preventNavigation && me.cell !== me.previousCell) {
             me.fireNavigateEvent(keyEvent);
         }
     },
@@ -329,10 +350,9 @@ Ext.define('Ext.grid.NavigationModel', {
      * This is used on view refresh and on replace.
      * @returns {undefined}
      */
-    focusPosition: function(position, fromSelectionModel) {
+    focusPosition: function(position) {
         var me = this,
             view,
-            item,
             row;
 
         me.item = me.cell = null;
@@ -344,11 +364,8 @@ Ext.define('Ext.grid.NavigationModel', {
             if (position.rowElement) {
                 row = me.item = position.rowElement;
             } else {
-                // Get the dataview item at the requested index
-                item = view.all.item(position.rowIdx, true);
-                if (item) {
-                    row = me.item = view.getRow(item);
-                }
+                // Get the dataview item for the position's record
+                row = view.getRowByRecord(position.record);
                 // If there is no item at that index, it's probably because there's buffered rendering.
                 // This is handled below.
             }
@@ -423,18 +440,14 @@ Ext.define('Ext.grid.NavigationModel', {
 
             curIndex = dataSource.indexOf(position.record);
 
-            // The record may have been replaced by one with the same ID.
+            // If not with the same ID, at the same index if that is in range
             if (curIndex === -1) {
-                curIndex = dataSource.indexOfId(position.record.id);
-
-                // If not with the same ID, at the same index if that is in range
-                if (curIndex === -1) {
-                    curIndex = position.rowIdx;
-                    if (curIndex > dataSource.getCount() - 1) {
-                        curIndex = -1;
-                    }
+                curIndex = position.rowIdx;
+                // If no record now at that index (even if its les than the totalCount, it may be a BufferedStore)
+                // then there is no focus position, and we must return null
+                if (!dataSource.getAt(curIndex)) {
+                    curIndex = -1;
                 }
-                position.record = dataSource.getAt(curIndex);
             }
 
             // If the positioned record or column has gone away, we have no position
@@ -610,24 +623,6 @@ Ext.define('Ext.grid.NavigationModel', {
         }
     },
     
-    // As per WAI-ARIA requirements, a grid should support two modes: Navigable (default),
-    // and Actionable. In Navigable mode, pressing Tab key inside the grid should move focus
-    // to the next tabbable element outside the grid. In Actionable mode, pressing Tab key
-    // should move focus to the next tabbable/actionable element within the grid, wrapping over
-    // row end to the next row, and over last row end to the first row.
-    // See http://www.w3.org/TR/2013/WD-wai-aria-practices-20130307/#grid
-    onKeyTab: function(keyEvent) {
-        var view = this.view;
-        
-        // To prevent Tab key from moving focus to the next element inside the grid
-        // in Navigable mode, we make all elements untabbable so the focus flows out
-        // following the natural tab order.
-        view.toggleChildrenTabbability(false);
-        
-        // Enable further event propagation
-        return true;
-    },
-
     // Returns the number of rows currently visible on the screen or
     // false if there were no rows. This assumes that all rows are
     // of the same height and the first view is accurate.

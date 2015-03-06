@@ -42,15 +42,21 @@
                          attic/**/*,
                          deployment_workspace/**/*,
                          docs/**/*,
-                         release-notes-*,
-						 all-licenses/**/*
-						 build/temp/**/*"/>
+                         release-notes-*,         
+						 all-licenses/**/*,
+						 build/temp/**/*,
+						 ext-all*.js,
+						 ext-debug.js,
+						 ext.js,
+						 bootstrap*.js"/>
 
         <condition property="repo.dev.mode" value="true">
             <available file="${basedir}/../packages/sencha-core" type="dir"/>
         </condition>
 
     </target>
+    
+    <target name="-after-init" depends="-apply-version-stamp"/> 
 
     <macrodef name="x-set-license">
         <attribute name="license" default="${ext.license.name}"/>
@@ -68,6 +74,12 @@
 
             <local name="watermark.setting"/>
 
+            <condition property="watermark.beta.setting" value="$ext-beta-trial: true !default;">
+                <equals arg1="@{license}" arg2="beta-trial"/>
+            </condition>
+
+            <property name="watermark.beta.setting" value="$ext-beta-trial: false !default;"/>
+
             <condition property="watermark.setting" value="$ext-trial: true !default;">
                 <equals arg1="@{license}" arg2="trial"/>
             </condition>
@@ -77,6 +89,10 @@
             <replaceregexp replace="${watermark.setting}"
                            file="${basedir}/packages/ext-theme-base/sass/etc/all.scss">
                 <regexp pattern="\$ext-trial: (.*) !default;"/>
+            </replaceregexp>
+            <replaceregexp replace="${watermark.beta.setting}"
+                           file="${basedir}/packages/ext-theme-base/sass/etc/all.scss">
+                <regexp pattern="\$ext-beta-trial: (.*) !default;"/>
             </replaceregexp>
 
             <if>
@@ -105,6 +121,10 @@
 
     <target name="trial" depends="init">
         <x-set-license license="trial"/>
+    </target>
+
+    <target name="beta-trial" depends="init">
+        <x-set-license license="beta-trial"/>
     </target>
 
     <target name="init-version-properties" if="repo.dev.mode">
@@ -155,11 +175,7 @@
         <property file="${package.dir}/version.properties"/>
     </target>
 
-    <target name="-after-apply-version">
-        <property name="apply.version.stamp" value="1"/>
-    </target>
-    
-    <target name="-apply-version-stamp" if="apply.version.stamp">
+    <target name="-apply-version-stamp" if="build.version">
         <x-property-file file="${package.dir}/cmd/sencha.cfg">
             <entry type="string" key="framework.version" operation="="
                    value="${build.version}"/>
@@ -288,13 +304,14 @@ var Ext = Ext || {};
 
         <property name="build.optimize"><![CDATA[
             optimize
+                --css-prefix=true
                 --call-parent=true
                 --define-rewrite=true
                 --include-metadata=false
         ]]></property>
 
         <property name="build.compress"><![CDATA[
-             #+yui
+             #+closure
         ]]></property>
 
         <!--
@@ -325,6 +342,9 @@ var Ext = Ext || {};
                         +recursive
                         -includeUses=false
                         -class=Ext.Loader
+                    and
+                    include
+                        -tag=overrides
                     and
                     save
                         corefiles
@@ -449,8 +469,8 @@ var Ext = Ext || {};
     <macrodef name="x-sandbox">
         <attribute name="file"/>
         <attribute name="outfile" default="@{file}"/>
-        <attribute name="jsPrefix" default="Ext4"/>
-        <attribute name="cssPrefix" default="x4-"/>
+        <attribute name="jsPrefix"/>
+        <attribute name="cssPrefix"/>
         <sequential>
             <concat destfile="@{outfile}">
                 <header trimleading="yes" filtering="no">
@@ -514,7 +534,7 @@ var Ext = Ext || {};
                 </for>
             </sequential>
         </for>
-
+        
         <copy file="${basedir}/ext-bootstrap.js"
               tofile="${build.dir}/bootstrap.js">
             <filterchain>

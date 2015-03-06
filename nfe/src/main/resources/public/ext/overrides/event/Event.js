@@ -177,7 +177,7 @@ Ext.define('Ext.overrides.event.Event', {
         // MouseEvents
 
         function createMouseEventDispatcher (type, detail) {
-            var cancelable = (type != 'mousemove');
+            var cancelable = (type !== 'mousemove');
             return function (targetEl, srcEvent) {
                 var xy = srcEvent.getXY(),
                     e = API.createMouseEvent(targetEl.ownerDocument, type, true, cancelable,
@@ -363,6 +363,10 @@ Ext.define('Ext.overrides.event.Event', {
                 var me = this;
                 me.callParent([event, info, touchesMap, identifiers]);
                 me.button = btnMap[event.button];
+
+                if (event.type === 'contextmenu') {
+                    me.button = 2; // IE8/9 reports click as 0, so we can at least attempt to infer here
+                }   
 
                 // IE8 can throw an error when trying to access properties on a browserEvent
                 // object when the event has been buffered or delayed.  Cache them here

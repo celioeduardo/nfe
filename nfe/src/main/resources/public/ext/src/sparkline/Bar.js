@@ -97,7 +97,9 @@ Ext.define('Ext.sparkline.Bar', {
     all: function(arr, val, ignoreNull) {
         var i;
         for (i = arr.length; i--; ) {
-            if (ignoreNull && arr[i] === null) continue;
+            if (ignoreNull && arr[i] === null) {
+                continue;
+            }
             if (arr[i] !== val) {
                 return false;
             }
@@ -216,7 +218,7 @@ Ext.define('Ext.sparkline.Bar', {
 
         if (min <= 0 && max >= 0 && zeroAxis) {
             xAxisOffset = 0;
-        } else if (zeroAxis == false) {
+        } else if (!zeroAxis) {
             xAxisOffset = min;
         } else if (min > 0) {
             xAxisOffset = min;

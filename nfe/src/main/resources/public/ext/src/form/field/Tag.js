@@ -56,7 +56,7 @@ Ext.define('Ext.form.field.Tag', {
      *
      * When {@link #forceSelection} is `false`, new records can be created by the user as they
      * are typed. These records are **not** added to the combo's store. Multiple new values
-     * may be added by separatinug them with the {@link #delimiter}, and can be further configured using the
+     * may be added by separating them with the {@link #delimiter}, and can be further configured using the
      * {@link #createNewOnEnter} and {@link #createNewOnBlur} configuration options.
      *
      * This functionality is primarily useful for things such as an email address.
@@ -215,7 +215,6 @@ Ext.define('Ext.form.field.Tag', {
     tagItemSelector: '.' + Ext.baseCSSPrefix + 'tagfield-item',
     tagItemCloseSelector: '.' + Ext.baseCSSPrefix + 'tagfield-item-close',
     tagSelectedCls: Ext.baseCSSPrefix + 'tagfield-item-selected',
-    fireSelectSingle: false,
 
     initComponent: function() {
         var me = this,
@@ -234,6 +233,9 @@ Ext.define('Ext.form.field.Tag', {
         }
 
         me.typeAhead = false;
+        if (me.value == null) {
+            me.value = [];
+        }
 
         // This is the selection model for selecting tags in the tag list. NOT the dropdown BoundList.
         // Create the selModel before calling parent, we need it to be available
@@ -261,15 +263,24 @@ Ext.define('Ext.form.field.Tag', {
     },
 
     initEvents: function() {
-        var me = this;
+        var me = this,
+            inputEl = me.inputEl;
 
         me.callParent(arguments);
 
         if (!me.enableKeyEvents) {
-            me.inputEl.on('keydown', me.onKeyDown, me);
-            me.inputEl.on('keyup',   me.onKeyUp, me);
+            inputEl.on('keydown', me.onKeyDown, me);
+            inputEl.on('keyup',   me.onKeyUp, me);
         }
         me.listWrapper.on('click', me.onItemListClick, me);
+    },
+    
+    isValid: function() {
+        var me = this,
+            disabled = me.disabled,
+            validate = me.forceValidation || !disabled;
+
+        return validate ? me.validateValue(me.getValue()) : disabled;
     },
 
     onBindStore: function(store) {
@@ -289,7 +300,9 @@ Ext.define('Ext.form.field.Tag', {
                     scope: me,
                     filterFn: me.filterPicked
                 });
+                me.changingFilters = true;
                 store.filter(me.listFilter);
+                me.changingFilters = false;
             }
         }
     },
@@ -313,7 +326,9 @@ Ext.define('Ext.form.field.Tag', {
         }
 
         if (me.filterPickList) {
+            me.changingFilters = true;
             store.removeFilter(me.listFilter);
+            me.changingFilters = false;
         }
         me.callParent(arguments);
     },
@@ -329,7 +344,9 @@ Ext.define('Ext.form.field.Tag', {
 
         // Ensure the source store is filtered down
         if (me.filterPickList) {
+            me.changingFilters = true;
             me.store.filter(me.listFilter);
+            me.changingFilters = false;
         }
         me.callParent();
 
@@ -341,6 +358,8 @@ Ext.define('Ext.form.field.Tag', {
         }
         Ext.resumeLayouts(true);
     },
+
+    checkValueOnDataChange: Ext.emptyFn,
 
     onSelectionChange: function(selModel, selectedRecs) {
         this.applyMultiselectItemMarkup();
@@ -365,13 +384,13 @@ Ext.define('Ext.form.field.Tag', {
             emptyInputCls = me.emptyInputCls,
             isEmpty = emptyText && data.value.length < 1,
             growMin = me.growMin,
-            growMax = me.growMax;
+            growMax = me.growMax,
+            wrapperStyle = '';
 
         data.value = '';
         data.emptyText = isEmpty ? emptyText : '';
         data.emptyCls = isEmpty ? me.emptyCls : emptyInputCls;
         data.inputElCls = isEmpty ? emptyInputCls : '';
-        data.wrapperStyle = '';
         data.itemListCls = '';
 
         if (me.grow) {
@@ -382,6 +401,8 @@ Ext.define('Ext.form.field.Tag', {
                 wrapperStyle += 'max-height:' + growMax + 'px;';
             }
         }
+
+        data.wrapperStyle = wrapperStyle;
 
         if (me.stacked === true) {
             data.itemListCls += ' ' + Ext.baseCSSPrefix + 'tagfield-stacked';
@@ -632,12 +653,11 @@ Ext.define('Ext.form.field.Tag', {
             if (selectionModel.getCount() > 0) {
                 selectionModel.deselectAll();
             }
-            // If the click is on the dropdown trigger, drop it down
-            if (e.within(me.triggers.picker.el, null, true) && me.triggerOnClick) {
+            me.inputEl.focus();
+            if (me.triggerOnClick) {
                 me.onTriggerClick();
-            } else {
-                me.inputEl.focus();
             }
+            
         }
     },
 
@@ -705,20 +725,6 @@ Ext.define('Ext.form.field.Tag', {
             me.inputElCt.insertHtml('beforeBegin', me.getMultiSelectItemMarkup());
             me.autoSize();
         }
-
-        // Before control returns from this event, align the picker and ensure the input area of
-        // this control is in view.
-        Ext.GlobalEvents.on({
-            idle: function() {
-                if (me.picker && me.isExpanded) {
-                    me.alignPicker();
-                }
-                if (me.hasFocus && me.inputElCt && me.listWrapper) {
-                    me.inputElCt.scrollIntoView(me.listWrapper);
-                }
-            },
-            single: true
-        });
     },
 
     /**

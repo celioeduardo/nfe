@@ -80,7 +80,18 @@ describe('Ext.data.BufferedStore', function() {
         Ext.data.Model.schema.clear();
         Ext.undefine('spec.ForumThread');
     });
-    
+
+    it('should be able to lookup a record by its inmternalId', function() {
+        createStore();
+        bufferedStore.loadPage(1);
+        satisfyRequests();
+
+        var rec0 = bufferedStore.getAt(0);
+
+        // Lookup by the string version of internalId because that's how we get from DOM to record: https://sencha.jira.com/browse/EXTJS-15388
+        expect(bufferedStore.getByInternalId(String(rec0.internalId))).toBe(rec0);
+    });
+
     it('should be able to start from any page', function() {
         createStore();
         bufferedStore.loadPage(10);
@@ -282,6 +293,50 @@ describe('Ext.data.BufferedStore', function() {
             runs(function() {
                 expect(bufferedStore.getData().getCount()).toBe(count);
             });
+        });
+    });
+    
+    describe('pruning', function() {
+        it('should prune least recently used pages as new ones are added above the purgePageCount', function() {
+            var keys;
+
+            // Keep it simple
+            createStore({
+                pageSize: 10,
+                viewSize: 10,
+                leadingBufferZone: 0,
+                trailingBufferZone: 0,
+                purgePageCount: new Number(0)
+            });
+            bufferedStore.load();
+            satisfyRequests();
+
+
+            // The PageMap should contain page 1
+            keys = [];
+            bufferedStore.getData().forEach(function(rec){
+                keys.push(String(rec.internalId));
+            });
+            expect(keys.length).toBe(10);
+            expect(Ext.Object.getKeys(bufferedStore.getData().map)).toEqual(['1']);
+
+            // The indexMap must contain only the keys to the records that are now there.
+            expect(Ext.Object.getKeys(bufferedStore.getData().indexMap)).toEqual(keys);
+
+            // This should evict page one because there are no buffer zones, and a non-falsy purgePageCount of zero
+            bufferedStore.loadPage(2);
+            satisfyRequests();
+
+            // The PageMap should contain ONLY page 2
+            keys = [];
+            bufferedStore.getData().forEach(function(rec){
+                keys.push(String(rec.internalId));
+            });
+            expect(keys.length).toBe(10);
+            expect(Ext.Object.getKeys(bufferedStore.getData().map)).toEqual(['2']);
+
+            // The indexMap must contain only the keys to the records that are now there.
+            expect(Ext.Object.getKeys(bufferedStore.getData().indexMap)).toEqual(keys);
         });
     });
 });

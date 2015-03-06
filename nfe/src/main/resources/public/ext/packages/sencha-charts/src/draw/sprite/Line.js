@@ -1,3 +1,23 @@
+/**
+ * A sprite that represents a line.
+ *
+ *     @example
+ *     Ext.create({
+ *        xtype: 'draw', 
+ *        renderTo: document.body,
+ *        width: 600,
+ *        height: 400,
+ *        sprites: [{
+ *            type: 'line',
+ *            fromX: 20,
+ *            fromY: 20,
+ *            toX: 120,
+ *            toY: 120,
+ *            strokeStyle: '#1F6D91',
+ *            lineWidth: 3
+ *        }]
+ *     });
+ */
 Ext.define('Ext.draw.sprite.Line', {
     extend: 'Ext.draw.sprite.Sprite',
     alias: 'sprite.line',

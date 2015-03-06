@@ -2491,12 +2491,31 @@ jasmine.StringPrettyPrinter.prototype.append = function(value) {
         superFormat = prototype.format;
 
     prototype.format = function(value) {
-        if (value && value.$className) {
-            // support for pretty printing instances of Ext classes
-            this.emitScalar(value.$className + '#' + value.id);
-        } else {
-            superFormat.call(this, value);
+        var className, superclass;
+
+        if (value) {
+            className = value.$className;
+
+            if (className !== undefined) {
+                // support for pretty printing instances of Ext classes
+
+                if (!className) {
+                    // support for anonymous classes - Ext.define(null, ...)
+                    // loop up the inheritance chain to find nearest non-anonymous ancestor
+                    superclass = value.superclass;
+                    while (superclass && !superclass.$className) {
+                        superclass = superclass.superclass;
+                    }
+                    if (superclass) {
+                        className = superclass.$className;
+                    }
+                }
+                this.emitScalar(className + '#' + (value.id || (value.getId && value.getId())));
+                return;
+            }
         }
+
+        superFormat.call(this, value);
     };
 })();jasmine.Queue = function(env) {
   this.env = env;
@@ -3064,6 +3083,7 @@ jasmine.Spec.prototype.removeAllSpies = function() {
     allowedGlobals._firebug =
     // IE10+ F12 dev tools adds these properties when opened.
     allowedGlobals.__IE_DEVTOOLBAR_CONSOLE_COMMAND_LINE =
+    allowedGlobals.__BROWSERTOOLS_CONSOLE_BREAKMODE_FUNC =
     allowedGlobals.__BROWSERTOOLS_CONSOLE_SAFEFUNC =
     // in IE8 jasmine's overrides of setTimeout/setInterval make them iterable
     allowedGlobals.setTimeout =
@@ -3118,7 +3138,7 @@ jasmine.Spec.prototype.removeAllSpies = function() {
         // clean up orphan elements and re-enable this at some point.
         // this.collectGarbage();
 
-        Ext.event.Dispatcher.getInstance().getPublisher('gesture').reset();
+        Ext.event.publisher.Gesture.instance.reset();
 
         this.env.reporter.reportSpecResults(this);
     };
@@ -3289,6 +3309,9 @@ function waitsForSpy(spy, timeoutMessage, timeout) {
 
     currentSpec.waitsFor.call(currentSpec, function() { return !!spy.callCount }, timeoutMessage, timeout);
 };
+
+var waitForSpy = waitsForSpy;
+
 /**
  * Internal representation of a Jasmine suite.
  *
@@ -3808,6 +3831,14 @@ jasmine.fireMouseEvent = function (target, type, x, y, button) {
             clientY: y,
             button: button || 1
         });
+        if (type === 'click') {
+            target.fireEvent('onmousedown', e);
+            target.fireEvent('onmouseup', e);
+        } else if (type === 'dblclick') {
+            jasmine.fireMouseEvent(target, 'click', x, y, button);
+            target.fireEvent('onmousedown', e);
+            target.fireEvent('onmouseup', e);
+        }
         ret = target.fireEvent('on' + type, e);
     } else {
         if (Ext.supports.PointerEvents || Ext.supports.MSPointerEvents) {
@@ -4059,7 +4090,7 @@ jasmine.simulateTabKey = function(from, forward) {
     jasmine.fireKeyEvent(from, 'keyup',   9, forward);
 
     return to;
-}
+};
 
 jasmine.simulateArrowKey = function(from, key) {
     var keyCode = Ext.event.Event[key.toUpperCase()];
@@ -4074,25 +4105,31 @@ jasmine.simulateArrowKey = function(from, key) {
 
     jasmine.fireKeyEvent(target, 'keydown', keyCode);
     jasmine.fireKeyEvent(target, 'keyup',   keyCode);
-}
+};
 
 // In IE, focus events are asynchronous so we often have to wait
 // after attempting to focus something. Otherwise tests will fail.
-jasmine.waitForFocus = function(cmp, desc, timeout) {
+jasmine.waitForFocus = jasmine.waitsForFocus = function(cmp, desc, timeout) {
     var dom = cmp.isComponent ? cmp.getFocusEl().dom
             : cmp.isElement   ? cmp.dom
             :                   cmp
         ;
+    
+    if (!desc) {
+        desc = dom.id + ' to focus';
+    }
 
-    desc    = desc    || dom.id;
-    timeout = timeout || 100;
+    // Default to Jasmine's default timeout.
+    timeout = timeout || 5000;
 
     waitsFor(
-        function() { return document.activeElement === dom },
-        desc + ' to focus',
+        function() {
+            return document.activeElement === dom;
+        },
+        desc,
         timeout
     );
-}
+};
 
 // In IE (all of 'em), focus/blur events are asynchronous. To us it means
 // not only that we have to wait for the actual element to focus but
@@ -4104,13 +4141,13 @@ jasmine.waitForFocus = function(cmp, desc, timeout) {
 // Note that the timeout value is not important here because effectively
 // we just want to yield enough cycles to unwind all the async event handlers
 // before the test checks done in the specs, so we default to 1 ms.
-jasmine.waitAWhile = function(timeout) {
+jasmine.waitAWhile = jasmine.waitsAWhile = function(timeout) {
     timeout = timeout != null ? timeout : 1;
 
     waits(timeout);
     waits(timeout);
     waits(timeout);
-}
+};
 
 jasmine.focusAndWait = function(cmp, waitFor) {
     runs(function() {
@@ -4120,7 +4157,7 @@ jasmine.focusAndWait = function(cmp, waitFor) {
     jasmine.waitForFocus(waitFor || cmp);
 
     jasmine.waitAWhile();
-}
+};
 
 jasmine.pressTabKey = function(from, forward) {
     jasmine.focusAndWait(from);
@@ -4130,7 +4167,7 @@ jasmine.pressTabKey = function(from, forward) {
     });
 
     jasmine.waitAWhile();
-}
+};
 
 jasmine.pressArrowKey = function(from, key) {
     jasmine.focusAndWait(from);
@@ -4140,24 +4177,26 @@ jasmine.pressArrowKey = function(from, key) {
     });
 
     jasmine.waitAWhile();
-}
+};
 
 // Can't add this one and below as simple matchers,
 // because there's async waiting involved
-jasmine.expectFocused = function(want) {
-    jasmine.waitForFocus(want);
+jasmine.expectFocused = jasmine.expectsFocused = function(want, noWait) {
+    if (!noWait) {
+        jasmine.waitForFocus(want);
+    }
 
     runs(function() {
-        var have = want.isComponent ? Ext.Component.getActiveComponent()
-                : want.isElement   ? Ext.fly(document.activeElement)
-                :                    document.activeElement
-            ;
-
+        var have = want.isComponent ? Ext.ComponentManager.getActiveComponent()
+                 : want.isElement   ? Ext.fly(document.activeElement)
+                 :                    document.activeElement
+                 ;
+        
         expect(have).toBe(want);
     });
-}
+};
 
-jasmine.expectTabIndex = function(wantIndex, el) {
+jasmine.expectTabIndex = jasmine.expectsTabIndex = function(wantIndex, el) {
     runs(function() {
         if (el && el.isComponent) {
             el = el.getFocusEl();
@@ -4167,7 +4206,7 @@ jasmine.expectTabIndex = function(wantIndex, el) {
 
         expect(haveIndex - 0).toBe(wantIndex);
     });
-}
+};
 
 /*
 This version is commented out because there is a bug in WebKit that prevents
@@ -4439,9 +4478,12 @@ MockAjax.prototype.xmlDOM = function(xml) {
         };
     } 
 
-    try {
-        return (new DOMParser()).parseFromString(xml, "text/xml");
-    } catch (e) {
-        return null;
+    if (xml && xml.substr(0, 1) === '<') {
+        try {
+            return (new DOMParser()).parseFromString(xml, "text/xml");
+        }
+        catch (e) {}
     }
+    
+    return null;
 };

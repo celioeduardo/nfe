@@ -3,6 +3,16 @@
  */
 Ext.define('Ext.draw.engine.Canvas', {
     extend: 'Ext.draw.Surface',
+
+    requires: [
+        //<feature legacyBrowser>
+        'Ext.draw.engine.excanvas',
+        //</feature>
+
+        'Ext.draw.Animator',
+        'Ext.draw.Color'
+    ],
+
     config: {
         /**
          * @cfg {Boolean} highPrecision
@@ -19,15 +29,6 @@ Ext.define('Ext.draw.engine.Canvas', {
          */
         highPrecision: false
     },
-    requires: [
-
-        //<feature legacyBrowser>
-        'Ext.draw.engine.excanvas',
-        //</feature>
-
-        'Ext.draw.Animator',
-        'Ext.draw.Color'
-    ],
 
     statics: {
         contextOverrides: {
@@ -232,24 +233,19 @@ Ext.define('Ext.draw.engine.Canvas', {
      */
     toSave: ['fillGradient', 'strokeGradient'],
 
-    getElementConfig: function () {
-        //TODO:ps In the Ext world, use renderTpl to create the children
-        return {
-            reference: 'element',
+    element: {
+        reference: 'element',
+        style: {
+            position: 'absolute'
+        },
+        children: [{
+            reference: 'innerElement',
             style: {
-                position: 'absolute'
-            },
-            children: [
-                {
-                    reference: 'innerElement',
-                    style: {
-                        width: '100%',
-                        height: '100%',
-                        position: 'relative'
-                    }
-                }
-            ]
-        };
+                width: '100%',
+                height: '100%',
+                position: 'relative'
+            }
+        }]
     },
 
     /**
@@ -300,13 +296,6 @@ Ext.define('Ext.draw.engine.Canvas', {
         this.innerElement.appendChild(canvas);
         this.canvases.push(canvas);
         this.contexts.push(ctx);
-    },
-
-    initElement: function () {
-        this.callParent();
-        this.canvases = [];
-        this.contexts = [];
-        this.activeCanvases = 0;
     },
 
     // Have to create canvas element here, instead of in the initElement,
@@ -915,6 +904,15 @@ Ext.define('Ext.draw.engine.Canvas', {
         delete me.contexts;
         delete me.canvases;
         me.callParent(arguments);
+    },
+
+    privates: {
+        initElement: function () {
+            this.callParent();
+            this.canvases = [];
+            this.contexts = [];
+            this.activeCanvases = 0;
+        }
     }
 }, function () {
     if (Ext.os.is.Android4 && Ext.browser.is.Chrome) {

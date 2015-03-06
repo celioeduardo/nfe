@@ -151,22 +151,19 @@ Ext.define('Ext.tip.QuickTip', {
      */
     getTipCfg: function (target, event) {
         var titleText = target.title,
-            cfg, attr, text;
+            cfg = this.tagConfig,
+            attr = cfg.attr || (cfg.attr = cfg.namespace + cfg.attribute),
+            text;
 
         if (this.interceptTitles && titleText && Ext.isString(titleText)) {
-            target.qtip = titleText;
-            target.removeAttribute("title");
-            if (event) {
-                event.preventDefault();
-            }
+            target.setAttribute(attr, titleText);
+            target.removeAttribute('title');
 
             return {
                 text: titleText
             };
         }
         else {
-            cfg = this.tagConfig;
-            attr = cfg.attr || (cfg.attr = cfg.namespace + cfg.attribute);
             target = Ext.fly(target).findParent(function(dom) {
                 // Want to test the truthiness of the attribute and save it.
                 return (text = dom.getAttribute(attr));
@@ -203,7 +200,7 @@ Ext.define('Ext.tip.QuickTip', {
         me.targetXY = xy || (event ? event.getXY() : Ext.fly(target).getXY());
 
         // If the over target was filtered out by the delegate selector, or is not an HTMLElement, or is the <html> or the <body>, then return
-        if(!target || target.nodeType !== 1 || target == document.documentElement || target == document.body){
+        if(!target || target.nodeType !== 1 || target === document.documentElement || target === document.body){
             return;
         }
 
@@ -282,7 +279,7 @@ Ext.define('Ext.tip.QuickTip', {
                 el: target,
                 text: tipConfig.text,
                 width: +elTarget.getAttribute(ns + cfg.width) || null,
-                autoHide: autoHide != "user" && autoHide !== 'false',
+                autoHide: autoHide !== "user" && autoHide !== 'false',
                 title: elTarget.getAttribute(ns + cfg.title),
                 cls: elTarget.getAttribute(ns + cfg.cls),
                 align: elTarget.getAttribute(ns + cfg.align),

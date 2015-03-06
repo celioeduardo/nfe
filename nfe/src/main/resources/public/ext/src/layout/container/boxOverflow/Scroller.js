@@ -91,7 +91,6 @@ Ext.define('Ext.layout.container.boxOverflow.Scroller', {
         var me = this,
             layout = me.layout,
             owner = layout.owner,
-            prefix = Ext.baseCSSPrefix,
             type = me.getOwnerType(owner),
             scrollerCls = me.scrollerCls,
             cls =
@@ -113,8 +112,6 @@ Ext.define('Ext.layout.container.boxOverflow.Scroller', {
     },
 
     beginLayout: function (ownerContext) {
-        var layout = this.layout;
-
         ownerContext.innerCtScrollPos = this.getScrollPosition();
 
         this.callParent(arguments);
@@ -126,7 +123,7 @@ Ext.define('Ext.layout.container.boxOverflow.Scroller', {
             layout = me.layout,
             names = layout.names,
             scrollPos = Math.min(me.getMaxScrollPosition(), ownerContext.innerCtScrollPos),
-            lastProps, lastItemContext;
+            lastProps;
 
         // If there is overflow...
         if (plan && plan.tooNarrow) {
@@ -414,7 +411,7 @@ Ext.define('Ext.layout.container.boxOverflow.Scroller', {
             oldPosition = me.getScrollPosition(),
             newPosition = Ext.Number.constrain(position, 0, me.getMaxScrollPosition());
 
-        if (newPosition != oldPosition && !me.scrolling) {
+        if (newPosition !== oldPosition && !me.scrolling) {
             me.scrollPosition = NaN;
             if (animate === undefined) {
                 animate = me.animateScroll;
@@ -448,8 +445,8 @@ Ext.define('Ext.layout.container.boxOverflow.Scroller', {
 
         item = me.getItem(item);
         if (item !== undefined) {
-            if (item == owner.items.first()) {
-                newPos = 0
+            if (item === owner.items.first()) {
+                newPos = 0;
             } else if (item === owner.items.last()) {
                 newPos = me.getMaxScrollPosition();
             } else {

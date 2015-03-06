@@ -115,11 +115,13 @@ Ext.define('Ext.grid.filters.Filters', {
      */
     filterCls: Ext.baseCSSPrefix + 'grid-filters-filtered-column',
 
+    //<locale>
     /**
      * @cfg {String} [menuFilterText="Filters"]
      * The text for the filters menu.
      */
     menuFilterText: 'Filters',
+    //</locale>
 
     /**
      * @cfg {Boolean} showMenu
@@ -161,7 +163,7 @@ Ext.define('Ext.grid.filters.Filters', {
 
         grid.on({
             scope: me,
-            beforedestroy: me.destroy,
+            destroy: me.onGridDestroy,
             beforereconfigure: me.onBeforeReconfigure,
             reconfigure: me.onReconfigure
         });
@@ -181,19 +183,21 @@ Ext.define('Ext.grid.filters.Filters', {
      * @private
      */
     initColumns: function () {
-        // TODO: What to do about grouping columns?
-        var i, len, columns, column, filter, filterCollection;
-
-        columns = this.grid.columnManager.getColumns();
+        var grid = this.grid,
+            store = grid.getStore(),
+            columns = grid.columnManager.getColumns(),
+            len = columns.length,
+            i, column,
+            filter, filterCollection;
 
         // We start with filters defined on any columns.
-        for (i = 0, len = columns.length; i < len; i++) {
+        for (i = 0; i < len; i++) {
             column = columns[i];
             filter = column.filter;
 
             if (filter && !filter.isGridFilter) {
                 if (!filterCollection) {
-                    filterCollection = this.grid.store.getFilters();
+                    filterCollection = store.getFilters();
                     filterCollection.beginUpdate();
                 }
 
@@ -232,7 +236,7 @@ Ext.define('Ext.grid.filters.Filters', {
                            column.defaultFilterType || 'string';
         }
 
-        return (column.filter = Ext.Factory.gridFilter(filter));
+        column.filter = Ext.Factory.gridFilter(filter);
     },
 
     onAdd: function (headerCt, column, index) {
@@ -259,7 +263,7 @@ Ext.define('Ext.grid.filters.Filters', {
      */
     onMenuBeforeShow: function (menu) {
         var me = this,
-            menuItem, filter, ownerGrid, ownerGridId;
+            menuItem, filter, parentTable, parentTableId;
 
         if (me.showMenu) {
             // In the case of a locked grid, we need to cache the 'Filters' menuItem for each grid since
@@ -268,19 +272,21 @@ Ext.define('Ext.grid.filters.Filters', {
                 me.menuItems = {};
             }
 
-            // Don't get the owner grid if in a locking grid since we need to get the unique menuItems key.
-            ownerGrid = menu.up('grid');
-            ownerGridId = ownerGrid.id;
+            // Don't get the owner panel if in a locking grid since we need to get the unique menuItems key.
+            // Instead, get a ref to the parent, i.e., lockedGrid, normalGrid, etc.
+            parentTable = menu.up('tablepanel');
+            parentTableId = parentTable.id;
 
-            menuItem = me.menuItems[ownerGridId];
+            menuItem = me.menuItems[parentTableId];
 
             if (!menuItem || menuItem.isDestroyed) {
-                menuItem = me.createMenuItem(menu, ownerGridId);
+                menuItem = me.createMenuItem(menu, parentTableId);
             }
 
+            // Save a ref to the root "Filters" menu item, column filters make use of it.
             me.activeFilterMenuItem = menuItem;
 
-            filter = me.getMenuFilter(ownerGrid.headerCt);
+            filter = me.getMenuFilter(parentTable.headerCt);
             if (filter) {
                 filter.showMenu(menuItem);
             }
@@ -290,7 +296,7 @@ Ext.define('Ext.grid.filters.Filters', {
         }
     },
 
-    createMenuItem: function (menu, ownerGridId) {
+    createMenuItem: function (menu, parentTableId) {
         var me = this,
             item;
 
@@ -306,16 +312,25 @@ Ext.define('Ext.grid.filters.Filters', {
             }
         });
 
-        return (me.menuItems[ownerGridId] = item);
+        return (me.menuItems[parentTableId] = item);
     },
 
     /**
      * Handler called by the grid 'beforedestroy' event
      */
-    destroy: function () {
-        this.bindStore(null);
-        Ext.destroyMembers(this, 'menuItem', 'sep');
-        this.callParent();
+    onGridDestroy: function () {
+        var me = this,
+            menuItems = me.menuItems,
+            item;
+
+        me.bindStore(null);
+        me.sep = Ext.destroy(me.sep);
+
+        for (item in menuItems) {
+            menuItems[item].destroy();
+        }
+
+        me.grid = null;
     },
 
     onUnbindStore: function(store) {
@@ -329,23 +344,37 @@ Ext.define('Ext.grid.filters.Filters', {
 
     onFilterRemove: function (filterCollection, list) {
         // We need to know when a store filter has been removed by an operation of the gridfilters UI, i.e.,
-        // store.clearFilter().  The settingValue flag lets us know whether or not this listener has been
-        // reached by a filter operation (settingValue === true) or by something outside of the UI
-        // (settingValue === undefined).
+        // store.clearFilter().  The preventFilterRemoval flag lets us know whether or not this listener has been
+        // reached by a filter operation (preventFilterRemoval === true) or by something outside of the UI
+        // (preventFilterRemoval === undefined).
         var len = list.items.length,
             columnManager = this.grid.columnManager,
-            i, item, filter, header;
+            i, item, header, filter;
+
 
         for (i = 0; i < len; i++) {
             item = list.items[i];
 
             header = columnManager.getHeaderByDataIndex(item.getProperty());
             if (header) {
-                // Even though the store may be filtered by this dataIndex, doesn't necessarily
-                // mean we have a grid filter attached for it, so we need to do an extra check
+                // First, we need to make sure there is indeed a filter and that its menu has been created. If not,
+                // there's no point in continuing.
+                //
+                // Also, even though the store may be filtered by this dataIndex, it doesn't necessarily mean that
+                // it was created via the gridfilters API. To be sure, we need to check the prefix, as this is the
+                // only way we can be sure of its provenance (note that we can't check `operator`).
+                //
+                // Note that we need to do an indexOf check on the string because TriFilters will contain extra
+                // characters specifiying its type.
+                //
+                // TODO: Should we support updating the gridfilters if one or more of its filters have been removed
+                // directly by the bound store?
                 filter = header.filter;
+                if (!filter || !filter.menu || item.getId().indexOf(filter.getBaseIdPrefix()) === -1) {
+                    continue;
+                }
 
-                if (filter && !filter.settingValue) {
+                if (!filter.preventFilterRemoval) {
                     // This is only called on the filter if called from outside of the gridfilters UI.
                     filter.onFilterRemove(item.getOperator());
                 }
@@ -385,12 +414,12 @@ Ext.define('Ext.grid.filters.Filters', {
     /**
      * Adds a filter to the collection and creates a store filter if has a `value` property.
      * @param {Object/Ext.grid.filter.Filter} filters A filter configuration or a filter object.
-     * @return {Array} The existing or newly created filter instance.
      */
     addFilter: function (filters) {
         var me = this,
             grid = me.grid,
             store = me.store,
+            hasNewColumns = false,
             suppressNextFilter = true,
             dataIndex, column, i, len, filter, columnFilter;
 
@@ -401,37 +430,44 @@ Ext.define('Ext.grid.filters.Filters', {
         for (i = 0, len = filters.length; i < len; i++) {
             filter = filters[i];
             dataIndex = filter.dataIndex;
-
-            // Don't suppress active filters.
-            if (filter.value) {
-                suppressNextFilter = false;
-            }
-
             column = grid.columnManager.getHeaderByDataIndex(dataIndex);
+
             // We only create filters that map to an existing column.
             if (column) {
+                hasNewColumns = true;
+
+                // Don't suppress active filters.
+                if (filter.value) {
+                    suppressNextFilter = false;
+                }
+
                 columnFilter = column.filter;
 
-                if (!columnFilter || (columnFilter && !columnFilter.isGridFilter)) {
-                    column.filter = Ext.apply(columnFilter || {}, filter);
-                } else {
-                    // If the new filter is a column filter instance, destroy the old and rebind.
-                    Ext.destroy(columnFilter);
-                    column.filter = filter;
+                // If already a gridfilter, let's destroy it and recreate another from the new config.
+                if (columnFilter && columnFilter.isGridFilter) {
+                    columnFilter.deactivate();
+                    columnFilter.destroy();
+
+                    if (me.activeFilterMenuItem) {
+                        me.activeFilterMenuItem.menu = null;
+                    }
                 }
+
+                column.filter = filter;
             }
         }
 
         // Batch initialize all column filters.
-        store.suppressNextFilter = suppressNextFilter;
-        me.initColumns();
-        store.suppressNextFilter = false;
+        if (hasNewColumns) {
+            store.suppressNextFilter = suppressNextFilter;
+            me.initColumns();
+            store.suppressNextFilter = false;
+        }
     },
 
     /**
      * Adds filters to the collection.
      * @param {Array} filters An Array of filter configuration objects.
-     * @return {Array} The added filter instances.
      */
     addFilters: function (filters) {
         if (filters) {
@@ -442,7 +478,7 @@ Ext.define('Ext.grid.filters.Filters', {
     /**
      * Turns all filters off. This does not clear the configuration information.
      * @param {Boolean} autoFilter If true, don't fire the deactivate event in
-     * {@link Ext.grid.filters.filter.Filter#setActive setActive}.
+     * {@link Ext.grid.filters.filter.Base#setActive setActive}.
      */
     clearFilters: function (autoFilter) {
         var grid = this.grid,
@@ -450,7 +486,7 @@ Ext.define('Ext.grid.filters.Filters', {
             store = grid.store,
             oldAutoFilter = store.getAutoFilter(),
             column, filter, i, len, filterCollection;
-            
+
         if (autoFilter !== undefined) {
             store.setAutoFilter(autoFilter);
         }
@@ -479,23 +515,26 @@ Ext.define('Ext.grid.filters.Filters', {
         }
     },
 
-    onBeforeReconfigure: function (grid, store, columns) {
-        if (columns) {
+    onBeforeReconfigure: function(grid, store, columns) {
+        if (store) {
             store.getFilters().beginUpdate();
         }
 
         this.reconfiguring = true;
     },
 
-    onReconfigure: function (grid, store, columns, oldStore) {
+    onReconfigure: function(grid, store, columns, oldStore) {
         var me = this;
 
-        if (oldStore !== store) {
+        if (store && oldStore !== store) {
             me.bindStore(store);
         }
 
         if (columns) {
             me.initColumns();
+        }
+
+        if (store) {
             store.getFilters().endUpdate();
         }
 

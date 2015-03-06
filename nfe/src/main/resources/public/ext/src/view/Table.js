@@ -24,6 +24,12 @@ Ext.define('Ext.view.Table', {
         'Ext.util.MixedCollection'
     ],
 
+    /*
+     * @property {Boolean}
+     * `true` in this class to identify an object as an instantiated Ext.view.TableView, or subclass thereof.
+     */
+    isTableView: true,
+
     config: {
         selectionModel: {
             type: 'rowmodel'
@@ -106,6 +112,13 @@ Ext.define('Ext.view.Table', {
             "itemmouseenter",
             "itemmouseup",
             "itemmousedown",
+            "rowclick",
+            "rowcontextmenu",
+            "rowdblclick",
+            "rowkeydown",
+            "rowmouseup",
+            "rowmousedown",
+            "rowkeydown",
             "beforeitemkeydown",
             "beforeitemcontextmenu",
             "beforeitemdblclick",
@@ -153,7 +166,7 @@ Ext.define('Ext.view.Table', {
     overItemCls: Ext.baseCSSPrefix + 'grid-item-over',
     altRowCls:   Ext.baseCSSPrefix + 'grid-item-alt',
     dirtyCls: Ext.baseCSSPrefix + 'grid-dirty-cell',
-    rowClsRe: new RegExp('(?:^|\\s*)' + Ext.baseCSSPrefix + 'grid-row-(first|last|alt)(?:\\s+|$)', 'g'),
+    rowClsRe: new RegExp('(?:^|\\s*)' + Ext.baseCSSPrefix + 'grid-item-alt(?:\\s+|$)', 'g'),
     cellRe: new RegExp(Ext.baseCSSPrefix + 'grid-cell-([^\\s]+)(?:\\s|$)', ''),
     positionBody: true,
     positionCells: false,
@@ -162,14 +175,9 @@ Ext.define('Ext.view.Table', {
     // cfg docs inherited
     trackOver: true,
 
-    // Views are focusable. But TableView is not. It is the GridPanel which is focusable.
-    // The GridPanel reports its focusEl as its view's focusEl, and on focusenter, it
-    // delegates focus to the cell clicked on, or the last focused cell, or first cell.
-    focusable: false,
-
     /**
      * Override this function to apply custom CSS classes to rows during rendering. This function should return the
-     * CSS class name (or empty string '' for none) that will be added to the row's wrapping div. To apply multiple
+     * CSS class name (or empty string '' for none) that will be added to the row's wrapping element. To apply multiple
      * class names, simply return them space-delimited within the string (e.g. 'my-class another-class').
      * Example usage:
      *
@@ -220,6 +228,22 @@ Ext.define('Ext.view.Table', {
      * @readonly
      * @private
      * @since 5.0.0
+     */
+
+    /**
+     * @method disable
+     * Disable this view.
+     *
+     * Disables interaction with, and masks this view.
+     *
+     * Note that the encapsulating {@link Ext.panel.Table} panel is *not* disabled, and other *docked*
+     * components such as the panel header, the column header container, and docked toolbars will still be enabled.
+     * The panel itself can be disabled if that is required, or individual docked components could be disabled.
+     *
+     * See {@link Ext.panel.Table #disableColumnHeaders disableColumnHeaders} and {@link Ext.panel.Table #enableColumnHeaders enableColumnHeaders}.
+     *
+     * @param {Boolean} [silent=false] Passing `true` will suppress the `disable` event from being fired.
+     * @since 1.1.0
      */
 
     /**
@@ -602,35 +626,61 @@ Ext.define('Ext.view.Table', {
     // Private
     // Create a config object for this view's selection model based upon the passed grid's configurations
     applySelectionModel: function(selModel, oldSelModel) {
-        var grid = this.ownerGrid,
-            selModel;
+        var me = this,
+            grid = me.ownerGrid,
+            defaultType = selModel.type;
 
-        if (selModel && selModel.isSelectionModel) {
-            selModel.allowDeselect = grid.allowDeselect;
-            selModel.locked = grid.disableSelection;
-        } else {
-            if (grid.hasOwnProperty('selModel')) {
-                selModel = grid.selModel;
-            } else {
-                selModel = selModel || {};
-            }
-            if (typeof selModel === 'string') {
-                selModel = {
-                    type: selModel
-                };
-            }
-            // Copy obsolete selType property to type property now that selection models are Factoryable
-            //\\ TODO: Remove selType config after deprecation period
-            selModel.type = grid.selType || selModel.selType || selModel.type || grid.self.prototype.selModel;
-            if (!selModel.mode) {
-                if (grid.simpleSelect) {
-                    selModel.mode = 'SIMPLE';
-                } else if (grid.multiSelect || selModel.type === 'checkboxmodel') {
-                    selModel.mode = 'MULTI';
-                }
+        // If this is the initial configuration, pull overriding configs in from the owning TablePanel.
+        if (!oldSelModel) {
+            // Favour a passed instance
+            if (!(selModel && selModel.isSelectionModel)) {
+                selModel = grid.selModel || selModel;
             }
         }
-        return this.callParent([selModel, oldSelModel]);
+
+        if (selModel) {
+            if (selModel.isSelectionModel) {
+                selModel.allowDeselect = grid.allowDeselect || selModel.selectionMode !== 'SINGLE';
+                selModel.locked = grid.disableSelection;
+            } else {
+                if (typeof selModel === 'string') {
+                    selModel = {
+                        type: selModel
+                    };
+                }
+                // Copy obsolete selType property to type property now that selection models are Factoryable
+                // TODO: Remove selType config after deprecation period
+                else {
+                    selModel.type = grid.selType || selModel.selType || selModel.type || defaultType;
+                }
+                if (!selModel.mode) {
+                    if (grid.simpleSelect) {
+                        selModel.mode = 'SIMPLE';
+                    } else if (grid.multiSelect) {
+                        selModel.mode = 'MULTI';
+                    }
+                }
+                selModel = Ext.Factory.selection(Ext.apply({
+                    allowDeselect: grid.allowDeselect,
+                    locked: grid.disableSelection
+                }, selModel));
+            }
+        }
+        return selModel;
+    },
+
+    updateSelectionModel: function(selModel, oldSelModel) {
+        var me = this;
+
+        if (oldSelModel) {
+            oldSelModel.un('selectionchange', me.updateBindSelection, me);
+            Ext.destroy(me.selModelRelayer);
+        }
+        me.selModelRelayer = me.relayEvents(selModel, [
+            'selectionchange', 'beforeselect', 'beforedeselect', 'select', 'deselect', 'focuschange'
+        ]);
+        selModel.on('selectionchange', me.updateBindSelection, me);
+        me.selModel = selModel;
     },
 
     getVisibleColumnManager: function() {
@@ -1165,13 +1215,10 @@ Ext.define('Ext.view.Table', {
         }
     },
 
-    // Masking a TableView masks its owning GridPanel
     getMaskTarget: function() {
-        var grid = this.ownerCt;
-        if (grid.ownerLockable) {
-            grid = grid.ownerLockable;
-        }
-        return grid.getMaskTarget();
+        // Masking a TableView masks its IMMEDIATE parent GridPanel's body.
+        // Disabling/enabling a locking view relays the call to both child views.
+        return this.ownerCt.body;
     },
 
     statics: {
@@ -1427,7 +1474,7 @@ Ext.define('Ext.view.Table', {
         if (!me.enableTextSelection) {
             classes[clsInsertPoint++] = me.unselectableCls;
         }
-        if (selModel && selModel.isCellModel && selModel.isCellSelected(me, recordIndex, column)) {
+        if (selModel && (selModel.isCellModel || selModel.isSpreadsheetModel) && selModel.isCellSelected(me, recordIndex, column)) {
             classes[clsInsertPoint++] = me.selectedCellCls;
         }
         if (lastFocused && lastFocused.record.id === record.id && lastFocused.column === column) {
@@ -1696,6 +1743,91 @@ Ext.define('Ext.view.Table', {
         return false;
     },
 
+    onFocusEnter: function(e) {
+        var me = this,
+            targetView,
+            navigationModel = me.getNavigationModel(),
+            lastFocused,
+            focusPosition,
+            br = me.bufferedRenderer,
+            firstRecord,
+            focusTarget;
+
+        // The underlying DOM event
+        e = e.event;
+
+        // We can only focus if there are rows in the row cache to focus *and* records
+        // in the store to back them. Buffered Stores can produce a state where
+        // the view is not cleared on the leading end of a reload operation, but the
+        // store can be empty.
+        if (!me.cellFocused && me.all.getCount() && me.dataSource.getCount()) {
+            focusTarget = e.getTarget(null, null, true);
+
+            // If what is being focused an interior element, but is not a cell, allow it to proceed.
+            // The position silently restores to what it was when we were focused last.
+            if (focusTarget && me.el.contains(focusTarget) && focusTarget !== me.el && !focusTarget.is(me.getCellSelector())) {
+                if (navigationModel.lastFocused) {
+                    navigationModel.position = navigationModel.lastFocused;
+                }
+                me.cellFocused = true;
+            } else {
+                lastFocused = focusPosition = me.getLastFocused();
+
+                // Default to the first cell if the NavigationModel has never focused anything
+                if (!focusPosition) {
+                    targetView = me.isLockingView ? (me.lockedGrid.isVisible() ? me.lockedView : me.normalView) : me;
+                    firstRecord = me.dataSource.getAt(br ? br.getFirstVisibleRowIndex() : 0);
+
+                    // A non-row producing record like a collapsed placeholder.
+                    // We cannot focus these yet.
+                    if (!firstRecord.isNonData) {
+                        focusPosition = new Ext.grid.CellContext(targetView).setPosition({
+                            row: firstRecord,
+                            column: 0
+                        });
+                    }
+                }
+
+                // Not a descendant which we allow to carry focus. Blur it.
+                if (!focusPosition) {
+                    e.stopEvent();
+                    e.getTarget().blur();
+                    return;
+                }
+                navigationModel.setPosition(focusPosition, null, e, null, true);
+
+                // We now contain focus is that was successful
+                me.cellFocused = !!navigationModel.getPosition();
+            }
+        }
+        
+        if (me.cellFocused) {
+            me.el.dom.setAttribute('tabindex', '-1');
+        }
+    },
+
+    onFocusLeave: function(e) {
+        var me = this;
+
+        // Ignore this event if we do not actually contain focus.
+        // CellEditors are rendered into the view's encapculating element,
+        // So focusleave will fire when they are programatically blurred.
+        // We will not have focus at that point.
+        if (me.cellFocused) {
+
+            // Blur the focused cell unless we are navigating into a locking partner,
+            // in which case, the focus of that will setPosition to the target
+            // without an intervening position to null.
+            if (e.toComponent !== me.lockingPartner) {
+                me.getNavigationModel().setPosition(null, null, e.event, null, true);
+            }
+
+            me.cellFocused = false;
+            me.focusEl = me.el;
+            me.focusEl.dom.setAttribute('tabindex', 0);
+        }
+    },
+
     // GridSelectionModel invokes onRowFocus to 'highlight'
     // the last row focused
     onRowFocus: function(rowIdx, highlight, supressFocus) {
@@ -1876,8 +2008,6 @@ Ext.define('Ext.view.Table', {
             newItemDom,
             newAttrs, attLen, attName, attrIndex,
             overItemCls,
-            focusedItemCls,
-            selectedItemCls,
             columns,
             column,
             len, i,
@@ -1887,7 +2017,8 @@ Ext.define('Ext.view.Table', {
             value,
             defaultRenderer,
             scope,
-            elData;
+            elData,
+            cellFly = me.cellFly || (me.self.prototype.cellFly = new Ext.dom.Fly());
 
         if (me.viewReady) {
             // Table row being updated
@@ -1896,8 +2027,6 @@ Ext.define('Ext.view.Table', {
             // Row might not be rendered due to buffered rendering or being part of a collapsed group...
             if (oldItemDom) {
                 overItemCls = me.overItemCls;
-                focusedItemCls = me.focusedItemCls;
-                selectedItemCls = me.selectedItemCls;
                 columns = me.ownerCt.getVisibleColumnManager().getColumns();
 
                 // Collect an array of the columns which must be updated.
@@ -1906,37 +2035,49 @@ Ext.define('Ext.view.Table', {
                 for (i = 0, len = columns.length; i < len; i++) {
                     column = columns[i];
 
-                    // 0 = Column doesn't need update.
-                    // 1 = Column needs update, and renderer has > 1 argument; We need to render a whole new HTML item.
-                    // 2 = Column needs update, but renderer has 1 argument or column uses an updater.
-                    cellUpdateFlag = me.shouldUpdateCell(record, column, changedFieldNames);
+                    // We are not going to update the cell, but we still need to mark it as dirty.
+                    if (column.preventUpdate) {
+                         cell = oldItemDom.firstChild.firstChild.childNodes[column.getVisibleIndex()];
 
-                    if (cellUpdateFlag) {
-                        // Track if any of the updating columns yields a flag with the 1 bit set.
-                        // This means that there is a custom renderer involved and a new TableView item
-                        // will need rendering.
-                        updateTypeFlags = updateTypeFlags | cellUpdateFlag;
+                        // Mark the field's dirty status if we are configured to do so (defaults to true)
+                        if (markDirty) {
+                            cellFly.attach(cell);
+                            if (record.isModified(column.dataIndex)) {
+                                cellFly.addCls(dirtyCls);
+                            } else {
+                                cellFly.removeCls(dirtyCls);
+                            }
+                        }
+                    } else {
+                        // 0 = Column doesn't need update.
+                        // 1 = Column needs update, and renderer has > 1 argument; We need to render a whole new HTML item.
+                        // 2 = Column needs update, but renderer has 1 argument or column uses an updater.
+                        cellUpdateFlag = me.shouldUpdateCell(record, column, changedFieldNames);
 
-                        columnsToUpdate[columnsToUpdate.length] = column;
-                        hasVariableRowHeight = hasVariableRowHeight || column.variableRowHeight;
+                        if (cellUpdateFlag) {
+                            // Track if any of the updating columns yields a flag with the 1 bit set.
+                            // This means that there is a custom renderer involved and a new TableView item
+                            // will need rendering.
+                            updateTypeFlags = updateTypeFlags | cellUpdateFlag; // jshint ignore:line
+
+                            columnsToUpdate[columnsToUpdate.length] = column;
+                            hasVariableRowHeight = hasVariableRowHeight || column.variableRowHeight;
+                        }
                     }
                 }
 
                 // If there's no data row (some other rowTpl has been used; eg group header)
-                //  or one or more columns has a custom renderer
-                //  or there's more than one <TR>, we must use the full render pathway to create a whole new TableView item
-                if (!me.getRowFromItem(oldItemDom) || (updateTypeFlags & 1) || (oldItemDom.tBodies[0].childNodes.length > 1)) {
+                // or we have a getRowClass
+                // or one or more columns has a custom renderer
+                // or there's more than one <TR>, we must use the full render pathway to create a whole new TableView item
+                if (me.getRowClass || !me.getRowFromItem(oldItemDom) ||
+                        (updateTypeFlags & 1) || // jshint ignore:line
+                        (oldItemDom.tBodies[0].childNodes.length > 1)) {
                     oldItem = Ext.fly(oldItemDom, '_internal');
                     elData = oldItemDom._extData;
                     newItemDom = me.createRowElement(record, me.dataSource.indexOf(record), columnsToUpdate);
                     if (oldItem.hasCls(overItemCls)) {
                         Ext.fly(newItemDom).addCls(overItemCls);
-                    }
-                    if (oldItem.hasCls(focusedItemCls)) {
-                        Ext.fly(newItemDom).addCls(focusedItemCls);
-                    }
-                    if (oldItem.hasCls(selectedItemCls)) {
-                        Ext.fly(newItemDom).addCls(selectedItemCls);
                     }
 
                     // Copy new row attributes across. Use IE-specific method if possible.
@@ -1982,12 +2123,6 @@ Ext.define('Ext.view.Table', {
 
                 // No custom renderers found in columns to be updated, we can simply update the existing cells.
                 else {
-                    
-                    // Flyweight for manipulation of the update cell
-                    if (!me.cellFly) {
-                        me.cellFly = new Ext.dom.Fly();
-                    }
-
                     // Loop through columns which need updating.
                     for (i = 0, len = columnsToUpdate.length; i < len; i++) {
                         column = columnsToUpdate[i];
@@ -2000,11 +2135,11 @@ Ext.define('Ext.view.Table', {
 
                         // Mark the field's dirty status if we are configured to do so (defaults to true)
                         if (markDirty) {
-                            me.cellFly.attach(cell);
+                            cellFly.attach(cell);
                             if (record.isModified(column.dataIndex)) {
-                                me.cellFly.addCls(dirtyCls);
+                                cellFly.addCls(dirtyCls);
                             } else {
-                                me.cellFly.removeCls(dirtyCls);
+                                cellFly.removeCls(dirtyCls);
                             }
                         }
 
@@ -2190,22 +2325,10 @@ Ext.define('Ext.view.Table', {
      */
     refresh: function() {
         var me = this,
-            navModel = me.getNavigationModel(),
-            lastFocusPosition = navModel.getPosition(),
             scroller;
-
-        // Clone position to restore to because the blur caused by refresh will null the NavModel's position object.
-        lastFocusPosition = lastFocusPosition && lastFocusPosition.clone();
 
         me.callParent(arguments);
 
-        // If the grid contained focus before the refresh, it will have been lost to the document body
-        // Restore focus to the last focused position after refresh.
-        // Pass "fromSelectionModel" as true so that that does not cause selection.
-        if (lastFocusPosition) {
-            me.ownerGrid.containsFocus = true;
-            navModel.setPosition(lastFocusPosition, null, null, null, true);
-        }
         me.headerCt.setSortState();
 
         // Create horizontal stretcher element if no records in view and there is overflow of the header container.
@@ -2224,7 +2347,7 @@ Ext.define('Ext.view.Table', {
     processContainerEvent: function(e) {
         // If we find a component & it belongs to our grid, don't fire the event.
         // For example, grid editors resolve to the parent grid
-        var cmp = Ext.Component.getComponentByElement(e.target);
+        var cmp = Ext.ComponentManager.byElement(e.target.parentNode);
         if (cmp && cmp.up(this.ownerCt)) {
             return false;
         } 
@@ -2362,7 +2485,7 @@ Ext.define('Ext.view.Table', {
 
         me.callParent(arguments);
 
-        if (type == 'mouseover' || type == 'mouseout') {
+        if (type === 'mouseover' || type === 'mouseout') {
             return;
         }
 
@@ -2778,15 +2901,6 @@ Ext.define('Ext.view.Table', {
         return new Ext.grid.CellContext(this).setPosition(record, header);
     },
 
-    beforeDestroy: function() {
-        var me = this;
-
-        if (me.rendered) {
-            me.el.clearListeners();
-        }
-        me.callParent(arguments);
-    },
-
     onDestroy: function() {
         var me = this,
             features = me.featuresMC,
@@ -2814,8 +2928,8 @@ Ext.define('Ext.view.Table', {
             bufferedRenderer.onReplace(store, startIndex, oldRecords, newRecords);
         } else {
             me.callParent(arguments);
-            me.doStripeRows(startIndex);
         }
+        me.setPendingStripe(startIndex);
     },
 
     // after adding a row stripe rows from then on
@@ -2825,12 +2939,10 @@ Ext.define('Ext.view.Table', {
 
         if (me.rendered && bufferedRenderer) {
              bufferedRenderer.onReplace(store, index, [], records);
-        }
-        // No BufferedRenderer present
-        else {
+        } else {
             me.callParent(arguments);
-            me.setPendingStripe(index);
         }
+        me.setPendingStripe(index);
     },
 
     // after removing a row stripe rows from then on
@@ -2843,8 +2955,8 @@ Ext.define('Ext.view.Table', {
             bufferedRenderer.onReplace(store, index, records, []);
         } else {
             me.callParent(arguments);
-            me.setPendingStripe(index);
         }
+        me.setPendingStripe(index);
     },
     
     // When there's a buffered renderer present, store refresh events cause TableViews to go to scrollTop:0
@@ -2882,9 +2994,13 @@ Ext.define('Ext.view.Table', {
     
     onEndUpdate: function() {
         var me = this,
-            stripeOnUpdate = me.stripeOnUpdate;
+            stripeOnUpdate = me.stripeOnUpdate,
+            startIndex = me.all.startIndex;
         
-        if (stripeOnUpdate || stripeOnUpdate === 0) {
+        if (me.rendered && (stripeOnUpdate || stripeOnUpdate === 0)) {
+            if (stripeOnUpdate < startIndex) {
+              stripeOnUpdate = startIndex;
+            }
             me.doStripeRows(stripeOnUpdate);
             me.stripeOnUpdate = null;
         }

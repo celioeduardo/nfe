@@ -178,6 +178,7 @@ div.#{$prefix}datepicker-date:hover {
 // include the element name since :hover causes performance issues in IE7 and 8 otherwise
 .#{$prefix}datepicker-disabled  div.#{$prefix}datepicker-date:hover {
     background-color: $datepicker-item-disabled-background-color;
+    color: $datepicker-item-disabled-color;
 }
 
 .#{$prefix}datepicker-footer,

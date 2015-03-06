@@ -68,6 +68,17 @@ Ext.define('Ext.draw.Draw', {
     },
 
     /**
+     * Checks if a point is within a bounding box.
+     * @param x
+     * @param y
+     * @param bbox
+     * @returns {Boolean}
+     */
+    isPointInBBox: function (x, y, bbox) {
+        return !!bbox && x >= bbox.x && x <= (bbox.x + bbox.width) && y >= bbox.y && y <= (bbox.y + bbox.height);
+    },
+
+    /**
      * Natural cubic spline interpolation.
      * This algorithm runs in linear time.
      *

@@ -89,7 +89,7 @@ Ext.define('Ext.grid.property.HeaderContainer', {
     renderCell : function(val, meta, rec) {
         var me = this,
             grid = me.grid,
-            renderer = grid.getConfig(rec.get(grid.nameField), 'renderer'),
+            renderer = grid.getConfigProp(rec.get(grid.nameField), 'renderer'),
             result = val;
 
         if (renderer) {
@@ -114,6 +114,6 @@ Ext.define('Ext.grid.property.HeaderContainer', {
     // @private
     // Renders custom property names instead of raw names if defined in the Grid
     getPropertyName : function(name) {
-        return this.grid.getConfig(name, 'displayName', name);
+        return this.grid.getConfigProp(name, 'displayName', name);
     }
 });

@@ -72,11 +72,11 @@ Ext.define('Ext.chart.MarkerHolder', {
         me.inverseSurfaceMatrix = matrix.inverse(me.inverseSurfaceMatrix);
     },
 
-    putMarker: function (name, attr, index, canonical, keepRevision) {
+    putMarker: function (name, attr, index, bypassNormalization, keepRevision) {
         var boundMarkersItem, i, ln, id = this.getId();
         if (this.boundMarkers[name]) {
             for (boundMarkersItem = this.boundMarkers[name], i = 0, ln = boundMarkersItem.length; i < ln; i++) {
-                boundMarkersItem[i].putMarkerFor(id, attr, index, canonical, keepRevision);
+                boundMarkersItem[i].putMarkerFor(id, attr, index, bypassNormalization, keepRevision);
             }
         }
     },

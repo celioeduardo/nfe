@@ -58,7 +58,7 @@ Ext.define('Ext.chart.series.sprite.Line', {
                 yJump: 50
             },
 
-            dirtyTriggers: {
+            triggers: {
                 dataX: 'dataX,bbox,smooth',
                 dataY: 'dataY,bbox,smooth',
                 smooth: 'smooth'
@@ -261,7 +261,6 @@ Ext.define('Ext.chart.series.sprite.Line', {
             surfaceMatrix = me.surfaceMatrix,
             labelX, labelY,
             labelOverflowPadding = attr.labelOverflowPadding,
-            flipXY = attr.flipXY,
             halfHeight, labelBBox,
             changes, hasPendingChanges;
 
@@ -275,7 +274,7 @@ Ext.define('Ext.chart.series.sprite.Line', {
         labelCfg.x = surfaceMatrix.x(dataX, dataY);
         labelCfg.y = surfaceMatrix.y(dataX, dataY);
 
-        if (flipXY) {
+        if (attr.flipXY) {
             labelCfg.rotationRads = Math.PI * 0.5;
         } else {
             labelCfg.rotationRads = 0;
@@ -473,8 +472,7 @@ Ext.define('Ext.chart.series.sprite.Line', {
                     xAxisOrigin = isVerticalX ? rect[0] : rect[1];
                 }
             } else {
-                Ext.Error.raise("A chart must have two ortogonal axes configured " +
-                    "in order to use the Line series.");
+                xAxisOrigin = attr.flipXY ? rect[0] : rect[1];
             }
 
             if (attr.preciseStroke) {

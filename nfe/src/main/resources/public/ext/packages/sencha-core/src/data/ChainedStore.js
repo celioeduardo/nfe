@@ -35,6 +35,9 @@ Ext.define('Ext.data.ChainedStore', {
         this.getData().addObserver(this);
     },
 
+    blockLoad: Ext.emptyFn,
+    unblockLoad: Ext.emptyFn,
+
     //<debug>
     updateRemoteFilter: function(value) {
         if (value) {
@@ -70,7 +73,18 @@ Ext.define('Ext.data.ChainedStore', {
 
     applySource: function(source) {
         if (source) {
+            //<debug>
+            var original = source,
+                s;
+            //</debug>
             source = Ext.data.StoreManager.lookup(source);
+            //<debug>
+            if (!source) {
+                s = 'Invalid source {0}specified for Ext.data.ChainedStore';
+                s = Ext.String.format(s, typeof original === 'string' ? '"' + original + '" ' : '');
+                Ext.Error.raise(s);
+            }
+            //</debug>
         }
         return source;
     },
@@ -215,17 +229,18 @@ Ext.define('Ext.data.ChainedStore', {
         me.fireEvent('datachanged', me);
     },
     
-    // inherit docs
     hasPendingLoad: function() {
         return this.getSource().hasPendingLoad();
     },
     
-    // inherit docs
+    isLoaded: function() {
+        return this.getSource().isLoaded();
+    },
+
     isLoading: function() {
         return this.getSource().isLoading();
     },
-    
-    // inherit docs
+
     onDestroy: function() {
         var me = this;
 
@@ -236,6 +251,11 @@ Ext.define('Ext.data.ChainedStore', {
     },
 
     privates: {
+        isMoving: function () {
+            var source = this.getSource();
+            return source.isMoving ? source.isMoving.apply(source, arguments) : false;
+        },
+
         loadsSynchronously: function() {
             return this.getSource().loadsSynchronously();
         }

@@ -4,31 +4,36 @@
  * 
  * Creates a 3D Pie Chart.
  *
+ * **Note:** Labels, legends, and lines are not currently available when using the
+ * 3D Pie chart series.
+ * 
  *     @example
- *     Ext.create('Ext.Container', {
- *         renderTo: Ext.getBody(),
- *         width: 600,
- *         height: 400,
- *         layout: 'fit',
- *         items: {
- *             xtype: 'polar',
- *             interactions: 'rotate',
- *             store: {
- *               fields: ['name', 'data1', 'data2', 'data3', 'data4', 'data5'],
- *               data: [
- *                   {'name':'metric one', 'data1':10, 'data2':12, 'data3':14, 'data4':8, 'data5':13},
- *                   {'name':'metric two', 'data1':7, 'data2':8, 'data3':16, 'data4':10, 'data5':3},
- *                   {'name':'metric three', 'data1':5, 'data2':2, 'data3':14, 'data4':12, 'data5':7},
- *                   {'name':'metric four', 'data1':2, 'data2':14, 'data3':6, 'data4':1, 'data5':23},
- *                   {'name':'metric five', 'data1':27, 'data2':38, 'data3':36, 'data4':13, 'data5':33}
- *               ]
- *             },
- *             series: {
- *                 type: 'pie3d',
- *                 field: 'data3',
- *                 donut: 30
- *             }
- *         }
+ *     Ext.create({
+ *        xtype: 'polar', 
+ *        renderTo: document.body,
+ *        width: 600,
+ *        height: 400,
+ *        theme: 'green',
+ *        interactions: 'rotate',
+ *        store: {
+ *            fields: ['data3'],
+ *            data: [{
+ *                'data3': 14
+ *            }, {
+ *                'data3': 16
+ *            }, {
+ *                'data3': 14
+ *            }, {
+ *                'data3': 6
+ *            }, {
+ *                'data3': 36
+ *            }]
+ *        },
+ *        series: {
+ *            type: 'pie3d',
+ *            field: 'data3',
+ *            donut: 30
+ *        }
  *     });
  */
 Ext.define('Ext.chart.series.Pie3D', {
@@ -98,16 +103,21 @@ Ext.define('Ext.chart.series.Pie3D', {
     },
     
     doUpdateStyles: function () {
-        var sprites = this.getSprites(),
-            itemOffset = this.itemOffset,
-            i = 0, j = 0, ln = sprites && sprites.length;
+        var me = this,
+            sprites = me.getSprites(),
+            itemOffset = me.itemOffset,
+            ln = sprites && sprites.length,
+            i = 0,
+            j = 0,
+            style;
 
         for (; i < ln; i += itemOffset, j++) {
-            sprites[i].setAttributes(this.getStyleByIndex(j));
-            sprites[i + 1].setAttributes(this.getStyleByIndex(j));
-            sprites[i + 2].setAttributes(this.getStyleByIndex(j));
-            sprites[i + 3].setAttributes(this.getStyleByIndex(j));
-            sprites[i + 4].setAttributes(this.getStyleByIndex(j));
+            style = me.getStyleByIndex(j);
+            sprites[  i  ].setAttributes(style);
+            sprites[i + 1].setAttributes(style);
+            sprites[i + 2].setAttributes(style);
+            sprites[i + 3].setAttributes(style);
+            sprites[i + 4].setAttributes(style);
         }
     },
 
@@ -121,7 +131,7 @@ Ext.define('Ext.chart.series.Pie3D', {
             field = me.getField(),
             value, sum = 0, ratio,
             summation = [],
-            sprites = this.getSprites(),
+            sprites = me.getSprites(),
             itemOffset = me.itemOffset,
             commonAttributes, lastAngle, i;
 
@@ -144,7 +154,7 @@ Ext.define('Ext.chart.series.Pie3D', {
 
         for (i = 0, lastAngle = 0; i < length; i++) {
             commonAttributes = {opacity: 1, startAngle: lastAngle, endAngle: summation[i]};
-            sprites[i * itemOffset].setAttributes(commonAttributes);
+            sprites[i * itemOffset    ].setAttributes(commonAttributes);
             sprites[i * itemOffset + 1].setAttributes(commonAttributes);
             sprites[i * itemOffset + 2].setAttributes(commonAttributes);
             sprites[i * itemOffset + 3].setAttributes(commonAttributes);
@@ -155,7 +165,7 @@ Ext.define('Ext.chart.series.Pie3D', {
 
     getSprites: function () {
         var me = this,
-            chart = this.getChart(),
+            chart = me.getChart(),
             surface = me.getSurface(),
             store = me.getStore();
         if (!store) {

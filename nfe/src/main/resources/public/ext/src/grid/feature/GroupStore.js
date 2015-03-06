@@ -31,7 +31,7 @@ Ext.define('Ext.grid.feature.GroupStore', {
     bindStore: function(store) {
         var me = this;
 
-        if (me.store) {
+        if (!store || me.store !== store) {
             Ext.destroy(me.storeListeners);
             me.store = null;
         }
@@ -99,7 +99,6 @@ Ext.define('Ext.grid.feature.GroupStore', {
                     if (group.isCollapsed) {
                         Model = store.getModel();
                         modelData = {};
-                        modelData[Model.idProperty] = 'group-' + key + '-placeholder';
                         modelData[groupField] = key;
                         group.placeholder = groupPlaceholder = new Model(modelData);
                         groupPlaceholder.isNonData = groupPlaceholder.isCollapsedPlaceholder = true;
@@ -167,12 +166,33 @@ Ext.define('Ext.grid.feature.GroupStore', {
         return this.data.getAt(index);
     },
 
+    /**
+     * Get the Record with the specified id.
+     *
+     * This method is not affected by filtering, lookup will be performed from all records
+     * inside the store, filtered or not.
+     *
+     * @param {Mixed} id The id of the Record to find.
+     * @return {Ext.data.Model} The Record with the passed id. Returns null if not found.
+     */
     getById: function(id) {
         return this.store.getById(id);
     },
 
-    getByInternalId: function(internalId) {
-        return this.data.byInternalId.get(internalId) || null;
+    /**
+     * @private
+     * Get the Record with the specified internalId.
+     *
+     * This method is not effected by filtering, lookup will be performed from all records
+     * inside the store, filtered or not.
+     *
+     * @param {Mixed} internalId The id of the Record to find.
+     * @return {Ext.data.Model} The Record with the passed internalId. Returns null if not found.
+     */
+    getByInternalId: function (internalId) {
+        // Find the record in the base store.
+        // If it was a placeholder, then it won't be there, it will be in our data Collection.
+        return this.store.getByInternalId(internalId) || this.data.byInternalId.get(internalId);
     },
 
     expandGroup: function(group) {
@@ -248,8 +268,7 @@ Ext.define('Ext.grid.feature.GroupStore', {
                 modelData = {},
                 key = group.getGroupKey(),
                 groupPlaceholder;
-            
-            modelData[Model.idProperty] = 'group-' + key + '-placeholder';
+
             modelData[store.getGroupField()] = key;
             groupPlaceholder = group.placeholder = new Model(modelData);
             groupPlaceholder.isNonData = groupPlaceholder.isCollapsedPlaceholder = true;
@@ -297,21 +316,33 @@ Ext.define('Ext.grid.feature.GroupStore', {
     },
 
     onRemove: function(store, records, index, isMove) {
-        this.processStore(this.store);
-        this.fireEvent('refresh', this);
+        var me = this;
+
+        // If we're moving, we'll soon come back around to add,
+        // so prevent doing it twice
+        if (store.isMoving()) {
+            return;
+        }
+
+        me.processStore(me.store);
+        me.fireEvent('refresh', me);
     },
 
     onClear: function(store, records, startIndex) {
-        this.processStore(this.store);
-        this.fireEvent('clear', this);
+        var me = this;
+
+        me.processStore(me.store);
+        me.fireEvent('clear', me);
     },
 
     onAdd: function(store, records, startIndex) {
-        this.processStore(this.store);
+        var me = this;
+
+        me.processStore(me.store);
 
         // Use indexOf to find the index of the records added.
         // It will be different in this store, and this store is what the View sees.
-        this.fireEvent('replace', this, this.indexOf(records[0]), [], records);
+        me.fireEvent('replace', me, me.indexOf(records[0]), [], records);
     },
 
     onIdChanged: function(store, rec, oldId, newId) {
@@ -385,7 +416,10 @@ Ext.define('Ext.grid.feature.GroupStore', {
     },
 
     destroy: function() {
-        this.bindStore(null);
-        this.clearListeners();
+        var me = this;
+
+        me.bindStore(null);
+        me.clearListeners();
+        Ext.destroyMembers(me, 'data', 'groupingFeature');
     }
 });

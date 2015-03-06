@@ -19,7 +19,7 @@ Ext.define('Ext.app.bind.Stub', {
     validationKey: 'validation',
 
     statics: {
-        populateValues: function(value, owner, path, stub) {
+        trackHadValue: function(value, owner, path, stub) {
             var children = stub && stub.children,
                 child, key, hadValue;
 
@@ -35,9 +35,13 @@ Ext.define('Ext.app.bind.Stub', {
                 stub.hadValue = hadValue;
             }
 
-            if (value && value.constructor === Object) {
+            if (value && (value.constructor === Object || value.isModel)) {
+                if (value.isModel) {
+                    value = value.data;
+                }
+
                 for (key in value) {
-                    Ext.app.bind.Stub.populateValues(value[key], owner, path + '.' + key, children && children[key]);
+                    Ext.app.bind.Stub.trackHadValue(value[key], owner, path + '.' + key, children && children[key]);
                 }
             }
         }
@@ -305,7 +309,7 @@ Ext.define('Ext.app.bind.Stub', {
                     delete parentData[name];
                 } else {
                     parentData[name] = value;
-                    Ext.app.bind.Stub.populateValues(value, me.owner, me.path, me);
+                    Ext.app.bind.Stub.trackHadValue(value, me.owner, me.path, me);
                 }
 
                 me.inspectValue(parentData);

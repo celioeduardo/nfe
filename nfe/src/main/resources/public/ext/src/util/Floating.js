@@ -53,6 +53,13 @@ Ext.define('Ext.util.Floating', {
      */
 
     /**
+     * @property {Boolean}
+     * The value `true` indicates that this Component is floating.
+     * @private
+     * @readonly
+     */
+
+    /**
      * @property {Ext.ZIndexManager} zIndexManager
      * Only present for {@link Ext.Component#floating floating} Components after they have been rendered.
      *
@@ -400,16 +407,17 @@ Ext.define('Ext.util.Floating', {
     },
 
     updateActiveCounter: function(activeCounter) {
-        var z = this.zIndexParent;
+        var zim = this.zIndexParent;
 
         // If we have a zIndexParent, it has to rebase its own zIndices
-        if (z && this.bringParentToFront !== false) {
-            z.setActiveCounter(++Ext.ZIndexManager.activeCounter);
+        if (zim && this.bringParentToFront !== false) {
+            zim.setActiveCounter(++Ext.ZIndexManager.activeCounter);
         }
 
         // Rebase the local zIndices
-        if (z = this.zIndexManager) {
-            z.onComponentUpdate(this);
+        zim = this.zIndexManager;
+        if (zim) {
+            zim.onComponentUpdate(this);
         }
     },
 
@@ -461,45 +469,28 @@ Ext.define('Ext.util.Floating', {
      * 
      */
     setActive: function(active, newActive, doFocus) {
-        var me = this,
-            focused;
-        
+        var me = this;
+
         if (active) {
             if (me.el.shadow && !me.maximized) {
                 me.el.enableShadow(null, true);
             }
-            
+
+            // We only do focus processing upon activate, which means theis component
+            // has been brought to the front by its ZIndexManager
             if (doFocus) {
-                focused = Ext.Element.getActiveElement();
-                
                 // Skip focusing if we already contain focused element
-                if (!me.el.contains(focused)) {
-                    me.previousFocus = focused;
-                    me.focus(false, true);
+                if (!me.el.contains(Ext.Element.getActiveElement())) {
+                    me.focus();
                 }
-            }
-            else {
-                me.previousFocus = null;
-            }
-            
+            }            
             me.fireEvent('activate', me);
         }
+        // Deactivate carries no operations. It may be that this component jas just moved down and another
+        // component has been brout to the top, so that will automatically receive focus.
+        // If we have been hidden, Component#onHide handles reverting focus to the previousExternalFocus element.
         else {
-            // Only the *Windows* in a zIndex stack share a shadow. All other types of floaters
-            // can keep their shadows all the time
-            if (me.isWindow && (newActive && newActive.isWindow) && me.hideShadowOnDeactivate) {
-                me.el.disableShadow();
-            }
-            
             me.fireEvent('deactivate', me);
-            
-            if (doFocus !== false && me.previousFocus) {
-                // IE8 will throw an exception is the target is not focusable
-                if (!Ext.isIE8 || Ext.fly(me.previousFocus).isFocusable()) {
-                    me.previousFocus.focus();
-                    me.previousFocus = null;
-                }
-            }
         }
     },
 

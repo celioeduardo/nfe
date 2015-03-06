@@ -330,7 +330,7 @@ Ext.define('Ext.FocusManager', {
             i = 0, len = needListeners.length;
 
         if (!Ext.isReady) {
-            return Ext.onReady(me.initDOM, me);
+            return Ext.onInternalReady(me.initDOM, me);
         }
 
         // When we are enabled, we must ensure that all Components which return a focusEl that is *not naturally focusable*
@@ -431,7 +431,7 @@ Ext.define('Ext.FocusManager', {
         var me = this,
             src = source || me,
             key = e.getKey(),
-            goBack = e.shiftKey || key == e.LEFT || key == e.UP,
+            goBack = e.shiftKey || key === e.LEFT || key === e.UP,
             checkWhitelist = key === e.LEFT || key === e.RIGHT || key === e.UP || key === e.DOWN,
             nextSelector = goBack ? 'prev' : 'next',
             idx, next, focusedCmp, siblings;

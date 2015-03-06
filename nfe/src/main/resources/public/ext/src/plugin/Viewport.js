@@ -57,7 +57,7 @@ Ext.define('Ext.plugin.Viewport', {
         this.cmp = cmp;
 
         if (cmp && !cmp.isViewport) {
-            this.apply(cmp);
+            this.decorate(cmp);
             if (cmp.renderConfigs) {
                 cmp.flushRenderConfigs();
             }
@@ -66,7 +66,7 @@ Ext.define('Ext.plugin.Viewport', {
     },
 
     statics: {
-        apply: function (target) {
+        decorate: function (target) {
             Ext.applyIf(target.prototype || target, {
                 ariaRole: 'application',
 
@@ -89,7 +89,7 @@ Ext.define('Ext.plugin.Viewport', {
                         width = Element.getViewportWidth(),
                         height = Element.getViewportHeight();
 
-                    if (width != me.width || height != me.height) {
+                    if (width !== me.width || height !== me.height) {
                         me.setSize(width, height);
                     }
                 },
@@ -154,12 +154,23 @@ Ext.define('Ext.plugin.Viewport', {
                         me.initInheritedState(me.inheritedState = root,
                             me.inheritedStateInner = Ext.Object.chain(root));
                     } else {
-                        me.callParent([ inheritedState, inheritedStateInner ]);
+                        me.callParent([inheritedState, inheritedStateInner]);
                     }
                 },
 
                 beforeDestroy: function(){
-                    var me = this;
+                    var me = this,
+                        root = Ext.rootInheritedState,
+                        key;
+
+                    // Clear any properties from the inheritedState so we don't pollute the
+                    // global namespace. If we have a rtl flag set, leave it alone because it's
+                    // likely we didn't write it
+                    for (key in root) {
+                        if (key !== 'rtl') {
+                            delete root[key];
+                        }
+                    }
 
                     me.removeUIFromElement();
                     me.el.removeCls(me.baseCls);
@@ -230,5 +241,5 @@ Ext.define('Ext.plugin.Viewport', {
     }
 },
 function (Viewport) {
-    Viewport.prototype.apply = Viewport.apply;
+    Viewport.prototype.decorate = Viewport.decorate;
 });

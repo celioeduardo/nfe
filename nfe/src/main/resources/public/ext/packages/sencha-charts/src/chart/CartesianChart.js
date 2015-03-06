@@ -296,7 +296,7 @@ Ext.define('Ext.chart.CartesianChart', {
                     axisRect[1] = inset.top + inner.top + (alongAxis ? value : height - value);
                     break;
                 case 'left':
-                    axisRect[0] = inset.left + inner.left + value - axisRect[2] + 1;
+                    axisRect[0] = inset.left + inner.left + value - axisRect[2];
                     break;
                 case 'right':
                     axisRect[0] = inset.left + inner.left + (alongAxis ? value : width - value) - 1;
@@ -371,20 +371,14 @@ Ext.define('Ext.chart.CartesianChart', {
                     sprite.attr.zIndex = zIndex;
                     // Iterate through its marker sprites to do the same.
                     markers = sprite.boundMarkers;
-                    if (markers) {
-                        markerCount = (markers.items ? markers.items.length : 0);
-                        if (markerCount) {
-                            for (markerIndex = 0; markerIndex < markerCount; markerIndex++) {
-                                markerSprite = markers.items[markerIndex];
-                                markerZIndex = (markerSprite.attr.zIndex || 0);
-                                if (markerZIndex == Number.MAX_VALUE) {
-                                    markerSprite.attr.zIndex = zIndex;
-                                } else {
-                                    if (markerZIndex < zBase) {
-                                        markerSprite.attr.zIndex = zIndex + markerZIndex;
-                                    }
-                                }
-                            }
+                    markerCount = (markers && markers.items ? markers.items.length : 0);
+                    for (markerIndex = 0; markerIndex < markerCount; markerIndex++) {
+                        markerSprite = markers.items[markerIndex];
+                        markerZIndex = (markerSprite.attr.zIndex || 0);
+                        if (markerZIndex == Number.MAX_VALUE) {
+                            markerSprite.attr.zIndex = zIndex;
+                        } else if (markerZIndex < zBase) {
+                            markerSprite.attr.zIndex = zIndex + markerZIndex;
                         }
                     }
                 }

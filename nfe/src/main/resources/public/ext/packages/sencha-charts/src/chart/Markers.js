@@ -43,20 +43,20 @@ Ext.define('Ext.chart.Markers', {
      * @param {String} category
      * @param {Object} attr
      * @param {String|Number} index
-     * @param {Boolean} [canonical]
+     * @param {Boolean} [bypassNormalization]
      * @param {Boolean} [keepRevision]
      */
-    putMarkerFor: function (category, attr, index, canonical, keepRevision) {
+    putMarkerFor: function (category, attr, index, bypassNormalization, keepRevision) {
         category = category || this.defaultCategory;
 
         var me = this,
             categoryInstances = me.categories[category] || (me.categories[category] = {}),
             instance;
         if (index in categoryInstances) {
-            me.setAttributesFor(categoryInstances[index], attr, canonical);
+            me.setAttributesFor(categoryInstances[index], attr, bypassNormalization);
         } else {
             categoryInstances[index] = me.getCount(); // the newly created instance will go into me.instances
-            me.createInstance(attr, canonical);
+            me.createInstance(attr, bypassNormalization);
         }
         instance = me.get(categoryInstances[index]);
         if (instance) {

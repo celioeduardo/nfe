@@ -46,12 +46,12 @@ Ext.define('Ext.grid.filters.filter.TriFilter', {
             // Once we've reached this block, we know that this grid filter doesn't have a stateful filter, so if our
             // flag to begin saving future filter mutations is set we know that any configured filter must be nulled
             // out or it will replace our stateful filter.
-            if (me.grid.stateful && me.getStore().saveStatefulFilters) {
+            if (me.grid.stateful && me.getGridStore().saveStatefulFilters) {
                 value = undefined;
             }
 
             // TODO: What do we mean by value === null ?
-            me.active = !!value;
+            me.active = me.getActiveState(config, value);
         }
 
         // Note that stateful filters will have already been gotten above. If not, or if all filters aren't stateful, we
@@ -93,11 +93,11 @@ Ext.define('Ext.grid.filters.filter.TriFilter', {
      */
     activate: function (showingMenu) {
         var me = this,
-            filters = this.filter,
+            filters = me.filter,
             fields = me.fields,
-            filter, field, operator, value;
+            filter, field, operator, value, isRootMenuItem;
 
-        if (me.settingValue) {
+        if (me.preventFilterRemoval) {
             return;
         }
 
@@ -108,7 +108,19 @@ Ext.define('Ext.grid.filters.filter.TriFilter', {
 
             if (value) {
                 field.setValue(value);
-                field.up('menuitem').setChecked(true, /*suppressEvents*/ true);
+
+                // Some types, such as Date, have additional menu check items in their Filter menu hierarchy. Others, such as Number, do not.
+                // Because of this, it is necessary to make sure that the direct menuitem ancestor of the fields is not the rootMenuItem (the
+                // "Filters" menu item), which has its checked state controlled elsewhere.
+                //
+                // In other words, if the ancestor is not the rootMenuItem, check it.
+                if (isRootMenuItem === undefined) {
+                    isRootMenuItem = me.owner.activeFilterMenuItem === field.up('menuitem');
+                }
+
+                if (!isRootMenuItem) {
+                    field.up('menuitem').setChecked(true, /*suppressEvents*/ true);
+                }
 
                 // Note that we only want to add store filters when they've been removed, which means that when Filter.showMenu() is called
                 // we DO NOT want to add a filter as they've already been added!
@@ -124,34 +136,37 @@ Ext.define('Ext.grid.filters.filter.TriFilter', {
      * This method will be called when a filter is deactivated. The UI and the store will be synced.
      */
     deactivate: function () {
-        var filters = this.filter,
+        var me = this,
+            filters = me.filter,
             f, filter;
 
-        if (!this.hasActiveFilter() || this.settingValue) {
+        if (!me.hasActiveFilter() || me.preventFilterRemoval) {
             return;
         }
 
-        this.settingValue = true;
+        me.preventFilterRemoval = true;
 
         for (f in filters) {
             filter = filters[f];
 
             if (filter.getValue()) {
-                this.removeStoreFilter(filter);
+                me.removeStoreFilter(filter);
             }
         }
 
-        this.settingValue = false;
+        me.preventFilterRemoval = false;
     },
 
     hasActiveFilter: function () {
         var active = false,
             filters = this.filter,
-            filterCollection = this.getStore().getFilters();
+            filterCollection = this.getGridStore().getFilters(),
+            prefix = this.getBaseIdPrefix(),
+            filter;
 
         if (filterCollection.length) {
             for (filter in filters) {
-                if (filterCollection.map[this.getBaseIdPrefix() + '-' + filter]) {
+                if (filterCollection.get(prefix + '-' + filter)) {
                     active = true;
                     break;
                 }
@@ -186,14 +201,14 @@ Ext.define('Ext.grid.filters.filter.TriFilter', {
             add = [],
             remove = [],
             active = false,
-            filterCollection = me.getStore().getFilters(),
+            filterCollection = me.getGridStore().getFilters(),
             field, filter, v, i, len;
 
-        if (me.settingValue) {
+        if (me.preventFilterRemoval) {
             return;
         }
 
-        me.settingValue = true;
+        me.preventFilterRemoval = true;
 
         if ('eq' in value) {
             v = filters.lt.getValue();
@@ -253,7 +268,7 @@ Ext.define('Ext.grid.filters.filter.TriFilter', {
                     me.removeStoreFilter(filter);
                 }
             }
-            
+
             if (add.length) {
                 for (i = 0, len = add.length; i < len; i++) {
                     me.addStoreFilter(add[i].filter);
@@ -273,6 +288,6 @@ Ext.define('Ext.grid.filters.filter.TriFilter', {
             me.setActive(active);
         }
 
-        me.settingValue = false;
+        me.preventFilterRemoval = false;
     }
 });

@@ -200,10 +200,18 @@ Ext.define('Ext.form.action.Submit', {
             role: 'presentation',
             action: me.getUrl(),
             method: me.getMethod(),
-            target: me.target || '_self',
+            target: me.target ?
+                        (Ext.isString(me.target) ? me.target : Ext.fly(me.target).dom.name) :
+                        '_self',
             style: 'display:none',
             cn: fieldsSpec
         };
+
+        // <debug>
+        if (!formSpec.target) {
+            Ext.Error.raise('Invalid form target.');
+        }
+        // </debug>
 
         // Set the proper encoding for file uploads
         if (uploadFields.length) {

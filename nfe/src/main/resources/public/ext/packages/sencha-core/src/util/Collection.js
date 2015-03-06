@@ -328,6 +328,11 @@ Ext.define('Ext.util.Collection', {
      */
     filtered: false,
 
+    // private priority that is used for endupdate listeners on the filters and sorters.
+    // set to a very high priority so that our processing of these events takes place prior
+    // to user code - data must already be filtered/sorted when the user's handler runs
+    $endUpdatePriority: 1001,
+
     /**
      * @event add
      * Fires after items have been added to the collection.
@@ -910,7 +915,7 @@ Ext.define('Ext.util.Collection', {
      * @since 5.0.0
      */
     beginUpdate: function () {
-        if (!this.updating++) {
+        if (!this.updating++) { // jshint ignore:line
             this.notify('beginupdate');
         }
     },
@@ -924,7 +929,9 @@ Ext.define('Ext.util.Collection', {
     clear: function () {
         var me = this,
             generation = me.generation,
-            ret = generation ? me.items : [];
+            ret = generation ? me.items : [],
+            extraKeys,
+            indexName;
 
         if (generation) {
             me.items = [];
@@ -932,6 +939,14 @@ Ext.define('Ext.util.Collection', {
             me.map = {};
             me.indices = {};
             me.generation++;
+
+            // Clear any extraKey indices associated with this Collection
+            extraKeys = me.getExtraKeys();
+            if (extraKeys) {
+                for (indexName in extraKeys) {
+                    extraKeys[indexName].clear();
+                }
+            }
         }
 
         return ret;
@@ -2182,8 +2197,11 @@ Ext.define('Ext.util.Collection', {
 
     /**
      * Change the key for an existing item in the collection. If the old key does not
-     * exist this call does nothing.
-     * @param {Object} item The item whose key has changed.
+     * exist this call does nothing. Even so, it is highly recommended to *avoid* calling
+     * this method for an `item` that is not a member of this collection.
+     *
+     * @param {Object} item The item whose key has changed. The `item` should be a member
+     * of this collection.
      * @param {String} oldKey The old key for the `item`.
      * @since 5.0.0
      */
@@ -2200,17 +2218,10 @@ Ext.define('Ext.util.Collection', {
             source.updateKey(item, oldKey);
         }
         else if ((newKey = me.getKey(item)) !== oldKey) {
-            if (oldKey in map || map[newKey] !== item) {
-                if (oldKey in map) {
-                    //<debug>
-                    if (map[oldKey] !== item) {
-                        Ext.Error.raise('Incorrect oldKey "' + oldKey +
-                                        '" for item with newKey "' + newKey + '"');
-                    }
-                    //</debug>
-
-                    delete map[oldKey];
-                }
+            // If the key has changed and "item" is the item mapped to the oldKey and
+            // there is no collision with an item with the newKey, we can proceed.
+            if (map[oldKey] === item && !(newKey in map)) {
+                delete map[oldKey];
 
                 // We need to mark ourselves as updating so that observing collections
                 // don't reflect the updateKey back to us (see above check) but this is
@@ -2232,6 +2243,28 @@ Ext.define('Ext.util.Collection', {
 
                 me.updating--;
             }
+            //<debug>
+            else {
+                // It may be that the item is (somehow) already in the map using the
+                // newKey or that there is no item in the map with the oldKey. These
+                // are not errors.
+
+                if (newKey in map && map[newKey] !== item) {
+                    // There is a different item in the map with the newKey which is an
+                    // error. To properly handle this, add the item instead.
+                    Ext.Error.raise('Duplicate newKey "' + newKey +
+                                    '" for item with oldKey "' + oldKey + '"');
+                }
+
+                if (oldKey in map && map[oldKey] !== item) {
+                    // There is a different item in the map with the oldKey which is also
+                    // an error. Do not call this method for items that are not part of
+                    // the collection.
+                    Ext.Error.raise('Incorrect oldKey "' + oldKey +
+                                    '" for item with newKey "' + newKey + '"');
+                }
+            }
+            //</debug>
         }
     },
 
@@ -2674,10 +2707,10 @@ Ext.define('Ext.util.Collection', {
                 // First pass max and min are undefined and since nothing is less than
                 // or greater than undefined we always evaluate these "if" statements as
                 // true to pick up the first value as both max and min.
-                if (!(value < max)) {
+                if (!(value < max)) { // jshint ignore:line
                     max = value;
                 }
-                if (!(value > min)) {
+                if (!(value > min)) { // jshint ignore:line
                     min = value;
                 }
             }
@@ -2699,11 +2732,11 @@ Ext.define('Ext.util.Collection', {
                 value = (root ? item[root] : item)[property];
 
                 // Same trick as "bounds"
-                if (!(value < max)) {
+                if (!(value < max)) { // jshint ignore:line
                     max = value;
                     most = item;
                 }
-                if (!(value > min)) {
+                if (!(value > min)) { // jshint ignore:line
                     min = value;
                     least = item;
                 }
@@ -2787,9 +2820,11 @@ Ext.define('Ext.util.Collection', {
             observers.push(observer);
             observerMap[observerId] = observer;
 
-            // Allow observers to be inserted with a priority.
-            // For example GroupCollections must react to Collection mutation before views.
-            Ext.Array.sort(observers, this.prioritySortFn);
+            if (observers.length > 1) {
+                // Allow observers to be inserted with a priority.
+                // For example GroupCollections must react to Collection mutation before views.
+                Ext.Array.sort(observers, this.prioritySortFn);
+            }
         }
     },
 
@@ -2948,7 +2983,7 @@ Ext.define('Ext.util.Collection', {
             for (index = 0, length = observers.length; index < length; ++index) {
                 method = (observer = observers[index])[methodName];
                 if (method) {
-                    if (!added++) {
+                    if (!added++) { // jshint ignore:line
                         args.unshift(me); // put this Collection as the first argument
                     }
                     method.apply(observer, args);
@@ -3080,8 +3115,11 @@ Ext.define('Ext.util.Collection', {
         }
 
         if (newFilters) {
-            // The Collection itself must have priority over user code, so use listener prepend option
-            newFilters.on('endupdate', 'onEndUpdateFilters', me, {prepend: true});
+            newFilters.on({
+                endupdate: 'onEndUpdateFilters',
+                scope: me,
+                priority: me.$endUpdatePriority
+            });
             newFilters.$filterable = me;
         }
 
@@ -3350,8 +3388,11 @@ Ext.define('Ext.util.Collection', {
         }
 
         if (newSorters) {
-            // The Collection itself must have priority over user code, so use listener prepend option
-            newSorters.on('endupdate', 'onEndUpdateSorters', me, {prepend: true});
+            newSorters.on({
+                endupdate: 'onEndUpdateSorters',
+                scope: me,
+                priority: me.$endUpdatePriority
+            });
             newSorters.$sortable = me;
         }
 
@@ -3512,6 +3553,8 @@ Ext.define('Ext.util.Collection', {
 
         me.length = items.length;
         ++me.generation;
+
+        me.indices = null;
 
         // Tell users of the adds in increasing index order.
         for (i = 0; i < count; ++i) {
