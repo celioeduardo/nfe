@@ -27,8 +27,8 @@ public class TransportadorConverter extends AbstractConverter{
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
 		Transportador transp = (Transportador) source;
-		convertIf("CNPJ", transp.cnpj()!=null ? transp.cnpj() : transp.cpf() , writer, context);
-		//convertIf("CPF", transp.cpf(), writer, context);
+		convertIf("CNPJ", transp.cnpj(), writer, context);
+		convertIf("CPF", transp.cpf(), writer, context);
 		convertIf("xNome", transp.razaoSocial(), writer, context);
 		convertIf("IE", transp.ie(), writer, context);
 		convertIf("xEnder", enderecoCompleto(transp.endereco()), writer, context);

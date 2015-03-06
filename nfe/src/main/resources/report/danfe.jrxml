@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="danfe" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="14" rightMargin="16" topMargin="14" bottomMargin="14" uuid="3a66161b-c318-4cff-ae2a-897307b5d628">
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<property name="ireport.zoom" value="5.0"/>
-	<property name="ireport.x" value="2041"/>
-	<property name="ireport.y" value="1014"/>
+	<property name="ireport.x" value="1960"/>
+	<property name="ireport.y" value="1821"/>
 	<style name="campoPequeno" hAlign="Left" vAlign="Top" markup="styled" pattern="" fontName="DejaVu Serif" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="DejaVu Serif" isPdfEmbedded="true"/>
 	<style name="borda" mode="Transparent" forecolor="#000000" fill="Solid" radius="3" scaleImage="Clip" hAlign="Left" vAlign="Top" markup="none" pattern="" fontName="DejaVu Serif" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="true" pdfFontName="DejaVu Serif" isPdfEmbedded="true">
 		<pen lineWidth="0.25"/>
@@ -206,6 +206,9 @@
 	</field>
 	<field name="Trans_CNPJ" class="java.lang.String">
 		<fieldDescription><![CDATA[../transp/transporta/CNPJ]]></fieldDescription>
+	</field>
+	<field name="Trans_CPF" class="java.lang.String">
+		<fieldDescription><![CDATA[../transp/transporta/CPF]]></fieldDescription>
 	</field>
 	<field name="Trans_Nome" class="java.lang.String">
 		<fieldDescription><![CDATA[../transp/transporta/xNome]]></fieldDescription>
@@ -1031,9 +1034,9 @@ $F{Dest_CPF}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="true">
 					<reportElement style="dados" x="460" y="194" width="104" height="17" uuid="ebddd86a-0c60-4dfa-9f1d-3fe159b6d8c4"/>
-					<textFieldExpression><![CDATA[$F{Trans_CNPJ}.length() == 14 ? $F{Trans_CNPJ}.substring(0,2) + "." +
+					<textFieldExpression><![CDATA[$F{Trans_CNPJ} != null && $F{Trans_CNPJ}.length() == 14 ? $F{Trans_CNPJ}.substring(0,2) + "." +
 $F{Trans_CNPJ}.substring(2,5) + "." + $F{Trans_CNPJ}.substring(5,8) + "/" +
-$F{Trans_CNPJ}.substring(8,12) + "-" + $F{Trans_CNPJ}.substring(12,14) : $F{Trans_CNPJ}]]></textFieldExpression>
+$F{Trans_CNPJ}.substring(8,12) + "-" + $F{Trans_CNPJ}.substring(12,14) : $F{Trans_CPF}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="dados" x="228" y="194" width="65" height="16" uuid="8f88ede8-5bd5-45e5-84f7-c32cccadcb3b"/>
