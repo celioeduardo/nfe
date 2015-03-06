@@ -1,0 +1,15 @@
+.#{$prefix}scroll-container {
+    overflow: hidden;
+    // scrollable containers use position:relative so that scroll indicators can be
+    // positioned correctly inside of them
+    position: relative;
+}
+
+.#{$prefix}scroll-scroller {
+    display: table;
+
+    // https://sencha.jira.com/browse/EXTJSIV-12773
+    // Scroller must not shrinkwrap width of block items.
+    // Must always be at least 100% of component width.
+    min-width: 100%;
+}
