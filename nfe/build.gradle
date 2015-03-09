@@ -105,15 +105,9 @@ processResources {
 	finalizedBy copySenchaToPublic
 }
 
-task customJar(type: Jar, dependsOn: copySenchaToPublic) {
-	destinationDir = file("${buildDir}/jars")
-	from sourceSets.main.output
-}
-
-//def someFile = file('build/somefile.txt')
-
-///artifacts {
-//    archives someFile
+//task customJar(type: Jar, dependsOn: copySenchaToPublic) {
+//	destinationDir = file("${buildDir}/jars")
+//	from sourceSets.main.output
 //}
 
 createReleaseTag.dependsOn uploadArchives
@@ -141,17 +135,32 @@ task ftp << {
         	password: priv.ftp.pass, 
         	passive:"yes") {
 	            fileset(dir: "${buildDir}/libs") {
-	                include(name: "*.jar.original")
+	                include(name: "*.jar")
 	            }
         }
         	
     }
 }
 
-distributions {
-    main {
-        baseName = 'nfe'
+task ftpDist << {
+    ant {
+        taskdef(name: 'ftp',
+                classname: 'org.apache.tools.ant.taskdefs.optional.net.FTP',
+                classpath: configurations.ftpAntTask.asPath)
+        ftp(server: priv.ftp.server, 
+        	remoteDir: priv.ftp.remoteDir,
+        	userid: priv.ftp.user, 
+        	password: priv.ftp.pass, 
+        	passive:"yes") {
+	            fileset(dir: "${buildDir}/distributions") {
+	                include(name: "*.zip")
+	            }
+        }
     }
+}
+
+bootRepackage {
+	enabled = false
 }
 
 install {
