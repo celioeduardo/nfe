@@ -76,31 +76,47 @@ test {
 }
 
 ant.importBuild('src/main/resources/public/build.xml') { antTaskName -> 
-	"sencha-"+antTaskName
+	"sencha_"+antTaskName
 }
 
 tasks.matching { task ->
-	task.name.startsWith('sencha-')
+	task.name.startsWith('sencha_')
 }*.group = 'Sencha'
 
-task copyPublicToExtjs(type: Copy, dependsOn: processResources) {
+task copyPublicToSencha(type: Copy, dependsOn: sencha_build) {
 	from "${rootDir}/src/main/resources/public/build/production/nfe"
-	into "${buildDir}/extjs"
+	into "${buildDir}/sencha"
 }
 
-task deleteExtjsResources(type: Delete, dependsOn:copyPublicToExtjs) {
+task deleteSenchaResources(type: Delete, dependsOn:copyPublicToSencha) {
    delete "${buildDir}/resources/main/public"
 }
 
-task copyExtjsToPublic(type: Copy, dependsOn:deleteExtjsResources) {
-	from "${buildDir}/extjs"
+task copySenchaToPublic(type: Copy, dependsOn:deleteSenchaResources) {
+	from "${buildDir}/sencha"
 	into "${buildDir}/resources/main/public"
 }
 
-task customJar(type: Jar, dependsOn: copyExtjsToPublic) {
+copySenchaToPublic.onlyIf { 
+	System.properties['skip.sencha'] != 'true'
+}
+
+processResources {
+	finalizedBy copySenchaToPublic
+}
+
+task customJar(type: Jar, dependsOn: copySenchaToPublic) {
 	destinationDir = file("${buildDir}/jars")
 	from sourceSets.main.output
 }
+
+//def someFile = file('build/somefile.txt')
+
+///artifacts {
+//    archives someFile
+//}
+
+createReleaseTag.dependsOn uploadArchives
 
 configurations {
     ftpAntTask
@@ -124,11 +140,17 @@ task ftp << {
         	userid: priv.ftp.user, 
         	password: priv.ftp.pass, 
         	passive:"yes") {
-            fileset(dir: "${buildDir}/jars") {
-                include(name: "*.jar")
-            }
+	            fileset(dir: "${buildDir}/libs") {
+	                include(name: "*.jar.original")
+	            }
         }
-        
+        	
+    }
+}
+
+distributions {
+    main {
+        baseName = 'nfe'
     }
 }
 
@@ -147,11 +169,16 @@ install {
 uploadArchives {
 	repositories {
 	   mavenDeployer {
-			repository(url: priv.host) {
+			repository(url: priv.host+'/releases') {
 				authentication(
 					userName: priv.user, password: priv.pass
 				)
 			}
+			snapshotRepository(url: priv.host+'/snapshots') {
+                authentication(
+					userName: priv.user, password: priv.pass
+				)
+            }
 			pom.project {
 	          parent { 
 	            groupId 'org.springframework.boot'
