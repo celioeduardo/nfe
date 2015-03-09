@@ -175,7 +175,9 @@ uploadArchives {
 				)
 			}
 			snapshotRepository(url: priv.host+'/snapshots') {
-                authentication(userName: 'admin', password: 'password');  
+                authentication(
+					userName: priv.user, password: priv.pass
+				)
             }
 			pom.project {
 	          parent { 
