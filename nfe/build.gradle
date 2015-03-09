@@ -112,6 +112,8 @@ task customJar(type: Jar, dependsOn: copySenchaToPublic) {
 //    archives someFile
 //}
 
+createReleaseTag.dependsOn uploadArchives
+
 configurations {
     ftpAntTask
 }
