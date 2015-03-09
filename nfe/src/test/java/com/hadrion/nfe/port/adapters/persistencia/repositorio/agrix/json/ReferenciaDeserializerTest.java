@@ -61,10 +61,10 @@ public class ReferenciaDeserializerTest {
 		assertEquals(3,refs.size());
 		assertEquals(ref,refs.get(0));
 		
-		ref = Referencia.modelo_1_1A(Modelo.MODELO_1, Uf.SP, data("140101"), new Cnpj(74230061000181L), new Serie(1), 1L);
+		ref = Referencia.modelo_1_1A(Modelo.MODELO_1, Uf.SP, data("140101","yyMMdd"), new Cnpj(74230061000181L), new Serie(1), 1L);
 		assertEquals(ref,refs.get(1));
 
-		ref = Referencia.produtorRural(Uf.SP, data("140101"), new Cpf(15997427803L), new Serie(4), 4L,new InscricaoEstadual("ISENTO"));
+		ref = Referencia.produtorRural(Uf.SP, data("140101","yyMMdd"), new Cpf(15997427803L), new Serie(4), 4L,new InscricaoEstadual("ISENTO"));
 		assertEquals(ref,refs.get(2));
 		
 	}

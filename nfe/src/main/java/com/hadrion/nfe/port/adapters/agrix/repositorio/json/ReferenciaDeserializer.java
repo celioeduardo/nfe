@@ -83,7 +83,7 @@ public class ReferenciaDeserializer implements JsonDeserializer<Referencia>{
 		return tem(j,"cpf") ? new Cpf(l(j,"cpf")) : null;
 	}	
 	private Date anoMes(JsonObject j){
-		return tem(j,"cpf") ? data(s(j,"anoMes") + "01") : null;
+		return tem(j,"anoMes") ? data(s(j,"anoMes") + "01","yyMMdd") : null;
 	}	
 	private Uf uf(JsonObject j){
 		return tem(j,"uf") ? Uf.valueOf(s(j,"uf")) : null;
