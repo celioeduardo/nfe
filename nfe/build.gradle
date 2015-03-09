@@ -97,6 +97,10 @@ task copySenchaToPublic(type: Copy, dependsOn:deleteSenchaResources) {
 	into "${buildDir}/resources/main/public"
 }
 
+copySenchaToPublic.onlyIf { 
+	System.properties['skip.sencha'] != 'true'
+}
+
 processResources {
 	finalizedBy copySenchaToPublic
 }
@@ -165,11 +169,14 @@ install {
 uploadArchives {
 	repositories {
 	   mavenDeployer {
-			repository(url: priv.host) {
+			repository(url: priv.host+'/releases') {
 				authentication(
 					userName: priv.user, password: priv.pass
 				)
 			}
+			snapshotRepository(url: priv.host+'/snapshots') {
+                authentication(userName: 'admin', password: 'password');  
+            }
 			pom.project {
 	          parent { 
 	            groupId 'org.springframework.boot'
