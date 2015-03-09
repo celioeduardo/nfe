@@ -106,11 +106,11 @@ task customJar(type: Jar, dependsOn: copySenchaToPublic) {
 	from sourceSets.main.output
 }
 
-def someFile = file('build/somefile.txt')
+//def someFile = file('build/somefile.txt')
 
-artifacts {
-    archives someFile
-}
+///artifacts {
+//    archives someFile
+//}
 
 configurations {
     ftpAntTask
