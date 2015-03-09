@@ -1,7 +1,6 @@
 package com.hadrion.nfe.port.adapters.agrix.repositorio.json;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -39,7 +38,6 @@ public class NotaFiscalTradutorJson {
 		gsonBuilder.registerTypeAdapter(Destinatario.class, new DestinatarioDeserializer());
 		gsonBuilder.registerTypeAdapter(LocalEntrega.class, new LocalEntregaDeserializer());
 		gsonBuilder.registerTypeAdapter(LocalRetirada.class, new LocalRetiradaDeserializer());
-		gsonBuilder.registerTypeAdapter(Date.class, new CpfDeserializer());
 		gsonBuilder.registerTypeAdapter(Dinheiro.class, new DinheiroDeserializer());
 		gsonBuilder.registerTypeAdapter(Cobranca.class, new CobrancaDeserializer());
 		gsonBuilder.registerTypeAdapter(Informacao.class, new InformacaoDeserializer());
