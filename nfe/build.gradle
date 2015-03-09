@@ -19,13 +19,7 @@ apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 apply plugin: 'maven'
 
-group = 'com.hadrion'
-version = '0.0.1-SNAPSHOT'
-
 description = "NF-e"
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
 	mavenLocal()
