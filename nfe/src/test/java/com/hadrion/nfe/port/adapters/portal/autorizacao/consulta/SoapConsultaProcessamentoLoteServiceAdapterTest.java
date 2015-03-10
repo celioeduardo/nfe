@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,7 +36,7 @@ public class SoapConsultaProcessamentoLoteServiceAdapterTest extends DominioTest
 		lote.transmitido(new NumeroReciboLote("310000035995659"));
 	}
 	
-	@Test
+	@Test @Ignore
 	public void consultar() throws Throwable{
 		certificado = new Certificado(
 				FileUtils.getFile("src","test","resources","assinatura","certificado.pfx"), 

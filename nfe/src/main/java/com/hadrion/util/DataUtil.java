@@ -118,8 +118,10 @@ public class DataUtil {
 	}
 	
 	public static String formatarComTimezone(Date date){
-		DateTimeFormatter dtf = ISODateTimeFormat.dateTimeNoMillis();	
 		DateTime d = new DateTime(date);
+		DateTimeFormatter dtf = ISODateTimeFormat
+				.dateTimeNoMillis()
+				.withZone(d.getZone());
 		return d.toString(dtf);
 	}
 	

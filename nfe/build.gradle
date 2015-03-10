@@ -111,6 +111,10 @@ processResources {
 //	from sourceSets.main.output
 //}
 
+release {
+	failOnUnversionedFiles = false
+}
+
 createReleaseTag.dependsOn uploadArchives
 
 configurations {
@@ -184,7 +188,7 @@ uploadArchives {
 					userName: priv.user, password: priv.pass
 				)
 			}
-			snapshotRepository(url: priv.host+'/snapshots') {
+			snapshotRepository(url: priv.host) {
                 authentication(
 					userName: priv.user, password: priv.pass
 				)
