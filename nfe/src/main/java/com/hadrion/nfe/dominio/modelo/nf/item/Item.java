@@ -13,6 +13,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
+import com.hadrion.nfe.tipos.Dinheiro;
 
 @Entity
 @SequenceGenerator(name="SEQ",sequenceName="SQ_ITEM")
@@ -103,6 +104,10 @@ public class Item {
 	
 	public Long getId(){
 		return this.id;
+	}
+
+	public Dinheiro valorDesconto() {
+		return this.produto().valorDesconto().soma(this.imposto().valorRbc());
 	}
 	
 }

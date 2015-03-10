@@ -101,5 +101,9 @@ public class Imposto {
 	
 	@SuppressWarnings("unused")
 	private Imposto(){}
+
+	public Dinheiro valorRbc() {
+		return icms.descontoReducaoBaseCalculo();
+	}
 	
 }
