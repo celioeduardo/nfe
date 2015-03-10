@@ -111,6 +111,10 @@ processResources {
 //	from sourceSets.main.output
 //}
 
+release {
+	failOnUnversionedFiles = false
+}
+
 createReleaseTag.dependsOn uploadArchives
 
 configurations {
