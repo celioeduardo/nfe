@@ -528,8 +528,7 @@ public class NotaFiscal {
 		Dinheiro result = Dinheiro.ZERO;
 		for (Item item : getItens())
 			result = result.soma(
-					item.produto().valorDesconto().soma(
-							item.imposto().icms().descontoReducaoBaseCalculo()));
+					item.valorDescontoTotal());
 		return result;
 	}
 	public Dinheiro totalPis(){
