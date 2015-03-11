@@ -47,7 +47,8 @@ public class NotaFiscalReducaoBaseCalculoSemDescontoNoItemTradutorJsonTest {
 		assertEquals(new Dinheiro(13.87),item.imposto().icms().baseCalculo());
 		assertEquals(new Dinheiro(2.50),item.imposto().icms().valor());
 		assertEquals(new Aliquota(18),item.imposto().icms().aliquota());
-		assertEquals(new Dinheiro(1.07),item.valorDesconto());	
+		assertEquals(new Dinheiro(1.07),item.valorDescontoTotal());	
+		assertEquals(Dinheiro.ZERO,item.produto().valorDesconto());	
 
 	}
 		

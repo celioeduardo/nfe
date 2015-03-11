@@ -106,7 +106,7 @@ public class Item {
 		return this.id;
 	}
 
-	public Dinheiro valorDesconto() {
+	public Dinheiro valorDescontoTotal() {
 		return this.produto().valorDesconto().soma(this.imposto().valorRbc());
 	}
 	
