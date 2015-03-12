@@ -54,7 +54,6 @@ public class NotaFiscalXmlSerializadorRbcSemDescontoProdutoTest extends Abstract
 		NotaFiscalSerializador serializador = 
 				new NotaFiscalSerializador();
 		
-		System.out.println(serializador.serializar(nf));
 		Document xml = XmlUtil.parseXml(serializador.serializar(nf));
 		
 		Source source = new DOMSource(xml);

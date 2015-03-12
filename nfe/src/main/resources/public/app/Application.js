@@ -40,14 +40,31 @@ Ext.define('nfe.Application', {
     
     tratarErro: function(response){
     	var resTxt = Ext.decode(response.responseText);
-        if (response.status == 404){
+        if (response.status == 404)
         	Ext.Msg.show({
 	            title: 'Recurso não encontado. (404)',
 	            msg:resTxt.path,
 	            icon: Ext.Msg.ERROR,
 	            buttons: Ext.Msg.OK
 	        });
-        } else {
+        else if (response.status == 403)
+    		Ext.Msg.show({
+    			title: 'Acesso Negado',
+    			msg:'Acesso Negado em '
+    				+resTxt.path
+    				+'. ['
+    				+resTxt.message+']',
+    			icon: Ext.Msg.ERROR,
+    			buttons: Ext.Msg.OK
+    		});
+        else if (response.status == 401)
+        	Ext.Msg.show({
+        		title: 'Não autenticado',
+        		msg:'Não autenticado.',
+    			icon: Ext.Msg.ERROR,
+    			buttons: Ext.Msg.OK
+        	});
+        else {
 	        Ext.Msg.show({
 	            title: 'Atenção',
 	            msg:resTxt.erro,
