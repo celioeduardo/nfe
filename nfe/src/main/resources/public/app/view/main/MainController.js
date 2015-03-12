@@ -69,6 +69,7 @@ Ext.define('nfe.view.main.MainController', {
             filialId = record.get('id');
     	
     	vm.set('filial',filialId);
+    	vm.notify();
     	
     	me.carregarDadosFilial(filialId,function(){
     		me.fireEvent('filialTrocada');
@@ -89,14 +90,12 @@ Ext.define('nfe.view.main.MainController', {
     },
     
     onNotaFiscalCancelada: function(){
-    	this.getView().down('#autorizadas')
-	    	.getViewModel().getStore('notasAutorizadas')
-	    	.reload();
+    	 this.atualizarStore(this.getView().down('#autorizadas')
+	    	.getViewModel().getStore('notasAutorizadas'));
     },
     onInutilizacaoHomologada: function(){
-    	this.getView().down('#inutilizacoes-homologadas')
-	    	.getViewModel().getStore('inutilizacoesHomologadas')
-	    	.reload();
+    	 this.atualizarStore(this.getView().down('#inutilizacoes-homologadas')
+	    	.getViewModel().getStore('inutilizacoesHomologadas'));
     },
     
     carregarDadosFilial: function(filialId,fnSuccess){
@@ -127,9 +126,8 @@ Ext.define('nfe.view.main.MainController', {
     	
     	if (!vm.get('filial')) return;
     	
-    	this.getView().down('lotes-pendentes')
-    		.getViewModel().getStore('lotesPendentes')
-            .reload();
+    	 this.atualizarStore(this.getView().down('lotes-pendentes')
+    		.getViewModel().getStore('lotesPendentes'));
     },
     
     obtidoRetornoLotes: function(){
@@ -137,9 +135,8 @@ Ext.define('nfe.view.main.MainController', {
     	
     	if (!vm.get('filial')) return;
 
-    	this.getView().down('notas-pendentes')
-	    	.getViewModel().getStore('notasPendentes')
-	    	.reload();
+    	 this.atualizarStore(this.getView().down('notas-pendentes')
+	    	.getViewModel().getStore('notasPendentes'));
     	
     	this.onAtualizarAutorizadas();
     },
@@ -147,9 +144,8 @@ Ext.define('nfe.view.main.MainController', {
     onAtualizarAutorizadas: function(){
     	vm = this.getViewModel();
     	
-    	this.getView().down('notas-autorizadas')
-	    	.getViewModel().getStore('notasAutorizadas')
-	    	.reload();
+    	 this.atualizarStore(this.getView().down('notas-autorizadas')
+	    	.getViewModel().getStore('notasAutorizadas'));
     },
     
     
@@ -157,13 +153,22 @@ Ext.define('nfe.view.main.MainController', {
         this.notasPendentesEnviadas();
         this.obtidoRetornoLotes();
         
-        this.getView().down('#inutilizacoes-homologadas')
-	    	.getViewModel().getStore('inutilizacoesHomologadas')
-	    	.reload();
+        this.atualizarStore(this.getView()
+        	.down('#inutilizacoes-homologadas')
+    		.getViewModel()
+    		.getStore('inutilizacoesHomologadas'));
         
-        this.getView().down('#inutilizacoes-pendentes')
-	        .getViewModel().getStore('inutilizacoesPendentes')
-	        .reload();
+        this.atualizarStore(this.getView()
+	    	.down('#inutilizacoes-pendentes')
+			.getViewModel()
+			.getStore('inutilizacoesPendentes'));
+    },
+    
+    atualizarStore:function(store){
+    	if (store)
+    		store.load();
     }
+    
+    
 
 });
