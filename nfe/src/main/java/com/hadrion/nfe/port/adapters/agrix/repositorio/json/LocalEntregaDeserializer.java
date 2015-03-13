@@ -47,7 +47,7 @@ public class LocalEntregaDeserializer implements JsonDeserializer<LocalEntrega>{
 	}
 	
 	private Cpf cpf(JsonObject j){
-		return tem(j,"cpj")?new Cpf(l(j,"cpf")):null;
+		return tem(j,"cpf")?new Cpf(l(j,"cpf")):null;
 	}
 	private Cep cep(JsonObject j){
 		return tem(j,"cep")?new Cep(l(j,"cep")):null;
