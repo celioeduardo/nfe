@@ -31,7 +31,7 @@ public class LocalEntregaDeserializer implements JsonDeserializer<LocalEntrega>{
 				s(j,"bairro"),
 			    new Municipio(i(j,"codigoMunicipio"),s(j,"municipio"),Uf.valueOf(s(j,"uf"))),
 			    new Pais(l(j,"pais"),s(j,"paisNome")),
-			    new Cep(l(j,"cep")),
+			    cep(j),
 			    telefone(j));
 		
 		LocalEntrega local = new LocalEntrega(
@@ -48,6 +48,9 @@ public class LocalEntregaDeserializer implements JsonDeserializer<LocalEntrega>{
 	
 	private Cpf cpf(JsonObject j){
 		return tem(j,"cpj")?new Cpf(l(j,"cpf")):null;
+	}
+	private Cep cep(JsonObject j){
+		return tem(j,"cep")?new Cep(l(j,"cep")):null;
 	}
 	
 	private Telefone telefone(JsonObject j){
