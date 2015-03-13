@@ -270,7 +270,6 @@
   }],
   "emitente" : {
     "cnpj" : "86675642000106",
-    "cpf" : "86675642000106",
     "razaoSocial" : "COOPERATIVA AGROPECUARIA ALTO PARANAIBA",
     "nomeFantasia" : "",
     "logradouro" : "ROD. MG 235 KM 89",
@@ -311,7 +310,6 @@
   },
   "localEntrega" : {
     "cnpj" : "7233848000100",
-    "cpf" : "7233848000100",
     "logradouro" : "ROD. BR 262 KM 443 S/N ",
     "numero" : "S/N",
     "complemento" : "",
@@ -325,7 +323,6 @@
   },
   "localRetirada" : {
     "cnpj" : "86675642000106",
-    "cpf" : "86675642000106",
     "logradouro" : "ROD. MG 235 KM 89",
     "numero" : "443",
     "complemento" : "CX P 37",
