@@ -381,7 +381,7 @@ public class NotaFiscal {
 		this.xmlProtocolo = xmlProtocolo;
 
 		DominioRegistro.eventoDominioPublicador().
-			publicar(new NotaFiscalAutorizada(notaFiscalId(),chaveAcesso(),ambiente()));
+			publicar(new NotaFiscalAutorizada(notaFiscalId(),chaveAcesso(),ambiente(),filialId()));
 		
 	}
 	public void cancelar(NumeroProtocolo numeroProtocolo, Mensagem mensagem, 
@@ -393,7 +393,7 @@ public class NotaFiscal {
 		this.dataHoraCancelamento = dataHoraCancelamento;
 		
 		DominioRegistro.eventoDominioPublicador().publicar(
-				new CancelamentoHomologado(notaFiscalId()));
+				new CancelamentoHomologado(notaFiscalId(),filialId()));
 	}
 	
 	public void inutilizada() {

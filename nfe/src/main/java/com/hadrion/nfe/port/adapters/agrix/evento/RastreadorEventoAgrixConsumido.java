@@ -30,17 +30,25 @@ class RastreadorEventoAgrixConsumido extends Afirmacao implements Serializable {
     @Column(name="NOME")
     private String nomeTipo;
     
+    @Column(name="OWNER")
+    private String owner;
+    
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="SEQ")
 	@Column(name="ID")
     private long id;
     
-    public RastreadorEventoAgrixConsumido(String nomeTipo) {
+    public RastreadorEventoAgrixConsumido(String nomeTipo, String owner) {
         this();
         this.setNomeTipo(nomeTipo);
+        this.setOwner(owner);
     }
     
-    public long eventoIdMaisRecenteConsumido() {
+    private void setOwner(String owner) {
+    	this.owner = owner;
+	}
+
+	public long eventoIdMaisRecenteConsumido() {
         return this.eventoIdMaisRecenteConsumido;
     }
 
@@ -55,7 +63,11 @@ class RastreadorEventoAgrixConsumido extends Afirmacao implements Serializable {
     public String nomeTipo() {
         return this.nomeTipo;
     }
-
+    
+    public String owner(){
+    	return this.owner;
+    }
+    
     @Override
     public boolean equals(Object outroObjeto) {
         boolean equalObjects = false;

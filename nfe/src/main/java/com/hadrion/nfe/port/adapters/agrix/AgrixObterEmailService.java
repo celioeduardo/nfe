@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Service;
 
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.ObterEmailService;
 import com.hadrion.nfe.tipos.Email;
 
@@ -25,10 +26,13 @@ public class AgrixObterEmailService implements ObterEmailService{
 	@Qualifier("agrix")
 	JdbcTemplate jdbc;
 	
+	@Autowired
+	private NotaFiscalRepositorio notaFiscalRepositorio;
+
 	@Override
-	public List<Email> obterEmailsContatoDaNotaFiscal(NotaFiscalId notaFiscalId) {
+	public List<Email> obterEmailsContatoDaNotaFiscal(NotaFiscalId notaFiscalId,String filialId) {
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-			.withSchemaName(AgrixUtil.schema())
+			.withSchemaName(AgrixUtil.schema(filialId))
 			.withCatalogName("pcg_nf_json_adapter")
 			.withFunctionName("obterEmails")
 			.declareParameters(new SqlParameter("nfid", Types.VARCHAR))
@@ -58,5 +62,4 @@ public class AgrixObterEmailService implements ObterEmailService{
 		return result;
 	}
 	
-
 }
