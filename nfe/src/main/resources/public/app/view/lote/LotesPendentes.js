@@ -20,7 +20,7 @@ Ext.define('nfe.view.lote.LotesPendentes', {
         selection: '{lotesSelecionados}'
     },
     selType: 'checkboxmodel',
-    hideHeaders: true,
+    //hideHeaders: true,
     columns: [{
         text: 'Lote',
         dataIndex: 'numero',
