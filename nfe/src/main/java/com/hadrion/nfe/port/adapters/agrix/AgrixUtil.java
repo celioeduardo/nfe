@@ -15,9 +15,8 @@ public class AgrixUtil {
 		if (filial.equals("1-14559347000183") || filial.equals("1-14559347000183") ||
 			filial.equals("1-18460956000131") || filial.equals("1-4737717000171") ||
 			filial.equals("1-4949198000105")  || filial.equals("1-12498527000177") ||
-			filial.equals("1-14432562000119") || filial.equals("1-17587513000143")
-			|| filial.equals("1-16832651000188"))
-			return "COOPERCAM";
+			filial.equals("1-14432562000119") || filial.equals("1-17587513000143"))
+			return "COOPERADOS";
 		
 		return null;		
 	}
