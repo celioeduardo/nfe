@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,14 +12,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import com.hadrion.comum.Afirmacao;
 import com.hadrion.nfe.aplicacao.AutenticacaoAplicacaoService;
 
 @Component("authenticationProvider")
-public class IdHadrionAuthenticationProvider implements AuthenticationProvider {
+public class IdHadrionAuthenticationProvider extends Afirmacao 
+	implements AuthenticationProvider {
 	
 	@Autowired
 	private AutenticacaoAplicacaoService autenticacaoAplicacaoService;
+	
+	@Value("${hospede:}")
+	private String hospedeIdConfigurado;
 	
 	@Override
 	public Authentication authenticate(Authentication auth)
@@ -31,7 +38,13 @@ public class IdHadrionAuthenticationProvider implements AuthenticationProvider {
         if (auth.getDetails() instanceof HospedeIdAuthenticationDetails){
         	HospedeIdAuthenticationDetails details = 
         			(HospedeIdAuthenticationDetails) auth.getDetails();
-        	hospedeId = details.getHospedeId(); 
+        	hospedeId = details.getHospedeId();
+        	
+        	if (StringUtils.isEmpty(hospedeId))
+        		hospedeId = hospedeIdConfigurado;
+        	
+        	assertArgumentoNaoVazio(hospedeId, "HospedeId é obrigatório.");
+        		
         }
         
         if (autenticar(hospedeId,username,senha)) {
@@ -39,7 +52,7 @@ public class IdHadrionAuthenticationProvider implements AuthenticationProvider {
         	return new HospedeIdUsernamePasswordAuthenticationToken(
         			hospedeId, username, senha, grantedAuths);
         } else {
-        	throw new AuthenticationCredentialsNotFoundException("Unable to auth against third party systems");
+        	throw new AuthenticationCredentialsNotFoundException("Não foi possível autenticar em outro sistema.");
         }
 	}
 

@@ -102,19 +102,20 @@ public abstract class Application extends WebMvcConfigurerAdapter {
 		factory.setSoapVersion(SoapVersion.SOAP_12);
 		return factory;
 	}
-
 	
 	public static void main(String[] args) {
 
 		SpringApplication.run(Application.class, args);
 		
 //		ApplicationContext ctx = SpringApplication.run(Application.class, args);
+		
 
 //		String[] beanNames = ctx.getBeanDefinitionNames();
 //		Arrays.sort(beanNames);
 //		for (String beanName : beanNames) {
 //			System.out.println(beanName);
 //		}
+		
 //		System.out.println("PROFILES DEFAULT:" + Arrays.toString(ctx.getEnvironment().getDefaultProfiles()));
 //		System.out.println("PROFILES ATIVOS:" + Arrays.toString(ctx.getEnvironment().getActiveProfiles()));
 

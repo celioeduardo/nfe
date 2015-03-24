@@ -26,88 +26,105 @@ Ext.define('nfe.view.main.Main', {
         type: 'border'
     },
 
-    items: [/*{
-        id: 'app-header',
-        xtype: 'app-header',
-        region: 'north'
-    },*/{
-        header: {
-            heigth:2000,
-            layout: 'hbox',
-            items:[{
-                xtype: 'displayfield',
-                fieldLabel: 'Ambiente' ,
-                labelAlign: 'right',
-                reference: 'labelAmbiente',
-                bind:{
-                	value:'{ambiente}'
-                },
-                renderer: function(valor){
-                	 if (valor == 'HOMOLOGACAO')
-                     	return 'Homologação';
-                     else if (valor == 'PRODUCAO')
-                         return 'Produção';
-                     else 
-                         return 'Não definido';
-                }
-            },{
-            	xtype: 'displayfield',
-            	fieldLabel: 'Modo Operação',
-            	labelAlign: 'right',
-            	bind:{
-            		value: '{modoOperacao}'
-            	},
-            	renderer: function(valor){
-                	 if (valor == 'NORMAL') return 'Normal';
-                     else if (valor == 'FS_DA') return 'FS-DA';
-                     else if (valor == 'SVC') return 'SVC';
-                     else return 'Não definido';
-                },
-                margin: '10 10 10 10'
-            },{
-            	xtype: 'displayfield',
-            	fieldLabel: 'Contingência',
-            	labelAlign: 'right',
-            	bind:{
-            		value: '{dataHoraContingencia} - {justificativaContingencia}',
-            		hidden: '{!dataHoraContingencia}'
-            	},
-                margin: '10 10 10 10'
-            },{
-        		xtype:'filialcombo',
-        		store:Ext.create('nfe.store.EmpresaFilialStore', {storeId: 'EmpresaFilialStore' }),
-        		bind:{
-        			value: '{filial}'
-        		},
-        		listeners: {
-        			select: 'onSelectFilial'
-        		},
-                width:350,
-                emptyText: 'Selecione uma Empresa/Filial...'
-            },{           
-                xtype: 'combobox',
-                queryMode: 'local',
-                forceSelection: true, 
-                autoLoadOnValue: true,
-                valueField: 'notistaId', 
-                displayField: 'nome', 
-                emptyText: 'Selecione Notista...',
-                width:350,
-                bind:{
-                    store: '{notistas}',
-                    value: '{notista}'
-                },
-                triggers: {
-                    limpar: {
-                        cls: 'x-form-clear-trigger',
-                        handler: function(ctl){
-                        ctl.setValue('');
-                        }
+    items: [{
+        region: 'north',
+        layout: 'hbox',
+        align: 'stretch',
+        defaults:{
+        	margin: '10 10 10 10'
+        },
+        items:[{
+    		xtype:'filialcombo',
+    		store:Ext.create('nfe.store.EmpresaFilialStore', {storeId: 'EmpresaFilialStore' }),
+    		bind:{
+    			value: '{filial}'
+    		},
+    		listeners: {
+    			select: 'onSelectFilial'
+    		},
+            width:350,
+            emptyText: 'Selecione uma Empresa/Filial...'
+        },{
+            xtype: 'displayfield',
+            fieldLabel: 'Ambiente' ,
+            labelAlign: 'right',
+            reference: 'labelAmbiente',
+        	hidden:true,
+            bind:{
+            	value:'{ambiente}',
+            	hidden:'{!ambienteHomologacao}'
+            },
+            renderer: function(valor){
+            	 if (valor == 'HOMOLOGACAO')
+                 	return 'Homologação';
+                 else if (valor == 'PRODUCAO')
+                     return 'Produção';
+                 else 
+                     return 'Não definido';
+            }
+        },{
+        	xtype: 'displayfield',
+        	fieldLabel: 'Modo Operação',
+        	labelAlign: 'right',
+        	hidden:true,
+        	bind:{
+        		value: '{modoOperacao}',
+                hidden:'{modoOperacaoNormal}'	
+        	},
+        	renderer: function(valor){
+            	 if (valor == 'NORMAL') return 'Normal';
+                 else if (valor == 'FS_DA') return 'FS-DA';
+                 else if (valor == 'SVC') return 'SVC';
+                 else return 'Não definido';
+            }
+        },{
+        	xtype: 'displayfield',
+        	fieldLabel: 'Contingência',
+        	labelAlign: 'right',
+        	hidden:true,
+        	bind:{
+        		value: '{mensagemContingencia}',
+        		hidden: '{!dataHoraContingencia}'
+        	}
+        },{
+    		xtype:'component',
+    		flex: 1
+        },{           
+            xtype: 'combobox',
+            queryMode: 'local',
+            forceSelection: true, 
+            autoLoadOnValue: true,
+            valueField: 'notistaId', 
+            displayField: 'nome', 
+            emptyText: 'Selecione Notista...',
+            width:200,
+            bind:{
+                store: '{notistas}',
+                value: '{notista}'
+            },
+            triggers: {
+                limpar: {
+                    cls: 'x-form-clear-trigger',
+                    handler: function(ctl){
+                    ctl.setValue('');
                     }
                 }
-            }]        
-        },    
-
+            }
+        },{
+            xtype: 'splitbutton',
+            cls: 'botaoSair',
+            bind:{
+            	text: '{usuario}',
+            	hidden:'{!usuario}'
+            },
+            minWidth: 120,
+            menu:[{
+            	text: 'sair',
+            	handler: 'onSair'
+            }]
+        }] 
+        
+    },{
         region: 'center' ,
         xtype: 'tabpanel',
         ui: 'navigation',

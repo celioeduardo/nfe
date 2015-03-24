@@ -1,27 +1,11 @@
 
-$app-header-background-color: #1487AC;
+$app-header-background-color: rgb(64, 64, 64);
 $app-header-text-color: #fff;
 $app-header-text-shadow-color: null;
 $app-header-use-gradient: false;
 
-@if $theme-name == 'ext-theme-crisp' {
-    $app-header-background-color: #1487AC;
-    $app-header-use-gradient: true;
-}
-
 .app-header {
-    @if $app-header-use-gradient {
-        @include background-image(linear-gradient(top, lighten($app-header-background-color, 20), darken($app-header-background-color, 20)));
-    } @else {
-        background-color: $app-header-background-color;
-    }
-	border-bottom: 1px solid darken($app-header-background-color, 15);
-
-    @if $theme-name == 'ext-theme-neptune' {
-        .#{$prefix}nlg & {
-            background-image: url(images/header-bg.png);
-        }
-    }
+	background-color: $app-header-background-color;
 }
 
 .app-header-title {
@@ -45,3 +29,4 @@ $app-header-use-gradient: false;
 #app-header-username {
     cursor: pointer;
 }
+

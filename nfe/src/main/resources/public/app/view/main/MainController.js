@@ -13,12 +13,22 @@ Ext.define('nfe.view.main.MainController', {
     alias: 'controller.main',
     
     onAfterRender: function(){
-    	var runner = new Ext.util.TaskRunner(),
+    	var vm = this.getViewModel(),
+    		runner = new Ext.util.TaskRunner(),
 			task = runner.start({
 				scope:this,
 				run: this.verificarModoOperacao,
 				interval: 10000 //10 segundos
 			});
+    	
+    	Ext.Ajax.request({
+			url:'usuario_logado',
+			method:'GET',
+			success:function(data){
+				vm.set('usuario',data.responseText)
+			},
+			scope:this
+		});
     },
     
     verificarModoOperacao: function(){
@@ -167,6 +177,27 @@ Ext.define('nfe.view.main.MainController', {
     atualizarStore:function(store){
     	if (store)
     		store.load();
+    },
+    
+    onSair: function(btn){
+    	Ext.Ajax.request({
+            url:'/logout',
+            method:'POST',
+            success:function(){
+            	window.location = '/logout';
+            },
+            failure:function(form, action){
+                if(action.failureType == 'server'){
+                    obj = Ext.util.JSON.decode(action.response.responseText);
+ 
+                    Ext.Msg.alert('Falha no login', obj.errors.reason);
+                }else{
+                    Ext.Msg.alert('Atenção!', 'Servidor de autenticação não acessível: ' + action.response.responseText);
+ 
+                }
+                login.getForm().reset();
+            }
+        });
     }
     
     
