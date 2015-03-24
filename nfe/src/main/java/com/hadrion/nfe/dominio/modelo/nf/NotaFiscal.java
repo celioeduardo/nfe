@@ -768,7 +768,7 @@ public class NotaFiscal {
 		this.modelo = nf.modelo;
 		this.serie = nf.serie;
 		this.numero = nf.numero;
-		this.emissao = nf.emissao;
+		//this.emissao = nf.emissao;
 		this.dataHora = nf.dataHora;
 		this.tipoOperacao = nf.tipoOperacao;
 		this.localDestino = nf.localDestino;

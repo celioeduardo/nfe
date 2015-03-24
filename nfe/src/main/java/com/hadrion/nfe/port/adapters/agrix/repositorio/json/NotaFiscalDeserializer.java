@@ -58,7 +58,8 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 				new Modelo(s(j,"modelo")),
 				new Serie(l(j,"serie")),
 				l(j,"numero"), 
-				data(s(j,"emissao")), 
+				//data(s(j,"emissao")), 
+				parseDataHora(s(j,"emissao")),
 				parseDataHora(s(j,"dataHora")),
 				1,//TODO codigo numerico
 				FormatoDanfe.RETRATO,//TODO Formato DANFE
