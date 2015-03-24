@@ -30,8 +30,9 @@ public class RabbitMQComunicarNotaFiscalCanceladaAgrixListener extends RabbitNfe
 		NotificationReader reader = new NotificationReader(mensagemTexto);
 		
 		String notaFiscalId = reader.eventStringValue("notaFiscalId.id");
+		String filialId = reader.eventStringValue("filialId.id");
 		
-		agrixService.comunicarNotaCancelada(notaFiscalId);
+		agrixService.comunicarNotaCancelada(notaFiscalId,filialId);
 		
 	}
 

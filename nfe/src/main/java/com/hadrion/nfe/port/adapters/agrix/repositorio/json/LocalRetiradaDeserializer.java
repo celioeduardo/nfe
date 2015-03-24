@@ -47,7 +47,7 @@ public class LocalRetiradaDeserializer implements JsonDeserializer<LocalRetirada
 	}
 	
 	private Cpf cpf(JsonObject j){
-		return tem(j,"cpj")?new Cpf(l(j,"cpf")):null;
+		return tem(j,"cpf")?new Cpf(l(j,"cpf")):null;
 	}
 	
 	private Telefone telefone(JsonObject j){

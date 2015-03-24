@@ -61,14 +61,15 @@ public class NfeController {
 			@RequestParam(value="fim",required=false)Date fim,
 			@RequestParam(value="notista",required=false)String notista,
 			@RequestParam(value="notafiscalid",required=false)String notaFiscalId,
-			@RequestParam(value="nao_impressa",required=false)boolean naoImpressa){
+			@RequestParam(value="nao_impressa",required=false)boolean naoImpressa,
+			@RequestParam(value="numero",required=false)Long numero){
 		
 		if (naoImpressa)
 			return notaFiscalAplicacaoService.notasFicaisAutorizadasNaoImpressasResumo(
-					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId);
+					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId,numero);
 		else
 			return notaFiscalAplicacaoService.notasFicaisAutorizadasResumo(
-					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId);
+					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId,numero);
 	}
 	
 	@RequestMapping(value="/canceladas_resumo", method = RequestMethod.GET)

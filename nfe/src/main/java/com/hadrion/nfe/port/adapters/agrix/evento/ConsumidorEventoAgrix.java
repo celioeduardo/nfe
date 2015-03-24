@@ -1,5 +1,6 @@
 package com.hadrion.nfe.port.adapters.agrix.evento;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -34,27 +35,31 @@ class ConsumidorEventoAgrix {
 	
 	void consumirEventos(){
 		
-		RastreadorEventoAgrixConsumido rastreador = obterRastreador();
+		List<RastreadorEventoAgrixConsumido> rastreadores = obterRastreadores();
 		
-		List<EventoAgrix> eventos = 
-				eventoAgrixService.obterEventosDesde(rastreador.eventoIdMaisRecenteConsumido());
-		 
-		for (EventoAgrix eventoAgrix : eventos) {
-			consumirEvento(eventoAgrix);
-			rastreador.setEventoIdMaisRecenteConsumido(eventoAgrix.id());
+		for (RastreadorEventoAgrixConsumido rastreador : rastreadores) {
+			List<EventoAgrix> eventos = 
+					eventoAgrixService.obterEventosDesde(
+							rastreador.eventoIdMaisRecenteConsumido(),
+							rastreador.owner());
+			 
+			for (EventoAgrix eventoAgrix : eventos) {
+				consumirEvento(eventoAgrix);
+				rastreador.setEventoIdMaisRecenteConsumido(eventoAgrix.id());
+			}
+			
+			store.save(rastreador);	
 		}
-		
-		store.save(rastreador);
 		
 	}
 	
-	private RastreadorEventoAgrixConsumido obterRastreador(){
+	private List<RastreadorEventoAgrixConsumido> obterRastreadores(){
 		List<RastreadorEventoAgrixConsumido> rastreadores = store.findAll();
 		
 		if (rastreadores.size() == 0)
-			return new RastreadorEventoAgrixConsumido("RASTREADOR");
+			return Collections.singletonList(new RastreadorEventoAgrixConsumido("RASTREADOR",null));
 		else
-			return rastreadores.get(0);
+			return rastreadores;
 	}
 	
 	private void consumirEvento(EventoAgrix evento){

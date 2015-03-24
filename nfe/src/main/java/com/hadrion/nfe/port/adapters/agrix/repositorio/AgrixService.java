@@ -52,11 +52,11 @@ public class AgrixService{
 		});
 	}*/
 	
-	public List<NotaFiscal> obterNotas(List<NotaFiscalId> notas, Ambiente ambiente) {
+	public List<NotaFiscal> obterNotas(List<NotaFiscalId> notas, Ambiente ambiente,String owner) {
 		String in = "'" + StringUtils.join(AgrixUtil.notaFiscalIdToGuid(notas), "','") + "'";
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-		.withSchemaName(AgrixUtil.schema())
+		.withSchemaName(AgrixUtil.schema(owner))
 		.withCatalogName("pcg_nf_json_adapter")
 		.withFunctionName("obterNotas")
 		.declareParameters(new SqlParameter("vc", Types.CLOB))
@@ -108,7 +108,7 @@ public class AgrixService{
 		gson = gsonBuilder.create();
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-		.withSchemaName(AgrixUtil.schema())
+		.withSchemaName(AgrixUtil.schema(filial))
 		.withCatalogName("pcg_nf_json_adapter")
 		.withFunctionName("obterPendentes")
 		//.withoutProcedureColumnMetaDataAccess()
@@ -192,7 +192,7 @@ public class AgrixService{
 	public void simularCancelamento(NotaFiscal nf) {
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-			.withSchemaName(AgrixUtil.schema())
+			.withSchemaName(AgrixUtil.schema(nf.filialId().toString()))
 			.withCatalogName("pcg_nf_json_adapter")
 			.withProcedureName("simularCancelamento")
 			.declareParameters(new SqlParameter("nfid", Types.VARCHAR));
@@ -209,14 +209,14 @@ public class AgrixService{
 	}
 
 	public void comunicarNotaAutorizada(String notaFiscalId, String chaveAcesso,
-			String ambiente) {
+			String ambiente,String filialId) {
 		
 		//Não comunicar Autorização quando o ambiente for Homologação
 		if (Ambiente.valueOf(ambiente) == Ambiente.HOMOLOGACAO)
 			return;
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-			.withSchemaName(AgrixUtil.schema())
+			.withSchemaName(filialId)
 			.withCatalogName("pcg_nf_json_adapter")
 			.withProcedureName("comunicarNotaAutorizada")
 			.declareParameters(new SqlParameter("nfid", Types.VARCHAR))
@@ -232,13 +232,13 @@ public class AgrixService{
 		
 	}
 
-	public void comunicarNotaCancelada(String notaFiscalId) {
+	public void comunicarNotaCancelada(String notaFiscalId,String filialId) {
 		//Não comunicar Autorização quando o ambiente for Homologação
 		if (AgrixUtil.ambientePelaNotaFiscalId(notaFiscalId) == Ambiente.HOMOLOGACAO)
 			return;
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-			.withSchemaName(AgrixUtil.schema())
+			.withSchemaName(filialId)
 			.withCatalogName("pcg_nf_json_adapter")
 			.withProcedureName("comunicarCancelamento")
 			.declareParameters(new SqlParameter("nfid", Types.VARCHAR));

@@ -164,6 +164,12 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	}
 
 	@Override
+	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente,Long numero) {
+		return repositorio.findByFilialIdAndSituacaoAndAmbienteAndNumero(
+				filialId, Situacao.AUTORIZADA,ambiente,numero,new Sort(Direction.DESC, "numero"));
+	}
+
+	@Override
 	public List<NotaFiscal> notasAutorizadas(FilialId filialId,
 			Ambiente ambiente, NotistaId notistaId) {
 		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(filialId, notistaId, 
@@ -173,6 +179,12 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	@Override
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente) {
 		return repositorio.findByFilialIdAndSituacaoAndAmbienteAndDanfeImpresso(
+				filialId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "numero"));
+	}
+
+	@Override
+	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente,Long numero) {
+		return repositorio.findByFilialIdAndSituacaoAndAmbienteAndNumeroAndDanfeImpresso(
 				filialId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "numero"));
 	}
 

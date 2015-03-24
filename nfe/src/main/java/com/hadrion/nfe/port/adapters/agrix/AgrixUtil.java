@@ -8,8 +8,17 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 
 public class AgrixUtil {
 	
-	public static String schema() {
-		return null;
+	public static String schema(String filial) {
+		if (filial==null)
+			return null;
+		
+		if (filial.equals("1-14559347000183") || filial.equals("1-14559347000183") ||
+			filial.equals("1-18460956000131") || filial.equals("1-4737717000171") ||
+			filial.equals("1-4949198000105")  || filial.equals("1-12498527000177") ||
+			filial.equals("1-14432562000119") || filial.equals("1-17587513000143"))
+			return "COOPERADOS";
+		
+		return null;		
 	}
 	
 	public static List<String> notaFiscalIdToGuid(List<NotaFiscalId> ids){

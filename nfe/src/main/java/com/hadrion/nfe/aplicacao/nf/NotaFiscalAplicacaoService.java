@@ -161,7 +161,7 @@ public class NotaFiscalAplicacaoService {
 
 	public List<NotaFiscalData> notasFicaisAutorizadasResumo(Ambiente ambiente,
 			Double empresa, String filial, Date inicio, Date fim,
-			String notistaId, String notaFiscalId) {
+			String notistaId, String notaFiscalId,Long numero) {
 
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 
@@ -170,8 +170,12 @@ public class NotaFiscalAplicacaoService {
 			notas = notaFiscalRepositorio.notasAutorizadas(
 					new FilialId(filial), ambiente, new NotistaId(notistaId));
 		else
-			notas = notaFiscalRepositorio.notasAutorizadas(
-					new FilialId(filial), ambiente);
+			if (numero==null)
+				notas = notaFiscalRepositorio.notasAutorizadas(
+						new FilialId(filial), ambiente);
+			else
+				notas = notaFiscalRepositorio.notasAutorizadas(
+						new FilialId(filial), ambiente, numero);
 
 		for (NotaFiscal nf : notas)
 			result.add(construir(nf));
@@ -202,7 +206,7 @@ public class NotaFiscalAplicacaoService {
 
 	public List<NotaFiscalData> notasFicaisAutorizadasNaoImpressasResumo(
 			Ambiente ambiente, Double empresa, String filial, Date inicio,
-			Date fim, String notistaId, String notaFiscalId) {
+			Date fim, String notistaId, String notaFiscalId,Long numero) {
 
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 
@@ -212,8 +216,12 @@ public class NotaFiscalAplicacaoService {
 			notas = notaFiscalRepositorio.notasAutorizadasNaoImpressas(
 					new FilialId(filial), ambiente, new NotistaId(notistaId));
 		else
-			notas = notaFiscalRepositorio.notasAutorizadasNaoImpressas(
-					new FilialId(filial), ambiente);
+			if (numero==null)
+				notas = notaFiscalRepositorio.notasAutorizadasNaoImpressas(
+						new FilialId(filial), ambiente);
+			else
+				notas = notaFiscalRepositorio.notasAutorizadasNaoImpressas(
+						new FilialId(filial), ambiente, numero);
 
 		for (NotaFiscal nf : notas)
 			result.add(construir(nf));
@@ -502,7 +510,7 @@ public class NotaFiscalAplicacaoService {
 		
 		SimpleMailMessage ssimpleMailMessagemm = new SimpleMailMessage();
 		
-		List<Email> emails = obterEmailService.obterEmailsContatoDaNotaFiscal(nf.notaFiscalId());
+		List<Email> emails = obterEmailService.obterEmailsContatoDaNotaFiscal(nf.notaFiscalId(),nf.filialId().toString());
 		
 		if (emails.size() == 0 && nf.ambiente()==Ambiente.PRODUCAO)
 			throw new RuntimeException("Nenhum contato de e-mail encontrado para Nota Fiscal: " 

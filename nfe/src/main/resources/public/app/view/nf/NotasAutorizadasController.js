@@ -9,7 +9,18 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
     alias: 'controller.notas-autorizadas',
 
     onClickAtualizar: function (){
-        this.getViewModel().getStore('notasAutorizadas').load();
+        var store = this.getViewModel().getStore('notasAutorizadas');
+        var vm = this.getViewModel();        
+        var filtroNumero = this.lookupReference('filtronf').getValue();
+        
+        store.getProxy().setExtraParams({
+        	ambiente:vm.get('ambiente'),
+        	filial:vm.get('filial'),
+            numero:filtroNumero
+        });
+        
+        store.load();
+        
     },
     onClickEnviar: function () {
 

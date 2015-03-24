@@ -22,10 +22,12 @@ public interface NotaFiscalRepositorio {
 	public void salvar(NotaFiscal notaFiscal);
 	public NotaFiscal notaFiscalPelaChave(ChaveAcesso chave, Ambiente ambiente);
 	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente);
+	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente,Long numero);
 	public List<NotaFiscal> notasAutorizadas(FilialId filialId, Ambiente ambiente,NotistaId notistaId);
 	public List<NotaFiscal> notasCanceladas(FilialId filialId, Ambiente ambiente);
 	public List<NotaFiscal> notasCanceladas(FilialId filialId, Ambiente ambiente,NotistaId notistaId);
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente);
-	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente, NotistaId notistaId);
+	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente,Long numero);
+	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente,NotistaId notistaId);
 	public NotaFiscal notaPendenteAutorizacao(NotaFiscalId notaFiscalId);
 }

@@ -59,7 +59,7 @@ public class EmitenteDeserializer implements JsonDeserializer<Emitente>{
 	}
 	
 	private Cpf cpf(JsonObject j){
-		return tem(j,"cpj")?new Cpf(l(j,"cpf")):null;
+		return tem(j,"cpf")?new Cpf(l(j,"cpf")):null;
 	}
 	
 	private Crt crt(JsonObject j){

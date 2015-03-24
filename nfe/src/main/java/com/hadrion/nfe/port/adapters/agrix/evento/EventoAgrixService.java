@@ -16,8 +16,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hadrion.nfe.port.adapters.agrix.AgrixUtil;
-
 @Service
 @Transactional
 class EventoAgrixService {
@@ -27,10 +25,10 @@ class EventoAgrixService {
 	private JdbcTemplate jdbc;
 
 	
-	public List<EventoAgrix> obterEventosDesde(long id){
-			
+	public List<EventoAgrix> obterEventosDesde(long id, String owner){
+		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-			.withSchemaName(AgrixUtil.schema())
+			.withSchemaName(owner)
 			.withCatalogName("PCG_EVENTO")
 			.withFunctionName("TODOS_EVENTOS_DESDE_COMO_JSON")
 			.declareParameters(new SqlParameter("n_id", Types.NUMERIC))

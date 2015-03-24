@@ -28,7 +28,14 @@ public class SincronizarService {
 	private NotaFiscalRepositorioSpringData repositorio;
 	
 	public void sincronizar(List<NotaFiscalId> notas, Ambiente ambiente) {
-		List<NotaFiscal> notasAgrix = agrixService.obterNotas(notas,ambiente);
+		
+		String owner=null;
+		NotaFiscal nf = repositorio.findByNotaFiscalId(new NotaFiscalId(notas.get(0).id()));
+		
+		if (nf!=null)
+			owner=nf.filialId().toString();
+		
+		List<NotaFiscal> notasAgrix = agrixService.obterNotas(notas,ambiente,owner);		
 		for (NotaFiscal nfAgrix : notasAgrix) {
 			mesclar(nfAgrix);
 		}

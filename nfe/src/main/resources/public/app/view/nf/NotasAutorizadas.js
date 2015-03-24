@@ -13,6 +13,21 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
         xtype:'button',
         text:'Atualizar',
         handler: 'onClickAtualizar'
+    },{
+        xtype:'fieldset',
+        columnWidth: 0.5,
+        title: 'Filtro',
+        collapsible: true,
+        defaultType: 'numberfield',
+        //defaults: {anchor: '50%'},
+        collapsed: true,
+        layout: 'hbox',
+        padding:3,
+        items :[{
+            fieldLabel: 'NF',
+            reference: 'filtronf',
+	    	maxLength: 6
+        }]
     }],
     bind:{
         store: '{notasAutorizadas}',

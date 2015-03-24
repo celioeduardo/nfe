@@ -233,9 +233,6 @@ Ext.define('nfe.view.main.Main', {
             }]
             
         },{
-            title: 'CC-e',
-            glyph: 0xf003
-        },{
             xtype:'tela-configuracao',
             listeners:{
             	modoOperacaoAlterado:'onModoOperacaoAlterado'
