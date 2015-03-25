@@ -216,7 +216,7 @@ public class AgrixService{
 			return;
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-			.withSchemaName(filialId)
+			.withSchemaName(AgrixUtil.schema(filialId))
 			.withCatalogName("pcg_nf_json_adapter")
 			.withProcedureName("comunicarNotaAutorizada")
 			.declareParameters(new SqlParameter("nfid", Types.VARCHAR))
@@ -238,7 +238,7 @@ public class AgrixService{
 			return;
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-			.withSchemaName(filialId)
+			.withSchemaName(AgrixUtil.schema(filialId))
 			.withCatalogName("pcg_nf_json_adapter")
 			.withProcedureName("comunicarCancelamento")
 			.declareParameters(new SqlParameter("nfid", Types.VARCHAR));
