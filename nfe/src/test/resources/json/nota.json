@@ -9,6 +9,8 @@
   "tipoOperacao" : "SAIDA",
   "localDestino" : "INTERNA",
   "finalidade" : "NORMAL",
+  "presenca" : "PRESENCIAL",
+  "pagamento" : "A_VISTA",
   "consumidorFinal" : false,
   "itens" : [{
     "produtoId" : "013924F59CC04CC4E050007F010060FB",

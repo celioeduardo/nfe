@@ -9,6 +9,8 @@
 		"tipoOperacao" : "SAIDA",
 		"localDestino" : "INTERNA",
 		"finalidade" : "NORMAL",
+		"presenca" : "PRESENCIAL",
+		"pagamento" : "A_VISTA",
 		"consumidorFinal" : true,
 		"naturezaOperacao" : "VENDA DE PRODUTOS ADQ. TERCEIROS",
 		"itens" : [{

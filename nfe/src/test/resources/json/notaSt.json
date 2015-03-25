@@ -9,6 +9,8 @@
 		"tipoOperacao" : "SAIDA",
 		"localDestino" : "INTERNA",
 		"finalidade" : "NORMAL",
+		"presenca" : "PRESENCIAL",
+		"pagamento" : "A_VISTA",
 		"consumidorFinal" : false,
 		"naturezaOperacao" : "VENDA PRODUCAO REG SUBST TRIB",
 		"itens" : [{
