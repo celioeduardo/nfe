@@ -54,7 +54,7 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 				criarNotaFiscalId(s(j,"NotaFiscalId"), ambiente),
 				new FilialId(s(j,"codFilial") + "-" + emitente(j).cnpj().toString()),
 				s(j,"naturezaOperacao"),
-				FormaPagamento.A_VISTA,//TODO forma pagamento
+				FormaPagamento.valueOf(s(j,"pagamento")),
 				new Modelo(s(j,"modelo")),
 				new Serie(l(j,"serie")),
 				l(j,"numero"), 
@@ -69,7 +69,7 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 				emitente(j).endereco().municipio(),//TODO MUNICIPIO FATO GERADOR
 				b(j,"consumidorFinal"),
 				Finalidade.valueOf(s(j,"finalidade")),
-				Presenca.OUTROS,//TODO presenca
+				Presenca.valueOf(s(j,"presenca")),
 				Processo.APLICATIVO_CONTRIBUINTE,//TODO processo
 				referencias(j),
 				emitente(j),

@@ -185,7 +185,7 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	@Override
 	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente,Long numero) {
 		return repositorio.findByFilialIdAndSituacaoAndAmbienteAndNumeroAndDanfeImpresso(
-				filialId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "numero"));
+				filialId, Situacao.AUTORIZADA,ambiente,numero,false,new Sort(Direction.DESC, "numero"));
 	}
 
 	@Override

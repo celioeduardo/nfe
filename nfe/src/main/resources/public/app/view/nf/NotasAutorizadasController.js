@@ -12,10 +12,13 @@ Ext.define('nfe.view.nf.NotasAutorizadasController', {
         var store = this.getViewModel().getStore('notasAutorizadas');
         var vm = this.getViewModel();        
         var filtroNumero = this.lookupReference('filtronf').getValue();
-        
+
         store.getProxy().setExtraParams({
         	ambiente:vm.get('ambiente'),
+        	nao_impressa:vm.get('nao_impressa'),
+        	empresa:vm.get('empresa'),
         	filial:vm.get('filial'),
+        	notista:vm.get('notista'),
             numero:filtroNumero
         });
         
