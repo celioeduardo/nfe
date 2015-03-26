@@ -12,7 +12,7 @@ import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 public interface NotaFiscalRepositorio {
 
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
-			Ambiente ambiente, Double empresa,FilialId filial,Date inicio,Date fim,String usuario,NotaFiscalId notaFiscalId);
+			Ambiente ambiente, Long empresa,FilialId filial,Date inicio,Date fim,String usuario,NotaFiscalId notaFiscalId);
 	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas, Ambiente ambiente);
 	public List<NotaFiscal> notasPendentesAutorizacao(FilialId filialId,Ambiente ambiente);
 	

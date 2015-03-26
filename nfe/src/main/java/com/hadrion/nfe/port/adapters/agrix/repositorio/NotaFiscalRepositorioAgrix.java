@@ -52,7 +52,7 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	@Override
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
 			Ambiente ambiente,
-			Double empresa, FilialId filialId, Date inicio, Date fim,
+			Long empresa, FilialId filialId, Date inicio, Date fim,
 			String notistaId, NotaFiscalId notaFiscalId) {
 		
 		Filial filial = filialRepositorio.obterFilial(filialId);

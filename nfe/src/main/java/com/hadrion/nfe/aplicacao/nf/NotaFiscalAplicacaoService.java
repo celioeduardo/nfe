@@ -119,7 +119,7 @@ public class NotaFiscalAplicacaoService {
 	private RegistrarCartaCorrecaoService registrarCartaCorrecaoService;
 	
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(
-			Ambiente ambiente, Double empresa, String filial, Date inicio,
+			Ambiente ambiente, Long empresa, String filial, Date inicio,
 			Date fim, String notistaId, String notaFiscalId) {
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
 		NotaFiscalId notaFiscalIdFiltro = null;
@@ -160,7 +160,7 @@ public class NotaFiscalAplicacaoService {
 	}
 
 	public List<NotaFiscalData> notasFicaisAutorizadasResumo(Ambiente ambiente,
-			Double empresa, String filial, Date inicio, Date fim,
+			Long empresa, String filial, Date inicio, Date fim,
 			String notistaId, String notaFiscalId,Long numero) {
 
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
@@ -184,7 +184,7 @@ public class NotaFiscalAplicacaoService {
 
 	}
 	public List<NotaFiscalData> notasFicaisCanceladasResumo(Ambiente ambiente,
-			Double empresa, String filial, Date inicio, Date fim,
+			Long empresa, String filial, Date inicio, Date fim,
 			String notistaId, String notaFiscalId) {
 		
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
@@ -205,7 +205,7 @@ public class NotaFiscalAplicacaoService {
 	}
 
 	public List<NotaFiscalData> notasFicaisAutorizadasNaoImpressasResumo(
-			Ambiente ambiente, Double empresa, String filial, Date inicio,
+			Ambiente ambiente, Long empresa, String filial, Date inicio,
 			Date fim, String notistaId, String notaFiscalId,Long numero) {
 
 		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();

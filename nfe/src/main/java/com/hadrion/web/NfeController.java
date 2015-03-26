@@ -40,7 +40,7 @@ public class NfeController {
 	@RequestMapping(value="/pendentes_autorizacao_resumo", method = RequestMethod.GET)
 	public List<NotaFiscalData> pendentesAutorizacaoResumo(
 			@RequestParam(value="ambiente") Ambiente ambiente ,
-			@RequestParam(value="empresa",required=false)Double empresa,
+			@RequestParam(value="empresa",required=false)Long empresa,
 			@RequestParam(value="filial")String filial,
 			@RequestParam(value="inicio",required=false)Date inicio,
 			@RequestParam(value="fim",required=false)Date fim,
@@ -55,7 +55,7 @@ public class NfeController {
 	@RequestMapping(value="/autorizadas_resumo", method = RequestMethod.GET)
 	public List<NotaFiscalData> autorizadasResumo(
 			@RequestParam(value="ambiente") Ambiente ambiente ,
-			@RequestParam(value="empresa",required=false)Double empresa,
+			@RequestParam(value="empresa",required=false)Long empresa,
 			@RequestParam(value="filial")String filial,
 			@RequestParam(value="inicio",required=false)Date inicio,
 			@RequestParam(value="fim",required=false)Date fim,
@@ -75,7 +75,7 @@ public class NfeController {
 	@RequestMapping(value="/canceladas_resumo", method = RequestMethod.GET)
 	public List<NotaFiscalData> canceladasResumo(
 			@RequestParam(value="ambiente") Ambiente ambiente ,
-			@RequestParam(value="empresa",required=false)Double empresa,
+			@RequestParam(value="empresa",required=false)Long empresa,
 			@RequestParam(value="filial")String filial,
 			@RequestParam(value="inicio",required=false)Date inicio,
 			@RequestParam(value="fim",required=false)Date fim,

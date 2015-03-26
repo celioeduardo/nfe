@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlOutParameter;
@@ -40,6 +41,9 @@ public class AgrixService{
 	@Qualifier("agrix")
 	JdbcTemplate jdbc;
 	
+	@Value("${agrix.segundoOwner:}")
+	private String segundoOwner;
+	
 	private GsonBuilder gsonBuilder;
 	private Gson gson;
 	
@@ -51,12 +55,23 @@ public class AgrixService{
 			}
 		});
 	}*/
+	public List<NotaFiscal> obterNotas(List<NotaFiscalId> notas, Ambiente ambiente){
+		 List<NotaFiscal> result = obterNotas(notas,ambiente,null);
+		 
+		 if (result.size() > 0) 
+			 return result;
+
+		 if (StringUtils.isNotEmpty(segundoOwner))
+			 result = obterNotas(notas, ambiente,segundoOwner);
+		 
+		 return result;
+	}
 	
-	public List<NotaFiscal> obterNotas(List<NotaFiscalId> notas, Ambiente ambiente,String owner) {
+	private List<NotaFiscal> obterNotas(List<NotaFiscalId> notas, Ambiente ambiente,String owner) {
 		String in = "'" + StringUtils.join(AgrixUtil.notaFiscalIdToGuid(notas), "','") + "'";
 		
 		SimpleJdbcCall call = new SimpleJdbcCall(this.jdbc)
-		.withSchemaName(AgrixUtil.schema(owner))
+		.withSchemaName(owner)
 		.withCatalogName("pcg_nf_json_adapter")
 		.withFunctionName("obterNotas")
 		.declareParameters(new SqlParameter("vc", Types.CLOB))
@@ -99,7 +114,7 @@ public class AgrixService{
 	
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
 			Ambiente ambiente,
-			Double empresa,String filial,Date inicio,Date fim,String notistaId,
+			Long empresa,String filial,Date inicio,Date fim,String notistaId,
 			NotaFiscalId notaFiscalId,
 			ModoOperacao modoOperacao) {
 		
