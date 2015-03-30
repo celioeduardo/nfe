@@ -66,7 +66,6 @@ public class Corpo {
 			xstream = XStreamFabrica.criar();
 		}
 		
-		//TODO Obter versão do aplicativo do contribuinte
 		String versaoAplicativo = "1.0";
 		xstream.registerConverter(new NotaFiscalConverter(versaoAplicativo));
 		xstream.registerConverter(new CorpoConverter());

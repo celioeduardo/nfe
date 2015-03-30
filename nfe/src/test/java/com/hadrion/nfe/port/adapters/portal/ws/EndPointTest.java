@@ -9,8 +9,6 @@ import com.hadrion.nfe.dominio.modelo.Ambiente;
 
 public class EndPointTest {
 	
-	//TODO Testar outros EndPoints
-	
 	@Test
 	public void sp(){
 		Local local = Local.SP;

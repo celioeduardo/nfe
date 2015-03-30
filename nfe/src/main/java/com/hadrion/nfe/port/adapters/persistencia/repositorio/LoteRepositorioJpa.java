@@ -38,15 +38,10 @@ public class LoteRepositorioJpa implements LoteRepositorio {
 		repositorio.save(lote);
 	}
 	
-	//TODO melhorar algoritimo
 	@Override
 	public Set<Lote> lotesDaNota(NotaFiscalId notaFiscalId) {
 		Set<Lote> result = new HashSet<Lote>();
 
-//		for (Lote lote : repositorio.findLotesDaNotaFiscal(notaFiscalId)) {
-//			result.add(lote);
-//		}
-		
 		for (Lote lote : repositorio.findAll()) {
 			if (lote.temNota(notaFiscalId))
 				result.add(lote);

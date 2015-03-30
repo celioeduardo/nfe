@@ -92,7 +92,6 @@ public class EndPoints {
 		
 	}
 	private void configurarBa(){
-		//TODO endpoint bahia
 		Local uf = Local.BA;
 		Versao versao = Versao.V3_10;
 		put(Ambiente.PRODUCAO,uf,versao,Servico.AUTORIZACAO,"https://nfe.sefaz.ba.gov.br/webservices/NfeAutorizacao/NfeAutorizacao.asmx");

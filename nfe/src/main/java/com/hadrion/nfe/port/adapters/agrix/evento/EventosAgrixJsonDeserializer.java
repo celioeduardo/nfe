@@ -29,7 +29,6 @@ class EventosAgrixJsonDeserializer implements
 			Long id = item.get("id").getAsLong();
 			String type = item.get("type").getAsString();
 			
-			//TODO Fazer Parse date
 			@SuppressWarnings("unused")
 			String occurredOn = item.get("occurred_on").getAsString();
 			

@@ -34,7 +34,7 @@ public class SoapAutorizacaoServiceAdapterTest extends DominioTest{
 		lote = loteGeradoEmHomologacaoPersistidoParaTest(nf);
 	}
 	
-	@Test @Ignore //TODO Mockar repositório de Notas
+	@Test @Ignore 
 	public void autorizar() throws Throwable{
 		certificado = new Certificado(
 				FileUtils.getFile("src","test","resources","assinatura","certificado.pfx"), 

@@ -61,16 +61,16 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 				//data(s(j,"emissao")), 
 				parseDataHora(s(j,"emissao")),
 				parseDataHora(s(j,"dataHora")),
-				1,//TODO codigo numerico
-				FormatoDanfe.RETRATO,//TODO Formato DANFE
-				TipoEmissao.NORMAL,//TODO TipoEmissao.valueOf(j.get("tipoEmissao").getAsString()),
+				1,
+				FormatoDanfe.RETRATO,
+				TipoEmissao.NORMAL,
 				TipoOperacao.valueOf(s(j,"tipoOperacao")),
 				LocalDestino.valueOf(s(j,"localDestino")), 
-				emitente(j).endereco().municipio(),//TODO MUNICIPIO FATO GERADOR
+				emitente(j).endereco().municipio(),
 				b(j,"consumidorFinal"),
 				Finalidade.valueOf(s(j,"finalidade")),
 				Presenca.valueOf(s(j,"presenca")),
-				Processo.APLICATIVO_CONTRIBUINTE,//TODO processo
+				Processo.APLICATIVO_CONTRIBUINTE,
 				referencias(j),
 				emitente(j),
 				destinatario(j),

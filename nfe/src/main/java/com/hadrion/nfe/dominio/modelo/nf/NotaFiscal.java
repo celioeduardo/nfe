@@ -770,7 +770,6 @@ public class NotaFiscal {
 		return dataHoraCancelamento;
 	}
 
-	// TODO Aprimorar Mesclagem
 	public void mesclar(NotaFiscal nf) {
 		this.naturezaOperacao = nf.naturezaOperacao;
 		this.formaPagamento = nf.formaPagamento;

@@ -59,6 +59,7 @@ import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.cancelamento.CancelarNotaService;
 import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamento;
 import com.hadrion.nfe.dominio.modelo.cce.RegistrarCartaCorrecaoService;
+import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.empresa.Empresa;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaRepositorio;
 import com.hadrion.nfe.dominio.modelo.filial.Filial;
@@ -377,14 +378,14 @@ public class NotaFiscalAplicacaoService {
 	
 	private Document gerarXml(NotaFiscal nf) throws JRException{
 		
-		NotaFiscalSerializador serializador = new NotaFiscalSerializador();
+		Certificado certificado = empresaRepositorio.obterEmpresa(filialRepositorio.obterFilial(nf.filialId()).empresaId()).certificado();
+		NotaFiscalSerializador serializador = new NotaFiscalSerializador(certificado);
 		
 		Document nfeProc = XmlUtil.novoDocument();
 		nfeProc.normalizeDocument();
 		Element root = nfeProc.createElementNS(
 				"http://www.portalfiscal.inf.br/nfe", "nfeProc");
 		nfeProc.appendChild(root);
-		
 		Document nfe = XmlUtil.parseXml(serializador.serializar(nf));
 		Document prot = null;
 		if (nf.xmlProtocolo() != null)
