@@ -65,10 +65,8 @@ public class DestinatarioConverter extends AbstractConverter implements Converte
 	}
 	
 	private InscricaoEstadual ie(Destinatario dest){
-		if (ambiente == Ambiente.HOMOLOGACAO)
-			return null;
-		if (indicadorIe(dest) != IndicadorIe.CONTRIBUINTE)
-			return null;
+		//if (ambiente == Ambiente.HOMOLOGACAO) return null;
+		//if (indicadorIe(dest) != IndicadorIe.CONTRIBUINTE) return null;
 		
 		return dest.ie();
 	} 
