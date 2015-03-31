@@ -90,7 +90,11 @@ public class RabbitMQNotaFiscalListener extends RabbitNfeEventoListener{
 		DefinirNotaFiscalEmLoteComando comando = 
 				new DefinirNotaFiscalEmLoteComando(notaFiscalId); 
 		
-		notaFiscalAplicacaoService.definirNotaEmLote(comando);
+		try {
+			notaFiscalAplicacaoService.definirNotaEmLote(comando);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 
