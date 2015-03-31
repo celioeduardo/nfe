@@ -110,8 +110,8 @@ public class NotaFiscalConverter extends AbstractConverter {
 		convert("vIPI", Dinheiro.ZERO, writer, context);
 		convert("vPIS", nf.totalPis(), writer, context);
 		convert("vCOFINS", nf.totalCofins(), writer, context);
-		convert("vOutro", nf.outrasDespesasAcessorias(), writer, context);
-		convert("vNF", nf.total(), writer, context);
+		convert("vOutro", nf.outrasDespesasAcessorias(), writer, context);		
+		convert("vNF", totalNf(nf), writer, context);
 		convert("vTotTrib", nf.totalValorAproximadoTributos(), writer, context);
 		writer.endNode();
 		writer.endNode();
@@ -137,6 +137,13 @@ public class NotaFiscalConverter extends AbstractConverter {
 		convertIf("exporta", nf.exportacao(), writer, context);
 	}
 	
+	private Object totalNf(NotaFiscal nf) {
+		if (nf.total().igualAZero() && nf.totalIcms().maiorQueZero())
+			return nf.totalIcms();
+		
+		return nf.total();
+	}
+
 	private String infAdFisco(NotaFiscal nf){
 		if (nf.informacaoFisco() != null)
 			return limparInformacao(nf.informacaoFisco().texto());

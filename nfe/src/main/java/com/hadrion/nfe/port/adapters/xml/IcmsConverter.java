@@ -93,7 +93,6 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 			convert("CST", icms.cst(), writer, context);
 			break;
 		case CST_60:
-		case CST_90:
 			writer.startNode("ICMS"+icms.cst().codigo());
 			convert("orig", icms.origem(), writer, context);
 			convert("CST", icms.cst(), writer, context);
@@ -124,6 +123,25 @@ public class IcmsConverter extends AbstractConverter implements Converter {
 			convert("modBCST", icms.st().determinacaoBaseCalculo(), writer, context);
 			convert("pMVAST", icms.st().percentualMargemValorAdicionado(), writer, context);
 			convert("pRedBCST", icms.st().percentualReducaoBaseCalculo(), writer, context);
+			convert("vBCST", icms.st().baseCalculo(), writer, context);
+			convert("pICMSST", icms.st().aliquota(), writer, context);
+			convert("vICMSST", icms.st().valor(), writer, context);		
+			break;
+		case CST_90:
+			writer.startNode("ICMS"+icms.cst().codigo());
+			convert("orig", icms.origem(), writer, context);
+			convert("CST", icms.cst(), writer, context);
+			convert("modBC", icms.determinacaoBaseCalculo(), writer, context);
+			if (icms.percentualReducaoBaseCalculo().maiorQueZero())
+				convert("pRedBC", icms.percentualReducaoBaseCalculo(), writer, context);
+			convert("vBC", icms.baseCalculo(), writer, context);
+			convert("pICMS", formatarAliquota(icms.aliquota()), writer, context);
+			convert("vICMS", icms.valor(), writer, context);
+			convert("modBCST", icms.st().determinacaoBaseCalculo(), writer, context);
+			if (icms.st().percentualMargemValorAdicionado().maiorQueZero())
+				convert("pMVAST", icms.st().percentualMargemValorAdicionado(), writer, context);
+			if (icms.st().percentualReducaoBaseCalculo().maiorQueZero())
+				convert("pRedBCST", icms.st().percentualReducaoBaseCalculo(), writer, context);
 			convert("vBCST", icms.st().baseCalculo(), writer, context);
 			convert("pICMSST", icms.st().aliquota(), writer, context);
 			convert("vICMSST", icms.st().valor(), writer, context);		

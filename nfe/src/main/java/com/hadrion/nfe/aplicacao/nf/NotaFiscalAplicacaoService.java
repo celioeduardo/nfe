@@ -329,12 +329,18 @@ public class NotaFiscalAplicacaoService {
 	}
 
 	private NotaFiscalData construir(NotaFiscal nf) {
+		Double totalNota;
+		if (nf.total().igualAZero() && nf.totalIcms().maiorQueZero())
+			totalNota = nf.totalIcms().valor();
+		else
+			totalNota=nf.total().valor();
+
 		return new NotaFiscalData(
 				nf.notaFiscalId().id(),
 				nf.numero(),
 				String.valueOf(nf.serie()),
 				nf.emissao(),
-				nf.total().valor(),
+				totalNota,
 				nf.destinatario().razaoSocial(),
 				nf.tipoOperacao().toString(),
 				nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,

@@ -550,9 +550,38 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 			"	<ICMS90>\r\n" + 
 			"		<orig>0</orig>\r\n" + 
 			"		<CST>90</CST>\r\n" + 
+			"		<modBC>3</modBC>\r\n" + 
+			"		<pRedBC>40.00</pRedBC>\r\n" + 
+			"		<vBC>1500.00</vBC>\r\n" + 
+			"		<pICMS>18.0000</pICMS>\r\n" + 
+			"		<vICMS>270.00</vICMS>\r\n" + 
+			"		<modBCST>4</modBCST>\r\n" + 
+			"		<pMVAST>10.00</pMVAST>\r\n" + 
+			"		<pRedBCST>12.00</pRedBCST>\r\n" + 
+			"		<vBCST>2420.00</vBCST>\r\n" +
+			"		<pICMSST>18.00</pICMSST>\r\n" +
+			"		<vICMSST>435.60</vICMSST>\r\n" +
 			"	</ICMS90>\r\n" + 
 			"</ICMS>";
-		icms = new Icms(Origem.NACIONAL,Cst.CST_90,null,null,null,null,null,null,null);
+		icms = new Icms(
+				Origem.NACIONAL, 
+				Cst.CST_90, 
+				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
+				new Percentual(40),
+				new Dinheiro(180), 
+				null,
+				new Dinheiro(1500),
+				new Aliquota(18.0), 
+				new Dinheiro(270), 
+				new SubstituicaoTributaria(
+						new Dinheiro(2420),
+						new Aliquota(18), 
+						new Dinheiro(435.6),
+						new Percentual(12), 
+						DeterminacaoBaseCalculoSt.MVA, 
+						new Percentual(10)), 
+				null);
+
 		assertXMLEquals(XML,toXML(icms));
 	}
 	@Test
@@ -562,9 +591,38 @@ public class IcmsTradutorXmlTest extends AbstractXmlTest{
 				"	<ICMS90>\r\n" + 
 				"		<orig>0</orig>\r\n" + 
 				"		<CST>90</CST>\r\n" + 
+				"		<modBC>3</modBC>\r\n" + 
+				"		<pRedBC>40.00</pRedBC>\r\n" + 
+				"		<vBC>1500.00</vBC>\r\n" + 
+				"		<pICMS>18.0000</pICMS>\r\n" + 
+				"		<vICMS>270.00</vICMS>\r\n" + 
+				"		<modBCST>4</modBCST>\r\n" + 
+				"		<pMVAST>10.00</pMVAST>\r\n" + 
+				"		<pRedBCST>12.00</pRedBCST>\r\n" + 
+				"		<vBCST>2420.00</vBCST>\r\n" +
+				"		<pICMSST>18.00</pICMSST>\r\n" +
+				"		<vICMSST>435.60</vICMSST>\r\n" +				
 				"	</ICMS90>\r\n" + 
 				"</ICMS>\r\n";
-		icms = new Icms(Origem.NACIONAL,Cst.CST_90,null,null,null,null,null,null,null,null,null);
+		icms = new Icms(
+				Origem.NACIONAL, 
+				Cst.CST_90, 
+				DeterminacaoBaseCalculo.VALOR_OPERACAO, 
+				new Percentual(40),
+				new Dinheiro(180), 
+				null,
+				new Dinheiro(1500),
+				new Aliquota(18.0), 
+				new Dinheiro(270), 
+				new SubstituicaoTributaria(
+						new Dinheiro(2420),
+						new Aliquota(18), 
+						new Dinheiro(435.6),
+						new Percentual(12), 
+						DeterminacaoBaseCalculoSt.MVA, 
+						new Percentual(10)), 
+				null);
+
 		assertEquals(icms,fromXML(XML));
 	}
 }
