@@ -49,6 +49,5 @@ public class NotaFiscalXmlSerializadorTest extends AbstractXmlTest{
 		NotaFiscalSerializador serializador = 
 				new NotaFiscalSerializador(certificado);
 		assertXMLEquals(XML_ASSINADO,serializador.serializar(NotaFiscalFixture.nfEmHomologacao()));
-	}
-	
+	}	
 }

@@ -196,7 +196,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 		return new Transporte(
 				ModalidadeFrete.DESTINATARIO_REMETENTE, 
 				new Transportador(
-						null, new Cpf(57133239191L), "JAIR FRIZON", null, 
+						null, new Cpf(57133239191L), "JAIR FRIZON", new InscricaoEstadual("0012134380047"), 
 						new Endereco(
 								"RUA CASEMIRO DE ABREU 256",null, null, null, 
 								new Municipio(3543402,"RIBEIRAO PRETO", Uf.SP), 
@@ -223,7 +223,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 			    new Telefone("3599716587")),
 			null,
 			IndicadorIe.NAO_CONTRIBUINTE,
-			null,//new InscricaoEstadual("0012134380047"),
+			new InscricaoEstadual("0012134380047"),
 			12345678L, //Inscrição Suframa
 			new Email("hadrion@hadrion.com.br"));
 	}

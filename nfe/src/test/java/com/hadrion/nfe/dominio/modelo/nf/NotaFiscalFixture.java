@@ -181,7 +181,7 @@ public class NotaFiscalFixture {
 		return new Transporte(
 				ModalidadeFrete.DESTINATARIO_REMETENTE, 
 				new Transportador(
-						null, new Cpf(57133239191L), "JAIR FRIZON", null, 
+						null, new Cpf(57133239191L), "JAIR FRIZON", new InscricaoEstadual("0012134380047"), 
 						new Endereco(
 								"RUA CASEMIRO DE ABREU", 
 								"256", null, null, 
