@@ -316,7 +316,7 @@
 		<fieldDescription><![CDATA[../ide/tpEmis]]></fieldDescription>
 	</field>
 	<field name="infAdProd" class="java.lang.String">
-		<fieldDescription><![CDATA[/nfeProc/NFe/infNFe/det/infAdProd]]></fieldDescription>
+		<fieldDescription><![CDATA[infAdProd]]></fieldDescription>
 	</field>
 	<background>
 		<band height="814" splitType="Stretch">

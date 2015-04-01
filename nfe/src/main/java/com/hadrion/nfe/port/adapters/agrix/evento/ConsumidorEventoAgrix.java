@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,8 @@ class ConsumidorEventoAgrix {
 	    JsonObject object = parser.parse(json).getAsJsonObject();
 	    
 	    String guid = object.get("guid").getAsString();
-	    int serie = object.get("serie").getAsInt();
+	    String serie = object.get("serie").getAsString();
+	    
 	    long numero = object.get("numero").getAsLong();
 	    int codigoFilial = object.get("codFilial").getAsInt();
 	    long cnpjFilial = object.get("cnpjFilial").getAsLong();
@@ -81,10 +83,13 @@ class ConsumidorEventoAgrix {
 		
 	    Filial filial = filial(AgrixUtil.paraFilialId(codigoFilial, cnpjFilial));
 	    
+	    if (StringUtils.isBlank(serie))
+	    	serie = "0";
+	    
 	    NovaInutilizacaoComando comando = new NovaInutilizacaoComando(
 	    		guid,
 	    		filial.ambiente(),
-	    		serie,
+	    		Integer.parseInt(serie),
 	    		numero,numero,
 	    		justificativa,
 	    		AgrixUtil.paraFilialId(codigoFilial, cnpjFilial));
