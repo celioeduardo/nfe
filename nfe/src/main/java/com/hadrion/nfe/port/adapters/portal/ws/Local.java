@@ -1,5 +1,6 @@
 package com.hadrion.nfe.port.adapters.portal.ws;
 
+import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.TipoEmissao;
@@ -18,12 +19,26 @@ Autorizadores: AM BA CE GO MG MA MS MT PE PR RS SP SVAN SVRS SCAN SVC-AN SVC-RS
  */
 
 public enum Local {
-	BA,
-	MG,
-	SP,
-	SVC_AN, 
-	SVC_RS;
+	BA(Versao.V3_10,Versao.V2_00,Versao.V3_10),
+	MG(Versao.V3_10,Versao.V1_00,Versao.V2_00),
+	SP(Versao.V3_10,Versao.V3_10,Versao.V3_10),
+	SVC_AN(Versao.V3_10,Versao.V1_00,Versao.V3_10), 
+	SVC_RS(Versao.V3_10,Versao.V1_00,Versao.V3_10);
 
+	private Versao versao;
+	private Versao versaoEvento;
+	private Versao versaoInutilizacao;
+	
+	Local(Versao versao, Versao versaoEvento, Versao versaoInutilizacao){
+		this.versao = versao;
+		this.versaoEvento = versaoEvento;
+		this.versaoInutilizacao = versaoInutilizacao;
+	}
+	
+	Local(Versao versao){
+		this(versao,versao,versao);
+	}
+	
 	public static Local obter(TipoEmissao tipoEmissao, Uf uf) {
 		if (TipoEmissao.SVC_AN == tipoEmissao)
 			return SVC_AN;
@@ -79,5 +94,21 @@ public enum Local {
 		default:
 			return Local.SVC_RS;
 		}
+	}
+
+	public String endpointAutorizacao(Ambiente ambiente) {
+		return EndPoints.obter(ambiente, this, versao, Servico.AUTORIZACAO);
+	}
+
+	public String endpointRetornoAutorizacao(Ambiente ambiente) {
+		return EndPoints.obter(ambiente, this, versao, Servico.RET_AUTORIZACAO);
+	}
+
+	public String endpointEvento(Ambiente ambiente) {
+		return EndPoints.obter(ambiente, this, versaoEvento, Servico.EVENTO);
+	}
+
+	public String endpointInutilizacao(Ambiente ambiente) {
+		return EndPoints.obter(ambiente, this, versaoInutilizacao, Servico.INUTILIZACAO);
 	}
 }

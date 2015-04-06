@@ -25,10 +25,11 @@ public class EndPoints {
 		put(Ambiente.PRODUCAO,uf,versao,Servico.AUTORIZACAO,"https://nfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.RET_AUTORIZACAO,"https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao");
 		put(Ambiente.PRODUCAO,uf,Versao.V1_00,Servico.EVENTO,"https://nfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento");
+		put(Ambiente.PRODUCAO,uf,Versao.V2_00,Servico.EVENTO,"https://nfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento");
 		put(Ambiente.PRODUCAO,uf,Versao.V2_00,Servico.CONSULTA_CADASTRO,"https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.STATUS_SERVICO,"https://nfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://nfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2");
-		put(Ambiente.PRODUCAO,uf,versao,Servico.INUTILIZACAO,"https://nfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2");
+		put(Ambiente.PRODUCAO,uf,Versao.V2_00,Servico.INUTILIZACAO,"https://nfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2");
 
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.AUTORIZACAO,"https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.RET_AUTORIZACAO,"https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao");
@@ -36,7 +37,7 @@ public class EndPoints {
 		put(Ambiente.HOMOLOGACAO,uf,Versao.V2_00,Servico.CONSULTA_CADASTRO,"https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.STATUS_SERVICO,"https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2");
-		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.INUTILIZACAO,"https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2");
+		put(Ambiente.HOMOLOGACAO,uf,Versao.V2_00,Servico.INUTILIZACAO,"https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2");
 	}
 	
 	private void configurarSp(){
@@ -44,7 +45,8 @@ public class EndPoints {
 		Versao versao = Versao.V3_10;
 		put(Ambiente.PRODUCAO,uf,versao,Servico.AUTORIZACAO,"https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.RET_AUTORIZACAO,"https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx");
-		put(Ambiente.PRODUCAO,uf,Versao.V1_00,Servico.EVENTO,"https://nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx");
+		//put(Ambiente.PRODUCAO,uf,Versao.V2_00,Servico.EVENTO,"https://nfe.fazenda.sp.gov.br/nfeweb/services/nferecepcao2.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.EVENTO,"https://nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_CADASTRO,"https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.STATUS_SERVICO,"https://nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx");
@@ -52,7 +54,8 @@ public class EndPoints {
 		
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.AUTORIZACAO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.RET_AUTORIZACAO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx");
-		put(Ambiente.HOMOLOGACAO,uf,Versao.V1_00,Servico.EVENTO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,Versao.V2_00,Servico.EVENTO,"https://homologacao.nfe.fazenda.sp.gov.br/eventosWEB/services/RecepcaoEvento.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,Versao.V3_10,Servico.EVENTO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_CADASTRO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.STATUS_SERVICO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx");
@@ -67,6 +70,7 @@ public class EndPoints {
 		put(Ambiente.PRODUCAO,uf,Versao.V1_00,Servico.EVENTO,"https://www.svc.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.STATUS_SERVICO,"https://www.svc.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://www.svc.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.INUTILIZACAO,"https://www.sefazvirtual.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx");
 		
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.AUTORIZACAO,"https://hom.svc.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.RET_AUTORIZACAO,"https://hom.svc.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx");
@@ -83,6 +87,7 @@ public class EndPoints {
 		put(Ambiente.PRODUCAO,uf,Versao.V1_00,Servico.EVENTO,"https://nfe.sefazvirtual.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.STATUS_SERVICO,"https://nfe.sefazvirtual.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://nfe.sefazvirtual.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx");
+		put(Ambiente.PRODUCAO,uf,versao,Servico.INUTILIZACAO,"https://nfe.sefazvirtual.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx");
 		
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.AUTORIZACAO,"https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.RET_AUTORIZACAO,"https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx");
@@ -97,6 +102,7 @@ public class EndPoints {
 		put(Ambiente.PRODUCAO,uf,versao,Servico.AUTORIZACAO,"https://nfe.sefaz.ba.gov.br/webservices/NfeAutorizacao/NfeAutorizacao.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.RET_AUTORIZACAO,"https://nfe.sefaz.ba.gov.br/webservices/NfeRetAutorizacao/NfeRetAutorizacao.asmx");	
 		put(Ambiente.PRODUCAO,uf,Versao.V1_00,Servico.EVENTO,"https://nfe.sefaz.ba.gov.br/webservices/sre/recepcaoevento.asmx");
+		put(Ambiente.PRODUCAO,uf,Versao.V2_00,Servico.EVENTO,"https://nfe.sefaz.ba.gov.br/webservices/sre/recepcaoevento.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_CADASTRO,"https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.STATUS_SERVICO,"https://nfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://nfe.sefaz.ba.gov.br/webservices/NfeConsulta/NfeConsulta.asmx");
@@ -104,7 +110,7 @@ public class EndPoints {
 		//homologacao
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.AUTORIZACAO,"https://hnfe.sefaz.ba.gov.br/webservices/NfeAutorizacao/NfeAutorizacao.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.RET_AUTORIZACAO,"https://hnfe.sefaz.ba.gov.br/webservices/NfeRetAutorizacao/NfeRetAutorizacao.asmx");		
-		put(Ambiente.HOMOLOGACAO,uf,Versao.V1_00,Servico.EVENTO,"https://hnfe.sefaz.ba.gov.br/webservices/sre/recepcaoevento.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,Versao.V2_00,Servico.EVENTO,"https://hnfe.sefaz.ba.gov.br/webservices/sre/recepcaoevento.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_CADASTRO,"https://hnfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.STATUS_SERVICO,"https://hnfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://hnfe.sefaz.ba.gov.br/webservices/NfeConsulta/NfeConsulta.asmx");
