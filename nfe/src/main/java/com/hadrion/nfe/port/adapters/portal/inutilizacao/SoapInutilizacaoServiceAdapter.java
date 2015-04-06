@@ -82,8 +82,7 @@ public class SoapInutilizacaoServiceAdapter implements InutilizacaoPortalService
 						public void doWithMessage(WebServiceMessage arg) throws IOException,
 								TransformerException {
 							
-							((SoapMessage)arg).setSoapAction(
-									endpoint+"/nfeInutilizacaoNF2");
+							((SoapMessage)arg).setSoapAction(endpoint);
 							
 							StringSource ss = new StringSource(nfeCabecMsg(uf));
 							SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
