@@ -27,10 +27,7 @@ import com.hadrion.nfe.dominio.modelo.inutilizacao.Inutilizacao;
 import com.hadrion.nfe.dominio.modelo.portal.inutilizacao.InutilizacaoPortalService;
 import com.hadrion.nfe.dominio.modelo.portal.inutilizacao.RetornoInutilizacao;
 import com.hadrion.nfe.port.adapters.portal.ws.Cabecalho;
-import com.hadrion.nfe.port.adapters.portal.ws.EndPoints;
 import com.hadrion.nfe.port.adapters.portal.ws.Local;
-import com.hadrion.nfe.port.adapters.portal.ws.Servico;
-import com.hadrion.nfe.port.adapters.portal.ws.Versao;
 import com.hadrion.nfe.port.adapters.ws.WebServiceTemplateFabrica;
 import com.hadrion.nfe.tipos.Cnpj;
 
@@ -45,12 +42,8 @@ public class SoapInutilizacaoServiceAdapter implements InutilizacaoPortalService
 			Inutilizacao inutilizacao, Certificado certificado,
 			Local local,final Uf uf, Cnpj cnpj) {
 		
-		final String endpoint = EndPoints.obter(
-				inutilizacao.ambiente(),
-				local,
-				Versao.V3_10, 
-				Servico.INUTILIZACAO);
-		
+		final String endpoint = local.endpointInutilizacao(inutilizacao.ambiente()); 
+				
 		Document xml = nfeDadosMsg(inutilizacao,uf,cnpj,certificado);
 
 //		Validação desativada		
