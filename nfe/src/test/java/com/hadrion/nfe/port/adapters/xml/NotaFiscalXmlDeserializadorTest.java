@@ -209,7 +209,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 		return new Destinatario(
 			new Cnpj(99999999000191L),
 			null,
-			"",
+			null,
 			"NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL",
 			null,
 			new Endereco(
