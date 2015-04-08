@@ -40,9 +40,10 @@ public class DestinatarioConverter extends AbstractConverter implements Converte
 				convert("CNPJ", cnpj(dest), writer, context);
 			else if (dest.cpf() != null)
 				convert("CPF", cpf(dest), writer, context);
+			else
+				novoNo("idEstrangeiro", "", writer);
 		}
 		
-		novoNo("idEstrangeiro", "", writer);
 		novoNo("xNome", razaoSocial(dest), writer);
 		convert("enderDest", dest.endereco(), writer, context);
 		convert("indIEDest",indicadorIe(dest),writer, context);
