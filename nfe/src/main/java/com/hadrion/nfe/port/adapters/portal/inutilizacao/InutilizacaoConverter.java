@@ -37,7 +37,7 @@ class InutilizacaoConverter extends AbstractConverter{
 		Inutilizacao inutilizacao = (Inutilizacao) source;
 		
 		writer.addAttribute("xmlns", "http://www.portalfiscal.inf.br/nfe");
-		writer.addAttribute("versao", "2.00");
+		writer.addAttribute("versao", "3.10");
 		
 		writer.startNode("infInut");
 		writer.addAttribute("Id", id(inutilizacao));

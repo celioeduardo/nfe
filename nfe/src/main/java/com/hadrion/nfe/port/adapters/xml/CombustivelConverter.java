@@ -22,9 +22,9 @@ public class CombustivelConverter extends AbstractConverter{
 			MarshallingContext context) {
 		Combustivel comb = (Combustivel) source;
 		convert("cProdANP",comb.codAnp(),writer,context);
-		convert("qTemp",comb.quantidade(),writer,context);
+		convertIf("qTemp",comb.quantidade(),writer,context);
 		convert("UFCons",String.valueOf(comb.ufConsumo()),writer,context);
-		convert("CIDE",comb.cide(),writer,context);
+		convertIf("CIDE",comb.cide(),writer,context);
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class Cabecalho {
 	}
 	public String inutilizacao() {
 		return XmlUtil.xmlCompacto(xstream(),
-				new NfeCabecMsg(uf, "2.00","http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2"));	
+				new NfeCabecMsg(uf, "3.10","http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2"));	
 	}
 
 	private XStream xstream(){

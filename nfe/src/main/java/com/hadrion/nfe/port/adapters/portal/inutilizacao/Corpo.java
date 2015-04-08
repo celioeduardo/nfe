@@ -73,14 +73,5 @@ public class Corpo {
 		xstream.alias("nfeDadosMsg", Corpo.class);
 		return xstream;
 	}
-	
-	protected String versaoDados(){
-		return "2.00";
-	}
-	
-	protected String uriWebService(){
-		return "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2";
-	}
-	
-	
+
 }
