@@ -23,6 +23,7 @@ public class DestinatarioTradutorXmlTest extends AbstractXmlTest{
 	private static final String XML = 
 			"<dest>\r\n" + 
 			"	<CNPJ>99999999000191</CNPJ>\r\n" + 
+			"	<idEstrangeiro></idEstrangeiro>\r\n" + 
 			"	<xNome>HADRION SISTEMAS INTEGRADOS LTDA</xNome>\r\n" + 
 			"	<enderDest>\r\n" + 
 			"		<xLgr>RUA CASEMIRO DE ABREU</xLgr>\r\n" + 
@@ -52,7 +53,7 @@ public class DestinatarioTradutorXmlTest extends AbstractXmlTest{
 		destinatario = new Destinatario(
 			new Cnpj(99999999000191L),
 			null,
-			null,
+			"",
 			"HADRION SISTEMAS INTEGRADOS LTDA",
 			null,
 			new Endereco(
