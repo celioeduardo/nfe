@@ -52,4 +52,26 @@ public class SoapInutilizacaoServiceAdapterTest extends DominioTest{
 		//System.out.println(retorno.xmlRetorno());
 		System.out.println("\nNúmero do Recibo retornado: "+retorno.numeroProtocolo());
 	}
+	
+	@Test @Ignore
+	public void inutilizarEmSp() throws Throwable{
+		
+		Inutilizacao inutilizacao = new Inutilizacao(
+				new InutilizacaoId("123456"),
+				Ambiente.HOMOLOGACAO,
+				new Serie(1),
+				101,101,
+				"Justificativa de inutilização",
+				new FilialId("1-3754929000102"));
+		
+		certificado = new Certificado(
+				FileUtils.getFile("src","test","resources","assinatura","certificado-sp.pfx"), 
+				"1234"); 
+		
+		RetornoInutilizacao retorno = inutilizacaoPortalService.inutilizar(
+				inutilizacao, certificado, Local.SP,Uf.SP,new Cnpj(3754929000102L));
+		
+		//System.out.println(retorno.xmlRetorno());
+		System.out.println("\nNúmero do Recibo retornado: "+retorno.numeroProtocolo());
+	}
 }
