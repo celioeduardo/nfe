@@ -3,7 +3,7 @@
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<property name="ireport.zoom" value="4.132231404958678"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1607"/>
+	<property name="ireport.y" value="1947"/>
 	<style name="campoPequeno" hAlign="Left" vAlign="Top" markup="styled" pattern="" fontName="DejaVu Serif" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="DejaVu Serif" isPdfEmbedded="true"/>
 	<style name="borda" mode="Transparent" forecolor="#000000" fill="Solid" radius="3" scaleImage="Clip" hAlign="Left" vAlign="Top" markup="none" pattern="" fontName="DejaVu Serif" fontSize="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="true" pdfFontName="DejaVu Serif" isPdfEmbedded="true">
 		<pen lineWidth="0.25"/>
@@ -1707,9 +1707,9 @@ $F{Trans_CNPJ}.substring(8,12) + "-" + $F{Trans_CNPJ}.substring(12,14) : $F{Tran
 					<textFieldExpression><![CDATA[$F{Emi_IM}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="dados" x="4" y="53" width="358" height="83" uuid="e96e69cc-e375-45d5-87ee-f5e72f69012b"/>
+					<reportElement style="dados" x="1" y="53" width="361" height="83" uuid="e96e69cc-e375-45d5-87ee-f5e72f69012b"/>
 					<textElement verticalAlignment="Top" markup="styled">
-						<font size="7" isItalic="false"/>
+						<font fontName="Times New Roman" size="6" isItalic="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[($F{InfoFisco}!= null ? $F{InfoFisco} : "") + "\n" +
 ($F{InfoCpl}  != null ? $F{InfoCpl}   : "")]]></textFieldExpression>
