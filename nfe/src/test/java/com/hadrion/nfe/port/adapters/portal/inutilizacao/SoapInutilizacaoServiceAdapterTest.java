@@ -57,11 +57,11 @@ public class SoapInutilizacaoServiceAdapterTest extends DominioTest{
 	public void inutilizarEmSp() throws Throwable{
 		
 		Inutilizacao inutilizacao = new Inutilizacao(
-				new InutilizacaoId("123456"),
-				Ambiente.HOMOLOGACAO,
+				new InutilizacaoId("14508"),
+				Ambiente.PRODUCAO,
 				new Serie(1),
 				101,101,
-				"Justificativa de inutilização",
+				"FALHA NA SEQUENCIA DA NUMERACAO",
 				new FilialId("1-3754929000102"));
 		
 		certificado = new Certificado(
@@ -71,7 +71,7 @@ public class SoapInutilizacaoServiceAdapterTest extends DominioTest{
 		RetornoInutilizacao retorno = inutilizacaoPortalService.inutilizar(
 				inutilizacao, certificado, Local.SP,Uf.SP,new Cnpj(3754929000102L));
 		
-		//System.out.println(retorno.xmlRetorno());
+		System.out.println(retorno.xmlRetorno());
 		System.out.println("\nNúmero do Recibo retornado: "+retorno.numeroProtocolo());
 	}
 }
