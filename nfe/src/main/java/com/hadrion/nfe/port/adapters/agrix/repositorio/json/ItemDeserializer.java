@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
+import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.icms.Cst;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculoSt;
@@ -50,7 +51,7 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		Dinheiro frete=null, seguro=null, desconto=null,acessorias=null,valorTotalBruto=null;
 		ExportacaoItem exportacao=null;
 		Combustivel combustivel=null;		
-
+		
 		codigo=s(j,"codigo");
 		descricao = s(j,"descricao");
 		nve=tem(j,"nve") ? s(j,"nve") : null;
@@ -71,7 +72,7 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		desconto = new Dinheiro(d(j,"desconto"));
 		acessorias = new Dinheiro(d(j,"acessorias"));
 		exportacao = exportacao(j);
-		combustivel = null;	
+		combustivel = combustivel(j);
 		informacaoAdicional = s(j,"informacaoAdicional");
 		final Item item = new Item(
 				new DescritorProduto(codigo, gtin, descricao, ncm, nve, extipi, cfop, unidadeComercial, 
@@ -101,7 +102,19 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 	boolean tem(JsonObject j, String propriedade){
 		return j.has(propriedade);
 	}
-
+	
+	private Combustivel combustivel(JsonObject j){
+		Long combustivelCodigoAnp = null;
+		String combustivelUfConsumo = null;
+		if (tem(j, "codigoAnp"))
+			combustivelCodigoAnp = l(j,"codigoAnp");
+		if (tem(j, "ufConsumoCombustivel"))
+			combustivelUfConsumo = s(j,"ufConsumoCombustivel");
+		if (combustivelCodigoAnp != null && combustivelUfConsumo != null)
+			return new Combustivel(combustivelCodigoAnp, null, Uf.valueOf(combustivelUfConsumo), null);
+		return null;
+	}
+	
 	private Gtin gtin(JsonObject j, String propriedade){
 		return tem(j,propriedade) ? new Gtin(s(j,propriedade)) : null;
 	}
