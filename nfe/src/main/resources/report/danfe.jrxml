@@ -1709,7 +1709,7 @@ $F{Trans_CNPJ}.substring(8,12) + "-" + $F{Trans_CNPJ}.substring(12,14) : $F{Tran
 				<textField isBlankWhenNull="true">
 					<reportElement style="dados" x="1" y="53" width="361" height="83" uuid="e96e69cc-e375-45d5-87ee-f5e72f69012b"/>
 					<textElement verticalAlignment="Top" markup="styled">
-						<font fontName="Times New Roman" size="6" isItalic="false"/>
+						<font size="6" isItalic="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[($F{InfoFisco}!= null ? $F{InfoFisco} : "") + "\n" +
 ($F{InfoCpl}  != null ? $F{InfoCpl}   : "")]]></textFieldExpression>
