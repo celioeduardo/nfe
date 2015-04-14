@@ -45,8 +45,7 @@ public class EndPoints {
 		Versao versao = Versao.V3_10;
 		put(Ambiente.PRODUCAO,uf,versao,Servico.AUTORIZACAO,"https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.RET_AUTORIZACAO,"https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx");
-		//put(Ambiente.PRODUCAO,uf,Versao.V2_00,Servico.EVENTO,"https://nfe.fazenda.sp.gov.br/nfeweb/services/nferecepcao2.asmx");
-		put(Ambiente.PRODUCAO,uf,versao,Servico.EVENTO,"https://nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx");
+		put(Ambiente.PRODUCAO,uf,Versao.V1_00,Servico.EVENTO,"https://nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_CADASTRO,"https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.STATUS_SERVICO,"https://nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx");
 		put(Ambiente.PRODUCAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx");
@@ -54,8 +53,7 @@ public class EndPoints {
 		
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.AUTORIZACAO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.RET_AUTORIZACAO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx");
-		put(Ambiente.HOMOLOGACAO,uf,Versao.V2_00,Servico.EVENTO,"https://homologacao.nfe.fazenda.sp.gov.br/eventosWEB/services/RecepcaoEvento.asmx");
-		put(Ambiente.HOMOLOGACAO,uf,Versao.V3_10,Servico.EVENTO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx");
+		put(Ambiente.HOMOLOGACAO,uf,Versao.V1_00,Servico.EVENTO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_CADASTRO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.STATUS_SERVICO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx");
 		put(Ambiente.HOMOLOGACAO,uf,versao,Servico.CONSULTA_PROTOCOLO,"https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx");

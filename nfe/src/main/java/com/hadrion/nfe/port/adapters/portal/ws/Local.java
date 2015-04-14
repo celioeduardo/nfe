@@ -21,7 +21,7 @@ Autorizadores: AM BA CE GO MG MA MS MT PE PR RS SP SVAN SVRS SCAN SVC-AN SVC-RS
 public enum Local {
 	BA(Versao.V3_10,Versao.V2_00,Versao.V3_10),
 	MG(Versao.V3_10,Versao.V1_00,Versao.V2_00),
-	SP(Versao.V3_10,Versao.V3_10,Versao.V3_10),
+	SP(Versao.V3_10,Versao.V1_00,Versao.V3_10),
 	SVC_AN(Versao.V3_10,Versao.V1_00,Versao.V3_10), 
 	SVC_RS(Versao.V3_10,Versao.V1_00,Versao.V3_10);
 
