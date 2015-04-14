@@ -391,6 +391,7 @@ public class NotaFiscalAplicacaoService {
 		nfeProc.normalizeDocument();
 		Element root = nfeProc.createElementNS(
 				"http://www.portalfiscal.inf.br/nfe", "nfeProc");
+		root.setAttribute("versao", "3.10");
 		nfeProc.appendChild(root);
 		Document nfe = XmlUtil.parseXml(serializador.serializar(nf));
 		Document prot = null;
