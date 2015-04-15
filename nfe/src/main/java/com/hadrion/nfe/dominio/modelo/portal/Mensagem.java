@@ -39,7 +39,7 @@ public class Mensagem {
 	}
 	
 	public boolean notaDenegada(){
-		return codigo() == 110;
+		return codigo() == 110 || codigo() == 301 || codigo() == 302;
 	}
 	
 	public boolean loteEventoProcessado(){
