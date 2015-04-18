@@ -235,6 +235,13 @@ public class NotaFiscalAplicacaoService {
 			throws IOException, JRException {
 		NotaFiscal nf = notaFiscalRepositorio
 				.notaFiscalPeloId(new NotaFiscalId(notaFiscalId));
+		
+		if (nf == null)
+			nf = notaFiscalRepositorio.notaPendenteAutorizacao(new NotaFiscalId(notaFiscalId));
+		
+		if (nf == null)
+			throw new RuntimeException("Nota Fiscal não encontrada.");
+		
 		nf.definirDanfeComoImpresso();
 		notaFiscalRepositorio.salvar(nf);
 		return preVisualizarDanfe(notaFiscalId);
