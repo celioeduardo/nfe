@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -48,6 +50,8 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	@Autowired
 	private FilialRepositorio filialRepositorio;
 	
+	@Autowired
+	private EntityManager em;
 	
 	@Override
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
@@ -121,8 +125,8 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	@Override
 	public NotaFiscal notaPendenteAutorizacao(NotaFiscalId notaFiscalId) {
 		Ambiente ambiente = AgrixUtil.ambientePelaNotaFiscalId(notaFiscalId);
-		sincronizarService.sincronizar(Collections.singletonList(notaFiscalId),
-				ambiente);
+		sincronizarService.sincronizar(Collections.singletonList(notaFiscalId),ambiente);
+		em.clear();
 		List<NotaFiscal> result = 
 				repositorio.findByNotaFiscalIdInAndAmbiente(
 						Collections.singletonList(notaFiscalId),ambiente);

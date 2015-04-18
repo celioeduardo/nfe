@@ -40,7 +40,7 @@ public class SincronizarService {
 		if (nfLocal != null){
 			if (nfLocal.pendenteDeTransmissao())
 				nfLocal.mesclar(nfAgrix);
-			repositorio.save(nfLocal);
+			repositorio.saveAndFlush(nfLocal);
 		}
 		else {
 			Filial filial = filialRepositorio.obterFilial(nfAgrix.filialId());
