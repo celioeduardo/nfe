@@ -244,7 +244,7 @@ public class NotaFiscalAplicacaoService {
 		
 		nf.definirDanfeComoImpresso();
 		notaFiscalRepositorio.salvar(nf);
-		return preVisualizarDanfe(notaFiscalId);
+		return obterDanfe(nf);
 	}
 
 	public ResponseEntity<InputStreamResource> preVisualizarDanfe(
