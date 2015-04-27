@@ -44,12 +44,12 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 			"	  <CFOP>5906</CFOP>\r\n" + 
 			"	  <uCom>KG</uCom>\r\n" + 
 			"	  <qCom>36620.0000</qCom>\r\n" + 
-			"	  <vUnCom>1.0</vUnCom>\r\n" + 
+			"	  <vUnCom>1.00</vUnCom>\r\n" + 
 			"	  <vProd>36620.00</vProd>\r\n" + 
 			"	  <cEANTrib>12345678</cEANTrib>\r\n" + 
 			"	  <uTrib>KG</uTrib>\r\n" + 
 			"	  <qTrib>36620.0000</qTrib>\r\n" + 
-			"	  <vUnTrib>1.0</vUnTrib>\r\n" + 
+			"	  <vUnTrib>1.00</vUnTrib>\r\n" + 
 			"	  <vFrete>100.00</vFrete>\r\n" + 
 			"	  <vSeg>99.00</vSeg>\r\n" + 
 			"	  <vDesc>88.00</vDesc>\r\n" + 
@@ -130,12 +130,12 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 					new Cfop(5906L),
 					"KG",
 					new Quantidade(36620.0),
-					1.0,
+					1.00,
 					new Dinheiro(36620.0),
 					new Gtin(12345678L),
 					"KG",
 					new Quantidade(36620.0),
-					1.0,
+					1.00,
 					new Dinheiro(100.0),
 					new Dinheiro(99.0),
 					new Dinheiro(88.0),

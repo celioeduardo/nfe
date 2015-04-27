@@ -39,12 +39,12 @@ public class ItemConverter extends AbstractConverter implements Converter {
 		convert("CFOP",item.produto().cfop(),writer,context);
 		convert("uCom",item.produto().unidadeComercial(),writer,context);
 		convert("qCom",item.produto().quantidadeComercial(),writer,context);
-		convert("vUnCom",item.produto().valorUnitarioComercializacao(),writer,context);
+		convert("vUnCom",new Dinheiro(item.produto().valorUnitarioComercializacao()),writer,context);
 		convert("vProd",item.produto().totalBruto(),writer,context);
 		convertVazio("cEANTrib",item.produto().gtinTributavel(),writer,context);
 		convert("uTrib",item.produto().unidadeTributavel(),writer,context);
 		convert("qTrib",item.produto().quantidadeTributavel(),writer,context);
-		convert("vUnTrib",item.produto().valorUnitarioTributacao(),writer,context);
+		convert("vUnTrib",new Dinheiro(item.produto().valorUnitarioTributacao()),writer,context);
 		convertMaiorQueZero("vFrete",item.produto().totalFrete(),writer,context);
 		convertMaiorQueZero("vSeg",item.produto().totalSeguro(),writer,context);
 		convertMaiorQueZero("vDesc",item.valorDescontoTotal(),writer,context);
