@@ -379,7 +379,7 @@
   "observacaoFisco" : "Observação do Fisco",
   "observacao" : "Observação do Contribuinte",
   "exportacao":{
-     "uf": "MG",
+     "ufSaidaPais": "MG",
      "localEmbarque": "Local do Embarque",
      "localDespacho": "Despacho"
   }

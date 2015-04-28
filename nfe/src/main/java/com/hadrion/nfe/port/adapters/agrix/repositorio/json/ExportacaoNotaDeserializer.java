@@ -10,15 +10,17 @@ import com.google.gson.JsonParseException;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
 
-public class ExportacaoDeserializer implements JsonDeserializer<Exportacao>{
+public class ExportacaoNotaDeserializer implements JsonDeserializer<Exportacao>{
 
 	@Override
 	public Exportacao deserialize(JsonElement jsonSource, Type type,
 			JsonDeserializationContext arg2) throws JsonParseException {
 		
 		final JsonObject j = jsonSource.getAsJsonObject();
-		//TODO exportacao complementar
-		Exportacao exportacao = new Exportacao(Uf.valueOf(s(j,"uf")),s(j,""),s(j,""));
+
+		Exportacao exportacao = new Exportacao(Uf.valueOf(s(j,"ufSaidaPais")),
+				s(j,"localEmbarque"),
+				s(j,"localDespacho"));
 		return exportacao;
 	}
 

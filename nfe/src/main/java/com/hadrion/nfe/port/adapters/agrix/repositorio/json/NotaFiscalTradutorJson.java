@@ -45,6 +45,7 @@ public class NotaFiscalTradutorJson {
 		gsonBuilder.registerTypeAdapter(Veiculo.class, new VeiculoDeserializer());
 		gsonBuilder.registerTypeAdapter(Transporte.class, new TransporteDeserializer());
 		gsonBuilder.registerTypeAdapter(Notista.class, new NotistaDeserializer());
+		gsonBuilder.registerTypeAdapter(Exportacao.class, new ExportacaoNotaDeserializer());
 		gson = gsonBuilder.create();
 		this.json = json;
 	}

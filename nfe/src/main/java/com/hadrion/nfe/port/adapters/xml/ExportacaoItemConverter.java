@@ -7,7 +7,7 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-public class ExportacaoConverter extends AbstractConverter{
+public class ExportacaoItemConverter extends AbstractConverter{
 
 	@SuppressWarnings("rawtypes")
 	@Override

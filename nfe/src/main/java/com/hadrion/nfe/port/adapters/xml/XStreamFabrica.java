@@ -52,7 +52,7 @@ public class XStreamFabrica {
 		xstream.registerConverter(new DinheiroConverter());
 		xstream.registerConverter(new ChaveAcessoConverter());
 		xstream.registerConverter(new AliquotaConverter());
-		xstream.registerConverter(new ExportacaoConverter());
+		xstream.registerConverter(new ExportacaoItemConverter());
 		xstream.registerConverter(new ExportacaoIndiretaConverter());
 		xstream.registerConverter(new CombustivelConverter());
 		xstream.registerConverter(new CideConverter());
