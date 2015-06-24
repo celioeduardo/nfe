@@ -138,8 +138,8 @@ public class NotaFiscalConverter extends AbstractConverter {
 	}
 	
 	private Object totalNf(NotaFiscal nf) {
-		if (nf.total().igualAZero() && nf.totalIcms().maiorQueZero())
-			return nf.totalIcms();
+		/*if (nf.total().igualAZero() && nf.totalIcms().maiorQueZero())
+			return nf.totalIcms();*/
 		
 		return nf.total();
 	}
