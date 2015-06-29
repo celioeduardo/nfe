@@ -75,7 +75,8 @@ public class SoapInutilizacaoServiceAdapter implements InutilizacaoPortalService
 						public void doWithMessage(WebServiceMessage arg) throws IOException,
 								TransformerException {
 
-							((SoapMessage)arg).setSoapAction("http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2/nfeInutilizacaoNF2");
+							//((SoapMessage)arg).setSoapAction("http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2/nfeInutilizacaoNF2");
+							((SoapMessage)arg).setSoapAction(endpoint);
 							
 							StringSource ss = new StringSource(nfeCabecMsg(uf));
 							SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
