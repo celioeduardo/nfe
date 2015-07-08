@@ -76,7 +76,8 @@ public class SoapInutilizacaoServiceAdapter implements InutilizacaoPortalService
 								TransformerException {
 
 							//((SoapMessage)arg).setSoapAction("http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2/nfeInutilizacaoNF2");
-							((SoapMessage)arg).setSoapAction(endpoint);
+							if (local.actionSoapInutilizacao()!=null)
+								((SoapMessage)arg).setSoapAction(local.actionSoapInutilizacao());
 							
 							StringSource ss = new StringSource(nfeCabecMsg(uf));
 							SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
@@ -88,15 +89,14 @@ public class SoapInutilizacaoServiceAdapter implements InutilizacaoPortalService
 						}
 					},
 					result);
+			System.out.println(result.getWriter().toString());
 		} catch (WebServiceIOException e) {
 			if (e.contains(UnknownHostException.class))
 				throw new RuntimeException("Host desconhecido", e.getCause());
+			e.printStackTrace();
 			throw new RuntimeException("Problema ao conectar com o WebService", e.getCause());
 		} 
 		
-		
-//		System.out.println("\n=== RETORNO ===");
-//		System.out.println(writerResult.toString());
 		
 		return new RetornoInutilizacaoDeserializador(
 				xml,

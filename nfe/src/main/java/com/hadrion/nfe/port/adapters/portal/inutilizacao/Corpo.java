@@ -20,6 +20,7 @@ public class Corpo {
 	private Certificado certificado;
 	private XStream xstream;
 	private InutilizacaoSerializador serializador;
+	private String namespace;
 	
 	public Corpo(Inutilizacao inutilizacao, Uf uf, Cnpj cnpj, 
 			Certificado certificado) {
@@ -29,8 +30,16 @@ public class Corpo {
 		this.uf = uf;
 		this.cnpj = cnpj;
 		serializador =  new InutilizacaoSerializador(certificado());
+		this.namespace = definirNamespace();
 	}
 
+	private String definirNamespace(){
+		if (uf ==Uf.BA)
+			return "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao";
+		else
+			return "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2";
+	}
+	
 	public Document gerar() {
 		Document doc = parseXml(XmlUtil.xmlCompacto(xstream(),this));
 		
@@ -72,6 +81,10 @@ public class Corpo {
 		xstream.registerConverter(new CorpoConverter());
 		xstream.alias("nfeDadosMsg", Corpo.class);
 		return xstream;
+	}
+
+	public String namespace() {
+		return namespace;
 	}
 
 }

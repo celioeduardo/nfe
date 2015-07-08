@@ -31,8 +31,12 @@ public class Cabecalho {
 				new NfeCabecMsg(uf, "1.00","http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"));	
 	}
 	public String inutilizacao() {
-		return XmlUtil.xmlCompacto(xstream(),
-				new NfeCabecMsg(uf, "3.10","http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2"));	
+		if (uf == Uf.BA)
+			return XmlUtil.xmlCompacto(xstream(),
+				new NfeCabecMsg(uf, "3.10","http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao"));
+		else
+			return XmlUtil.xmlCompacto(xstream(),
+					new NfeCabecMsg(uf, "3.10","http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2"));
 	}
 
 	private XStream xstream(){

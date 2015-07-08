@@ -89,6 +89,7 @@ class RetornoInutilizacaoDeserializador extends AbstractConverter{
 		
 		xstream.registerConverter(this);
 		xstream.alias("nfeInutilizacaoNF2Result", RetornoInutilizacao.class);
+		xstream.alias("nfeInutilizacaoNFResult", RetornoInutilizacao.class);
 		return xstream;
 	}
 	

@@ -19,24 +19,25 @@ Autorizadores: AM BA CE GO MG MA MS MT PE PR RS SP SVAN SVRS SCAN SVC-AN SVC-RS
  */
 
 public enum Local {
-	BA(Versao.V3_10,Versao.V2_00,Versao.V3_10),
-	MG(Versao.V3_10,Versao.V1_00,Versao.V2_00),
-	SP(Versao.V3_10,Versao.V1_00,Versao.V3_10),
-	SVC_AN(Versao.V3_10,Versao.V1_00,Versao.V3_10), 
-	SVC_RS(Versao.V3_10,Versao.V1_00,Versao.V3_10);
+	BA(Versao.V3_10,Versao.V2_00,Versao.V3_10,"http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao/nfeInutilizacaoNF"),
+	MG(Versao.V3_10,Versao.V1_00,Versao.V2_00,null),
+	SP(Versao.V3_10,Versao.V1_00,Versao.V3_10,null),
+	SVC_AN(Versao.V3_10,Versao.V1_00,Versao.V3_10,null), 
+	SVC_RS(Versao.V3_10,Versao.V1_00,Versao.V3_10,null);
 
 	private Versao versao;
 	private Versao versaoEvento;
 	private Versao versaoInutilizacao;
-	
-	Local(Versao versao, Versao versaoEvento, Versao versaoInutilizacao){
+	private String actionSoapInutilizacao;
+	Local(Versao versao, Versao versaoEvento, Versao versaoInutilizacao, String actionSoapInutilizacao){
 		this.versao = versao;
 		this.versaoEvento = versaoEvento;
 		this.versaoInutilizacao = versaoInutilizacao;
+		this.actionSoapInutilizacao=actionSoapInutilizacao;
 	}
 	
 	Local(Versao versao){
-		this(versao,versao,versao);
+		this(versao,versao,versao,null);
 	}
 	
 	public static Local obter(TipoEmissao tipoEmissao, Uf uf) {
@@ -111,4 +112,7 @@ public enum Local {
 	public String endpointInutilizacao(Ambiente ambiente) {
 		return EndPoints.obter(ambiente, this, versaoInutilizacao, Servico.INUTILIZACAO);
 	}
+	public String actionSoapInutilizacao(){
+		return this.actionSoapInutilizacao;
+	} 
 }

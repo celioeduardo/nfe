@@ -17,9 +17,8 @@ class CorpoConverter extends AbstractConverter{
 	@Override
 	public void marshal(Object source, HierarchicalStreamWriter writer,
 			MarshallingContext context) {
-
-		writer.addAttribute("xmlns" , "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2");
-		 
+		Corpo corpo = (Corpo) source;
+		writer.addAttribute("xmlns" , corpo.namespace());
 	}
 
 	@Override
