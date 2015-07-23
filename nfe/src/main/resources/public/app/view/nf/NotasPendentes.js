@@ -23,7 +23,7 @@ Ext.define('nfe.view.nf.NotasPendentes', {
         store: '{notasPendentes}',
         selection: '{notasSelecionadas}'
     },
-    selType: 'checkboxmodel',
+    //selType: 'checkboxmodel',
     columns: [
         {
             text: 'Número',

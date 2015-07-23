@@ -19,7 +19,7 @@ Ext.define('nfe.view.main.MainController', {
 			task = runner.start({
 				scope:this,
 				run: this.verificarModoOperacao,
-				interval: 10000 //10 segundos
+				interval: 60000 //10 segundos
 			});
     	
     	Ext.Ajax.request({
