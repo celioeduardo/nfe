@@ -260,18 +260,20 @@ public class NotaFiscalAplicacaoService {
 
 		Lote lote = null;
 
+		System.out.println("hadrion gerando lote");
 		if (ambiente == Ambiente.PRODUCAO)
 			lote = geracaoLoteService.gerarLoteEmProducao(notas(
 					comando.getIds(), ambiente));
 		else
 			lote = geracaoLoteService.gerarLoteEmHomologacao(notas(
 					comando.getIds(), ambiente));
-
+		System.out.println("hadrion salvando lote");
 		loteRepositorio.salvar(lote);
-
+		System.out.println("hadrion enviando lote");	
 		enviarLoteService.enviar(lote);
-
+		System.out.println("hadrion salvando lote novamente");		
 		loteRepositorio.salvar(lote);
+		System.out.println("hadrion retornando id do lote");		
 
 		return String.valueOf(lote.loteId());
 

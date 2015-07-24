@@ -147,10 +147,10 @@ Ext.define('nfe.view.main.Main', {
                 title: 'Pendentes',
                 collapsible: false,
                 xtype:'notas-pendentes',
-                /*selModel: {
+                selModel: {
                     selType: 'checkboxmodel',
                     mode: 'MULTI'
-                },*/
+                },
                 region: 'center',
                 margin: '5 0 0 0',
                 listeners:{
