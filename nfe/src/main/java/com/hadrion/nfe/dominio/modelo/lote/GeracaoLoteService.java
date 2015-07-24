@@ -44,6 +44,7 @@ public class GeracaoLoteService {
 	
 	public Lote gerarLoteEmProducao(Set<NotaFiscal> notas) {
 		assertPreCondicoes(notas, Ambiente.PRODUCAO);
+		System.out.println("gerando lote em produção");
 		return Lote.gerarEmProducao(notas,empresaDasNotas(notas));
 	}
 	

@@ -119,7 +119,9 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 
 	@Override
 	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas,Ambiente ambiente) {
+		System.out.println("sincoronizando");
 		sincronizarService.sincronizar(notas,ambiente);
+		System.out.println("findby notas por ambiente");
 		return repositorio.findByNotaFiscalIdInAndAmbiente(notas,ambiente);
 	}
 	@Override

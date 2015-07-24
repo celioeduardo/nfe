@@ -331,7 +331,9 @@ public class NotaFiscalAplicacaoService {
 
 		for (String notaFiscalId : ids)
 			listaId.add(new NotaFiscalId(notaFiscalId));
-
+		
+		System.out.println("buscando no repositorio notas pendentes");
+		
 		return new HashSet<NotaFiscal>(
 				notaFiscalRepositorio.notasPendentesAutorizacao(listaId,
 						ambiente));
