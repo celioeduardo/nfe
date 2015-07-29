@@ -75,8 +75,12 @@ public class RabbitMQNotaFiscalListener extends RabbitNfeEventoListener{
 		DefinirNotaComoAutorizadaComando comando = new DefinirNotaComoAutorizadaComando(
 				notaFiscalId, numeroProtocolo, msgCodigo, msgDescricao, dataHoraAutorizacao, xmlProtocolo);
 		
-		notaFiscalAplicacaoService.definirNotaComoAutorizada(comando);
-		
+		try{
+			notaFiscalAplicacaoService.definirNotaComoAutorizada(comando);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	public void tratarNotaFiscalAdicionadaNoLote(String tipo,String mensagemTexto){
