@@ -44,7 +44,7 @@ public class StoredEvent extends Afirmacao {
 	@Column(name="ID")
 	private long eventId;
 	
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="OCCURRED_ON")
     private Date occurredOn;
 	
