@@ -1,4 +1,4 @@
-package com.hadrion.web;
+package com.hadrion.nfe.web;
 
 import java.util.List;
 

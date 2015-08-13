@@ -2,7 +2,6 @@ package com.hadrion.nfe.dominio.modelo.nf.transporte;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Access;
@@ -100,7 +99,7 @@ public class Transporte {
 	}
 
 	public List<Volume> volumes() {
-		return Collections.unmodifiableList(getVolumes());
+		return new ArrayList<Volume>(getVolumes());
 	}
 
 	@Override

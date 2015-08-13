@@ -1,6 +1,7 @@
 package com.hadrion.nfe.port.adapters.persistencia.repositorio;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -46,4 +47,10 @@ public interface NotaFiscalRepositorioSpringData extends JpaRepository<NotaFisca
 	List<NotaFiscal> findByFilialIdAndSituacaoAndAmbienteAndNumero(
 			FilialId filialId, Situacao autorizada, Ambiente ambiente,
 			Long numero, Sort sort);
+
+	List<NotaFiscal> findByNotaFiscalIdInAndSituacao(
+			List<NotaFiscalId> ids, Situacao situacao);
+
+	Optional<NotaFiscal> findByNotaFiscalIdAndSituacao(NotaFiscalId id,
+			Situacao autorizada);
 }

@@ -1,4 +1,4 @@
-package com.hadrion.web;
+package com.hadrion.nfe.web;
 
 class Erro {
 		protected String detalhe;

@@ -605,8 +605,6 @@ public class NotaFiscal {
 
 	public List<Item> itens() {
 		return new ArrayList<Item>(getItens());
-
-		// return Collections.unmodifiableList(getItens());
 	}
 
 	public Item item(int i) {

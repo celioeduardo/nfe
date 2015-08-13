@@ -9,6 +9,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
@@ -65,7 +69,12 @@ import com.hadrion.nfe.tipos.Percentual;
 import com.hadrion.nfe.tipos.Quantidade;
 import com.hadrion.nfe.tipos.Telefone;
 
+@Service
+@Transactional
 public class NotaFiscalFixture {
+	
+	@Autowired
+	private NotaFiscalRepositorio notaFiscalRepositorio;
 	
 	public static NotaFiscal nfEmProducao(){
 		return nfEmProducao(new NotaFiscalId("12346"));
@@ -329,6 +338,14 @@ public class NotaFiscalFixture {
 		NotaFiscal nf = nfEmHomologacao();
 		nf.emitida();
 		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),new Date(),null);
+		return nf;
+	}
+	
+	public NotaFiscal nfEmHomologacaoAutorizadaPersistidaParaTest() {
+		NotaFiscal nf = nfEmHomologacao(notaFiscalRepositorio.proximaIdentidade());
+		nf.emitida();
+		nf.autorizada(new NumeroProtocolo("123456"),Mensagem.autorizadoUsoDaNFe(),new Date(),null);
+		notaFiscalRepositorio.salvar(nf);
 		return nf;
 	}
 }

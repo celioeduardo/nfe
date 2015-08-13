@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-        springBootVersion = '1.2.2.RELEASE'
+        springBootVersion = '1.2.5.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -64,7 +64,7 @@ dependencies {
 
 	compile('xmlunit:xmlunit:1.4')
     testCompile("org.springframework.boot:spring-boot-starter-test")
-    
+    testCompile("org.skyscreamer:jsonassert:1.2.3") 
 }
 
 ext.priv = parseConfig(file('private.properties'))

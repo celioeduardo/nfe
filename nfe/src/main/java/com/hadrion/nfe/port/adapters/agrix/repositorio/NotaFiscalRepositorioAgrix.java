@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
@@ -213,6 +214,15 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 			Ambiente ambiente) {
 		return repositorio.findByFilialIdAndSituacaoAndAmbiente(filialId,  
 				Situacao.CANCELADA,ambiente,new Sort(Direction.DESC, "numero"));
+	}
+
+	@Override
+	public List<NotaFiscal> notasAutorizadas(List<NotaFiscalId> ids) {
+		return repositorio.findByNotaFiscalIdInAndSituacao(ids, Situacao.AUTORIZADA);
+	}
+	@Override
+	public Optional<NotaFiscal> notaAutorizada(NotaFiscalId id) {
+		return repositorio.findByNotaFiscalIdAndSituacao(id, Situacao.AUTORIZADA);
 	}
 
 	

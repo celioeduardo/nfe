@@ -12,8 +12,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -647,5 +649,15 @@ public class NotaFiscalAplicacaoService {
 	
 	private void salvar(NotaFiscal nf){
 		this.notaFiscalRepositorio.salvar(nf);
+	}
+
+	public List<NotaFiscalData> notasFiscaisAutorizadas(List<NotaFiscalId> ids) {
+		return notaFiscalRepositorio.notasAutorizadas(ids).stream()
+				.map(n -> construir(n))
+				.collect(Collectors.toList());
+	}
+	public Optional<NotaFiscalData> notaFiscalAutorizada(NotaFiscalId id) {
+		return notaFiscalRepositorio.notaAutorizada(id)
+				.map(n -> construir(n));
 	}
 }
