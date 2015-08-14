@@ -145,7 +145,7 @@ public class NotaFiscalAplicacaoService {
 					nf.mensagem() != null ? nf.mensagem().descricao() : null,
 					nf.chave() != null ? String.valueOf(nf.chave()) : null,
 					String.valueOf(nf.tipoEmissao()), 
-					null,null,null,null,null,null));
+					null,null,null,null,null,null,null,null,null,null,null,null));
 		}
 
 		return result;
@@ -342,30 +342,7 @@ public class NotaFiscalAplicacaoService {
 	}
 
 	private NotaFiscalData construir(NotaFiscal nf) {
-		Double totalNota;
-		if (nf.total().igualAZero() && nf.totalIcms().maiorQueZero())
-			totalNota = nf.totalIcms().valor();
-		else
-			totalNota=nf.total().valor();
-
-		return new NotaFiscalData(
-				nf.notaFiscalId().id(),
-				nf.numero(),
-				String.valueOf(nf.serie()),
-				nf.emissao(),
-				totalNota,
-				nf.destinatario().razaoSocial(),
-				nf.tipoOperacao().toString(),
-				nf.mensagem() != null ? new Long(nf.mensagem().codigo()) : null,
-				nf.mensagem() != null ? nf.mensagem().descricao() : null,
-				nf.chaveAcesso() != null ? String.valueOf(nf.chaveAcesso()): null,
-				String.valueOf(nf.tipoEmissao()),
-				nf.dataHoraAutorizacao(),
-				String.valueOf(nf.numeroProtocoloAutorizacao()),
-				nf.dataHoraCancelamento(),
-				String.valueOf(nf.numeroProtocoloCancelamento()),
-				nf.cartaCorrecaoAtual() != null ? nf.cartaCorrecaoAtual().sequencia() : null,
-				nf.cartaCorrecaoAtual() != null ? nf.cartaCorrecaoAtual().correcao() : null);
+		return new MontadorNotaFiscal(nf).construir();
 	}
 	
 	private byte[] gerarDanfe(Document nfeProc,NotaFiscal nf) throws JRException{

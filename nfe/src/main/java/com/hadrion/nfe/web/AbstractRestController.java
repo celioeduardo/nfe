@@ -7,6 +7,11 @@ public class AbstractRestController {
 
 	@ResponseStatus(value=HttpStatus.NOT_FOUND, reason="Recurso não encontrado")
     public class RecursoNaoEncontradoException extends RuntimeException {
+		
+		public RecursoNaoEncontradoException() {
+			super();
+		}
+
 		private static final long serialVersionUID = 1L;
     }
 	

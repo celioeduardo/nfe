@@ -1,5 +1,7 @@
 package com.hadrion.nfe.web;
 
+import java.util.Locale;
+
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.hadrion.nfe.dominio.config.Application;
@@ -45,42 +48,75 @@ public class NfeRestControllerTest{
 		NotaFiscal nota = notaFiscalFixture.nfEmHomologacaoAutorizadaPersistidaParaTest();
 		
 		String JSON = 
-			"{\r\n" + 
-			"	notaFiscalId : \""+nota.notaFiscalId()+"\",\r\n" + 
-			"	chave : \""+nota.chaveAcesso()+"\",\r\n" + 
-			"	municipioCarregamento : {\r\n" + 
-			"		codigo : "+nota.emitente().endereco().municipio().codigo()+",\r\n" + 
-			"		nome : "+nota.emitente().endereco().municipio().nome()+",\r\n" + 
-			"		uf : "+nota.emitente().endereco().municipio().uf()+"\r\n" + 
+			String.format("{\r\n" + 
+			"	notaFiscalId : \"%s\",\r\n" + 
+			"	chave : \"%s\",\r\n" + 
+			"	emitente : {\r\n" + 
+			"		endereco : {\r\n" + 
+			"			municipio : {\r\n" + 
+			"				codigo : %s,\r\n" + 
+			"				nome : \"%s\",\r\n" + 
+			"				uf : \"%s\"\r\n" + 
+			"			}\r\n" + 
+			"		}\r\n" + 
 			"	},\r\n" + 
-			"	municipioDescarregamento : {\r\n" + 
-			"		codigo : "+nota.destinatario().endereco().municipio().codigo()+",\r\n" + 
-			"		nome : "+nota.destinatario().endereco().municipio().nome()+",\r\n" + 
-			"		uf : "+nota.destinatario().endereco().municipio().uf()+"\r\n" + 
+			"	destinatario : {\r\n" + 
+			"		endereco : {\r\n" + 
+			"			municipio : {\r\n" + 
+			"				codigo : %s,\r\n" + 
+			"				nome : \"%s\",\r\n" + 
+			"				uf : \"%s\"\r\n" + 
+			"			}\r\n" + 
+			"		}\r\n" + 
 			"	},\r\n" + 
-			"	valor : "+nota.total()+",\r\n" + 
-			"	pesoBruto : "+nota.transporte().volumes().stream().mapToDouble(s->s.pesoBruto()).sum() +",\r\n" + 
-			"	placaVeiculo : "+nota.transporte().veiculo().placa()+",\r\n" + 
-			"	condutor : {\r\n" + 
-			"		nome : "+nota.transporte().transportador().razaoSocial()+",\r\n" + 
-			"		cpf : 92103634853\r\n" + 
-			"	}\r\n" + 
-			"}";
+			"	tipoOperacao : \"%s\",\r\n" + 
+			"	total : %s,\r\n" + 
+			"	transportador : {\r\n" + 
+			"		nome : \"%s\",\r\n" + 
+			"		cpf : %s,\r\n" + 
+			"		cnpj : null\r\n" + 
+			"	},\r\n" + 
+			"	veiculo : {\r\n" + 
+			"		placa : {\r\n" + 
+			"			numero : \"%s\",\r\n" + 
+			"			uf : \"%s\"\r\n" + 
+			"		}\r\n" + 
+			"	},\r\n" + 
+			"	volumes : [{\r\n" + 
+			"		pesoBruto : %s\r\n" + 
+			"	}]\r\n" + 
+			"}",
+			nota.notaFiscalId(),
+			nota.chaveAcesso(),
+			nota.emitente().endereco().municipio().codigo(),
+			nota.emitente().endereco().municipio().nome(),
+			nota.emitente().endereco().municipio().uf(),
+			nota.destinatario().endereco().municipio().codigo(),
+			nota.destinatario().endereco().municipio().nome(),
+			nota.destinatario().endereco().municipio().uf(),
+			nota.tipoOperacao(),
+			String.format(Locale.ENGLISH, "%.2f", nota.total().valor()),
+			nota.transportador().get().razaoSocial(),
+			nota.transportador().get().cpf(),
+			nota.veiculo().get().placa().numero(),
+			nota.veiculo().get().placa().uf(),
+			String.format(Locale.ENGLISH, "%.2f", nota.volumes().iterator().next().pesoBruto())
+			);
 		
 		String responseBody = restTemplate.getForObject(
 				buildUrl("notas_fiscais/%s",nota.notaFiscalId()), 
 				String.class);
 		
+		System.out.println(JSON);
 		System.out.println(responseBody);
 		
-		JSONAssert.assertEquals(JSON, responseBody, true);
+		JSONAssert.assertEquals(JSON, responseBody, false);
 	}
 
-//	@Test(expected=HttpClientErrorException.class)
-//	public void recursoNaoEncontado() throws JSONException{
-//		restTemplate.getForEntity(buildUrl("empresas/1/veiculos?placa=INEXISTENTE"), String.class);
-//	}
-	
+	@Test(expected=HttpClientErrorException.class)
+	public void recursoNaoEncontado() throws JSONException{
+		restTemplate.getForEntity(buildUrl("notas_fiscais/xxxxxxxx"), String.class);
+	}
 	
 	private String buildUrl(String url,Object ... args){
 		

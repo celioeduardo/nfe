@@ -55,8 +55,7 @@ public class Cpf {
 
 	@Override
 	public String toString() {
-		return "Cpf [numero="+ numero
-				+ "]";
+		return String.valueOf(numero);
 	} 
 	/**
 	 * Somente para JPA

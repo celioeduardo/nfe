@@ -4,8 +4,10 @@ import static com.hadrion.util.NumeroUtil.randInt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
@@ -48,7 +50,10 @@ import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.Transportador;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.Veiculo;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.Volume;
 import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
@@ -932,6 +937,22 @@ public class NotaFiscal {
 
 	public boolean estaEmLote() {
 		return getSituacao() == Situacao.EM_LOTE;
+	}
+
+	public Optional<Transportador> transportador() {
+		return Optional.ofNullable(this.transporte())
+				.map(Transporte::transportador);
+	}
+
+	public Optional<Veiculo> veiculo() {
+		return Optional.ofNullable(this.transporte())
+				.map(Transporte::veiculo);
+	}
+
+	public Collection<Volume> volumes() {
+		return Optional.ofNullable(this.transporte())
+				.map(Transporte::volumes)
+				.orElse(Collections.emptyList());
 	}
 
 }
