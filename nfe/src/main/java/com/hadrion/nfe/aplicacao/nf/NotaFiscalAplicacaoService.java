@@ -6,6 +6,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -265,24 +267,39 @@ public class NotaFiscalAplicacaoService {
 
 	public String enviarNotas(EnviarNotasComando comando) {
 		Ambiente ambiente = Ambiente.valueOf(comando.getAmbiente());
-
+		
 		Lote lote = null;
-
-		System.out.println("hadrion gerando lote");
+		
+		Instant b = Instant.now();
 		if (ambiente == Ambiente.PRODUCAO)
 			lote = geracaoLoteService.gerarLoteEmProducao(notas(
 					comando.getIds(), ambiente));
 		else
 			lote = geracaoLoteService.gerarLoteEmHomologacao(notas(
 					comando.getIds(), ambiente));
-		System.out.println("hadrion salvando lote");
+		
+		Instant e = Instant.now();
+		Duration timeElapsed = Duration.between(b, e);
+		System.out.println("geracaoLoteService.gerarLoteEmProducao:..." +timeElapsed.toMillis());
+		
+		b = Instant.now();
 		loteRepositorio.salvar(lote);
-		System.out.println("hadrion enviando lote");	
-		enviarLoteService.enviar(lote);
-		System.out.println("hadrion salvando lote novamente");		
-		loteRepositorio.salvar(lote);
-		System.out.println("hadrion retornando id do lote");		
+		e = Instant.now();
+		timeElapsed = Duration.between(b, e);
+		System.out.println("loteRepositorio.salvar:..." +timeElapsed.toMillis());
 
+		b = Instant.now();
+		enviarLoteService.enviar(lote);
+		e = Instant.now();
+		timeElapsed = Duration.between(b, e);
+		System.out.println("enviarLoteService.enviar:..." +timeElapsed.toMillis());
+		
+		b = Instant.now();
+		loteRepositorio.salvar(lote);
+		e = Instant.now();
+		timeElapsed = Duration.between(b, e);
+		System.out.println("loteRepositorio.salvar:..." +timeElapsed.toMillis());
+				
 		return String.valueOf(lote.loteId());
 
 	}
@@ -335,16 +352,22 @@ public class NotaFiscalAplicacaoService {
 	}
 
 	private Set<NotaFiscal> notas(List<String> ids, Ambiente ambiente) {
-		List<NotaFiscalId> listaId = new ArrayList<NotaFiscalId>();
+		Instant b = Instant.now();
 
+		List<NotaFiscalId> listaId = new ArrayList<NotaFiscalId>();		
+		
 		for (String notaFiscalId : ids)
 			listaId.add(new NotaFiscalId(notaFiscalId));
 		
-		System.out.println("buscando no repositorio notas pendentes");
-		
-		return new HashSet<NotaFiscal>(
+		HashSet<NotaFiscal> result = new HashSet<NotaFiscal>(
 				notaFiscalRepositorio.notasPendentesAutorizacao(listaId,
 						ambiente));
+		
+		Instant e = Instant.now();
+		Duration timeElapsed = Duration.between(b, e);
+		System.out.println("NotaFiscalAplicacao.notas:..." +timeElapsed.toMillis());
+		
+		return result; 
 	}
 
 	private NotaFiscalData construir(NotaFiscal nf) {

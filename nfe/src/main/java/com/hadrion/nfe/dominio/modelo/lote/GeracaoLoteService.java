@@ -1,5 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,8 +46,14 @@ public class GeracaoLoteService {
 	
 	public Lote gerarLoteEmProducao(Set<NotaFiscal> notas) {
 		assertPreCondicoes(notas, Ambiente.PRODUCAO);
-		System.out.println("gerando lote em produção");
-		return Lote.gerarEmProducao(notas,empresaDasNotas(notas));
+		
+		Instant b = Instant.now();
+		Lote lote = Lote.gerarEmProducao(notas,empresaDasNotas(notas));
+		Instant e = Instant.now();
+		Duration timeElapsed = Duration.between(b, e);
+		System.out.println("GeracaoLoteService.gerarLoteEmProducao:..." +timeElapsed.toMillis());		
+		
+		return lote;
 	}
 	
 	private EmpresaId empresaDasNotas(Set<NotaFiscal> notas){

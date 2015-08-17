@@ -121,8 +121,7 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 		for (DescritorNotaFiscal descritor : descritores) 
 			result.add(descritor.notaFiscalId());
 		return result;
-	}
-	
+	}	
 
 	@Override
 	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas,Ambiente ambiente) {
@@ -132,7 +131,7 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 		
 		Instant e = Instant.now();
 		Duration timeElapsed = Duration.between(b, e);
-		System.out.println("sincronizarService.sincronizar ( milliseconds ):..." +timeElapsed.toMillis());
+		System.out.println("sincronizarService.sincronizar:..." +timeElapsed.toMillis());
 		
 		b = Instant.now();
 		
@@ -140,11 +139,9 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 		
 		e = Instant.now();
 		timeElapsed = Duration.between(b, e);
-		System.out.println("findByNotaFiscalIdInAndAmbiente ( milliseconds ):..." +timeElapsed.toMillis());
+		System.out.println("findByNotaFiscalIdInAndAmbiente:..." +timeElapsed.toMillis());
 		
 		return result;
-
-		
 	}
 	@Override
 	public NotaFiscal notaPendenteAutorizacao(NotaFiscalId notaFiscalId) {
