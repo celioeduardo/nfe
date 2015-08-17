@@ -19,11 +19,18 @@ Ext.define('nfe.view.nf.NotasAutorizadas', {
         reference: 'filtronf',
     	maxLength: 6
     }],
+    bbar:[{
+    	xtype: 'pagingtoolbar', 
+		bind:{
+			store: '{notasAutorizadas}'
+		}, 
+		displayInfo: true
+    }],
     bind:{
         store: '{notasAutorizadas}',
         selection: '{notasSelecionadas}'
     },
-    selType: 'checkboxmodel',
+    //selType: 'checkboxmodel',
     hideHeaders: true,
     columns: [
           {

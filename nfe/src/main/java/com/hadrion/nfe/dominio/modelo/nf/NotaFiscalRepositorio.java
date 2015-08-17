@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.hadrion.comum.paginacao.Pagina;
+import com.hadrion.comum.paginacao.Paginacao;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
@@ -27,14 +29,14 @@ public interface NotaFiscalRepositorio {
 	public void limpar();
 	public void salvar(NotaFiscal notaFiscal);
 	public NotaFiscal notaFiscalPelaChave(ChaveAcesso chave, Ambiente ambiente);
-	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente);
-	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente,Long numero);
-	public List<NotaFiscal> notasAutorizadas(FilialId filialId, Ambiente ambiente,NotistaId notistaId);
-	public List<NotaFiscal> notasCanceladas(FilialId filialId, Ambiente ambiente);
-	public List<NotaFiscal> notasCanceladas(FilialId filialId, Ambiente ambiente,NotistaId notistaId);
-	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente);
-	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente,Long numero);
-	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente,NotistaId notistaId);
+	public Pagina<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente, Paginacao paginacao);
+	public Pagina<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente,Long numero, Paginacao paginacao);
+	public Pagina<NotaFiscal> notasAutorizadas(FilialId filialId, Ambiente ambiente,NotistaId notistaId, Paginacao paginacao);
+	public Pagina<NotaFiscal> notasCanceladas(FilialId filialId, Ambiente ambient, Paginacao paginacao);
+	public Pagina<NotaFiscal> notasCanceladas(FilialId filialId, Ambiente ambiente,NotistaId notistaId, Paginacao paginacao);
+	public Pagina<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente, Paginacao paginacao);
+	public Pagina<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente,Long numero, Paginacao paginacao);
+	public Pagina<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente,NotistaId notistaId, Paginacao paginacao);
 	public NotaFiscal notaPendenteAutorizacao(NotaFiscalId notaFiscalId);
 
 	public List<NotaFiscal> notasAutorizadas(List<NotaFiscalId> ids);

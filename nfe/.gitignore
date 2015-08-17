@@ -25,6 +25,7 @@ temp
 
 nfe/.gradle
 /build
+.factorypath
 
 .temp/
 /gradlew.bat
@@ -32,3 +33,4 @@ nfe/.gradle
 ##/.gradle/
 /private.properties
 /gradle-app.setting
+/.apt_generated/

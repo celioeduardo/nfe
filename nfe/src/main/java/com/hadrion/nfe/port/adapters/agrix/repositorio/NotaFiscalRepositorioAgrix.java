@@ -16,6 +16,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hadrion.comum.paginacao.Pagina;
+import com.hadrion.comum.paginacao.Paginacao;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.filial.Filial;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
@@ -30,6 +32,8 @@ import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.agrix.AgrixUtil;
 import com.hadrion.nfe.port.adapters.persistencia.repositorio.NotaFiscalRepositorioSpringData;
+import com.hadrion.nfe.port.adapters.persistencia.repositorio.PageAdapter;
+import com.hadrion.nfe.port.adapters.persistencia.repositorio.PaginacaoAdapter;
 
 @Repository
 @Transactional
@@ -165,55 +169,75 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	}
 
 	@Override
-	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente) {
-		return repositorio.findByFilialIdAndSituacaoAndAmbiente(
-				filialId, Situacao.AUTORIZADA,ambiente,new Sort(Direction.DESC, "numero"));
+	public Pagina<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente,Paginacao paginacao) {
+		return new PageAdapter<NotaFiscal>(repositorio.findByFilialIdAndSituacaoAndAmbiente(
+				filialId, Situacao.AUTORIZADA,ambiente, 
+				new PaginacaoAdapter(paginacao,new Sort(Direction.DESC, "numero"))));
 	}
 
 	@Override
-	public List<NotaFiscal> notasAutorizadas(FilialId filialId,Ambiente ambiente,Long numero) {
-		return repositorio.findByFilialIdAndSituacaoAndAmbienteAndNumero(
-				filialId, Situacao.AUTORIZADA,ambiente,numero,new Sort(Direction.DESC, "numero"));
+	public Pagina<NotaFiscal> notasAutorizadas(
+			FilialId filialId,Ambiente ambiente,Long numero,Paginacao paginacao) {
+		return new PageAdapter<NotaFiscal>(
+				repositorio.findByFilialIdAndSituacaoAndAmbienteAndNumero(
+					filialId, Situacao.AUTORIZADA,ambiente,numero,
+					new PaginacaoAdapter(paginacao,new Sort(Direction.DESC, "numero"))));
 	}
 
 	@Override
-	public List<NotaFiscal> notasAutorizadas(FilialId filialId,
-			Ambiente ambiente, NotistaId notistaId) {
-		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(filialId, notistaId, 
-				Situacao.AUTORIZADA,ambiente,new Sort(Direction.DESC, "numero"));
+	public Pagina<NotaFiscal> notasAutorizadas(FilialId filialId,
+			Ambiente ambiente, NotistaId notistaId,Paginacao paginacao) {
+		return new PageAdapter<NotaFiscal>(
+				repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(filialId, notistaId, 
+						Situacao.AUTORIZADA,ambiente,
+						new PaginacaoAdapter(paginacao,new Sort(Direction.DESC, "numero"))));
 	}
 
 	@Override
-	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente) {
-		return repositorio.findByFilialIdAndSituacaoAndAmbienteAndDanfeImpresso(
-				filialId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "numero"));
+	public Pagina<NotaFiscal> notasAutorizadasNaoImpressas(
+			FilialId filialId,Ambiente ambiente, Paginacao paginacao) {
+		return new PageAdapter<NotaFiscal>(
+				repositorio.findByFilialIdAndSituacaoAndAmbienteAndDanfeImpresso(
+				filialId, Situacao.AUTORIZADA,ambiente,false,
+				new PaginacaoAdapter(paginacao,new Sort(Direction.DESC, "numero"))));
 	}
 
 	@Override
-	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,Ambiente ambiente,Long numero) {
-		return repositorio.findByFilialIdAndSituacaoAndAmbienteAndNumeroAndDanfeImpresso(
-				filialId, Situacao.AUTORIZADA,ambiente,numero,false,new Sort(Direction.DESC, "numero"));
+	public Pagina<NotaFiscal> notasAutorizadasNaoImpressas(
+			FilialId filialId,Ambiente ambiente,Long numero, Paginacao paginacao) {
+		return new PageAdapter<NotaFiscal>(
+				repositorio.findByFilialIdAndSituacaoAndAmbienteAndNumeroAndDanfeImpresso(
+				filialId, Situacao.AUTORIZADA,ambiente,numero,false,
+				new PaginacaoAdapter(paginacao,new Sort(Direction.DESC, "numero"))));
 	}
 
 	@Override
-	public List<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,
-			Ambiente ambiente, NotistaId notistaId) {
-		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbienteAndDanfeImpresso(
-				filialId, notistaId, Situacao.AUTORIZADA,ambiente,false,new Sort(Direction.DESC, "numero"));
+	public Pagina<NotaFiscal> notasAutorizadasNaoImpressas(FilialId filialId,
+			Ambiente ambiente, NotistaId notistaId, Paginacao paginacao) {
+		return new PageAdapter<NotaFiscal>(
+				repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbienteAndDanfeImpresso(
+				filialId, notistaId, Situacao.AUTORIZADA,ambiente,false,
+				new PaginacaoAdapter(paginacao,new Sort(Direction.DESC, "numero"))));
 	}
 
 	@Override
-	public List<NotaFiscal> notasCanceladas(FilialId filialId,
-			Ambiente ambiente, NotistaId notistaId) {
-		return repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(filialId, notistaId, 
-				Situacao.CANCELADA,ambiente,new Sort(Direction.DESC, "numero"));
+	public Pagina<NotaFiscal> notasCanceladas(FilialId filialId,
+			Ambiente ambiente, NotistaId notistaId, Paginacao paginacao) {
+		return new PageAdapter<NotaFiscal>(
+				repositorio.findByFilialIdAndNotistaIdAndSituacaoAndAmbiente(filialId, notistaId, 
+				Situacao.CANCELADA,ambiente,
+				new PaginacaoAdapter(paginacao,new Sort(Direction.DESC, "numero"))));
 	}
 
 	@Override
-	public List<NotaFiscal> notasCanceladas(FilialId filialId,
-			Ambiente ambiente) {
-		return repositorio.findByFilialIdAndSituacaoAndAmbiente(filialId,  
-				Situacao.CANCELADA,ambiente,new Sort(Direction.DESC, "numero"));
+	public Pagina<NotaFiscal> notasCanceladas(FilialId filialId,
+			Ambiente ambiente, Paginacao paginacao) {
+		return new PageAdapter<NotaFiscal>(
+			repositorio.findByFilialIdAndSituacaoAndAmbiente(
+				filialId,  
+				Situacao.CANCELADA,
+				ambiente,
+				new PaginacaoAdapter(paginacao,new Sort(Direction.DESC, "numero"))));
 	}
 
 	@Override
@@ -224,6 +248,5 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	public Optional<NotaFiscal> notaAutorizada(NotaFiscalId id) {
 		return repositorio.findByNotaFiscalIdAndSituacao(id, Situacao.AUTORIZADA);
 	}
-
 	
 }

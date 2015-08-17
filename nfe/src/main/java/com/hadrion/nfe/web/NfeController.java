@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hadrion.comum.paginacao.Paginacao;
 import com.hadrion.nfe.aplicacao.nf.CancelarNotaComando;
 import com.hadrion.nfe.aplicacao.nf.EnviarEmailComando;
 import com.hadrion.nfe.aplicacao.nf.EnviarNotasComando;
@@ -28,6 +30,7 @@ import com.hadrion.nfe.aplicacao.nf.NotaFiscalAplicacaoService;
 import com.hadrion.nfe.aplicacao.nf.RegistrarCartaCorrecaoComando;
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
+import com.hadrion.nfe.web.parsers.PaginacaoParser;
 import com.hadrion.util.xml.XmlUtil;
 
 @RestController
@@ -53,7 +56,7 @@ public class NfeController {
 	}
 	
 	@RequestMapping(value="/autorizadas_resumo", method = RequestMethod.GET)
-	public List<NotaFiscalData> autorizadasResumo(
+	public Retorno autorizadasResumo(
 			@RequestParam(value="ambiente") Ambiente ambiente ,
 			@RequestParam(value="empresa",required=false)Long empresa,
 			@RequestParam(value="filial")String filial,
@@ -62,28 +65,33 @@ public class NfeController {
 			@RequestParam(value="notista",required=false)String notista,
 			@RequestParam(value="notafiscalid",required=false)String notaFiscalId,
 			@RequestParam(value="nao_impressa",required=false)boolean naoImpressa,
-			@RequestParam(value="numero",required=false)Long numero){
+			@RequestParam(value="numero",required=false)Long numero,
+			HttpServletRequest req){
+		
+		Paginacao paginacao = new PaginacaoParser(req).parse();
 		
 		if (naoImpressa)
-			return notaFiscalAplicacaoService.notasFicaisAutorizadasNaoImpressasResumo(
-					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId,numero);
+			return new Retorno(notaFiscalAplicacaoService.notasFicaisAutorizadasNaoImpressasResumo(
+					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId,numero, paginacao));
 		else
-			return notaFiscalAplicacaoService.notasFicaisAutorizadasResumo(
-					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId,numero);
+			return new Retorno(notaFiscalAplicacaoService.notasFicaisAutorizadasResumo(
+					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId,numero, paginacao));
 	}
 	
 	@RequestMapping(value="/canceladas_resumo", method = RequestMethod.GET)
-	public List<NotaFiscalData> canceladasResumo(
+	public Retorno canceladasResumo(
 			@RequestParam(value="ambiente") Ambiente ambiente ,
 			@RequestParam(value="empresa",required=false)Long empresa,
 			@RequestParam(value="filial")String filial,
 			@RequestParam(value="inicio",required=false)Date inicio,
 			@RequestParam(value="fim",required=false)Date fim,
 			@RequestParam(value="notista",required=false)String notista,
-			@RequestParam(value="notafiscalid",required=false)String notaFiscalId){
+			@RequestParam(value="notafiscalid",required=false)String notaFiscalId,
+			HttpServletRequest req){
 		
-			return notaFiscalAplicacaoService.notasFicaisCanceladasResumo(
-					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId);
+			return new Retorno(notaFiscalAplicacaoService.notasFicaisCanceladasResumo(
+					ambiente,empresa,filial,inicio,fim,notista,notaFiscalId,
+					new PaginacaoParser(req).parse()));
 	}
 	
 	@RequestMapping(value = "/pre_visualizar_danfe", method = RequestMethod.GET)

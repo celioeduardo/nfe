@@ -54,6 +54,9 @@ import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.hadrion.comum.paginacao.Pagina;
+import com.hadrion.comum.paginacao.PaginaList;
+import com.hadrion.comum.paginacao.Paginacao;
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
 import com.hadrion.nfe.dominio.config.MailProperties;
 import com.hadrion.nfe.dominio.config.MailProperties.Server;
@@ -162,75 +165,78 @@ public class NotaFiscalAplicacaoService {
 		return result;
 	}
 
-	public List<NotaFiscalData> notasFicaisAutorizadasResumo(Ambiente ambiente,
+	public Pagina<NotaFiscalData> notasFicaisAutorizadasResumo(Ambiente ambiente,
 			Long empresa, String filial, Date inicio, Date fim,
-			String notistaId, String notaFiscalId,Long numero) {
+			String notistaId, String notaFiscalId,Long numero, Paginacao paginacao) {
 
-		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
-
-		List<NotaFiscal> notas = null;
+		Pagina<NotaFiscal> notas = null;
 		if (notistaId != null && !notistaId.isEmpty())
 			notas = notaFiscalRepositorio.notasAutorizadas(
-					new FilialId(filial), ambiente, new NotistaId(notistaId));
+					new FilialId(filial), ambiente, new NotistaId(notistaId),paginacao);
 		else
 			if (numero==null)
 				notas = notaFiscalRepositorio.notasAutorizadas(
-						new FilialId(filial), ambiente);
+						new FilialId(filial), ambiente,paginacao);
 			else
 				notas = notaFiscalRepositorio.notasAutorizadas(
-						new FilialId(filial), ambiente, numero);
-
-		for (NotaFiscal nf : notas)
-			result.add(construir(nf));
-
-		return result;
+						new FilialId(filial), ambiente, numero,paginacao);
+		
+		return new PaginaList<NotaFiscalData>(
+				notas.stream()
+					.map(nf -> construir(nf))
+					.collect(Collectors.toList()), 
+				notas.getTotalDePaginas(), 
+				notas.getTotalDeElementos(), 
+				notas.getNumeroDeElementos());
 
 	}
-	public List<NotaFiscalData> notasFicaisCanceladasResumo(Ambiente ambiente,
+	public Pagina<NotaFiscalData> notasFicaisCanceladasResumo(Ambiente ambiente,
 			Long empresa, String filial, Date inicio, Date fim,
-			String notistaId, String notaFiscalId) {
+			String notistaId, String notaFiscalId, Paginacao paginacao) {
 		
-		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
-		
-		List<NotaFiscal> notas = null;
+		Pagina<NotaFiscal> notas = null;
 		if (notistaId != null && !notistaId.isEmpty())
 			notas = notaFiscalRepositorio.notasCanceladas(
-					new FilialId(filial), ambiente, new NotistaId(notistaId));
+					new FilialId(filial), ambiente, new NotistaId(notistaId),paginacao);
 		else
 			notas = notaFiscalRepositorio.notasCanceladas(
-					new FilialId(filial), ambiente);
+					new FilialId(filial), ambiente,paginacao);
 		
-		for (NotaFiscal nf : notas)
-			result.add(construir(nf));
-		
-		return result;
-		
+		return new PaginaList<NotaFiscalData>(
+				notas.stream()
+					.map(nf -> construir(nf))
+					.collect(Collectors.toList()), 
+				notas.getTotalDePaginas(), 
+				notas.getTotalDeElementos(), 
+				notas.getNumeroDeElementos());
 	}
 
-	public List<NotaFiscalData> notasFicaisAutorizadasNaoImpressasResumo(
+	public Pagina<NotaFiscalData> notasFicaisAutorizadasNaoImpressasResumo(
 			Ambiente ambiente, Long empresa, String filial, Date inicio,
-			Date fim, String notistaId, String notaFiscalId,Long numero) {
+			Date fim, String notistaId, String notaFiscalId,Long numero,
+			Paginacao paginacao) {
 
-		List<NotaFiscalData> result = new ArrayList<NotaFiscalData>();
-
-		List<NotaFiscal> notas = null;
+		Pagina<NotaFiscal> notas = null;
 
 		if (notistaId != null && !notistaId.isEmpty())
 			notas = notaFiscalRepositorio.notasAutorizadasNaoImpressas(
-					new FilialId(filial), ambiente, new NotistaId(notistaId));
+					new FilialId(filial), ambiente, new NotistaId(notistaId),paginacao);
 		else
 			if (numero==null)
 				notas = notaFiscalRepositorio.notasAutorizadasNaoImpressas(
-						new FilialId(filial), ambiente);
+						new FilialId(filial), ambiente, paginacao);
 			else
 				notas = notaFiscalRepositorio.notasAutorizadasNaoImpressas(
-						new FilialId(filial), ambiente, numero);
-
-		for (NotaFiscal nf : notas)
-			result.add(construir(nf));
-
-		return result;
-
+						new FilialId(filial), ambiente, numero, paginacao);
+		
+		return new PaginaList<NotaFiscalData>(
+				notas.stream()
+					.map(nf -> construir(nf))
+					.collect(Collectors.toList()), 
+				notas.getTotalDePaginas(), 
+				notas.getTotalDeElementos(), 
+				notas.getNumeroDeElementos());
+		
 	}
 
 	public ResponseEntity<InputStreamResource> imprimirDanfe(String notaFiscalId)
