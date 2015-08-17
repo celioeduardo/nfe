@@ -1,5 +1,7 @@
 package com.hadrion.nfe.port.adapters.agrix.repositorio;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -124,10 +126,25 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 
 	@Override
 	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas,Ambiente ambiente) {
-		System.out.println("sincoronizando");
+		Instant b = Instant.now();
+		
 		sincronizarService.sincronizar(notas,ambiente);
-		System.out.println("findby notas por ambiente");
-		return repositorio.findByNotaFiscalIdInAndAmbiente(notas,ambiente);
+		
+		Instant e = Instant.now();
+		Duration timeElapsed = Duration.between(b, e);
+		System.out.println("sincronizarService.sincronizar ( milliseconds ):..." +timeElapsed.toMillis());
+		
+		b = Instant.now();
+		
+		List<NotaFiscal> result = repositorio.findByNotaFiscalIdInAndAmbiente(notas,ambiente);
+		
+		e = Instant.now();
+		timeElapsed = Duration.between(b, e);
+		System.out.println("findByNotaFiscalIdInAndAmbiente ( milliseconds ):..." +timeElapsed.toMillis());
+		
+		return result;
+
+		
 	}
 	@Override
 	public NotaFiscal notaPendenteAutorizacao(NotaFiscalId notaFiscalId) {
