@@ -25,7 +25,7 @@ public class Validador {
 		factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
 		
 		try {
-			factory.setResourceResolver(new ResourceResolver("xsd/PL_008e/"));
+			factory.setResourceResolver(new ResourceResolver("xsd/PL_008g/"));
 			schema = factory.newSchema(source);
 		} catch (SAXException e) {
 			manipuladorErro.registrarErro("Erro ao ler XML Schema: "+e.getMessage());
