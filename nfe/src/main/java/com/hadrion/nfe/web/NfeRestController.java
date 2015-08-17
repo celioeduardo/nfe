@@ -31,7 +31,7 @@ public class NfeRestController extends AbstractRestController {
 		
 		return ids.size() == 1 ?
 				notaFiscalAplicacaoService.notaFiscalAutorizada(ids.get(0))
-					.orElseThrow(RecursoNaoEncontradoException::new):
+					.orElseThrow(()->new RecursoNaoEncontradoException()):
 				notaFiscalAplicacaoService.notasFiscaisAutorizadas(ids);
 	}
 	
