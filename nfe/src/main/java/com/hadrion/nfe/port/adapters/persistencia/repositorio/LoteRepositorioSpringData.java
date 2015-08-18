@@ -3,11 +3,13 @@ package com.hadrion.nfe.port.adapters.persistencia.repositorio;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
 import com.hadrion.nfe.dominio.modelo.lote.LoteId;
 import com.hadrion.nfe.dominio.modelo.lote.SituacaoLote;
+import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 
 public interface LoteRepositorioSpringData extends JpaRepository<Lote, Long>{
@@ -19,7 +21,7 @@ public interface LoteRepositorioSpringData extends JpaRepository<Lote, Long>{
 	List<Lote> findBySituacaoAndFilialIdAndNotistaId(SituacaoLote processando,
 			FilialId filialId, NotistaId notistaId);
 	
-//	@Query("select l from Lote l where l.notas.notaFiscalId = ?1")
-//	List<Lote> findLotesDaNotaFiscal(NotaFiscalId notaFiscalId);
+	@Query("select l from Lote l join fetch l.notas nf where nf.notaFiscalId = ?1")
+	List<Lote> findLotesDaNotaFiscal(NotaFiscalId notaFiscalId);
 	
 }

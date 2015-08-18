@@ -341,6 +341,12 @@ public class NotaFiscalFixture {
 		return nf;
 	}
 	
+	public NotaFiscal nfEmHomologacaoPersistidaParaTest() {
+		NotaFiscal nf = nfEmHomologacao(notaFiscalRepositorio.proximaIdentidade());
+		nf.emitida();
+		notaFiscalRepositorio.salvar(nf);
+		return nf;
+	}
 	public NotaFiscal nfEmHomologacaoAutorizadaPersistidaParaTest() {
 		NotaFiscal nf = nfEmHomologacao(notaFiscalRepositorio.proximaIdentidade());
 		nf.emitida();

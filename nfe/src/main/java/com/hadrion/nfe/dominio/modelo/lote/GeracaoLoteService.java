@@ -94,7 +94,9 @@ public class GeracaoLoteService {
 						"Nota Fiscal "+nf.numero()+
 						" gerada em ambiente diferente. ["+nf.ambiente()+"]");
 			
+			logger.debug("veficando se Nota está pendente em outros lotes...");
 			assertNotaNaoEstaPendenteEmOutrosLotes(nf, ambiente);
+			logger.debug("veficação completada");
 		}
 	}
 	

@@ -40,14 +40,16 @@ public class LoteRepositorioJpa implements LoteRepositorio {
 	
 	@Override
 	public Set<Lote> lotesDaNota(NotaFiscalId notaFiscalId) {
-		Set<Lote> result = new HashSet<Lote>();
-
-		for (Lote lote : repositorio.findAll()) {
-			if (lote.temNota(notaFiscalId))
-				result.add(lote);
-				
-		}
-		return result;
+		return new HashSet<Lote>(repositorio.findLotesDaNotaFiscal(notaFiscalId));
+		
+//		Set<Lote> result = new HashSet<Lote>();
+//
+//		for (Lote lote : repositorio.findAll()) {
+//			if (lote.temNota(notaFiscalId))
+//				result.add(lote);
+//				
+//		}
+//		return result;
 	}
 
 	@Override

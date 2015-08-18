@@ -422,4 +422,29 @@ public class Lote {
 	public Uf uf() {
 		return uf;
 	}
+	
+	@Override
+	public boolean equals(Object objeto) {
+		boolean objetosIguais = false;
+
+		if (objeto != null && this.getClass() == objeto.getClass()) {
+			Lote objetoTipado = (Lote) objeto;
+			objetosIguais = this.loteId().equals(objetoTipado.loteId());
+		}
+
+		return objetosIguais;
+	}
+
+	@Override
+	public int hashCode() {
+		int hashCodeValue = 
+				+ (275 * 51) 
+				+ this.loteId().hashCode();
+		return hashCodeValue;
+	}
+	
+	@Override
+	public String toString() {
+		return "Lote [loteId="+loteId()+"]";
+	}
 }
