@@ -68,9 +68,7 @@ public class SoapConsultaProcessamentoLoteServiceAdapter implements ConsultaProc
 						SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
 						Transformer transformer = TransformerFactory.newInstance().newTransformer();
 						transformer.transform(ss, soapHeader.getResult());
-						//BUG - Precisa dessa chamada aqui para atualizar o Header do Envelope SOAP.
-						//arg.writeTo(System.out);
-						//arg.writeTo(new NullOutputStream());
+						//TODO logger
 					}
 				},
 				result);
