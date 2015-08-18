@@ -6,8 +6,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,6 +40,8 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
@@ -125,6 +125,8 @@ public class NotaFiscalAplicacaoService {
 	
 	@Autowired
 	private RegistrarCartaCorrecaoService registrarCartaCorrecaoService;
+	
+	private static final Logger logger=LoggerFactory.getLogger(NotaFiscalAplicacaoService.class);
 	
 	public List<NotaFiscalData> notasFicaisPendentesAutorizacaoResumo(
 			Ambiente ambiente, Long empresa, String filial, Date inicio,
@@ -270,7 +272,7 @@ public class NotaFiscalAplicacaoService {
 		
 		Lote lote = null;
 		
-		Instant b = Instant.now();
+		logger.debug("entrando no método enviarNotas...");
 		if (ambiente == Ambiente.PRODUCAO)
 			lote = geracaoLoteService.gerarLoteEmProducao(notas(
 					comando.getIds(), ambiente));
@@ -278,28 +280,21 @@ public class NotaFiscalAplicacaoService {
 			lote = geracaoLoteService.gerarLoteEmHomologacao(notas(
 					comando.getIds(), ambiente));
 		
-		Instant e = Instant.now();
-		Duration timeElapsed = Duration.between(b, e);
-		System.out.println("geracaoLoteService.gerarLoteEmProducao:..." +timeElapsed.toMillis());
 		
-		b = Instant.now();
+		logger.debug("salvando lote...");
 		loteRepositorio.salvar(lote);
-		e = Instant.now();
-		timeElapsed = Duration.between(b, e);
-		System.out.println("loteRepositorio.salvar:..." +timeElapsed.toMillis());
-
-		b = Instant.now();
+		logger.debug("lote salvo.");
+		
+		logger.debug("enviando lote...");
 		enviarLoteService.enviar(lote);
-		e = Instant.now();
-		timeElapsed = Duration.between(b, e);
-		System.out.println("enviarLoteService.enviar:..." +timeElapsed.toMillis());
+		logger.debug("lote enviado.");
 		
-		b = Instant.now();
+		logger.debug("salvando lote depois do envio...");
 		loteRepositorio.salvar(lote);
-		e = Instant.now();
-		timeElapsed = Duration.between(b, e);
-		System.out.println("loteRepositorio.salvar:..." +timeElapsed.toMillis());
-				
+		logger.debug("lote salvo depois do envio.");
+		
+		logger.debug("saindo do método enviarNotas...");
+		
 		return String.valueOf(lote.loteId());
 
 	}
@@ -352,20 +347,21 @@ public class NotaFiscalAplicacaoService {
 	}
 
 	private Set<NotaFiscal> notas(List<String> ids, Ambiente ambiente) {
-		Instant b = Instant.now();
-
+		
+		logger.debug("buscando {} nota(s)...",ids.size());
+		
 		List<NotaFiscalId> listaId = new ArrayList<NotaFiscalId>();		
 		
 		for (String notaFiscalId : ids)
 			listaId.add(new NotaFiscalId(notaFiscalId));
 		
+		logger.debug("pesquisando no repositório {} ids ...",ids.size());
 		HashSet<NotaFiscal> result = new HashSet<NotaFiscal>(
 				notaFiscalRepositorio.notasPendentesAutorizacao(listaId,
 						ambiente));
+		logger.debug("pesquisa completada");
 		
-		Instant e = Instant.now();
-		Duration timeElapsed = Duration.between(b, e);
-		System.out.println("NotaFiscalAplicacao.notas:..." +timeElapsed.toMillis());
+		logger.debug("busca completada");
 		
 		return result; 
 	}

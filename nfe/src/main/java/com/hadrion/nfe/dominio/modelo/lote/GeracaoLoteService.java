@@ -1,10 +1,10 @@
 package com.hadrion.nfe.dominio.modelo.lote;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +28,8 @@ public class GeracaoLoteService {
 	@Autowired
 	private LoteRepositorio loteRepositorio;
 	
+	private static final Logger logger = LoggerFactory.getLogger(GeracaoLoteService.class);
+	
 	public Lote gerarLoteEmHomologacao(NotaFiscal nota){
 		Set<NotaFiscal> notas = new HashSet<NotaFiscal>();
 		notas.add(nota);
@@ -47,16 +49,19 @@ public class GeracaoLoteService {
 	public Lote gerarLoteEmProducao(Set<NotaFiscal> notas) {
 		assertPreCondicoes(notas, Ambiente.PRODUCAO);
 		
-		Instant b = Instant.now();
+		logger.debug("gerando lote em produção de {} nota(s)...",notas.size()); 
+		
 		Lote lote = Lote.gerarEmProducao(notas,empresaDasNotas(notas));
-		Instant e = Instant.now();
-		Duration timeElapsed = Duration.between(b, e);
-		System.out.println("GeracaoLoteService.gerarLoteEmProducao:..." +timeElapsed.toMillis());		
+		
+		logger.debug("lote {} gerado",lote.numero());
 		
 		return lote;
 	}
 	
 	private EmpresaId empresaDasNotas(Set<NotaFiscal> notas){
+		
+		logger.debug("definindo empresa das notas...");
+		
 		EmpresaId empresaId = null;
 		
 		Set<FilialId> filiais = new HashSet<FilialId>();
@@ -72,6 +77,8 @@ public class GeracaoLoteService {
 					filiais.add(nf.filialId());
 			}
 		}
+		
+		logger.debug("empresa das notas definida");
 		
 		return empresaId;
 	}

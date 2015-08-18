@@ -1,7 +1,5 @@
 package com.hadrion.nfe.port.adapters.agrix.repositorio;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -12,6 +10,8 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -59,6 +59,8 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 	
 	@Autowired
 	private EntityManager em;
+	
+	private static final Logger logger = LoggerFactory.getLogger(NotaFiscalRepositorioAgrix.class);
 	
 	@Override
 	public List<DescritorNotaFiscal> notasPendentesAutorizacaoResumo(
@@ -125,21 +127,15 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 
 	@Override
 	public List<NotaFiscal> notasPendentesAutorizacao(List<NotaFiscalId> notas,Ambiente ambiente) {
-		Instant b = Instant.now();
 		
+		logger.debug("sincronizando {} nota(s)...",notas.size());
 		sincronizarService.sincronizar(notas,ambiente);
+		logger.debug("notas sincronizadas",notas.size());
 		
-		Instant e = Instant.now();
-		Duration timeElapsed = Duration.between(b, e);
-		System.out.println("sincronizarService.sincronizar:..." +timeElapsed.toMillis());
 		
-		b = Instant.now();
-		
+		logger.debug("pesquisando {} notas na base local",notas.size());
 		List<NotaFiscal> result = repositorio.findByNotaFiscalIdInAndAmbiente(notas,ambiente);
-		
-		e = Instant.now();
-		timeElapsed = Duration.between(b, e);
-		System.out.println("findByNotaFiscalIdInAndAmbiente:..." +timeElapsed.toMillis());
+		logger.debug("pesquisa concluída");
 		
 		return result;
 	}

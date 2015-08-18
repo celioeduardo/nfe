@@ -22,6 +22,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.DominioRegistro;
 import com.hadrion.nfe.dominio.modelo.empresa.EmpresaId;
@@ -105,6 +108,8 @@ public class Lote {
     @Column(name="VERSAO")
     private int versaoConcorrencia;
 	
+	private static final Logger logger = LoggerFactory.getLogger(Lote.class);
+	
 	public int quantidadeNotas() {
 		return notas.size();
 	}
@@ -148,6 +153,8 @@ public class Lote {
 			Ambiente ambiente,
 			EmpresaId empresaId){
 		
+		logger.debug("entrando no constructor do Lote... {} notas", notas.size());
+		
 		this.loteId = loteId;
 		this.situacao = SituacaoLote.NAO_ENVIADO;
 		this.notas = new HashSet<LoteNotaFiscal>();
@@ -162,10 +169,12 @@ public class Lote {
 			this.notas.add(
 					new LoteNotaFiscal(notaFiscal,ambiente));
 			
+			logger.debug("disparando evento NotaFiscalAdicionadaNoLote -[{}]", notaFiscal.numero());
+			
 			DominioRegistro.eventoDominioPublicador()
 				.publicar(new NotaFiscalAdicionadaNoLote(
 						notaFiscal.notaFiscalId(), loteId));
-			
+			logger.debug("evento disparado", notaFiscal.numero());
 		}
 	}
 	
