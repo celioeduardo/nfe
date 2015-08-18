@@ -1,11 +1,5 @@
 package com.hadrion.nfe.port.adapters.messaging.rabbitmq;
 
-import java.io.IOException;
-
-import javax.mail.MessagingException;
-
-import net.sf.jasperreports.engine.JRException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -41,8 +35,8 @@ public class RabbitMQEnvioEmailNotaFiscalAutorizadaListener extends RabbitNfeEve
 		
 		try {
 			notaFiscalAplicacaoService.enviarEmail(comando);
-		} catch (RuntimeException | IOException | MessagingException | JRException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			
 		}
 	}
 

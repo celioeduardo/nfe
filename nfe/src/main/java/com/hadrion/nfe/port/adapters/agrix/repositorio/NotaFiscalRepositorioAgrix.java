@@ -140,6 +140,15 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 		return result;
 	}
 	@Override
+	public List<NotaFiscal> notasNaoAutorizadas(List<NotaFiscalId> notas,Ambiente ambiente) {
+		
+		logger.debug("notasNaoAutorizadas->pesquisando {} notas na base local",notas.size());
+		List<NotaFiscal> result = repositorio.findByNotaFiscalIdInAndAmbiente(notas,ambiente);
+		logger.debug("notasNaoAutorizadas->pesquisa concluída");
+		
+		return result;
+	}
+	@Override
 	public NotaFiscal notaPendenteAutorizacao(NotaFiscalId notaFiscalId) {
 		Ambiente ambiente = AgrixUtil.ambientePelaNotaFiscalId(notaFiscalId);
 		sincronizarService.sincronizar(Collections.singletonList(notaFiscalId),ambiente);

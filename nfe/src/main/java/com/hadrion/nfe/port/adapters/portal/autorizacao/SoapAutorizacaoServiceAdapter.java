@@ -149,7 +149,7 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 	
 	private Set<NotaFiscal> notasDoLote(Lote lote){
 		List<NotaFiscalId> notas = new ArrayList<NotaFiscalId>(lote.notas());
-		return new HashSet<NotaFiscal>(notaFiscalRepositorio.notasPendentesAutorizacao(notas,lote.ambiente()));
+		return new HashSet<NotaFiscal>(notaFiscalRepositorio.notasNaoAutorizadas(notas,lote.ambiente()));
 	}
 	
 	private String nfeCabecMsg(Lote lote){

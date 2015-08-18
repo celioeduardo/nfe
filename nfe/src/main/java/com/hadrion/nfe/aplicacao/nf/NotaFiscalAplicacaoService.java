@@ -477,6 +477,8 @@ public class NotaFiscalAplicacaoService {
 	
 	public void enviarEmailXmlEDanfe(NotaFiscal nf) throws IOException, MessagingException, JRException {
 		
+		SimpleMailMessage message = smm(nf);
+
 		Server server = configuracaoEmail(nf.filialId());
 		
 		if (server == null)
@@ -490,9 +492,6 @@ public class NotaFiscalAplicacaoService {
 		
 		if (server.getTrust() != null)
 			properties.put("mail.smtp.ssl.trust", server.getTrust());
-
-//		if (server.getDebug() != null)
-//			properties.put("mail.debug", server.getDebug());
 		
 		mailSender.setJavaMailProperties(properties);
 		mailSender.setUsername(server.getUsername());
@@ -506,8 +505,6 @@ public class NotaFiscalAplicacaoService {
 		
 		Document xml = gerarXml(nf);		
 		byte[] pdf = gerarDanfe(xml,nf);
-		
-		SimpleMailMessage message = smm(nf);
 		
 		helper.setFrom(message.getFrom());
 		helper.setTo(message.getTo());
