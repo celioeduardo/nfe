@@ -6,7 +6,7 @@ Ext.define('nfe.model.NotaFiscal', {
 		    {name: 'emissao', type: 'date'},
 		    {name: 'dataHoraAutorizacao', type: 'date'},
 		    {name: 'dataHoraCancelamento', type: 'date'},
-		    'valor',
+		    'total',
 		    'publicoTipo',
 		    'publicoCodigo',
 		    'publicoNome',

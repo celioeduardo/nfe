@@ -33,7 +33,7 @@ Ext.define('nfe.view.nf.NotasCanceladas', {
           xtype:'numbercolumn',
           width: 150,                
           format:'0.00',
-          dataIndex: 'valor',
+          dataIndex: 'total',
           renderer: 'rendererValor',
           align: 'right'
       },{

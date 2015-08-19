@@ -38,7 +38,7 @@ Ext.define('nfe.view.nf.NotasPendentes', {
             xtype:'numbercolumn',
             width: 150,                
             format:'0.00',
-            dataIndex: 'valor',
+            dataIndex: 'total',
             renderer: 'rendererValor',
             align: 'right'
         },{
