@@ -10,26 +10,32 @@ import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 
 public class Importacao {
 	
-	private int numeroDi;
-	private Date dataDi;
+	private int numero;
+	private Date emissao;
 	private String localDesembarque;
 	private Uf ufDesembarque;
 	private Date dataDesembarque;
 	private ViaTransporte viaTransporte;
-	private Double codigoExportador;
+	private String codigoExportador;
 	private Adicao adicao;
-	public Importacao(int numeroDi, Date dataDi, String localDesembarque,
-			Uf ufDesembarque, Date dataDesembarque, ViaTransporte viaTransporte,
-			Double codigoExportador,
+	public Importacao(int numero,Date data,String localDesembarque,Uf ufDesembarque, 
+			Date dataDesembarque,ViaTransporte viaTransporte,String codigoExportador,
 			Adicao adicao) {
-		this.numeroDi=numeroDi;
-		this.dataDi=dataDi;
+		this.numero=numero;
+		this.emissao=data;
 		this.localDesembarque=localDesembarque;
 		this.ufDesembarque=ufDesembarque;
 		this.dataDesembarque=dataDesembarque;
 		this.viaTransporte=viaTransporte;
 		this.codigoExportador=codigoExportador;
 		this.adicao=adicao;
+	}
+	public int numero() {
+		return this.numero;
+	}
+	
+	public Date emissao() {
+		return emissao;
 	}
 
 	@Override
@@ -39,8 +45,8 @@ public class Importacao {
 		if (objeto != null && this.getClass() == objeto.getClass()) {
 			Importacao objetoTipado = (Importacao) objeto;
 			objetosIguais = new EqualsBuilder()
-				.append(numeroDi,objetoTipado.numeroDi)
-				.append(dataDi,objetoTipado.dataDi)
+				.append(numero,objetoTipado.numero)
+				.append(emissao,objetoTipado.emissao)
 				.append(localDesembarque,objetoTipado.localDesembarque)
 				.append(ufDesembarque,objetoTipado.ufDesembarque)
 				.append(dataDesembarque,objetoTipado.dataDesembarque)
@@ -56,8 +62,8 @@ public class Importacao {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder(1327,171)
-			.append(numeroDi)
-			.append(dataDi)
+			.append(numero)
+			.append(emissao)
 			.append(localDesembarque)
 			.append(ufDesembarque)
 			.append(dataDesembarque)
@@ -69,8 +75,8 @@ public class Importacao {
 
 	@Override
 	public String toString() {
-		return "Importacao [numeroDi=" + numeroDi
-				+ ",dataDi="+ dataDi
+		return "Importacao [numeroDi=" + numero
+				+ ",dataDi="+ emissao
 				+ ",localDesembarque="+ localDesembarque
 				+ ",ufDesembarque="+ ufDesembarque
 				+ ",dataDesembarque="+ dataDesembarque
@@ -85,5 +91,6 @@ public class Importacao {
 	 */
 	@SuppressWarnings("unused")
 	private Importacao(){}
+
 
 }

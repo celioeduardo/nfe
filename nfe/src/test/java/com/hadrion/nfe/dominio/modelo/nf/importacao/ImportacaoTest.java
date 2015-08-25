@@ -18,7 +18,7 @@ public class ImportacaoTest {
 		Uf ufDesembarque = Uf.SP; 
 		Date dataDesembarque= DataUtil.agora();
 		ViaTransporte viaTransporte = ViaTransporte.MARITIMA;
-		Double codigoExportador = 1.0;
+		String codigoExportador = "1a";
 
 		int numeroAdicao = 1;
 		int sequencia = 1;
