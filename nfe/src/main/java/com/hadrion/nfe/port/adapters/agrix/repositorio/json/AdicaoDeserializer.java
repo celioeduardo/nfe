@@ -1,18 +1,14 @@
 package com.hadrion.nfe.port.adapters.agrix.repositorio.json;
 
-import static com.hadrion.util.DataUtil.data;
-import static com.hadrion.util.DataUtil.dataHora;
-
 import java.lang.reflect.Type;
-import java.util.Date;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.importacao.Adicao;
+import com.hadrion.nfe.tipos.Dinheiro;
 
 public class AdicaoDeserializer implements JsonDeserializer<Adicao>{
 
@@ -22,18 +18,42 @@ public class AdicaoDeserializer implements JsonDeserializer<Adicao>{
 		
 		final JsonObject j = jsonSource.getAsJsonObject();
 		
-		return new Adicao(1,1,"");
-		
+		return new Adicao(
+				numero(j),
+				sequencia(j),
+				codigoFabricante(j),
+				desconto(j),
+				drawback(j),
+				pedido(j),
+				itemPedido(j));		
 	}
 	
-	private Uf ufTerceiro(JsonObject j){
-		if (!tem(j,"UFTerceiro")) 
-			return null;
-		return Uf.valueOf(s(j,"UFTerceiro"));
+	private int numero(JsonObject j){
+		return i(j,"nAdicao"); 
 	}
 	
-	private Long l(JsonObject j, String propriedade){
-		return j.get(propriedade).getAsLong();
+	private int sequencia(JsonObject j){
+		return i(j,"nSeqAdicC"); 
+	}
+	
+	private String codigoFabricante(JsonObject j){
+		return s(j,"cFabricante"); 
+	}
+	
+	private Dinheiro desconto(JsonObject j){
+		return new Dinheiro(d(j,"vDescDI")); 
+	}
+	
+	private int drawback(JsonObject j){
+		return i(j,"nDraw"); 
+	}
+	
+	private int pedido(JsonObject j){
+		return i(j,"xPed"); 
+	}
+	
+	private int itemPedido(JsonObject j){
+		return i(j,"nItemPed"); 
 	}
 	
 	private int i(JsonObject j, String propriedade){
@@ -47,13 +67,8 @@ public class AdicaoDeserializer implements JsonDeserializer<Adicao>{
 	private String s(JsonObject j, String propriedade){
 		return j.has(propriedade) ? j.get(propriedade).getAsString() : null;
 	}
+	
 	boolean tem(JsonObject j, String propriedade){
 		return j.has(propriedade);
-	}
-	private Date parseDataHora(String s) {
-		if (s.length() > 8)
-			return dataHora(s);
-		else
-			return data(s);
 	}
 }

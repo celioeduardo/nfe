@@ -5,6 +5,7 @@ import static com.hadrion.util.DataUtil.dataHora;
 
 import java.lang.reflect.Type;
 import java.util.Date;
+import java.util.Set;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -39,9 +40,16 @@ public class ImportacaoDeserializer implements JsonDeserializer<Importacao>{
 				intermediacao(j),
 				cnpjTerceiro(j),
 				ufTerceiro(j),
-				new Adicao(1,1,""));
+				adicoes(j));
 		
 		return importacao;
+	}
+
+	private Set<Adicao> adicoes(JsonObject j){
+		if (tem(j,"adicoes")){
+			return new ImportacaoTradutorJson(j.get("adicoes").toString()).converterAdicoes();
+		}
+		return null;
 	}
 	private Dinheiro valorArfmm(JsonObject j){
 		if (!tem(j,"vAFRMM")) 

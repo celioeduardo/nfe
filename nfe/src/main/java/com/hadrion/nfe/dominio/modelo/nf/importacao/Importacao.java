@@ -4,6 +4,7 @@ import static com.hadrion.comum.Afirmacao.assertArgumentoNaoNulo;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -26,11 +27,11 @@ public class Importacao {
 	private Optional<Dinheiro> valorArfmm;
 	private Optional<Cnpj> cnpjTerceiro;
 	private Optional<Uf> ufTerceiro;
-	private Adicao adicao;
+	private Set<Adicao> adicoes;
 	public Importacao(int numero,Date data,String localDesembarque,Uf ufDesembarque, 
 			Date dataDesembarque,ViaTransporte viaTransporte,String codigoExportador,
 			Dinheiro valorArfmm,Intermediacao intermediacao,Cnpj cnpjTerceiro,Uf ufTerceiro,
-			Adicao adicao) {
+			Set<Adicao> adicao) {
 		setNumero(numero);
 		setEmissao(data);
 		setLocalDesembarque(localDesembarque);
@@ -42,7 +43,7 @@ public class Importacao {
 		setValorArfmm(valorArfmm);
 		setCnpjTerceiro(cnpjTerceiro);
 		setUfTerceiro(ufTerceiro);
-		setAdicao(adicao);
+		setAdicoes(adicao);
 	}
 	
 	public int numero() {
@@ -96,7 +97,7 @@ public class Importacao {
 				.append(valorArfmm,objetoTipado.valorArfmm)
 				.append(cnpjTerceiro,objetoTipado.cnpjTerceiro)
 				.append(ufTerceiro,objetoTipado.ufTerceiro)
-				.append(adicao,objetoTipado.adicao)
+				.append(adicoes,objetoTipado.adicoes)
 				.isEquals();
 		}
 
@@ -117,7 +118,7 @@ public class Importacao {
 			.append(valorArfmm)
 			.append(cnpjTerceiro)
 			.append(ufTerceiro)
-			.append(adicao)
+			.append(adicoes)
 			.toHashCode();
 	}
 
@@ -134,7 +135,7 @@ public class Importacao {
 				+ ",valorArfmm="+ valorArfmm
 				+ ",cnpjTerceiro="+ cnpjTerceiro
 				+ ",ufTerceiro="+ ufTerceiro
-				+ ",adicao="+ adicao
+				+ ",adicao="+ adicoes
 				+ "]";
 	}	
 	
@@ -174,9 +175,9 @@ public class Importacao {
 		this.codigoExportador = codigoExportador;
 	}
 
-	private void setAdicao(Adicao adicao) {
-		assertArgumentoNaoNulo(adicao, "Adições são obrigatórias.");
-		this.adicao = adicao;
+	private void setAdicoes(Set<Adicao> adicoes) {
+		assertArgumentoNaoNulo(adicoes, "Adições são obrigatórias.");
+		this.adicoes = adicoes;
 	}
 	
 	private void setIntermediacao(Intermediacao intermediacao) {

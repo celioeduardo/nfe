@@ -21,9 +21,6 @@ import com.hadrion.nfe.tipos.Dinheiro;
 
 public class CobrancaDeserializer implements JsonDeserializer<Cobranca>{
 	
-	public CobrancaDeserializer(){
-	}
-	
 	@Override
 	public Cobranca deserialize(JsonElement jsonSource, Type type,
 			JsonDeserializationContext arg2) throws JsonParseException {
