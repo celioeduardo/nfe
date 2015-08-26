@@ -13,52 +13,17 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.nf.importacao.Adicao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Importacao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Intermediacao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.ViaTransporte;
-import com.hadrion.nfe.tipos.Cnpj;
-import com.hadrion.nfe.tipos.Dinheiro;
 
-public class ImportacaoDeserializer implements JsonDeserializer<Importacao>{
+public class AdicaoDeserializer implements JsonDeserializer<Adicao>{
 
 	@Override
-	public Importacao deserialize(JsonElement jsonSource, Type type,
+	public Adicao deserialize(JsonElement jsonSource, Type type,
 			JsonDeserializationContext arg2) throws JsonParseException {
 		
 		final JsonObject j = jsonSource.getAsJsonObject();
 		
-		Importacao importacao = new Importacao(
-				i(j,"nDI"), 
-				parseDataHora(s(j,"dDI")),
-				s(j,"xLocDesemb"),
-				Uf.valueOf(s(j,"UFDesemb")),
-				parseDataHora(s(j,"dDesemb")),
-				ViaTransporte.valueOf(s(j,"tpViaTransp")),
-				s(j,"cExportador"),
-				valorArfmm(j),
-				intermediacao(j),
-				cnpjTerceiro(j),
-				ufTerceiro(j),
-				new Adicao(1,1,""));
+		return new Adicao(1,1,"");
 		
-		return importacao;
-	}
-	private Dinheiro valorArfmm(JsonObject j){
-		if (!tem(j,"vAFRMM")) 
-			return null;
-		return new Dinheiro(d(j,"vAFRMM"));
-	}
-	
-	private Intermediacao intermediacao(JsonObject j){
-		return Intermediacao.valueOf(s(j,"tpIntermedio"));
-	}
-	
-	private Cnpj cnpjTerceiro(JsonObject j){
-		if (!tem(j,"CNPJ")) 
-			return null;
-		if (s(j,"CNPJ")=="") 
-			return null;
-		return new Cnpj(l(j,"CNPJ"));
 	}
 	
 	private Uf ufTerceiro(JsonObject j){

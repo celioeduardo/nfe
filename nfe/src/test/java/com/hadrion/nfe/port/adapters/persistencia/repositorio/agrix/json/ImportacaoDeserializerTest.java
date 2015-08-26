@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,20 +24,6 @@ import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 public class ImportacaoDeserializerTest {
-	private static String JSON = 
-			"{\r\n" + 
-			"	\"nDI\" : \"123\",\r\n" + 
-			"	\"dDI\" : \"25/08/15\",\r\n" + 
-			"	\"xLocDesemb\" : \"SANTOS\",\r\n" + 
-			"	\"UFDesemb\" : \"SP\",\r\n" + 
-			"	\"dDesemb\" : \"25/08/15\",\r\n" + 
-			"	\"tpViaTransp\" : \"MARITIMA\",\r\n" + 
-			"	\"vAFRMM\" : 1.23,\r\n" +//valor da AFRMM (Adicional ao Frete para Renovação da Marinha Mercante)  
-			"	\"tpIntermedio\" : \"CONTA_PROPRIA\",\r\n" + 
-			"	\"CNPJ\" : \"74230061000181\",\r\n" + 
-			"	\"UFTerceiro\" : \"RJ\",\r\n" + 
-			"	\"cExportador\" : \"123\"\r\n" + 
-			"}";
 
 	private GsonBuilder gsonBuilder;
 	private Gson gson;
@@ -52,21 +39,60 @@ public class ImportacaoDeserializerTest {
 	
 	@Test
 	public void converterImportacao(){
-		Importacao importacao = gson.fromJson(JSON, Importacao.class);
+		Importacao importacao = gson.fromJson(
+				"{\r\n" + 
+				"	\"nDI\" : \"123\",\r\n" + 
+				"	\"dDI\" : \"25/08/15\",\r\n" + 
+				"	\"xLocDesemb\" : \"SANTOS\",\r\n" + 
+				"	\"UFDesemb\" : \"SP\",\r\n" + 
+				"	\"dDesemb\" : \"25/08/15\",\r\n" + 
+				"	\"tpViaTransp\" : \"MARITIMA\",\r\n" + 
+				"	\"vAFRMM\" : 1.23,\r\n" +//valor da AFRMM (Adicional ao Frete para Renovação da Marinha Mercante)  
+				"	\"tpIntermedio\" : \"CONTA_PROPRIA\",\r\n" + 
+				"	\"CNPJ\" : \"74230061000181\",\r\n" + 
+				"	\"UFTerceiro\" : \"RJ\",\r\n" + 
+				"	\"cExportador\" : \"123\"\r\n" + 
+				"}", Importacao.class);
 		assertEquals(123,importacao.numero());
 		assertEquals(data("25/08/15"),importacao.emissao());
 		assertEquals("SANTOS",importacao.localDesembarque());
 		assertEquals(Uf.SP,importacao.ufDesembarque());
 		assertEquals(data("25/08/15"),importacao.dataDesembarque());
 		assertEquals(ViaTransporte.MARITIMA,importacao.viaTransporte());
-		assertEquals(new Dinheiro(1.23),importacao.valorARFMM());
+		assertEquals(Optional.ofNullable(new Dinheiro(1.23)),importacao.valorArfmm());
 		assertEquals(Intermediacao.CONTA_PROPRIA,importacao.intermediacao());
-		assertEquals(new Cnpj(74230061000181L),importacao.cnpjTerceiro());
-		assertEquals(Uf.RJ,importacao.ufTerceiro());
+		assertEquals(Optional.ofNullable(new Cnpj(74230061000181L)),importacao.cnpjTerceiro());
+		assertEquals(Optional.ofNullable(Uf.RJ),importacao.ufTerceiro());
 		assertEquals("123",importacao.codigoExportador());
 		
 	}
-	
+	@Test
+	public void converterImportacaoSemNo(){
+		Importacao importacao = gson.fromJson(
+				"{\r\n" + 
+				"	\"nDI\" : \"123\",\r\n" + 
+				"	\"dDI\" : \"25/08/15\",\r\n" + 
+				"	\"xLocDesemb\" : \"SANTOS\",\r\n" + 
+				"	\"UFDesemb\" : \"SP\",\r\n" + 
+				"	\"dDesemb\" : \"25/08/15\",\r\n" + 
+				"	\"tpViaTransp\" : \"MARITIMA\",\r\n" + 
+				"	\"tpIntermedio\" : \"CONTA_PROPRIA\",\r\n" + 
+				"	\"cExportador\" : \"123\"\r\n" + 
+				"}", Importacao.class);
+		assertEquals(123,importacao.numero());
+		assertEquals(data("25/08/15"),importacao.emissao());
+		assertEquals("SANTOS",importacao.localDesembarque());
+		assertEquals(Uf.SP,importacao.ufDesembarque());
+		assertEquals(data("25/08/15"),importacao.dataDesembarque());
+		assertEquals(ViaTransporte.MARITIMA,importacao.viaTransporte());
+		assertEquals(Optional.ofNullable(null),importacao.valorArfmm());
+		assertEquals(Intermediacao.CONTA_PROPRIA,importacao.intermediacao());
+		assertEquals(Optional.ofNullable(null),importacao.cnpjTerceiro());
+		assertEquals(Optional.ofNullable(null),importacao.ufTerceiro());
+		assertEquals("123",importacao.codigoExportador());
+		
+	}
+
 	private Date data(String data){
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
 		try {

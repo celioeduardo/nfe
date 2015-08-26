@@ -81,8 +81,7 @@ public class Notificacao extends Afirmacao implements Serializable {
     }
 
     protected void setEvento(EventoDominio evento) {
-        this.assertArgumentoNaoNulo(evento, "O evento é obrigatório.");
-        
+        assertArgumentoNaoNulo(evento, "O evento é obrigatório.");        
         this.evento = evento;
     }
 

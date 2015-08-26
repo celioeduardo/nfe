@@ -44,7 +44,7 @@ public class Afirmacao {
         }
     }
 
-    protected void assertArgumentoNaoNulo(Object anObject, String mensagem) {
+    public static void assertArgumentoNaoNulo(Object anObject, String mensagem) {
         if (anObject == null) {
             throw new IllegalArgumentException(mensagem);
         }
