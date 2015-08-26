@@ -6,6 +6,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+import com.hadrion.nfe.tipos.Cnpj;
+import com.hadrion.nfe.tipos.Dinheiro;
 
 
 public class Importacao {
@@ -18,8 +20,13 @@ public class Importacao {
 	private ViaTransporte viaTransporte;
 	private String codigoExportador;
 	private Adicao adicao;
+	private Dinheiro valorArfmm;
+	private Intermediacao intermediacao;
+	private Cnpj cnpjTerceiro;
+	private Uf ufTerceiro;
 	public Importacao(int numero,Date data,String localDesembarque,Uf ufDesembarque, 
 			Date dataDesembarque,ViaTransporte viaTransporte,String codigoExportador,
+			Dinheiro valorArfmm,Intermediacao intermediacao,Cnpj cnpjTerceiro,Uf ufTerceiro,
 			Adicao adicao) {
 		this.numero=numero;
 		this.emissao=data;
@@ -28,6 +35,10 @@ public class Importacao {
 		this.dataDesembarque=dataDesembarque;
 		this.viaTransporte=viaTransporte;
 		this.codigoExportador=codigoExportador;
+		this.valorArfmm=valorArfmm;
+		this.intermediacao=intermediacao;
+		this.cnpjTerceiro=cnpjTerceiro;
+		this.ufTerceiro=ufTerceiro;
 		this.adicao=adicao;
 	}
 	public int numero() {
@@ -36,6 +47,34 @@ public class Importacao {
 	
 	public Date emissao() {
 		return emissao;
+	}
+	
+	public String localDesembarque() {
+		return localDesembarque;
+	}
+	public Uf ufDesembarque() {
+		return ufDesembarque;
+	}
+	public Date dataDesembarque() {
+		return dataDesembarque;
+	}
+	public ViaTransporte viaTransporte() {
+		return viaTransporte;
+	}
+	public Dinheiro valorARFMM() {
+		return valorArfmm;
+	}
+	public Intermediacao intermediacao() {
+		return intermediacao;
+	}
+	public Cnpj cnpjTerceiro() {
+		return cnpjTerceiro;
+	}
+	public Uf ufTerceiro() {
+		return ufTerceiro;
+	}
+	public String codigoExportador() {
+		return codigoExportador;
 	}
 
 	@Override
@@ -91,6 +130,4 @@ public class Importacao {
 	 */
 	@SuppressWarnings("unused")
 	private Importacao(){}
-
-
 }
