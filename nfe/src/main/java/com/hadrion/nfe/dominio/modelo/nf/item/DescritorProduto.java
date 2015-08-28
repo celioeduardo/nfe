@@ -1,5 +1,9 @@
 package com.hadrion.nfe.dominio.modelo.nf.item;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.AttributeOverride;
@@ -11,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ImportacaoItem;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;
 
@@ -85,6 +90,8 @@ public class DescritorProduto {
 	
 	@Embedded
 	private ExportacaoItem exportacao;
+
+	private Set<ImportacaoItem> importacao;
 	
 	@Embedded
 	private Combustivel combustivel;
@@ -98,7 +105,8 @@ public class DescritorProduto {
 			Dinheiro totalFrete, Dinheiro totalSeguro, Dinheiro valorDesconto,
 			Dinheiro outrasDespesasAcessorias,
 			ExportacaoItem exportacao,
-			Combustivel combustivel) {
+			Combustivel combustivel,
+			Set<ImportacaoItem> importacoes) {
 		super();
 		this.codigo = codigo;
 		this.gtin = gtin;
@@ -121,6 +129,9 @@ public class DescritorProduto {
 		this.outrasDespesasAcessorias = outrasDespesasAcessorias;
 		this.exportacao = exportacao;
 		this.combustivel = combustivel;
+		this.importacao=new HashSet<ImportacaoItem>();
+		if (importacoes!=null)
+			this.importacao.addAll(importacoes);		
 	}
 	public String codigo() {
 		return codigo;
@@ -185,6 +196,15 @@ public class DescritorProduto {
 	public Combustivel combustivel(){
 		return this.combustivel;
 	}
+
+	public int quantidadeImportacoes() {
+		return importacao.size();
+	}
+
+	public Set<ImportacaoItem> obterImportacoes() {
+		return Collections.unmodifiableSet(importacao);
+	}	
+	
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;

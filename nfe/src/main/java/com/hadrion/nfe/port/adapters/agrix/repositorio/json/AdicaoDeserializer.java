@@ -7,7 +7,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Adicao;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.Adicao;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 public class AdicaoDeserializer implements JsonDeserializer<Adicao>{

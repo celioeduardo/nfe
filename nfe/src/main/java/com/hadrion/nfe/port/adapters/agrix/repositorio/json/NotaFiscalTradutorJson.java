@@ -1,9 +1,7 @@
 package com.hadrion.nfe.port.adapters.agrix.repositorio.json;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,10 +10,9 @@ import com.hadrion.nfe.dominio.modelo.nf.Exportacao;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.Referencia;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Adicao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Importacao;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ImportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
 import com.hadrion.nfe.dominio.modelo.nf.publico.Destinatario;
@@ -50,7 +47,7 @@ public class NotaFiscalTradutorJson {
 		gsonBuilder.registerTypeAdapter(Transporte.class, new TransporteDeserializer());
 		gsonBuilder.registerTypeAdapter(Notista.class, new NotistaDeserializer());
 		gsonBuilder.registerTypeAdapter(Exportacao.class, new ExportacaoNotaDeserializer());
-		gsonBuilder.registerTypeAdapter(Importacao.class, new ImportacaoDeserializer());
+		gsonBuilder.registerTypeAdapter(ImportacaoItem.class, new ImportacaoItemDeserializer());
 		gson = gsonBuilder.create();
 		this.json = json;
 	}
@@ -63,9 +60,6 @@ public class NotaFiscalTradutorJson {
 	}
 	public List<Item> converterItens() {
 		return Arrays.asList(gson.fromJson(json, Item[].class)); 
-	}
-	public Set<Importacao> converterImportacao() {
-		return new HashSet<Importacao>(Arrays.asList(gson.fromJson(json, Importacao[].class)));
 	}
 	public List<Referencia> converterReferencias() {
 		return Arrays.asList(gson.fromJson(json, Referencia[].class));

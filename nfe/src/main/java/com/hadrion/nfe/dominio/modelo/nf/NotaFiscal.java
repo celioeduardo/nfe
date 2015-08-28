@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
@@ -46,7 +44,6 @@ import com.hadrion.nfe.dominio.modelo.filial.ModoOperacao;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.dominio.modelo.lote.NotaFiscalAutorizada;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Importacao;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
@@ -232,8 +229,6 @@ public class NotaFiscal {
 	@Column(name = "VERSAO")
 	private int versaoConcorrencia;
 
-	private Set<Importacao> importacoes;
-
 	@SuppressWarnings("unused")
 	private NotaFiscal() {
 		super();
@@ -252,7 +247,7 @@ public class NotaFiscal {
 			LocalEntrega localEntrega, List<Item> itens, Transporte transporte,
 			Cobranca cobranca, Informacao informacaoFisco,
 			Informacao informacaoContribuinte, Exportacao exportacao,
-			Contingencia contingencia, NotistaId notistaId,Set<Importacao> importacoes) {
+			Contingencia contingencia, NotistaId notistaId) {
 
 		this.ambiente = ambiente;
 		this.notaFiscalId = notaFiscalId;
@@ -295,9 +290,6 @@ public class NotaFiscal {
 				referenciar(referencia);
 			consistirNotasReferencia();
 		}
-		this.importacoes=new HashSet<Importacao>();
-		if (importacoes!=null)
-			this.importacoes.addAll(importacoes);
 	}
 	
 	
@@ -964,12 +956,5 @@ public class NotaFiscal {
 				.orElse(Collections.emptyList());
 	}
 
-	public int quantidadeImportacoes() {
-		return importacoes.size();
-	}
-
-	public Set<Importacao> obterImportacoes() {
-		return Collections.unmodifiableSet(importacoes);
-	}
 
 }

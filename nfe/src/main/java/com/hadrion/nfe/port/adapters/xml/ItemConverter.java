@@ -77,7 +77,6 @@ public class ItemConverter extends AbstractConverter implements Converter {
 		Combustivel combustivel = null;
 		ExportacaoItem exportacao = null;
 		
-		
 		while (reader.hasMoreChildren()) {
 			reader.moveDown();
 			if ("prod".equals(reader.getNodeName())) {
@@ -143,7 +142,7 @@ public class ItemConverter extends AbstractConverter implements Converter {
 				valorUnitarioComercializacao, valorTotalBruto, 
 				gtinTributavel, unidadeTributavel, quantidadeTributavel, 
 				valorUnitarioTributacao, totalFrete, totalSeguro, 
-				valorDesconto, outrasDespesasAcessorias, exportacao, combustivel);
+				valorDesconto, outrasDespesasAcessorias, exportacao, combustivel, null);
 		
 		return new Item(produto, imposto, informacaoAdicionalProduto);
 				

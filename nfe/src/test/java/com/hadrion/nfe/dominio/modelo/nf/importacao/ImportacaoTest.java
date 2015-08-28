@@ -10,6 +10,10 @@ import java.util.Optional;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.Adicao;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ImportacaoItem;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.Intermediacao;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ViaTransporte;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.util.DataUtil;
@@ -39,10 +43,10 @@ public class ImportacaoTest {
 	public void nova(){
 		
 		assertEquals(
-				new Importacao(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
+				new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
 						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,
 						new HashSet<Adicao>(Arrays.asList(new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto,drawback,pedido,itemPedido)))),
-				new Importacao(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,						
+				new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,						
 						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,
 						new HashSet<Adicao>(Arrays.asList(new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto,drawback,pedido,itemPedido))))
 		);
@@ -52,10 +56,10 @@ public class ImportacaoTest {
 	public void novaNulos(){
 		
 		assertEquals(
-				new Importacao(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
+				new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
 						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,
 						null),
-				new Importacao(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,						
+				new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,						
 						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,
 						null));
 	}

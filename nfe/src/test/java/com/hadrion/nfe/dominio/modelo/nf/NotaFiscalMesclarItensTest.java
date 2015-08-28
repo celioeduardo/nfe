@@ -113,8 +113,7 @@ public class NotaFiscalMesclarItensTest extends DominioTest{
 			null, 
 			null,
 			null,
-			new NotistaId("COOPADAP"),
-			null);
+			new NotistaId("COOPADAP"));
 	}
 	
 	static List<Item> itens(){
@@ -146,7 +145,8 @@ public class NotaFiscalMesclarItensTest extends DominioTest{
 							new ChaveAcesso("29140600891206000310550010000110017000481161"),
 							new Quantidade(50.1234))),
 					new Combustivel(110203073L, new Quantidade(568.1234), Uf.SP, 
-							new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14)))),
+							new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14))),
+					null),
 			new Imposto(Dinheiro.ZERO, 
 				Icms.cst_51(Origem.NACIONAL,new Dinheiro(1000), Aliquota.ZERO,
 						Percentual.ZERO,Dinheiro.ZERO, new Percentual(1), DeterminacaoBaseCalculo.VALOR_OPERACAO), 
@@ -185,7 +185,8 @@ public class NotaFiscalMesclarItensTest extends DominioTest{
 								new ChaveAcesso("29140600891206000310550010000110017000481161"),
 								new Quantidade(50.1234))),
 								new Combustivel(110203073L, new Quantidade(568.1234), Uf.SP, 
-									new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14)))),
+									new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14))),
+						null),
 									new Imposto(Dinheiro.ZERO, 
 										Icms.cst_51(Origem.NACIONAL,new Dinheiro(500), Aliquota.ZERO,
 											Percentual.ZERO,Dinheiro.ZERO, new Percentual(1), DeterminacaoBaseCalculo.VALOR_OPERACAO), 

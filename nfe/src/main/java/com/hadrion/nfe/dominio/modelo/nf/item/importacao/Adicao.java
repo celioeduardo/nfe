@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo.nf.importacao;
+package com.hadrion.nfe.dominio.modelo.nf.item.importacao;
 
 import static com.hadrion.comum.Afirmacao.assertArgumentoNaoNulo;
 

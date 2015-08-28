@@ -38,10 +38,6 @@ import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Fatura;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Adicao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Importacao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Intermediacao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.ViaTransporte;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
 import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
@@ -49,6 +45,10 @@ import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.Adicao;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ImportacaoItem;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.Intermediacao;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ViaTransporte;
 import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalRetirada;
@@ -140,7 +140,9 @@ public class NotaFiscalTradutorJsonTest {
 						new ExportacaoIndireta(888L, 
 							new ChaveAcesso("31131016832651000420550010000199361002699180"),
 							new Quantidade(777.0))), 
-				null),
+				null,
+				new HashSet<ImportacaoItem>()
+				),
 				new Imposto(Dinheiro.ZERO, 
 						Icms.cst_00(Origem.NACIONAL,new Dinheiro(2600.02), new Aliquota(18),
 								DeterminacaoBaseCalculo.VALOR_OPERACAO), 
@@ -232,12 +234,12 @@ public class NotaFiscalTradutorJsonTest {
 		assertEquals(new Volume(25,"SACAS","COPAMIL","8930",1000.0,1000.0,null),
 				nf.transporte().volumes().get(0));
 		
-		assertEquals(1,nf.quantidadeImportacoes());
+		assertEquals(1,nf.item(0).produto().quantidadeImportacoes());
+		assertEquals(1,nf.item(1).produto().quantidadeImportacoes());
+		assertEquals(0,nf.item(2).produto().quantidadeImportacoes());
+		assertEquals(0,nf.item(3).produto().quantidadeImportacoes());
 		
-		assertEquals(importacao(),nf.obterImportacoes().iterator().next());
-		
-//		lotes = loteRepositorio.lotesDaNota(nfSemLote.notaFiscalId());
-//		assertEquals(0,lotes.size());		
+		assertEquals(importacao(),nf.item(0).produto().obterImportacoes().iterator().next());
 		
 	}
 
@@ -261,9 +263,9 @@ public class NotaFiscalTradutorJsonTest {
 		
 	}
 	
-	public Importacao importacao(){
+	public ImportacaoItem importacao(){
 		
-		return new Importacao(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
+		return new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
 						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,
 						new HashSet<Adicao>(Arrays.asList(new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto,drawback,pedido,itemPedido))));
 

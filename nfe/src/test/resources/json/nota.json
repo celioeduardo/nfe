@@ -74,7 +74,29 @@
 		},
 		"valorAproximadoTributos" : 0
     },
-    "informacaoAdicional" : "ADICIONAL"
+    "informacaoAdicional" : "ADICIONAL",
+	"importacao" : [{
+		"nDI" : "123",
+		"dDI" : "25/08/15",
+		"xLocDesemb" : "SANTOS",
+		"UFDesemb" : "SP",
+		"dDesemb" : "25/08/15",
+		"tpViaTransp" : "MARITIMA",
+		"vAFRMM" : 1.23,
+		"tpIntermedio" : "CONTA_PROPRIA",
+		"CNPJ" : "74230061000181",
+		"UFTerceiro" : "RJ",
+		"cExportador" : "123",
+		"adicoes" : [{
+			"nAdicao" : 321,
+			"nSeqAdicC" : 1,
+			"cFabricante" : "123456789ABC",
+			"vDescDI" : 1.03,
+			"nDraw" : 45,
+			"xPed" : 654,
+			"nItemPed" : 1
+		}]
+	}]
   }, {
     "produtoId" : "013924F5A00A4CC4E050007F010060FB",
     "codigo" : "8578",
@@ -138,7 +160,29 @@
 		},
 		"valorAproximadoTributos" : 0
     },
-    "informacaoAdicional" : "ADICIONAL"
+    "informacaoAdicional" : "ADICIONAL",
+	"importacao" : [{
+		"nDI" : "123",
+		"dDI" : "25/08/15",
+		"xLocDesemb" : "SANTOS",
+		"UFDesemb" : "SP",
+		"dDesemb" : "25/08/15",
+		"tpViaTransp" : "MARITIMA",
+		"vAFRMM" : 1.23,
+		"tpIntermedio" : "CONTA_PROPRIA",
+		"CNPJ" : "74230061000181",
+		"UFTerceiro" : "RJ",
+		"cExportador" : "123",
+		"adicoes" : [{
+			"nAdicao" : 321,
+			"nSeqAdicC" : 1,
+			"cFabricante" : "123456789ABC",
+			"vDescDI" : 1.03,
+			"nDraw" : 45,
+			"xPed" : 654,
+			"nItemPed" : 1
+		}]
+	}]
   }, {
     "produtoId" : "013924F5A00F4CC4E050007F010060FB",
     "codigo" : "8583",
@@ -265,28 +309,6 @@
 		"valorAproximadoTributos" : 0
     },
     "informacaoAdicional" : "ADICIONAL"
-  }],
-  "importacao" : [{
-	"nDI" : "123",
-	"dDI" : "25/08/15",
-	"xLocDesemb" : "SANTOS",
-	"UFDesemb" : "SP",
-	"dDesemb" : "25/08/15",
-	"tpViaTransp" : "MARITIMA",
-	"vAFRMM" : 1.23,
-	"tpIntermedio" : "CONTA_PROPRIA",
-	"CNPJ" : "74230061000181",
-	"UFTerceiro" : "RJ",
-	"cExportador" : "123",
-	"adicoes" : [{
-		"nAdicao" : 321,
-		"nSeqAdicC" : 1,
-		"cFabricante" : "123456789ABC",
-		"vDescDI" : 1.03,
-		"nDraw" : 45,
-		"xPed" : 654,
-		"nItemPed" : 1
-    }]
   }],  
   "referencias" : [{
     "modelo" : "55",

@@ -14,12 +14,12 @@ import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Importacao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Intermediacao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.ViaTransporte;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ImportacaoItem;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.Intermediacao;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ViaTransporte;
 import com.hadrion.nfe.port.adapters.agrix.repositorio.json.DateDeserializer;
 import com.hadrion.nfe.port.adapters.agrix.repositorio.json.DinheiroDeserializer;
-import com.hadrion.nfe.port.adapters.agrix.repositorio.json.ImportacaoDeserializer;
+import com.hadrion.nfe.port.adapters.agrix.repositorio.json.ImportacaoItemDeserializer;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 
@@ -33,13 +33,13 @@ public class ImportacaoDeserializerTest {
 		gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Date.class, new DateDeserializer());
 		gsonBuilder.registerTypeAdapter(Dinheiro.class, new DinheiroDeserializer());
-		gsonBuilder.registerTypeAdapter(Importacao.class, new ImportacaoDeserializer());
+		gsonBuilder.registerTypeAdapter(ImportacaoItem.class, new ImportacaoItemDeserializer());
 		gson = gsonBuilder.create();
 	}
 	
 	@Test
 	public void converterImportacao(){
-		Importacao importacao = gson.fromJson(
+		ImportacaoItem importacao = gson.fromJson(
 				"{\r\n" + 
 				"	\"nDI\" : \"123\",\r\n" + 
 				"	\"dDI\" : \"25/08/15\",\r\n" + 
@@ -69,7 +69,7 @@ public class ImportacaoDeserializerTest {
 				"			\"xPed\" : 654,\r\n" + 
 				"			\"nItemPed\" : 1\r\n" + 
 				"		}]\r\n" + 
-				"}", Importacao.class);
+				"}", ImportacaoItem.class);
 		assertEquals(123,importacao.numero());
 		assertEquals(data("25/08/15"),importacao.emissao());
 		assertEquals("SANTOS",importacao.localDesembarque());
@@ -86,7 +86,7 @@ public class ImportacaoDeserializerTest {
 	}
 	@Test
 	public void converterImportacaoSemNo(){
-		Importacao importacao = gson.fromJson(
+		ImportacaoItem importacao = gson.fromJson(
 				"{\r\n" + 
 				"	\"nDI\" : \"123\",\r\n" + 
 				"	\"dDI\" : \"25/08/15\",\r\n" + 
@@ -113,7 +113,7 @@ public class ImportacaoDeserializerTest {
 				"			\"xPed\" : 654,\r\n" + 
 				"			\"nItemPed\" : 1\r\n" + 
 				"		}]\r\n" + 
-				"}", Importacao.class);
+				"}", ImportacaoItem.class);
 		assertEquals(123,importacao.numero());
 		assertEquals(data("25/08/15"),importacao.emissao());
 		assertEquals("SANTOS",importacao.localDesembarque());

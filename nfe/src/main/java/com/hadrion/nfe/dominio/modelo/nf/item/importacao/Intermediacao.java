@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo.nf.importacao;
+package com.hadrion.nfe.dominio.modelo.nf.item.importacao;
 
 public enum Intermediacao {
 	CONTA_PROPRIA(1,"Importação por Conta Própria"),

@@ -1,4 +1,4 @@
-package com.hadrion.nfe.dominio.modelo.nf.importacao;
+package com.hadrion.nfe.dominio.modelo.nf.item.importacao;
 
 import static com.hadrion.comum.Afirmacao.assertArgumentoNaoNulo;
 
@@ -15,7 +15,7 @@ import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 
 
-public class Importacao {
+public class ImportacaoItem {
 	
 	private int numero;
 	private Date emissao;
@@ -29,7 +29,7 @@ public class Importacao {
 	private Optional<Cnpj> cnpjTerceiro;
 	private Optional<Uf> ufTerceiro;
 	private Set<Adicao> adicoes;
-	public Importacao(int numero,Date data,String localDesembarque,Uf ufDesembarque, 
+	public ImportacaoItem(int numero,Date data,String localDesembarque,Uf ufDesembarque, 
 			Date dataDesembarque,ViaTransporte viaTransporte,String codigoExportador,
 			Dinheiro valorArfmm,Intermediacao intermediacao,Cnpj cnpjTerceiro,Uf ufTerceiro,
 			Set<Adicao> adicao) {
@@ -85,7 +85,7 @@ public class Importacao {
 		boolean objetosIguais = false;
 
 		if (objeto != null && this.getClass() == objeto.getClass()) {
-			Importacao objetoTipado = (Importacao) objeto;
+			ImportacaoItem objetoTipado = (ImportacaoItem) objeto;
 			objetosIguais = new EqualsBuilder()
 				.append(numero,objetoTipado.numero)
 				.append(emissao,objetoTipado.emissao)
@@ -144,7 +144,7 @@ public class Importacao {
 	 * Somente para JPA
 	 */
 	@SuppressWarnings("unused")
-	private Importacao(){}
+	private ImportacaoItem(){}
 	
 	private void setEmissao(Date emissao) {
 		assertArgumentoNaoNulo(emissao, "Data de emissão é obrigatória.");

@@ -6,7 +6,6 @@ import static com.hadrion.util.DataUtil.dataHora;
 import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -29,7 +28,6 @@ import com.hadrion.nfe.dominio.modelo.nf.Serie;
 import com.hadrion.nfe.dominio.modelo.nf.TipoEmissao;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Importacao;
 import com.hadrion.nfe.dominio.modelo.nf.informacao.Informacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.locais.LocalEntrega;
@@ -85,8 +83,7 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 				informacaoContribuinte(j),
 				exportacao(j),
 				null,//Contingência
-				notista(j) != null ? notista(j).notistaId() : null,
-				importacao(j)); 
+				notista(j) != null ? notista(j).notistaId() : null); 
 		
 		return nf;
 	}
@@ -146,12 +143,6 @@ public class NotaFiscalDeserializer extends AbstractDeserializer implements Json
 	private Exportacao exportacao(JsonObject j){
 		if (tem(j,"exportacao")){		
 			return new NotaFiscalTradutorJson(j.get("exportacao").toString(),ambiente).converterExportacao();
-		}
-		return null;
-	}
-	private Set<Importacao> importacao(JsonObject j){
-		if (tem(j,"importacao")){		
-			return new NotaFiscalTradutorJson(j.get("importacao").toString(),ambiente).converterImportacao();
 		}
 		return null;
 	}

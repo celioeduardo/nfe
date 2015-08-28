@@ -169,8 +169,7 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 				informacaoContribuinte(), 
 				exportacao(),
 				contingencia(),
-				new NotistaId("COOPADAP"),
-				null);
+				new NotistaId("COOPADAP"));
 		
 	}
 	private Emitente emitente(){
@@ -287,7 +286,8 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 							new ChaveAcesso("29140600891206000310550010000110017000481161"),
 							new Quantidade(50.1234))),
 					new Combustivel(110203073L, new Quantidade(568.1234), Uf.SP, 
-							new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14)))),
+							new Cide(new Dinheiro(500.78), new Aliquota(18.0), new Dinheiro(90.14))),
+					null),
 			new Imposto(Dinheiro.ZERO,
 				new Icms(Origem.NACIONAL, Cst.CST_51, DeterminacaoBaseCalculo.VALOR_OPERACAO, 
 						Percentual.ZERO, Dinheiro.ZERO, Dinheiro.ZERO, new Dinheiro(500.78), Aliquota.ZERO, Dinheiro.ZERO, null, Percentual.ZERO),

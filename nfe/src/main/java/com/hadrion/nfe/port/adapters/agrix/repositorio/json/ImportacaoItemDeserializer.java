@@ -13,22 +13,22 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.hadrion.nfe.dominio.modelo.ibge.Uf;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Adicao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Importacao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.Intermediacao;
-import com.hadrion.nfe.dominio.modelo.nf.importacao.ViaTransporte;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.Adicao;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ImportacaoItem;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.Intermediacao;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ViaTransporte;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 
-public class ImportacaoDeserializer implements JsonDeserializer<Importacao>{
+public class ImportacaoItemDeserializer implements JsonDeserializer<ImportacaoItem>{
 
 	@Override
-	public Importacao deserialize(JsonElement jsonSource, Type type,
+	public ImportacaoItem deserialize(JsonElement jsonSource, Type type,
 			JsonDeserializationContext arg2) throws JsonParseException {
 		
 		final JsonObject j = jsonSource.getAsJsonObject();
 		
-		Importacao importacao = new Importacao(
+		ImportacaoItem importacao = new ImportacaoItem(
 				i(j,"nDI"), 
 				parseDataHora(s(j,"dDI")),
 				s(j,"xLocDesemb"),

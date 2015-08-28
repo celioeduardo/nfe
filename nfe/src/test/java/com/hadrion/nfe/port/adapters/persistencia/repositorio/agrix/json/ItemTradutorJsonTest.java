@@ -3,6 +3,8 @@ package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,11 +18,12 @@ import com.hadrion.nfe.dominio.modelo.icms.Icms;
 import com.hadrion.nfe.dominio.modelo.icms.Origem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
-import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ImportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
@@ -135,18 +138,27 @@ public class ItemTradutorJsonTest {
 				Dinheiro.ZERO, 
 				Dinheiro.ZERO, 
 				Dinheiro.ZERO,
-				new ExportacaoItem(999L, 
-						new ExportacaoIndireta(888L, 
-							new ChaveAcesso("31131016832651000420550010000199361002699180"),
-							new Quantidade(777.0))),
-				null),
-				new Imposto(Dinheiro.ZERO, 
-						Icms.cst_00(Origem.NACIONAL,new Dinheiro(2600.02), new Aliquota(18),
-								DeterminacaoBaseCalculo.VALOR_OPERACAO), 
-						new Pis(CstPis.CST_01, new Dinheiro(3513.75), new Aliquota(1.65), .0, new Double(57.98)), 
-						new Cofins(CstCofins.CST_01, new Dinheiro(3513.75), new Aliquota(7.6), .0, new Double(267.05))),
-				"ADICIONAL"),item);
+				exportacao(),
+				null,
+				importacao()),
+			imposto(),
+			"ADICIONAL"),item);
 		
 	}
-
+	private ExportacaoItem exportacao(){
+		return new ExportacaoItem(999L, 
+				new ExportacaoIndireta(888L, 
+					new ChaveAcesso("31131016832651000420550010000199361002699180"),
+					new Quantidade(777.0)));
+	}
+	private Set<ImportacaoItem> importacao(){
+		return new HashSet<ImportacaoItem>(null);
+	}
+	private Imposto imposto(){
+		return new Imposto(Dinheiro.ZERO, 
+				Icms.cst_00(Origem.NACIONAL,new Dinheiro(2600.02), new Aliquota(18),
+						DeterminacaoBaseCalculo.VALOR_OPERACAO), 
+				new Pis(CstPis.CST_01, new Dinheiro(3513.75), new Aliquota(1.65), .0, new Double(57.98)), 
+				new Cofins(CstCofins.CST_01, new Dinheiro(3513.75), new Aliquota(7.6), .0, new Double(267.05)));		
+	}
 }

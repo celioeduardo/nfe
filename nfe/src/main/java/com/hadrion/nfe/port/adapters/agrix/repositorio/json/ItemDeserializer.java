@@ -1,6 +1,8 @@
 package com.hadrion.nfe.port.adapters.agrix.repositorio.json;
 
 import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -24,6 +26,7 @@ import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ImportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
@@ -50,7 +53,8 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		Double valorUnitarioComercializacao=null,valorUnitarioTributacao=null;
 		Dinheiro frete=null, seguro=null, desconto=null,acessorias=null,valorTotalBruto=null;
 		ExportacaoItem exportacao=null;
-		Combustivel combustivel=null;		
+		Set<ImportacaoItem> importacoes=null;
+		Combustivel combustivel=null;				
 		
 		codigo=s(j,"codigo");
 		descricao = s(j,"descricao");
@@ -73,12 +77,13 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		acessorias = new Dinheiro(d(j,"acessorias"));
 		exportacao = exportacao(j);
 		combustivel = combustivel(j);
+		importacoes = importacoes(j);
 		informacaoAdicional = s(j,"informacaoAdicional");
 		final Item item = new Item(
 				new DescritorProduto(codigo, gtin, descricao, ncm, nve, extipi, cfop, unidadeComercial, 
 						quantidadeComercial, valorUnitarioComercializacao, valorTotalBruto, gtinTributavel, 
 						unidadeTributavel, quantidadeTributavel, valorUnitarioTributacao, frete, seguro, 
-						desconto, acessorias, exportacao, combustivel),
+						desconto, acessorias, exportacao, combustivel,importacoes),
 				imposto(j),
 				informacaoAdicional);
 		
@@ -129,6 +134,12 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 							new Quantidade(g.get("quantidadeExportada").getAsDouble())));
 		}			
 		return null;			
+	}
+	private Set<ImportacaoItem> importacoes(JsonObject j){
+		if (tem(j,"importacao"))		
+			return new ImportacaoTradutorJson(j.get("importacao").toString()).converterImportacao();
+		
+		return new HashSet<ImportacaoItem>();
 	}
 	private Imposto imposto(JsonObject j){
 		
