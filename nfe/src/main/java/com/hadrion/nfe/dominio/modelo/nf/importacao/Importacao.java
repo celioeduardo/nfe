@@ -3,6 +3,7 @@ package com.hadrion.nfe.dominio.modelo.nf.importacao;
 import static com.hadrion.comum.Afirmacao.assertArgumentoNaoNulo;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -202,5 +203,20 @@ public class Importacao {
 	private void setUfTerceiro(Uf ufTerceiro) {
 		this.ufTerceiro = Optional.ofNullable(ufTerceiro);
 	}
+
+	private Set<Adicao> getAdicoes() {
+		if (adicoes == null)
+			adicoes = new HashSet<Adicao>();
+		return adicoes;
+	}
+
+	public Iterable<Adicao> adicoes() {
+		return getAdicoes();
+	}
+
+	public Object quantidadeAdicoes() {
+		return getAdicoes().size();
+	} 
+	
 		
 }

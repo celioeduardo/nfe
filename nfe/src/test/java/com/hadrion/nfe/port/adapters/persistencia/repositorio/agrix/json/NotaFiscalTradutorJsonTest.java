@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -36,6 +38,10 @@ import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Cobranca;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Fatura;
+import com.hadrion.nfe.dominio.modelo.nf.importacao.Adicao;
+import com.hadrion.nfe.dominio.modelo.nf.importacao.Importacao;
+import com.hadrion.nfe.dominio.modelo.nf.importacao.Intermediacao;
+import com.hadrion.nfe.dominio.modelo.nf.importacao.ViaTransporte;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
 import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
@@ -61,8 +67,28 @@ import com.hadrion.nfe.tipos.Email;
 import com.hadrion.nfe.tipos.InscricaoEstadual;
 import com.hadrion.nfe.tipos.Quantidade;
 import com.hadrion.nfe.tipos.Telefone;
+import com.hadrion.util.DataUtil;
 
 public class NotaFiscalTradutorJsonTest {
+	int numero = 123;
+	Date data = DataUtil.data("25/08/15");
+	String localDesembarque = "SANTOS";
+	Uf ufDesembarque = Uf.SP; 
+	Date dataDesembarque = DataUtil.data("25/08/15");
+	ViaTransporte viaTransporte = ViaTransporte.MARITIMA;
+	String codigoExportador = "123";
+	Dinheiro valorArfmm = new Dinheiro(1.23);
+	Intermediacao intermediacao = Intermediacao.CONTA_PROPRIA;
+	Cnpj cnpjTerceiro = new Cnpj(74230061000181L);
+	Uf ufTerceiro = Uf.RJ;
+	
+	int numeroAdicao = 321;
+	int sequencia = 1;
+	String codigoFabricante = "123456789ABC";
+	Dinheiro desconto = new Dinheiro(1.03);
+	int drawback = 45;
+	int pedido = 654;
+	int itemPedido = 1;
 
 	@Test
 	public void traduzirNota() throws IOException{
@@ -205,6 +231,14 @@ public class NotaFiscalTradutorJsonTest {
 		
 		assertEquals(new Volume(25,"SACAS","COPAMIL","8930",1000.0,1000.0,null),
 				nf.transporte().volumes().get(0));
+		
+		assertEquals(1,nf.quantidadeImportacoes());
+		
+		assertEquals(importacao(),nf.obterImportacoes().iterator().next());
+		
+//		lotes = loteRepositorio.lotesDaNota(nfSemLote.notaFiscalId());
+//		assertEquals(0,lotes.size());		
+		
 	}
 
 	private Date data(String data){
@@ -225,5 +259,13 @@ public class NotaFiscalTradutorJsonTest {
 			return null;
 		}	
 		
+	}
+	
+	public Importacao importacao(){
+		
+		return new Importacao(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
+						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,
+						new HashSet<Adicao>(Arrays.asList(new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto,drawback,pedido,itemPedido))));
+
 	}
 }

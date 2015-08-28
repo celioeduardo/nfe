@@ -113,7 +113,8 @@ public class NotaFiscalMesclarItensTest extends DominioTest{
 			null, 
 			null,
 			null,
-			new NotistaId("COOPADAP"));
+			new NotistaId("COOPADAP"),
+			null);
 	}
 	
 	static List<Item> itens(){

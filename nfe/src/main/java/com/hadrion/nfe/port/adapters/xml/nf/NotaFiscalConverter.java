@@ -247,6 +247,7 @@ public class NotaFiscalConverter extends AbstractConverter {
 				new Informacao(informacao.getContribuinte()),
 				exportacao,
 				contingencia,
-				notistaId);
+				notistaId,
+				null);
 	}
 }

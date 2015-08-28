@@ -169,7 +169,8 @@ public class NotaFiscalXmlDeserializadorTest extends AbstractXmlTest{
 				informacaoContribuinte(), 
 				exportacao(),
 				contingencia(),
-				new NotistaId("COOPADAP"));
+				new NotistaId("COOPADAP"),
+				null);
 		
 	}
 	private Emitente emitente(){

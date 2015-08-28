@@ -117,7 +117,8 @@ public class NotaFiscalFixture {
 				informacaoContribuinte(), 
 				exportacao(),
 				contingencia(),
-				new NotistaId("COOPADAP"));
+				new NotistaId("COOPADAP"),
+				null);
 		
 	}
 	
@@ -163,7 +164,8 @@ public class NotaFiscalFixture {
 				informacaoContribuinte(), 
 				exportacao(),
 				contingencia(),
-				new NotistaId("COOPADAP"));
+				new NotistaId("COOPADAP"),
+				null);
 	}
 	
 	static Emitente emitente(){

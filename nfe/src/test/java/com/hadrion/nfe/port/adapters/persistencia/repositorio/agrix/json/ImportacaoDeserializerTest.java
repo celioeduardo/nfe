@@ -59,6 +59,14 @@ public class ImportacaoDeserializerTest {
 				"			\"vDescDI\" : 1.03,\r\n" + 
 				"			\"nDraw\" : 45,\r\n" + 
 				"			\"xPed\" : 654,\r\n" + 
+				"			\"nItemPed\" : 1\r\n" +
+				"		},{\r\n" + 
+				"			\"nAdicao\" : 322,\r\n" + 
+				"			\"nSeqAdicC\" : 1,\r\n" + 
+				"			\"cFabricante\" : \"123456789ABC\",\r\n" + 
+				"			\"vDescDI\" : 1.03,\r\n" + 
+				"			\"nDraw\" : 45,\r\n" + 
+				"			\"xPed\" : 654,\r\n" + 
 				"			\"nItemPed\" : 1\r\n" + 
 				"		}]\r\n" + 
 				"}", Importacao.class);
@@ -73,6 +81,7 @@ public class ImportacaoDeserializerTest {
 		assertEquals(Optional.ofNullable(new Cnpj(74230061000181L)),importacao.cnpjTerceiro());
 		assertEquals(Optional.ofNullable(Uf.RJ),importacao.ufTerceiro());
 		assertEquals("123",importacao.codigoExportador());
+		assertEquals(2,importacao.quantidadeAdicoes());
 		
 	}
 	@Test
@@ -94,6 +103,14 @@ public class ImportacaoDeserializerTest {
 				"			\"vDescDI\" : 1.03,\r\n" + 
 				"			\"nDraw\" : 45,\r\n" + 
 				"			\"xPed\" : 654,\r\n" + 
+				"			\"nItemPed\" : 1\r\n" +
+				"		},{\r\n" + 
+				"			\"nAdicao\" : 321,\r\n" + 
+				"			\"nSeqAdicC\" : 1,\r\n" + 
+				"			\"cFabricante\" : \"123456789ABC\",\r\n" + 
+				"			\"vDescDI\" : 1.03,\r\n" + 
+				"			\"nDraw\" : 45,\r\n" + 
+				"			\"xPed\" : 654,\r\n" + 
 				"			\"nItemPed\" : 1\r\n" + 
 				"		}]\r\n" + 
 				"}", Importacao.class);
@@ -108,6 +125,7 @@ public class ImportacaoDeserializerTest {
 		assertEquals(Optional.ofNullable(null),importacao.cnpjTerceiro());
 		assertEquals(Optional.ofNullable(null),importacao.ufTerceiro());
 		assertEquals("123",importacao.codigoExportador());
+		assertEquals(1,importacao.quantidadeAdicoes());
 		
 	}
 
