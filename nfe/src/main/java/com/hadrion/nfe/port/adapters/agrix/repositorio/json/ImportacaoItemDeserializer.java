@@ -40,6 +40,8 @@ public class ImportacaoItemDeserializer implements JsonDeserializer<ImportacaoIt
 				intermediacao(j),
 				cnpjTerceiro(j),
 				ufTerceiro(j),
+				pedido(j),
+				itemPedido(j),
 				adicoes(j));
 		
 		return importacao;
@@ -98,6 +100,13 @@ public class ImportacaoItemDeserializer implements JsonDeserializer<ImportacaoIt
 			return dataHora(s);
 		else
 			return data(s);
+	}
+	private int pedido(JsonObject j){
+		return i(j,"xPed"); 
+	}
+	
+	private int itemPedido(JsonObject j){
+		return i(j,"nItemPed"); 
 	}
 	
 }

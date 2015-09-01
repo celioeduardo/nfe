@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -81,14 +81,13 @@ public class NotaFiscalTradutorJsonTest {
 	Intermediacao intermediacao = Intermediacao.CONTA_PROPRIA;
 	Cnpj cnpjTerceiro = new Cnpj(74230061000181L);
 	Uf ufTerceiro = Uf.RJ;
+	int pedido = 654;
+	int itemPedido = 1;
 	
 	int numeroAdicao = 321;
 	int sequencia = 1;
 	String codigoFabricante = "123456789ABC";
 	Dinheiro desconto = new Dinheiro(1.03);
-	int drawback = 45;
-	int pedido = 654;
-	int itemPedido = 1;
 
 	@Test
 	public void traduzirNota() throws IOException{
@@ -241,6 +240,8 @@ public class NotaFiscalTradutorJsonTest {
 		
 		assertEquals(importacao(),nf.item(0).produto().obterImportacoes().iterator().next());
 		
+		assertEquals(2,nf.item(0).produto().obterImportacoes().iterator().next().quantidadeAdicoes());
+		
 	}
 
 	private Date data(String data){
@@ -264,10 +265,15 @@ public class NotaFiscalTradutorJsonTest {
 	}
 	
 	public ImportacaoItem importacao(){
+		Set<Adicao> adicoes =  new HashSet<Adicao>();
 		
-		return new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
-						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,
-						new HashSet<Adicao>(Arrays.asList(new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto,drawback,pedido,itemPedido))));
+		adicoes.add(new Adicao(numeroAdicao,1,codigoFabricante,desconto));
+		adicoes.add(new Adicao(numeroAdicao,2,codigoFabricante,desconto));
+					
+		ImportacaoItem importacao = new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
+				valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,pedido,itemPedido,adicoes);
+		
+		return importacao;
 
 	}
 }

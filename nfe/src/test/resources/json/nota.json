@@ -87,14 +87,18 @@
 		"CNPJ" : "74230061000181",
 		"UFTerceiro" : "RJ",
 		"cExportador" : "123",
+		"xPed" : 654,
+		"nItemPed" : 1,		
 		"adicoes" : [{
 			"nAdicao" : 321,
 			"nSeqAdicC" : 1,
 			"cFabricante" : "123456789ABC",
-			"vDescDI" : 1.03,
-			"nDraw" : 45,
-			"xPed" : 654,
-			"nItemPed" : 1
+			"vDescDI" : 1.03
+		},{
+			"nAdicao" : 321,
+			"nSeqAdicC" : 2,
+			"cFabricante" : "123456789ABC",
+			"vDescDI" : 1.03
 		}]
 	}]
   }, {
@@ -173,14 +177,13 @@
 		"CNPJ" : "74230061000181",
 		"UFTerceiro" : "RJ",
 		"cExportador" : "123",
+		"xPed" : 654,
+		"nItemPed" : 1,
 		"adicoes" : [{
 			"nAdicao" : 321,
 			"nSeqAdicC" : 1,
 			"cFabricante" : "123456789ABC",
-			"vDescDI" : 1.03,
-			"nDraw" : 45,
-			"xPed" : 654,
-			"nItemPed" : 1
+			"vDescDI" : 1.03
 		}]
 	}]
   }, {

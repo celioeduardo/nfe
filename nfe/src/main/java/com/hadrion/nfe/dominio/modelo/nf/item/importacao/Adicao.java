@@ -15,20 +15,13 @@ public class Adicao {
 	private int sequencia;
 	private String codigoFabricante;
 	private Optional<Dinheiro> desconto;
-	private Optional<Integer> drawback;
-	private Optional<Integer> pedido;
-	private Optional<Integer> itemPedido;
 	
 
-	public Adicao(int numero, int sequencia, String codigoFabricante, Dinheiro desconto, 
-			Integer drawback,Integer pedido,Integer itemPedido) {
+	public Adicao(int numero, int sequencia, String codigoFabricante, Dinheiro desconto) {
 		setNumero(numero);
 		setSequencia(sequencia);
 		setCodigoFabricante(codigoFabricante);
 		setDesconto(desconto);
-		setDrawback(drawback);
-		setPedido(pedido);
-		setItemPedido(itemPedido);
 	}
 	public int numero() {
 		return numero;
@@ -46,18 +39,6 @@ public class Adicao {
 		return desconto;
 	}
 
-	public Optional<Integer> drawback() {
-		return drawback;
-	}
-
-	public Optional<Integer> pedido() {
-		return pedido;
-	}
-
-	public Optional<Integer> itemPedido() {
-		return itemPedido;
-	}
-	
 	private void setNumero(int numero) {
 		assertArgumentoNaoNulo(numero, "Numero da Adição é obrigatório.");
 		this.numero = numero;
@@ -73,15 +54,6 @@ public class Adicao {
 	private void setDesconto(Dinheiro desconto) {
 		this.desconto = Optional.ofNullable(desconto);
 	}
-	private void setDrawback(Integer drawback) {
-		this.drawback = Optional.ofNullable(drawback);
-	}
-	private void setPedido(Integer pedido) {
-		this.pedido = Optional.ofNullable(pedido);
-	}
-	private void setItemPedido(Integer itemPedido) {
-		this.itemPedido = Optional.ofNullable(itemPedido);
-	}
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;
@@ -93,9 +65,6 @@ public class Adicao {
 				.append(sequencia, objetoTipado.sequencia)
 				.append(codigoFabricante, objetoTipado.codigoFabricante)
 				.append(desconto, objetoTipado.desconto)
-				.append(drawback, objetoTipado.drawback)
-				.append(pedido, objetoTipado.pedido)
-				.append(itemPedido, objetoTipado.itemPedido)
 				.isEquals();
 		}
 
@@ -104,14 +73,11 @@ public class Adicao {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(132079,137)
+		return new HashCodeBuilder(36579,137)
 		.append(numero)
 		.append(sequencia)
 		.append(codigoFabricante)
 		.append(desconto)
-		.append(drawback)
-		.append(pedido)
-		.append(itemPedido)
 		.toHashCode();
 	}
 	
@@ -121,9 +87,6 @@ public class Adicao {
 				+ ",sequencia=" + sequencia
 				+ ",codigoFabricante=" + codigoFabricante 
 				+ ",desconto=" + desconto 
-				+ ",drawback=" + drawback 
-				+ ",pedido=" + pedido 
-				+ ",itemPedido=" + itemPedido 
 				+ "]";	
 	}
 

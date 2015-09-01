@@ -35,7 +35,6 @@ public class ImportacaoTest {
 	int sequencia = 1;
 	String codigoFabricante = "abc2030";
 	Dinheiro desconto = Dinheiro.ZERO;
-	int drawback=123;
 	int pedido=123;
 	int itemPedido=456;		
 	
@@ -44,11 +43,15 @@ public class ImportacaoTest {
 		
 		assertEquals(
 				new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
-						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,
-						new HashSet<Adicao>(Arrays.asList(new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto,drawback,pedido,itemPedido)))),
+						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,pedido,itemPedido,
+						new HashSet<Adicao>(
+								Arrays.asList(
+										new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto)))),
 				new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,						
-						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,
-						new HashSet<Adicao>(Arrays.asList(new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto,drawback,pedido,itemPedido))))
+						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,pedido,itemPedido,
+						new HashSet<Adicao>(
+								Arrays.asList(
+										new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto))))
 		);
 	}
 	
@@ -57,31 +60,28 @@ public class ImportacaoTest {
 		
 		assertEquals(
 				new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
-						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,
+						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,pedido,itemPedido,
 						null),
 				new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,						
-						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,
+						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,pedido,itemPedido,
 						null));
 	}
 
 	@Test
 	public void novaAdicao(){
 		assertEquals(
-				new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto,drawback,pedido,itemPedido),
-				new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto,drawback,pedido,itemPedido));
+				new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto),
+				new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto));
 	}
 	
 	@Test
 	public void novaAdicaoNulos(){
 		
-		Adicao adicao = new Adicao(numeroAdicao,sequencia,codigoFabricante,null,null,null,null);		
+		Adicao adicao = new Adicao(numeroAdicao,sequencia,codigoFabricante,null);		
 		assertEquals(numeroAdicao, adicao.numero());
 		assertEquals(sequencia, adicao.sequencia());
 		assertEquals(codigoFabricante, adicao.fabricante());
 		assertEquals(Optional.empty(), adicao.desconto());
-		assertEquals(Optional.empty(), adicao.drawback());
-		assertEquals(Optional.empty(), adicao.pedido());
-		assertEquals(Optional.empty(), adicao.itemPedido());
 				
 	}
 }

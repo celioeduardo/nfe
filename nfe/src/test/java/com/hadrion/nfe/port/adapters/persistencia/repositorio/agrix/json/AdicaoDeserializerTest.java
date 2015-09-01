@@ -34,17 +34,11 @@ public class AdicaoDeserializerTest {
 				"	\"nAdicao\" : 321,\r\n" + 
 				"	\"nSeqAdicC\" : 1,\r\n" + 
 				"	\"cFabricante\" : \"123456789ABC\",\r\n" + 
-				"	\"vDescDI\" : 1.03,\r\n" + 
-				"	\"nDraw\" : 45,\r\n" + 
-				"	\"xPed\" : 654,\r\n" + 
-				"	\"nItemPed\" : 1\r\n" + 
+				"	\"vDescDI\" : 1.03\r\n" + 
 				"}", Adicao.class);
 		assertEquals(321,adicao.numero());
 		assertEquals(1,adicao.sequencia());
 		assertEquals("123456789ABC",adicao.fabricante());
 		assertEquals(Optional.ofNullable(new Dinheiro(1.03)),adicao.desconto());
-		assertEquals(Optional.ofNullable(45),adicao.drawback());
-		assertEquals(Optional.ofNullable(654),adicao.pedido());
-		assertEquals(Optional.ofNullable(1),adicao.itemPedido());		
 	}
 }

@@ -28,11 +28,13 @@ public class ImportacaoItem {
 	private Optional<Dinheiro> valorArfmm;
 	private Optional<Cnpj> cnpjTerceiro;
 	private Optional<Uf> ufTerceiro;
+	private Optional<Integer> pedido;
+	private Optional<Integer> itemPedido;
 	private Set<Adicao> adicoes;
 	public ImportacaoItem(int numero,Date data,String localDesembarque,Uf ufDesembarque, 
 			Date dataDesembarque,ViaTransporte viaTransporte,String codigoExportador,
 			Dinheiro valorArfmm,Intermediacao intermediacao,Cnpj cnpjTerceiro,Uf ufTerceiro,
-			Set<Adicao> adicao) {
+			Integer pedido,Integer itemPedido,Set<Adicao> adicoes) {
 		setNumero(numero);
 		setEmissao(data);
 		setLocalDesembarque(localDesembarque);
@@ -44,7 +46,9 @@ public class ImportacaoItem {
 		setValorArfmm(valorArfmm);
 		setCnpjTerceiro(cnpjTerceiro);
 		setUfTerceiro(ufTerceiro);
-		setAdicoes(adicao);
+		setPedido(pedido);
+		setItemPedido(itemPedido);
+		setAdicoes(adicoes);
 	}
 	
 	public int numero() {
@@ -80,6 +84,20 @@ public class ImportacaoItem {
 	public String codigoExportador() {
 		return codigoExportador;
 	}
+	public Optional<Integer> pedido() {
+		return pedido;
+	}
+
+	public Optional<Integer> itemPedido() {
+		return itemPedido;
+	}
+	private void setPedido(Integer pedido) {
+		this.pedido = Optional.ofNullable(pedido);
+	}
+	private void setItemPedido(Integer itemPedido) {
+		this.itemPedido = Optional.ofNullable(itemPedido);
+	}
+	
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;
@@ -98,6 +116,8 @@ public class ImportacaoItem {
 				.append(valorArfmm,objetoTipado.valorArfmm)
 				.append(cnpjTerceiro,objetoTipado.cnpjTerceiro)
 				.append(ufTerceiro,objetoTipado.ufTerceiro)
+				.append(pedido, objetoTipado.pedido)
+				.append(itemPedido, objetoTipado.itemPedido)
 				.append(adicoes,objetoTipado.adicoes)
 				.isEquals();
 		}
@@ -119,6 +139,8 @@ public class ImportacaoItem {
 			.append(valorArfmm)
 			.append(cnpjTerceiro)
 			.append(ufTerceiro)
+			.append(pedido)
+			.append(itemPedido)
 			.append(adicoes)
 			.toHashCode();
 	}
@@ -136,15 +158,11 @@ public class ImportacaoItem {
 				+ ",valorArfmm="+ valorArfmm
 				+ ",cnpjTerceiro="+ cnpjTerceiro
 				+ ",ufTerceiro="+ ufTerceiro
-				+ ",adicao="+ adicoes
+				+ ",pedido=" + pedido 
+				+ ",itemPedido=" + itemPedido 
+				+ ",adicoes="+ adicoes
 				+ "]";
 	}	
-	
-	/**
-	 * Somente para JPA
-	 */
-	@SuppressWarnings("unused")
-	private ImportacaoItem(){}
 	
 	private void setEmissao(Date emissao) {
 		assertArgumentoNaoNulo(emissao, "Data de emissão é obrigatória.");
@@ -178,7 +196,9 @@ public class ImportacaoItem {
 
 	private void setAdicoes(Set<Adicao> adicoes) {
 		assertArgumentoNaoNulo(adicoes, "Adições são obrigatórias.");
-		this.adicoes = adicoes;
+		this.adicoes=new HashSet<Adicao>();
+		if (adicoes!=null)
+			this.adicoes.addAll(adicoes);
 	}
 	
 	private void setIntermediacao(Intermediacao intermediacao) {
@@ -210,13 +230,19 @@ public class ImportacaoItem {
 		return adicoes;
 	}
 
-	public Iterable<Adicao> adicoes() {
+	public Iterable<Adicao> obterAdicoes() {
 		return getAdicoes();
 	}
 
 	public Object quantidadeAdicoes() {
 		return getAdicoes().size();
 	} 
+	
+	/**
+	 * Somente para JPA
+	 */
+	@SuppressWarnings("unused")
+	private ImportacaoItem(){}
 	
 		
 }

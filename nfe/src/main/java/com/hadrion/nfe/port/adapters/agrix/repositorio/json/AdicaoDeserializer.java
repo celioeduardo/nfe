@@ -22,10 +22,7 @@ public class AdicaoDeserializer implements JsonDeserializer<Adicao>{
 				numero(j),
 				sequencia(j),
 				codigoFabricante(j),
-				desconto(j),
-				drawback(j),
-				pedido(j),
-				itemPedido(j));		
+				desconto(j));		
 	}
 	
 	private int numero(JsonObject j){
@@ -44,18 +41,7 @@ public class AdicaoDeserializer implements JsonDeserializer<Adicao>{
 		return new Dinheiro(d(j,"vDescDI")); 
 	}
 	
-	private int drawback(JsonObject j){
-		return i(j,"nDraw"); 
-	}
-	
-	private int pedido(JsonObject j){
-		return i(j,"xPed"); 
-	}
-	
-	private int itemPedido(JsonObject j){
-		return i(j,"nItemPed"); 
-	}
-	
+
 	private int i(JsonObject j, String propriedade){
 		return j.get(propriedade).getAsInt();
 	}
