@@ -90,7 +90,8 @@ public class DescritorProduto {
 	
 	@Embedded
 	private ExportacaoItem exportacao;
-
+	
+	@Embedded
 	private Set<ImportacaoItem> importacao;
 	
 	@Embedded
