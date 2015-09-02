@@ -7,9 +7,12 @@ import java.util.Set;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -91,7 +94,8 @@ public class DescritorProduto {
 	@Embedded
 	private ExportacaoItem exportacao;
 	
-	@Embedded
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+	@JoinColumn(name = "ID_PRODUTO")	
 	private Set<ImportacaoItem> importacao;
 	
 	@Embedded

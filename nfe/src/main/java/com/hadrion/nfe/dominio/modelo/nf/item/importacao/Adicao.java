@@ -4,18 +4,45 @@ import static com.hadrion.comum.Afirmacao.assertArgumentoNaoNulo;
 
 import java.util.Optional;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.tipos.Dinheiro;
-
+@Entity
+@SequenceGenerator(name="SEQ",sequenceName="SQ_ADICAO")
+@Table(name="ADICAO")
+@Access(AccessType.FIELD) 
 public class Adicao {
 
+	@Column(name="NUMERO")
 	private int numero;
+
+	@Column(name="SEQUENCIA")
 	private int sequencia;
-	private String codigoFabricante;
-	private Optional<Dinheiro> desconto;
 	
+	@Column(name="CODIGO_FABRICANTE")
+	private String codigoFabricante;
+
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="DESCONTO"))
+	private Optional<Dinheiro> desconto;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ")
+	@Column(name = "ID")
+	private Long id;
 
 	public Adicao(int numero, int sequencia, String codigoFabricante, Dinheiro desconto) {
 		setNumero(numero);

@@ -7,6 +7,23 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -14,23 +31,66 @@ import com.hadrion.nfe.dominio.modelo.ibge.Uf;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 
-
+@Entity
+@SequenceGenerator(name="SEQ", sequenceName="SQ_IMPORTACAO")
+@Table(name="IMPORTACAO")
 public class ImportacaoItem {
-	
+
+	@Column(name="NUMERO")
 	private int numero;
+	
+	@Column(name = "EMISSAO")
+	@Temporal(TemporalType.DATE)
 	private Date emissao;
+	
+	@Column(name="DESEMBARQUE_LOCAL")
 	private String localDesembarque;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="DESEMBARQUE_UF")
 	private Uf ufDesembarque;
+	
+	@Column(name = "DESEMBARQUE")
+	@Temporal(TemporalType.DATE)
 	private Date dataDesembarque;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="VIA_TRANSPORTE")
 	private ViaTransporte viaTransporte;
+	
+	@Column(name="CODIGO_EXPORTADOR")
 	private String codigoExportador;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name="INTERMEDIACAO")
 	private Intermediacao intermediacao;
+
+	@Embedded
+	@AttributeOverride(name="quantia", column=@Column(name="ARFMM"))
 	private Optional<Dinheiro> valorArfmm;
+
+	@Embedded
+	@AttributeOverride(name="numero", column=@Column(name="TERCEIRO_CNPJ"))
 	private Optional<Cnpj> cnpjTerceiro;
-	private Optional<Uf> ufTerceiro;
-	private Optional<Integer> pedido;
-	private Optional<Integer> itemPedido;
+
+	@Column(name="TERCEIRO_UF")	
+	private Uf ufTerceiro;
+	
+	@Column(name="PEDIDO",nullable = true)
+	private Integer pedido;
+	
+	@Column(name="PEDIDO_ITEM",nullable = true)
+	private Integer itemPedido;
+	
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+	@JoinColumn(name = "ID_DI")
 	private Set<Adicao> adicoes;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ")
+	@Column(name = "ID")
+	private Long id;
+	
 	public ImportacaoItem(int numero,Date data,String localDesembarque,Uf ufDesembarque, 
 			Date dataDesembarque,ViaTransporte viaTransporte,String codigoExportador,
 			Dinheiro valorArfmm,Intermediacao intermediacao,Cnpj cnpjTerceiro,Uf ufTerceiro,
@@ -79,23 +139,22 @@ public class ImportacaoItem {
 		return cnpjTerceiro;
 	}
 	public Optional<Uf> ufTerceiro() {
-		return ufTerceiro;
+		return Optional.ofNullable(ufTerceiro);
 	}
 	public String codigoExportador() {
 		return codigoExportador;
 	}
 	public Optional<Integer> pedido() {
-		return pedido;
+		return Optional.ofNullable(pedido);
 	}
-
 	public Optional<Integer> itemPedido() {
-		return itemPedido;
+		return Optional.ofNullable(itemPedido);
 	}
 	private void setPedido(Integer pedido) {
-		this.pedido = Optional.ofNullable(pedido);
+		this.pedido = pedido;
 	}
 	private void setItemPedido(Integer itemPedido) {
-		this.itemPedido = Optional.ofNullable(itemPedido);
+		this.itemPedido = itemPedido;		
 	}
 	
 	@Override
@@ -221,7 +280,7 @@ public class ImportacaoItem {
 	}
 	
 	private void setUfTerceiro(Uf ufTerceiro) {
-		this.ufTerceiro = Optional.ofNullable(ufTerceiro);
+		this.ufTerceiro = ufTerceiro;
 	}
 
 	private Set<Adicao> getAdicoes() {
