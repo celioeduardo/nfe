@@ -152,7 +152,7 @@ public class ItemTradutorJsonTest {
 					new Quantidade(777.0)));
 	}
 	private Set<ImportacaoItem> importacao(){
-		return new HashSet<ImportacaoItem>(null);
+		return new HashSet<ImportacaoItem>();
 	}
 	private Imposto imposto(){
 		return new Imposto(Dinheiro.ZERO, 

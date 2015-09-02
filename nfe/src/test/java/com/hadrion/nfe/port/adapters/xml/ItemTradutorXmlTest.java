@@ -2,6 +2,9 @@ package com.hadrion.nfe.port.adapters.xml;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,19 +19,25 @@ import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cide;
 import com.hadrion.nfe.dominio.modelo.nf.item.Combustivel;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
-import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoIndireta;
+import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.Adicao;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ImportacaoItem;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.Intermediacao;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ViaTransporte;
 import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
 import com.hadrion.nfe.dominio.modelo.pis.CstPis;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.tipos.Aliquota;
+import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Percentual;
 import com.hadrion.nfe.tipos.Quantidade;
+import com.hadrion.util.DataUtil;
 
 public class ItemTradutorXmlTest extends AbstractXmlTest{
 	
@@ -154,6 +163,7 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 				new Pis(CstPis.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null), 
 				new Cofins(CstCofins.CST_99, Dinheiro.ZERO, Aliquota.ZERO, null, null)),
 			"Informação Adicional");
+		System.out.println(toXML(item));
 		assertXMLEquals(XML,toXML(item));
 	}
 	
@@ -197,4 +207,12 @@ public class ItemTradutorXmlTest extends AbstractXmlTest{
 				"Informação Adicional");
 		assertEquals(item,fromXML(XML));
 	}
-}
+	private ImportacaoItem importacaoItem(){
+		
+		return new ImportacaoItem(1,DataUtil.data("01/09/2015"),"SANTOS",Uf.SP,DataUtil.data("31/08/2015"),ViaTransporte.MARITIMA, "1a",
+				new Dinheiro(1.23),Intermediacao.CONTA_PROPRIA,new Cnpj(74230061000181L),Uf.BA,123,456,
+				new HashSet<Adicao>(Arrays.asList(adicao())));
+	}	
+	private Adicao adicao(){
+		return new Adicao(321,123,"abc2030",Dinheiro.ZERO);
+	}}

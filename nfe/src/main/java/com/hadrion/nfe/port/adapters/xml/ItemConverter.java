@@ -51,7 +51,8 @@ public class ItemConverter extends AbstractConverter implements Converter {
 		convertMaiorQueZero("vOutro",item.produto().outrasDespesasAcessorias(),writer,context);
 		convert("indTot",1,writer,context);
 		convertIf("detExport",item.produto().exportacao(),writer,context);
-		convertIf("DI",item.produto().obterImportacoes(),writer,context);
+		if (item.produto().obterImportacoes().size()>0)
+			convert("DI",item.produto().obterImportacoes(),writer,context);
 		convertIf("comb",item.produto().combustivel(),writer,context);
 		writer.endNode();
 		
