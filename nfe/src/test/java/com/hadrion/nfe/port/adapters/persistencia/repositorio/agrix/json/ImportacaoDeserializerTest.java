@@ -117,7 +117,7 @@ public class ImportacaoDeserializerTest {
 		assertEquals(Optional.ofNullable(null),importacao.cnpjTerceiro());
 		assertEquals(Optional.ofNullable(null),importacao.ufTerceiro());
 		assertEquals("123",importacao.codigoExportador());
-		assertEquals(1,importacao.quantidadeAdicoes());
+		assertEquals(2,importacao.quantidadeAdicoes());
 		
 	}
 

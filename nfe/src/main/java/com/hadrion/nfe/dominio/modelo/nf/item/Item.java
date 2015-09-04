@@ -90,7 +90,8 @@ public class Item {
 	
 	public Item mesclar(Item item){
 		if (equals(item)) return this;
-		this.produto = item.produto;
+		
+		this.produto.mesclar(item.produto);
 		this.imposto = item.imposto;
 		this.informacaoAdicional = item.informacaoAdicional;
 		return this;

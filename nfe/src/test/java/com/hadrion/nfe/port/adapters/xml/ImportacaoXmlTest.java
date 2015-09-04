@@ -3,7 +3,6 @@ package com.hadrion.nfe.port.adapters.xml;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
-import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -62,7 +61,7 @@ public class ImportacaoXmlTest extends AbstractXmlTest{
 		
 		return new ImportacaoItem(1,DataUtil.data("01/09/2015"),"SANTOS",Uf.SP,DataUtil.data("31/08/2015"),ViaTransporte.MARITIMA, "1a",
 				new Dinheiro(1.23),Intermediacao.CONTA_PROPRIA,new Cnpj(74230061000181L),Uf.BA,123,456,
-				new HashSet<Adicao>(Arrays.asList(adicao())));
+				Arrays.asList(adicao()));
 	}	
 	private Adicao adicao(){
 		return new Adicao(321,123,"abc2030",Dinheiro.ZERO);

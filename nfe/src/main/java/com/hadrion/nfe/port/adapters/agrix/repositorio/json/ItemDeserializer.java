@@ -1,8 +1,8 @@
 package com.hadrion.nfe.port.adapters.agrix.repositorio.json;
 
 import java.lang.reflect.Type;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -53,7 +53,7 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		Double valorUnitarioComercializacao=null,valorUnitarioTributacao=null;
 		Dinheiro frete=null, seguro=null, desconto=null,acessorias=null,valorTotalBruto=null;
 		ExportacaoItem exportacao=null;
-		Set<ImportacaoItem> importacoes=null;
+		List<ImportacaoItem> importacoes=null;
 		Combustivel combustivel=null;				
 		
 		codigo=s(j,"codigo");
@@ -135,11 +135,11 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		}			
 		return null;			
 	}
-	private Set<ImportacaoItem> importacoes(JsonObject j){
+	private List<ImportacaoItem> importacoes(JsonObject j){
 		if (tem(j,"importacao"))		
 			return new ImportacaoTradutorJson(j.get("importacao").toString()).converterImportacao();
 		
-		return new HashSet<ImportacaoItem>();
+		return new ArrayList<ImportacaoItem>();
 	}
 	private Imposto imposto(JsonObject j){
 		

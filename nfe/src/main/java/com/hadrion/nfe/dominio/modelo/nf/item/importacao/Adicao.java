@@ -4,8 +4,6 @@ import static com.hadrion.comum.Afirmacao.assertArgumentoNaoNulo;
 
 import java.util.Optional;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -23,7 +21,6 @@ import com.hadrion.nfe.tipos.Dinheiro;
 @Entity
 @SequenceGenerator(name="SEQ",sequenceName="SQ_ADICAO")
 @Table(name="ADICAO")
-@Access(AccessType.FIELD) 
 public class Adicao {
 
 	@Column(name="NUMERO")
@@ -100,7 +97,7 @@ public class Adicao {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(36579,137)
+		return new HashCodeBuilder(36579,139)
 		.append(numero)
 		.append(sequencia)
 		.append(codigoFabricante)

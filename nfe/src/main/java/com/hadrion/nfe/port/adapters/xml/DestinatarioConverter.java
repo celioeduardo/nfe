@@ -34,14 +34,17 @@ public class DestinatarioConverter extends AbstractConverter implements Converte
 		Destinatario dest = (Destinatario) source;
 		
 		if (ambiente == Ambiente.HOMOLOGACAO){
-			convert("CNPJ", new Cnpj(99999999000191L), writer, context);
+			if (dest.idEstrangeiro()!=null)
+				novoNo("idEstrangeiro", dest.idEstrangeiro(), writer);
+			else
+				convert("CNPJ", new Cnpj(99999999000191L), writer, context);				
 		} else {
-			if (dest.cnpj() != null)
+			if (dest.idEstrangeiro()!=null)
+				novoNo("idEstrangeiro", dest.idEstrangeiro(), writer);
+			else if (dest.cnpj() != null)
 				convert("CNPJ", cnpj(dest), writer, context);
 			else if (dest.cpf() != null)
-				convert("CPF", cpf(dest), writer, context);
-			else
-				novoNo("idEstrangeiro", "", writer);
+				convert("CPF", cpf(dest), writer, context);				
 		}
 		
 		novoNo("xNome", razaoSocial(dest), writer);

@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -140,7 +140,7 @@ public class NotaFiscalTradutorJsonTest {
 							new ChaveAcesso("31131016832651000420550010000199361002699180"),
 							new Quantidade(777.0))), 
 				null,
-				new HashSet<ImportacaoItem>()
+				null
 				),
 				new Imposto(Dinheiro.ZERO, 
 						Icms.cst_00(Origem.NACIONAL,new Dinheiro(2600.02), new Aliquota(18),
@@ -238,9 +238,9 @@ public class NotaFiscalTradutorJsonTest {
 		assertEquals(0,nf.item(2).produto().quantidadeImportacoes());
 		assertEquals(0,nf.item(3).produto().quantidadeImportacoes());
 		
-		assertEquals(importacao(),nf.item(0).produto().obterImportacoes().iterator().next());
+		assertEquals(importacao(),nf.item(0).produto().importacoes().iterator().next());
 		
-		assertEquals(2,nf.item(0).produto().obterImportacoes().iterator().next().quantidadeAdicoes());
+		assertEquals(2,nf.item(0).produto().importacoes().iterator().next().quantidadeAdicoes());
 		
 	}
 
@@ -265,7 +265,7 @@ public class NotaFiscalTradutorJsonTest {
 	}
 	
 	public ImportacaoItem importacao(){
-		Set<Adicao> adicoes =  new HashSet<Adicao>();
+		List<Adicao> adicoes =  new ArrayList<Adicao>();
 		
 		adicoes.add(new Adicao(numeroAdicao,1,codigoFabricante,desconto));
 		adicoes.add(new Adicao(numeroAdicao,2,codigoFabricante,desconto));

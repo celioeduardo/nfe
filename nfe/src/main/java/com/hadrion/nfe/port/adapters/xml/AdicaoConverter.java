@@ -19,7 +19,7 @@ public class AdicaoConverter extends AbstractConverter{
 			MarshallingContext context) {
 		Adicao adicao = (Adicao) source;
 		convert("nAdicao",adicao.numero(),writer,context);
-		convert("nSeqAdicC",adicao.sequencia(),writer,context);
+		convert("nSeqAdic",adicao.sequencia(),writer,context);
 		convert("cFabricante",adicao.fabricante(),writer,context);
 		
 		adicao.desconto().ifPresent(v->convert("vDescDI",v,writer,context));

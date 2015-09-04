@@ -3,8 +3,8 @@ package com.hadrion.nfe.port.adapters.persistencia.repositorio.agrix.json;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -151,8 +151,8 @@ public class ItemTradutorJsonTest {
 					new ChaveAcesso("31131016832651000420550010000199361002699180"),
 					new Quantidade(777.0)));
 	}
-	private Set<ImportacaoItem> importacao(){
-		return new HashSet<ImportacaoItem>();
+	private List<ImportacaoItem> importacao(){
+		return new ArrayList<ImportacaoItem>();
 	}
 	private Imposto imposto(){
 		return new Imposto(Dinheiro.ZERO, 

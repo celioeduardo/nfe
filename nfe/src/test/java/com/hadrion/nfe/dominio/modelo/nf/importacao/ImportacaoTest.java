@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -44,14 +43,12 @@ public class ImportacaoTest {
 		assertEquals(
 				new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
 						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,pedido,itemPedido,
-						new HashSet<Adicao>(
 								Arrays.asList(
-										new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto)))),
+										new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto))),
 				new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,						
 						valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,pedido,itemPedido,
-						new HashSet<Adicao>(
 								Arrays.asList(
-										new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto))))
+										new Adicao(numeroAdicao,sequencia,codigoFabricante,desconto)))
 		);
 	}
 	

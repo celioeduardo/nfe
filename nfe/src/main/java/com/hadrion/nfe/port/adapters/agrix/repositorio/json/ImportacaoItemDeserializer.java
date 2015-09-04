@@ -1,11 +1,7 @@
 package com.hadrion.nfe.port.adapters.agrix.repositorio.json;
 
-import static com.hadrion.util.DataUtil.data;
-import static com.hadrion.util.DataUtil.dataHora;
-
 import java.lang.reflect.Type;
-import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -19,6 +15,7 @@ import com.hadrion.nfe.dominio.modelo.nf.item.importacao.Intermediacao;
 import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ViaTransporte;
 import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
+import com.hadrion.util.DataUtil;
 
 public class ImportacaoItemDeserializer implements JsonDeserializer<ImportacaoItem>{
 
@@ -30,10 +27,10 @@ public class ImportacaoItemDeserializer implements JsonDeserializer<ImportacaoIt
 		
 		ImportacaoItem importacao = new ImportacaoItem(
 				i(j,"nDI"), 
-				parseDataHora(s(j,"dDI")),
+				DataUtil.data(s(j,"dDI")),
 				s(j,"xLocDesemb"),
 				Uf.valueOf(s(j,"UFDesemb")),
-				parseDataHora(s(j,"dDesemb")),
+				DataUtil.data(s(j,"dDesemb")),
 				ViaTransporte.valueOf(s(j,"tpViaTransp")),
 				s(j,"cExportador"),
 				valorArfmm(j),
@@ -47,7 +44,7 @@ public class ImportacaoItemDeserializer implements JsonDeserializer<ImportacaoIt
 		return importacao;
 	}
 
-	private Set<Adicao> adicoes(JsonObject j){
+	private List<Adicao> adicoes(JsonObject j){
 		if (tem(j,"adicoes")){
 			return new ImportacaoTradutorJson(j.get("adicoes").toString()).converterAdicoes();
 		}
@@ -94,12 +91,6 @@ public class ImportacaoItemDeserializer implements JsonDeserializer<ImportacaoIt
 	}
 	boolean tem(JsonObject j, String propriedade){
 		return j.has(propriedade);
-	}
-	private Date parseDataHora(String s) {
-		if (s.length() > 8)
-			return dataHora(s);
-		else
-			return data(s);
 	}
 	private int pedido(JsonObject j){
 		return i(j,"xPed"); 

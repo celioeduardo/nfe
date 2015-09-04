@@ -1,8 +1,7 @@
 package com.hadrion.nfe.dominio.modelo.nf.item;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -11,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
@@ -94,9 +94,9 @@ public class DescritorProduto {
 	@Embedded
 	private ExportacaoItem exportacao;
 	
-	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-	@JoinColumn(name = "ID_PRODUTO")	
-	private Set<ImportacaoItem> importacao;
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_ITEM")	
+	private List<ImportacaoItem> importacoes;
 	
 	@Embedded
 	private Combustivel combustivel;
@@ -111,7 +111,7 @@ public class DescritorProduto {
 			Dinheiro outrasDespesasAcessorias,
 			ExportacaoItem exportacao,
 			Combustivel combustivel,
-			Set<ImportacaoItem> importacoes) {
+			List<ImportacaoItem> importacoes) {
 		super();
 		this.codigo = codigo;
 		this.gtin = gtin;
@@ -134,9 +134,7 @@ public class DescritorProduto {
 		this.outrasDespesasAcessorias = outrasDespesasAcessorias;
 		this.exportacao = exportacao;
 		this.combustivel = combustivel;
-		this.importacao=new HashSet<ImportacaoItem>();
-		if (importacoes!=null)
-			this.importacao.addAll(importacoes);		
+		adicionarImportacoes(importacoes);		
 	}
 	public String codigo() {
 		return codigo;
@@ -203,12 +201,21 @@ public class DescritorProduto {
 	}
 
 	public int quantidadeImportacoes() {
-		return importacao.size();
+		return importacoes.size();
 	}
 
-	public Set<ImportacaoItem> obterImportacoes() {
-		return Collections.unmodifiableSet(importacao);
-	}	
+	private List<ImportacaoItem> getImportacoes() {
+		if (importacoes == null)
+			importacoes = new ArrayList<ImportacaoItem>();
+		return importacoes;
+	}
+	
+	private void adicionarImportacoes(List<ImportacaoItem> importacoes){
+		getImportacoes().addAll(importacoes);
+	}
+	public List<ImportacaoItem> importacoes() {
+		return new ArrayList<ImportacaoItem>(getImportacoes());
+	}
 	
 	@Override
 	public boolean equals(Object objeto) {
@@ -238,6 +245,7 @@ public class DescritorProduto {
 			.append(valorDesconto,objetoTipado.valorDesconto)
 			.append(outrasDespesasAcessorias,objetoTipado.outrasDespesasAcessorias)
 			.append(exportacao,objetoTipado.exportacao)
+			.append(importacoes,objetoTipado.importacoes)
 			.append(combustivel,objetoTipado.combustivel)
 			.isEquals();
 		}
@@ -268,6 +276,7 @@ public class DescritorProduto {
 				.append(valorDesconto)
 				.append(outrasDespesasAcessorias)
 				.append(exportacao)
+				.append(importacoes)
 				.append(combustivel)
 				.toHashCode();		
 	}
@@ -294,6 +303,7 @@ public class DescritorProduto {
 				+ ",valorDesconto=" + valorDesconto
 				+ ",outrasDespesasAcessorias=" + outrasDespesasAcessorias
 				+ ",exportacao=" + exportacao
+				+ ",importacoes=" + importacoes
 				+ ",combustivel =" + combustivel + "]";
 	
 	}
@@ -303,5 +313,36 @@ public class DescritorProduto {
 	 */
 	@SuppressWarnings("unused")
 	private DescritorProduto(){}
+	public void mesclar(DescritorProduto produto) {
+		if (equals(produto)) return;
+		
+		this.getImportacoes().clear();
+
+		this.codigo = produto.codigo;
+		this.gtin = produto.gtin;
+		this.descricao = produto.descricao;
+		this.ncm = produto.ncm;
+		this.nve = StringUtils.trimToNull(produto.nve);
+		this.extipi = StringUtils.trimToNull(produto.extipi);
+		this.cfop = produto.cfop;	
+		this.unidadeComercial = produto.unidadeComercial;
+		this.quantidadeComercial = produto.quantidadeComercial;
+		this.valorUnitarioComercializacao = produto.valorUnitarioComercializacao;
+		this.valorTotalBruto = produto.valorTotalBruto;
+		this.gtinTributavel = produto.gtinTributavel;
+		this.unidadeTributavel = produto.unidadeTributavel;
+		this.quantidadeTributavel = produto.quantidadeTributavel;
+		this.valorUnitarioTributacao = produto.valorUnitarioTributacao;
+		this.totalFrete = produto.totalFrete;
+		this.totalSeguro = produto.totalSeguro;
+		this.valorDesconto = produto.valorDesconto;
+		this.outrasDespesasAcessorias = produto.outrasDespesasAcessorias;
+		this.exportacao = produto.exportacao;
+		this.combustivel = produto.combustivel;
+
+		if (produto.importacoes().size() > 0)
+			this.getImportacoes().addAll(produto.getImportacoes());
+		
+	}
 	
 }

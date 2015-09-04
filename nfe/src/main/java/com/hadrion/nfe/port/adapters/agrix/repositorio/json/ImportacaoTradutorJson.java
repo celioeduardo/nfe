@@ -2,8 +2,7 @@ package com.hadrion.nfe.port.adapters.agrix.repositorio.json;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,12 +25,10 @@ public class ImportacaoTradutorJson {
 		gson = gsonBuilder.create();
 		this.json = json;
 	}
-	public Set<ImportacaoItem> converterImportacao() {
-		return new HashSet<ImportacaoItem>(Arrays.asList(gson.fromJson(json, ImportacaoItem[].class)));
+	public List<ImportacaoItem> converterImportacao() {
+		return Arrays.asList(gson.fromJson(json, ImportacaoItem[].class));
 	}
-	public Set<Adicao> converterAdicoes() {
-		return new HashSet<Adicao>(
-				Arrays.asList(
-						gson.fromJson(json, Adicao[].class))); 
+	public List<Adicao> converterAdicoes() {
+		return Arrays.asList(gson.fromJson(json, Adicao[].class)); 
 	}
 }

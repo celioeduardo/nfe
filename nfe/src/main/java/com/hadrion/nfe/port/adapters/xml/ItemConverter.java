@@ -7,6 +7,7 @@ import com.hadrion.nfe.dominio.modelo.nf.item.ExportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Gtin;
 import com.hadrion.nfe.dominio.modelo.nf.item.Item;
 import com.hadrion.nfe.dominio.modelo.nf.item.Ncm;
+import com.hadrion.nfe.dominio.modelo.nf.item.importacao.ImportacaoItem;
 import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.hadrion.nfe.tipos.Quantidade;
@@ -51,8 +52,11 @@ public class ItemConverter extends AbstractConverter implements Converter {
 		convertMaiorQueZero("vOutro",item.produto().outrasDespesasAcessorias(),writer,context);
 		convert("indTot",1,writer,context);
 		convertIf("detExport",item.produto().exportacao(),writer,context);
-		if (item.produto().obterImportacoes().size()>0)
-			convert("DI",item.produto().obterImportacoes(),writer,context);
+		for (ImportacaoItem imp : item.produto().importacoes()){
+			writer.startNode("DI");
+			context.convertAnother(imp);
+			writer.endNode();
+		}		
 		convertIf("comb",item.produto().combustivel(),writer,context);
 		writer.endNode();
 		

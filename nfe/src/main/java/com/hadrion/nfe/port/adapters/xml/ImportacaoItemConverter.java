@@ -25,14 +25,14 @@ public class ImportacaoItemConverter extends AbstractConverter{
 		convert("xLocDesemb",imp.localDesembarque(),writer,context);
 		convert("UFDesemb",imp.ufDesembarque().toString(),writer,context);
 		convert("dDesemb",DataUtil.formatarData(imp.dataDesembarque()),writer,context);
-		convert("tpViaTransp",imp.viaTransporte(),writer,context);  
+		convert("tpViaTransp",imp.viaTransporte().codigo(),writer,context);  
 		imp.valorArfmm().ifPresent(v->convert("vAFRMM",v,writer,context));
 		convert("tpIntermedio",imp.intermediacao().codigo(),writer,context);
 		imp.cnpjTerceiro().ifPresent(c->convert("CNPJ",c,writer,context));
 		imp.ufTerceiro().ifPresent(u->convert("UFTerceiro",u.toString(),writer,context));
 		
 		convert("cExportador",imp.codigoExportador(),writer,context);    
-		for (Adicao adicao : imp.obterAdicoes()){
+		for (Adicao adicao : imp.adicoes()){
 			writer.startNode("adi");
 			context.convertAnother(adicao);
 			writer.endNode();

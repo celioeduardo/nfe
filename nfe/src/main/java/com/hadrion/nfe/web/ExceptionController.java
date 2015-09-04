@@ -18,6 +18,7 @@ public class ExceptionController {
 	public Erro manipularTodasExceptions(HttpServletRequest request, 
 			HttpServletResponse response, HttpSession session, Exception ex){
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		ex.printStackTrace();
 		return new Erro(ex);
 	}
 	

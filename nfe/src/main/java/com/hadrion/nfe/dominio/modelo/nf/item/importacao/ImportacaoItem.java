@@ -2,10 +2,10 @@ package com.hadrion.nfe.dominio.modelo.nf.item.importacao;
 
 import static com.hadrion.comum.Afirmacao.assertArgumentoNaoNulo;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
@@ -14,6 +14,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -82,21 +83,21 @@ public class ImportacaoItem {
 	@Column(name="PEDIDO_ITEM",nullable = true)
 	private Integer itemPedido;
 	
-	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_DI")
-	private Set<Adicao> adicoes;
+	private List<Adicao> adicoes;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ")
 	@Column(name = "ID")
 	private Long id;
 	
-	public ImportacaoItem(int numero,Date data,String localDesembarque,Uf ufDesembarque, 
+	public ImportacaoItem(int numero,Date emissao,String localDesembarque,Uf ufDesembarque, 
 			Date dataDesembarque,ViaTransporte viaTransporte,String codigoExportador,
 			Dinheiro valorArfmm,Intermediacao intermediacao,Cnpj cnpjTerceiro,Uf ufTerceiro,
-			Integer pedido,Integer itemPedido,Set<Adicao> adicoes) {
+			Integer pedido,Integer itemPedido,List<Adicao> adicoes) {
 		setNumero(numero);
-		setEmissao(data);
+		setEmissao(emissao);
 		setLocalDesembarque(localDesembarque);
 		setUfDesembarque(ufDesembarque);
 		setDataDesembarque(dataDesembarque);
@@ -108,7 +109,7 @@ public class ImportacaoItem {
 		setUfTerceiro(ufTerceiro);
 		setPedido(pedido);
 		setItemPedido(itemPedido);
-		setAdicoes(adicoes);
+		adicionarAdicoes(adicoes);
 	}
 	
 	public int numero() {
@@ -186,7 +187,7 @@ public class ImportacaoItem {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(1327,171)
+		return new HashCodeBuilder(3647,137)
 			.append(numero)
 			.append(emissao)
 			.append(localDesembarque)
@@ -253,11 +254,9 @@ public class ImportacaoItem {
 		this.codigoExportador = codigoExportador;
 	}
 
-	private void setAdicoes(Set<Adicao> adicoes) {
-		assertArgumentoNaoNulo(adicoes, "Adições são obrigatórias.");
-		this.adicoes=new HashSet<Adicao>();
-		if (adicoes!=null)
-			this.adicoes.addAll(adicoes);
+	private void adicionarAdicoes(List<Adicao> adicoes) {
+		assertArgumentoNaoNulo(adicoes, "Adições de Importações são obrigatórias.");
+		getAdicoes().addAll(adicoes);
 	}
 	
 	private void setIntermediacao(Intermediacao intermediacao) {
@@ -283,14 +282,14 @@ public class ImportacaoItem {
 		this.ufTerceiro = ufTerceiro;
 	}
 
-	private Set<Adicao> getAdicoes() {
+	private List<Adicao> getAdicoes() {
 		if (adicoes == null)
-			adicoes = new HashSet<Adicao>();
+			adicoes = new ArrayList<Adicao>();
 		return adicoes;
 	}
-
-	public Iterable<Adicao> obterAdicoes() {
-		return getAdicoes();
+	
+	public List<Adicao> adicoes() {
+		return new ArrayList<Adicao>(getAdicoes());
 	}
 
 	public Object quantidadeAdicoes() {
