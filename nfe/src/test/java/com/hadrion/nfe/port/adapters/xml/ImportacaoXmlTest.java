@@ -25,7 +25,7 @@ public class ImportacaoXmlTest extends AbstractXmlTest{
 			"   <xLocDesemb>SANTOS</xLocDesemb>\r\n" + 
 			"   <UFDesemb>SP</UFDesemb>\r\n" + 
 			"   <dDesemb>2015-08-31</dDesemb>\r\n" + 
-			"   <tpViaTransp>MARITIMA</tpViaTransp>\r\n" + 
+			"   <tpViaTransp>1</tpViaTransp>\r\n" + 
 			"   <vAFRMM>1.23</vAFRMM>\r\n" + 
 			"   <tpIntermedio>1</tpIntermedio>\r\n" + 
 			"   <CNPJ>74230061000181</CNPJ>\r\n" + 
@@ -33,7 +33,7 @@ public class ImportacaoXmlTest extends AbstractXmlTest{
 			"	<cExportador>1a</cExportador>\r\n" + 
 			"	<adi>\r\n" + 
 			"       <nAdicao>321</nAdicao>\r\n" + 
-			"       <nSeqAdicC>123</nSeqAdicC>\r\n" + 
+			"       <nSeqAdic>123</nSeqAdic>\r\n" + 
 			"   	<cFabricante>abc2030</cFabricante>\r\n" + 
 			"   	<vDescDI>0.00</vDescDI>\r\n" + 
 			"	</adi>\r\n" + 

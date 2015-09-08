@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -140,7 +141,7 @@ public class NotaFiscalTradutorJsonTest {
 							new ChaveAcesso("31131016832651000420550010000199361002699180"),
 							new Quantidade(777.0))), 
 				null,
-				null
+				importacao()
 				),
 				new Imposto(Dinheiro.ZERO, 
 						Icms.cst_00(Origem.NACIONAL,new Dinheiro(2600.02), new Aliquota(18),
@@ -238,7 +239,7 @@ public class NotaFiscalTradutorJsonTest {
 		assertEquals(0,nf.item(2).produto().quantidadeImportacoes());
 		assertEquals(0,nf.item(3).produto().quantidadeImportacoes());
 		
-		assertEquals(importacao(),nf.item(0).produto().importacoes().iterator().next());
+		assertEquals(importacao(),nf.item(0).produto().importacoes());
 		
 		assertEquals(2,nf.item(0).produto().importacoes().iterator().next().quantidadeAdicoes());
 		
@@ -264,7 +265,7 @@ public class NotaFiscalTradutorJsonTest {
 		
 	}
 	
-	public ImportacaoItem importacao(){
+	private List<ImportacaoItem> importacao(){
 		List<Adicao> adicoes =  new ArrayList<Adicao>();
 		
 		adicoes.add(new Adicao(numeroAdicao,1,codigoFabricante,desconto));
@@ -273,7 +274,6 @@ public class NotaFiscalTradutorJsonTest {
 		ImportacaoItem importacao = new ImportacaoItem(numero,data,localDesembarque,ufDesembarque,dataDesembarque,viaTransporte,codigoExportador,
 				valorArfmm,intermediacao,cnpjTerceiro,ufTerceiro,pedido,itemPedido,adicoes);
 		
-		return importacao;
-
+		return Arrays.asList(importacao);
 	}
 }

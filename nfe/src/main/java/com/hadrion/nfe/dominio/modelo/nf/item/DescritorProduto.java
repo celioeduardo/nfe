@@ -211,7 +211,8 @@ public class DescritorProduto {
 	}
 	
 	private void adicionarImportacoes(List<ImportacaoItem> importacoes){
-		getImportacoes().addAll(importacoes);
+		if (importacoes!=null)
+			getImportacoes().addAll(importacoes);
 	}
 	public List<ImportacaoItem> importacoes() {
 		return new ArrayList<ImportacaoItem>(getImportacoes());
