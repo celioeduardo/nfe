@@ -194,6 +194,18 @@ public class NotaFiscalAplicacaoService {
 				notas.getNumeroDeElementos());
 
 	}
+	
+	public List<NotaFiscalData> notasFicaisAutorizadasResumo(Ambiente ambiente,
+			Long empresa, String filial, Date inicio, Date fim,String notaFiscalId) {
+	
+		return new ArrayList<NotaFiscalData>(
+					notaFiscalRepositorio.notasAutorizadas(ambiente,empresa,new FilialId(filial), inicio, fim, new NotaFiscalId(notaFiscalId))
+						.stream()
+						.map(nf -> construir(nf))
+						.collect(Collectors.toList())
+				);
+		
+	}
 	public Pagina<NotaFiscalData> notasFicaisCanceladasResumo(Ambiente ambiente,
 			Long empresa, String filial, Date inicio, Date fim,
 			String notistaId, String notaFiscalId, Paginacao paginacao) {

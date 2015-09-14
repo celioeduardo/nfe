@@ -49,9 +49,13 @@ public interface NotaFiscalRepositorioSpringData extends JpaRepository<NotaFisca
 			FilialId filialId, Situacao autorizada, Ambiente ambiente,
 			Long numero, Pageable pageable);
 
-	List<NotaFiscal> findByNotaFiscalIdInAndSituacao(
-			List<NotaFiscalId> ids, Situacao situacao);
+	List<NotaFiscal> findByNotaFiscalIdInAndSituacao(List<NotaFiscalId> ids, 
+			Situacao situacao);
 
 	Optional<NotaFiscal> findByNotaFiscalIdAndSituacao(NotaFiscalId id,
 			Situacao autorizada);
+
+	List<NotaFiscal> findByAmbienteAndFilialId(Ambiente ambiente, 
+			FilialId filial);
+	
 }

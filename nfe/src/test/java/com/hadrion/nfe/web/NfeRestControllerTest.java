@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.json.JSONException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -105,6 +106,65 @@ public class NfeRestControllerTest{
 		
 		String responseBody = restTemplate.getForObject(
 				buildUrl("notas_fiscais/%s",nota.notaFiscalId()), 
+				String.class);
+		
+		System.out.println(JSON);
+		System.out.println(responseBody);
+		
+		JSONAssert.assertEquals(JSON, responseBody, false);
+	}
+	
+	@Test 
+	public void obterAutorizadas() throws JSONException{
+		
+		NotaFiscal nota = notaFiscalFixture.nfEmHomologacaoAutorizadaPersistidaParaTest();
+		
+		String JSON = 
+				String.format("[{\r\n" + 
+						"	notaFiscalId : \"%s\",\r\n" + 
+						"	chave : \"%s\",\r\n" + 
+						"	destinatario : {\r\n" + 
+						"		endereco : {\r\n" + 
+						"			municipio : {\r\n" + 
+						"				codigo : %s,\r\n" + 
+						"				nome : \"%s\",\r\n" + 
+						"				uf : \"%s\"\r\n" + 
+						"			}\r\n" + 
+						"		}\r\n" + 
+						"	},\r\n" + 
+						"	tipoOperacao : \"%s\",\r\n" + 
+						"	total : %s,\r\n" + 
+						"	transportador : {\r\n" + 
+						"		nome : \"%s\",\r\n" + 
+						"		cpf : %s,\r\n" + 
+						"		cnpj : null\r\n" + 
+						"	},\r\n" + 
+						"	veiculo : {\r\n" + 
+						"		placa : {\r\n" + 
+						"			numero : \"%s\",\r\n" + 
+						"			uf : \"%s\"\r\n" + 
+						"		}\r\n" + 
+						"	},\r\n" + 
+						"	volumes : [{\r\n" + 
+						"		pesoBruto : %s\r\n" + 
+						"	}]\r\n" + 
+						"}]",
+						nota.notaFiscalId(),
+						nota.chaveAcesso(),
+						nota.destinatario().endereco().municipio().codigo(),
+						nota.destinatario().endereco().municipio().nome(),
+						nota.destinatario().endereco().municipio().uf(),
+						nota.tipoOperacao(),
+						String.format(Locale.ENGLISH, "%.2f", nota.total().valor()),
+						nota.transportador().get().razaoSocial(),
+						nota.transportador().get().cpf(),
+						nota.veiculo().get().placa().numero(),
+						nota.veiculo().get().placa().uf(),
+						String.format(Locale.ENGLISH, "%.2f", nota.volumes().iterator().next().pesoBruto())
+						);
+		
+		String responseBody = restTemplate.getForObject(
+				buildUrl("notas_fiscais/autorizadas?ambiente=HOMOLOGACAO&empresa=4007474000116&filial=4007474000116",nota.notaFiscalId()), 
 				String.class);
 		
 		System.out.println(JSON);
