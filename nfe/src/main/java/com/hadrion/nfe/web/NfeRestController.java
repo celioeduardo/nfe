@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hadrion.nfe.aplicacao.nf.NotaFiscalAplicacaoService;
-import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 
@@ -50,7 +49,7 @@ public class NfeRestController extends AbstractRestController {
 			@RequestParam(value="notafiscalid",required=false)String notaFiscalId,
 			HttpServletRequest req){
 		
-		return notaFiscalAplicacaoService.notasFicaisAutorizadasResumo(Ambiente.valueOf(ambiente), empresa, filial, inicio, fim, notaFiscalId);
+		return notaFiscalAplicacaoService.notasFicaisAutorizadasResumo(Ambiente.valueOf(ambiente), empresa, filial, inicio, fim, notaFiscalId).get(0);
 	}	
 	
 }
