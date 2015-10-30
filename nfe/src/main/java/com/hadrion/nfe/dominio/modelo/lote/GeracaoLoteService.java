@@ -14,13 +14,9 @@ import com.hadrion.nfe.dominio.modelo.filial.Filial;
 import com.hadrion.nfe.dominio.modelo.filial.FilialId;
 import com.hadrion.nfe.dominio.modelo.filial.FilialRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 
 @Service
 public class GeracaoLoteService {
-	
-	@Autowired
-	private NotaFiscalRepositorio notaFiscalRepositorio;
 	
 	@Autowired
 	private FilialRepositorio filialRepositorio;

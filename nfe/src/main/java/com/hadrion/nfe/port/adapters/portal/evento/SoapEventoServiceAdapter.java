@@ -21,8 +21,6 @@ import org.w3c.dom.Document;
 
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
-import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.portal.evento.EventoService;
 import com.hadrion.nfe.dominio.modelo.portal.evento.RetornoLoteEvento;
 import com.hadrion.nfe.port.adapters.portal.ws.Cabecalho;
@@ -37,13 +35,6 @@ public class SoapEventoServiceAdapter implements EventoService{
 	
 	@Autowired
 	private WebServiceTemplateFabrica webServiceTemplateFabrica;
-	
-	@Autowired
-	private LoteRepositorio loteRepositorio;
-	
-	@Autowired
-	private NotaFiscalRepositorio notaFiscalRepositorio; 
-	
 	
 	@Override
 	public RetornoLoteEvento enviar(

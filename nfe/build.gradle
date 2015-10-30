@@ -1,10 +1,12 @@
 buildscript {
 	ext {
-        springBootVersion = '1.2.6.RELEASE'
+        springBootVersion = '1.2.7.RELEASE'
     }
     repositories {
-        mavenCentral()
+		maven { url "http://192.168.151.246:8081/nexus/content/groups/public" }    
         maven { url 'http://repo.spring.io/plugins-release' }
+    	mavenLocal()
+        mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -29,11 +31,11 @@ sourceCompatibility = 1.8
 description = "NF-e"
 
 repositories {
-	mavenLocal()
-	maven { url "http://repo.hadrion.com.br:8081/nexus/content/groups/public" }
-	mavenCentral()
+	maven { url "http://192.168.151.246:8081/nexus/content/groups/public" }
 	maven { url "http://repo.spring.io/libs-release"  }
 	maven { url "http://jaspersoft.artifactoryonline.com/jaspersoft/repo"}
+	mavenLocal()
+	mavenCentral()
 }
 
 dependencies {

@@ -119,7 +119,7 @@ public class NfeRestControllerTest{
 		NotaFiscal nota = notaFiscalFixture.nfEmHomologacaoAutorizadaPersistidaParaTest();
 		
 		String JSON = 
-				String.format("[{\r\n" + 
+				String.format("{\r\n" + 
 						"	notaFiscalId : \"%s\",\r\n" + 
 						"	chave : \"%s\",\r\n" + 
 						"	destinatario : {\r\n" + 
@@ -147,7 +147,7 @@ public class NfeRestControllerTest{
 						"	volumes : [{\r\n" + 
 						"		pesoBruto : %s\r\n" + 
 						"	}]\r\n" + 
-						"}]",
+						"}",
 						nota.notaFiscalId(),
 						nota.chaveAcesso(),
 						nota.destinatario().endereco().municipio().codigo(),

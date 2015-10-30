@@ -30,14 +30,6 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRXmlDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -93,6 +85,14 @@ import com.hadrion.nfe.port.adapters.xml.nf.NotaFiscalSerializador;
 import com.hadrion.nfe.tipos.Email;
 import com.hadrion.util.xml.XmlUtil;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRXmlDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+
 @Service
 @Transactional
 public class NotaFiscalAplicacaoService {
@@ -142,6 +142,7 @@ public class NotaFiscalAplicacaoService {
 						new FilialId(filial), inicio, fim, notistaId,
 						notaFiscalIdFiltro)) {
 			result.add(new NotaFiscalData(
+					filial,
 					nf.notaFiscalId().id(), nf.numero(),
 					String.valueOf(nf.serie().numero()),
 					nf.emissao(), 

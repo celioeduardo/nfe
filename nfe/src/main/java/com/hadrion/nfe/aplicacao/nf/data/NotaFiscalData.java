@@ -12,18 +12,22 @@ import com.hadrion.nfe.tipos.Cpf;
 public class NotaFiscalData {
 	
 	public static class EmitenteData {
+		String nome;
 		EnderecoData endereco;
 
-		public EmitenteData(EnderecoData endereco) {
+		public EmitenteData(String nome,EnderecoData endereco) {
 			super();
+			this.nome=nome;
 			this.endereco = endereco;
 		}
 	}
 	
 	public static class DestinatarioData {
+		String nome;
 		EnderecoData endereco;
-		public DestinatarioData(EnderecoData endereco) {
+		public DestinatarioData(String nome,EnderecoData endereco) {
 			super();
+			this.nome=nome;
 			this.endereco = endereco;
 		}
 	}
@@ -88,6 +92,7 @@ public class NotaFiscalData {
 		}
 	}
 	
+	String filialId;
 	String notaFiscalId;
 	Long numero;
 	String serie;
@@ -115,7 +120,7 @@ public class NotaFiscalData {
 	
 	public NotaFiscalData(){}
 	
-	public NotaFiscalData(String notaFiscalId, Long numero, String serie,
+	public NotaFiscalData(String filialId, String notaFiscalId, Long numero, String serie,
 			Date emissao, Double total,String publicoNome, String tipo, Long msgCodigo,
 			String msgDescricao, String chave, String tipoEmissao, TipoOperacao tipoOperacao,
 			Date dataHoraAutorizacao, String numeroProtocoloAutorizacao,
@@ -128,6 +133,7 @@ public class NotaFiscalData {
 			List<VolumeData> volumes ) {
 		super();
 		this.notaFiscalId = notaFiscalId;
+		this.filialId = filialId;
 		this.numero = numero;
 		this.serie = serie;
 		this.emissao = emissao;

@@ -10,9 +10,6 @@ import com.hadrion.nfe.dominio.modelo.DominioTest;
 public class EventoAgrixServiceTest extends DominioTest{
 
 	@Autowired
-	private EventoAgrixService agrixEventoService;
-	
-	@Autowired
 	private ConsumidorEventoAgrix consumidorEvento;
 	
 	@Before

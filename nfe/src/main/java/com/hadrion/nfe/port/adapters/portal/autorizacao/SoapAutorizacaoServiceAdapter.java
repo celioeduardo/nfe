@@ -28,7 +28,6 @@ import org.w3c.dom.NodeList;
 
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
 import com.hadrion.nfe.dominio.modelo.lote.Lote;
-import com.hadrion.nfe.dominio.modelo.lote.LoteRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscal;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalId;
 import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
@@ -48,9 +47,6 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 	
 	@Autowired
 	private WebServiceTemplateFabrica webServiceTemplateFabrica;
-	
-	@Autowired
-	private LoteRepositorio loteRepositorio;
 	
 	@Autowired
 	private NotaFiscalRepositorio notaFiscalRepositorio; 

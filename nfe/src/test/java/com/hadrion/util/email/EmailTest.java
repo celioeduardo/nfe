@@ -18,14 +18,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRXmlDataSource;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +36,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.hadrion.nfe.dominio.config.Application;
 import com.hadrion.nfe.dominio.config.MailProperties;
 import com.hadrion.nfe.dominio.config.MailProperties.Server;
-import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRXmlDataSource;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={Application.class}, loader = SpringApplicationContextLoader.class)
@@ -59,9 +58,6 @@ public class EmailTest {
 	MailProperties properties;	
 	
 	
-	@Autowired 
-	private NotaFiscalRepositorio repositorio;
-
 	private JasperReport jasperReport;
 	private JasperPrint jasperPrint;
 

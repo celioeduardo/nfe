@@ -35,6 +35,7 @@ public class MontadorNotaFiscal {
 			totalNota=nf.total().valor();
 		
 		NotaFiscalData data = new NotaFiscalData(
+				nf.filialId().id(),
 				nf.notaFiscalId().id(),
 				nf.numero(),
 				String.valueOf(nf.serie()),
@@ -63,7 +64,7 @@ public class MontadorNotaFiscal {
 	}
 
 	private EmitenteData construirEmitente(){
-		return new EmitenteData(
+		return new EmitenteData(nf.emitente().razaoSocial(),
 				construirEndereco(nf.emitente().endereco()));
 	}
 	
@@ -74,7 +75,7 @@ public class MontadorNotaFiscal {
 	}
 	
 	private DestinatarioData construirDestinatario(){
-		return new DestinatarioData(
+		return new DestinatarioData(nf.destinatario().razaoSocial(),
 				construirEndereco(nf.destinatario().endereco()));
 	}
 	
