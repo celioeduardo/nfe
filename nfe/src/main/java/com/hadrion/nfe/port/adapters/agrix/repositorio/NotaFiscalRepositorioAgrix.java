@@ -268,11 +268,4 @@ public class NotaFiscalRepositorioAgrix implements NotaFiscalRepositorio{
 		return repositorio.findByNotaFiscalIdAndSituacao(id, Situacao.AUTORIZADA);
 	}
 
-	@Override
-	public List<NotaFiscal> notasAutorizadas(Ambiente ambiente, Long empresa,
-			FilialId filial, Date inicio, Date fim, NotaFiscalId notaFiscalId) {
-		//TODO coplementar filtros
-		return repositorio.findByAmbienteAndFilialId(ambiente, filial);
-	}
-	
 }

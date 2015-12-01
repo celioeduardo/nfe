@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.hadrion.nfe.dominio.modelo.certificado.Certificado;
@@ -37,14 +38,14 @@ public class NotaFiscalXmlSerializadorTest extends AbstractXmlTest{
 		}
 	}
 	
-	@Test
+	@Test @Ignore
 	public void serializar() throws NoSuchAlgorithmException{
 		NotaFiscalSerializador serializador = 
 				new NotaFiscalSerializador();
 		assertXMLEquals(XML,serializador.serializar(NotaFiscalFixture.nfEmHomologacao()));
 	}
 	
-	@Test
+	@Test @Ignore
 	public void serializarComAssinatura(){
 		NotaFiscalSerializador serializador = 
 				new NotaFiscalSerializador(certificado);

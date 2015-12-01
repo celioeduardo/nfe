@@ -41,7 +41,6 @@ public interface NotaFiscalRepositorio {
 	public NotaFiscal notaPendenteAutorizacao(NotaFiscalId notaFiscalId);
 
 	public List<NotaFiscal> notasAutorizadas(List<NotaFiscalId> ids);
-	public List<NotaFiscal> notasAutorizadas(Ambiente ambiente, Long empresa,FilialId filial,Date inicio,Date fim,NotaFiscalId notaFiscalId);
 	public Optional<NotaFiscal> notaAutorizada(NotaFiscalId id);
 
 }

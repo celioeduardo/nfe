@@ -54,6 +54,7 @@ import com.hadrion.comum.paginacao.Paginacao;
 import com.hadrion.nfe.aplicacao.nf.data.NotaFiscalData;
 import com.hadrion.nfe.dominio.config.MailProperties;
 import com.hadrion.nfe.dominio.config.MailProperties.Server;
+import com.hadrion.nfe.dominio.exception.EntidadeNaoEncontradoException;
 import com.hadrion.nfe.dominio.modelo.Ambiente;
 import com.hadrion.nfe.dominio.modelo.cancelamento.CancelarNotaService;
 import com.hadrion.nfe.dominio.modelo.cancelamento.SolicitacaoCancelamento;
@@ -78,6 +79,7 @@ import com.hadrion.nfe.dominio.modelo.nf.NotaFiscalRepositorio;
 import com.hadrion.nfe.dominio.modelo.nf.ObterEmailService;
 import com.hadrion.nfe.dominio.modelo.nf.TipoOperacao;
 import com.hadrion.nfe.dominio.modelo.nf.cobranca.Duplicata;
+import com.hadrion.nfe.dominio.modelo.nf.transporte.ModalidadeFrete;
 import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.dominio.modelo.portal.Mensagem;
 import com.hadrion.nfe.dominio.modelo.portal.NumeroProtocolo;
@@ -196,17 +198,6 @@ public class NotaFiscalAplicacaoService {
 
 	}
 	
-	public List<NotaFiscalData> notasFicaisAutorizadasResumo(Ambiente ambiente,
-			Long empresa, String filial, Date inicio, Date fim,String notaFiscalId) {
-	
-		return new ArrayList<NotaFiscalData>(
-					notaFiscalRepositorio.notasAutorizadas(ambiente,empresa,new FilialId(filial), inicio, fim, new NotaFiscalId(notaFiscalId))
-						.stream()
-						.map(nf -> construir(nf))
-						.collect(Collectors.toList())
-				);
-		
-	}
 	public Pagina<NotaFiscalData> notasFicaisCanceladasResumo(Ambiente ambiente,
 			Long empresa, String filial, Date inicio, Date fim,
 			String notistaId, String notaFiscalId, Paginacao paginacao) {
@@ -668,8 +659,25 @@ public class NotaFiscalAplicacaoService {
 				.map(n -> construir(n))
 				.collect(Collectors.toList());
 	}
+	
 	public Optional<NotaFiscalData> notaFiscalAutorizada(NotaFiscalId id) {
 		return notaFiscalRepositorio.notaAutorizada(id)
 				.map(n -> construir(n));
+	}
+	
+	public NotaFiscalData notaAutorizadaParaMdfe(NotaFiscalId id, boolean autonomo, boolean fretePago) {
+		
+		NotaFiscal nf = nf(id);
+		
+		if (nf.transporte().modalidadeFrete() == ModalidadeFrete.EMITENTE && fretePago)
+			if (nf.transporte().transportador().cpf()!=null && autonomo)
+				return construir(nf);
+
+		return null;
+	}
+	
+	NotaFiscal nf(NotaFiscalId id){
+		return notaFiscalRepositorio.notaAutorizada(id)
+				.orElseThrow(() -> new EntidadeNaoEncontradoException("NotaFiscal",id));
 	}
 }
