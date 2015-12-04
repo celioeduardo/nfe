@@ -83,7 +83,6 @@ public class SoapInutilizacaoServiceAdapter implements InutilizacaoPortalService
 							SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
 							Transformer transformer = TransformerFactory.newInstance().newTransformer();
 							transformer.transform(ss, soapHeader.getResult());
-							//TODO logger
 						}
 					},
 					result);

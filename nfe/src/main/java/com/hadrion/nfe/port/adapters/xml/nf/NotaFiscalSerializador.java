@@ -37,7 +37,6 @@ public class NotaFiscalSerializador {
 		return sw.toString();
 	}
 	
-	//TODO implementar versão do aplicativo do contribuinte
 	private String versaoAplicativo(){
 		return "1.0";
 	}

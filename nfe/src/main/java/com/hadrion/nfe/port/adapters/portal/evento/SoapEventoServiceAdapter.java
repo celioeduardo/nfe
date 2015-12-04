@@ -85,7 +85,6 @@ public class SoapEventoServiceAdapter implements EventoService{
 						SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
 						Transformer transformer = TransformerFactory.newInstance().newTransformer();
 						transformer.transform(ss, soapHeader.getResult());
-						//TODO logger
 					}
 				},
 				result);

@@ -57,7 +57,7 @@ public class RegistrarCartaCorrecaoService {
 				correcao);
 		
 		LoteEvento lote = new LoteEvento(
-				1L, //TODO Lote de Evento - Implementar Sequência do Id 
+				1L,  
 				evento);
 		
 		RetornoLoteEvento retorno = this.eventoService

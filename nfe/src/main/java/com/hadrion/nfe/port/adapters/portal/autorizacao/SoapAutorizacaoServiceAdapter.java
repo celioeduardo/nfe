@@ -125,7 +125,6 @@ public class SoapAutorizacaoServiceAdapter implements AutorizacaoService{
 						SoapHeader soapHeader = ((SoapMessage)arg).getSoapHeader();
 						Transformer transformer = TransformerFactory.newInstance().newTransformer();
 						transformer.transform(ss, soapHeader.getResult());
-						//TODO logger
 					}
 				},
 				result);
