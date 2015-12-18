@@ -99,6 +99,12 @@ public class NotaFiscalConverter extends AbstractConverter {
 		writer.startNode("ICMSTot");
 		convert("vBC", nf.totalBaseCalculoIcms(), writer, context);
 		convert("vICMS", nf.totalIcms(), writer, context);
+		//TODO MARCELAO TOTAL DOS IMPOSTOS INTERESTADUAIS
+		if (nf.totalIcmsInterestadual().maiorQueZero()){
+			convert("vFCPUFDest", Dinheiro.ZERO, writer, context);			
+			convert("vICMSUFDest", Dinheiro.ZERO, writer, context);			
+			convert("vICMSUFRemet", Dinheiro.ZERO, writer, context);			
+		}
 		convert("vICMSDeson", Dinheiro.ZERO, writer, context);
 		convert("vBCST", nf.totalBaseCalculoIcmsSt(), writer, context);
 		convert("vST", nf.totalIcmsSt(), writer, context);

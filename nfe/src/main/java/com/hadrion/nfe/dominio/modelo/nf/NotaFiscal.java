@@ -501,6 +501,12 @@ public class NotaFiscal {
 			result = result.soma(item.imposto().icms().valor());
 		return result;
 	}
+	public Dinheiro totalIcmsInterestadual() {
+		Dinheiro result = Dinheiro.ZERO;
+		for (Item item : getItens())
+			result = result.soma(item.imposto().icmsInterestadual().baseCalculo());//TODO MARCELAO VER O CAMPO CORRETO
+		return result;
+	}
 
 	public Dinheiro totalBaseCalculoIcmsSt() {
 		Dinheiro result = Dinheiro.ZERO;
@@ -955,6 +961,5 @@ public class NotaFiscal {
 				.map(Transporte::volumes)
 				.orElse(Collections.emptyList());
 	}
-
 
 }

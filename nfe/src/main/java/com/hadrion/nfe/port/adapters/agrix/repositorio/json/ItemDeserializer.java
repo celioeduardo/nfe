@@ -16,6 +16,7 @@ import com.hadrion.nfe.dominio.modelo.icms.Cst;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculoSt;
 import com.hadrion.nfe.dominio.modelo.icms.Icms;
+import com.hadrion.nfe.dominio.modelo.icms.IcmsInterestadual;
 import com.hadrion.nfe.dominio.modelo.icms.Origem;
 import com.hadrion.nfe.dominio.modelo.icms.SubstituicaoTributaria;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
@@ -143,10 +144,37 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 	}
 	private Imposto imposto(JsonObject j){
 		
-		Icms icms = null; Pis pis = null; Cofins cofins = null;JsonObject g = null;JsonObject f = null;
+		Icms icms = null; Pis pis = null; Cofins cofins = null;JsonObject g = null;JsonObject f = null;JsonObject h = null;
+		IcmsInterestadual icmsInter=null;
 		
 		f = j.get("imposto").getAsJsonObject();
+		
 		g = f.get("icms").getAsJsonObject();
+		
+		if (tem(f,"interestadual")){
+			
+		  h = f.get("interestadual").getAsJsonObject();
+		  
+		  Dinheiro baseCalculo = new Dinheiro(h.get("baseCalculo").getAsDouble()); 
+		  Percentual percentualFundoPobreza = new Percentual(h.get("percentualFundoPobreza").getAsDouble());
+		  Aliquota aliquotaUfDestino = new Aliquota(h.get("aliquotaUfDestino").getAsDouble());
+		  Aliquota diferencialAliquota = new Aliquota(h.get("diferencialAliquota").getAsDouble());
+		  Percentual percentualPartilha = new Percentual(h.get("percentualPartilha").getAsDouble());
+		  Dinheiro  valorFundoPobreza = new Dinheiro(h.get("valorFundoPobreza").getAsDouble());
+		  Dinheiro valorUfDestino = new Dinheiro(h.get("valorUfDestino").getAsDouble());
+		  Dinheiro valorUfOrigem = new Dinheiro(h.get("valorUfOrigem").getAsDouble());
+		  
+		  icmsInter = new IcmsInterestadual(baseCalculo, 
+				  percentualFundoPobreza, 
+				  aliquotaUfDestino, 
+				  diferencialAliquota, 
+				  percentualPartilha, 
+				  valorFundoPobreza, 
+				  valorUfDestino, 
+				  valorUfOrigem);		  
+		}
+		
+		
 		icms = new Icms(
 				Origem.obterPeloCodigo(i(g,"origem")), 
 				Cst.obterPeloCodigo(i(g,"st")), 
@@ -179,6 +207,9 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 				.0, 
 				d(g,"valor"));
 			
+		if (icmsInter!=null)
+			return new Imposto(new Dinheiro(d(f,"valorAproximadoTributos")), icms, pis, cofins,icmsInter);
+		
 		return new Imposto(new Dinheiro(d(f,"valorAproximadoTributos")), icms, pis, cofins);
 	}
 	

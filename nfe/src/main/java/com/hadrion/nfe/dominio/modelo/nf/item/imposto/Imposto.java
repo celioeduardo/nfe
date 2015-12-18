@@ -12,6 +12,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.dominio.modelo.icms.Icms;
+import com.hadrion.nfe.dominio.modelo.icms.IcmsInterestadual;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.tipos.Dinheiro;
 
@@ -28,6 +29,9 @@ public class Imposto {
 	
 	@Embedded
 	private Icms icms;
+
+	@Embedded
+	private IcmsInterestadual icmsInterestadual;
 	
 	@Embedded
 	private Pis pis;
@@ -42,6 +46,17 @@ public class Imposto {
 		this.icms = icms;
 		this.pis = pis;
 		this.cofins = cofins;
+		this.icmsInterestadual=null;
+	}
+
+	public Imposto(Dinheiro valorTotalAproximado, Icms icms, Pis pis,
+			Cofins cofins,IcmsInterestadual icmsInterestadual) {
+		super();
+		this.valorTotalAproximado = valorTotalAproximado;
+		this.icms = icms;
+		this.pis = pis;
+		this.cofins = cofins;
+		this.icmsInterestadual = icmsInterestadual;
 	}
 
 	public Dinheiro valorTotalAproximado() {
@@ -52,6 +67,10 @@ public class Imposto {
 		if (icms == null) 
 			return Icms.NULO;
 		return icms;
+	}
+
+	public IcmsInterestadual icmsInterestadual() {
+		return icmsInterestadual;
 	}
 
 	public Pis pis() {

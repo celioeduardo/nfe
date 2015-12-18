@@ -24,6 +24,7 @@ public class ImpostoConverter extends AbstractConverter{
 		Imposto imp = (Imposto) source;
 		convertIf("vTotTrib",imp.valorTotalAproximado(),writer,context);
 		convertIf("ICMS",imp.icms(),writer,context);
+		convertIf("ICMSUFDest",imp.icmsInterestadual(),writer,context);
 		convertIf("PIS",imp.pis(),writer,context);
 		convertIf("COFINS",imp.cofins(),writer,context);
 	}
