@@ -2,6 +2,7 @@ package com.hadrion.nfe.port.adapters.xml;
 
 import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.dominio.modelo.icms.Icms;
+import com.hadrion.nfe.dominio.modelo.icms.IcmsInterestadual;
 import com.hadrion.nfe.dominio.modelo.nf.item.imposto.Imposto;
 import com.hadrion.nfe.dominio.modelo.pis.Pis;
 import com.hadrion.nfe.tipos.Dinheiro;
@@ -36,6 +37,7 @@ public class ImpostoConverter extends AbstractConverter{
 		Icms icms = null;
 		Pis pis = null;
 		Cofins cofins = null;
+		IcmsInterestadual icmsInter = null;
 		
 		while (reader.hasMoreChildren()) {
 			reader.moveDown();
@@ -47,10 +49,12 @@ public class ImpostoConverter extends AbstractConverter{
 				pis = (Pis) context.convertAnother(reader.getValue(), Pis.class);
 			} else if ("COFINS".equals(reader.getNodeName())) {
 				cofins = (Cofins) context.convertAnother(reader.getValue(), Cofins.class);
+			} else if ("ICMSUFDEST".equals(reader.getNodeName())) {
+				icmsInter = (IcmsInterestadual) context.convertAnother(reader.getValue(), IcmsInterestadual.class);
 			}
 			reader.moveUp();
 		}
-		return new Imposto(valorTotalAproximado, icms, pis, cofins);
+		return new Imposto(valorTotalAproximado, icms, pis, cofins, icmsInter);
 	}
 
 }

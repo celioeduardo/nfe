@@ -15,6 +15,7 @@ import com.hadrion.nfe.dominio.modelo.cofins.Cofins;
 import com.hadrion.nfe.dominio.modelo.cofins.CstCofins;
 import com.hadrion.nfe.dominio.modelo.icms.DeterminacaoBaseCalculo;
 import com.hadrion.nfe.dominio.modelo.icms.Icms;
+import com.hadrion.nfe.dominio.modelo.icms.IcmsInterestadual;
 import com.hadrion.nfe.dominio.modelo.icms.Origem;
 import com.hadrion.nfe.dominio.modelo.nf.item.Cfop;
 import com.hadrion.nfe.dominio.modelo.nf.item.DescritorProduto;
@@ -31,6 +32,7 @@ import com.hadrion.nfe.dominio.modelo.portal.ChaveAcesso;
 import com.hadrion.nfe.port.adapters.agrix.repositorio.json.ItemDeserializer;
 import com.hadrion.nfe.tipos.Aliquota;
 import com.hadrion.nfe.tipos.Dinheiro;
+import com.hadrion.nfe.tipos.Percentual;
 import com.hadrion.nfe.tipos.Quantidade;
 
 public class ItemTradutorJsonTest {
@@ -84,6 +86,16 @@ public class ItemTradutorJsonTest {
 			"			\"valorSt\" : 0,\r\n" + 
 			"			\"st\" : 20\r\n" + 
 			"		},\r\n" + 
+			"       \"icmsufdest\" : {\r\n" +
+			"           \"baseCaulculoUfDest\" : 0,\r\n" +
+			"           \"percentualFundoPobreza\" : 0,\r\n" +
+			"           \"aliquotaUfDestino\" : 0,\r\n" +
+			"           \"diferencialAliquota\" : 0,\r\n" +
+			"           \"percentualPartilha\" : 0,\r\n" +
+			"           \"valorFundoPobreza\" : 0,\r\n" +
+			"           \"valorUfDestino\" : 0,\r\n" +
+			"           \"valorUfOrigem\" : 0\r\n" +
+			"       },\r\n " +  
 			"		\"pis\" : {\r\n" + 
 			"			\"aliquota\" : 1.65,\r\n" + 
 			"			\"base\" : 3513.75,\r\n" + 
@@ -159,6 +171,8 @@ public class ItemTradutorJsonTest {
 				Icms.cst_00(Origem.NACIONAL,new Dinheiro(2600.02), new Aliquota(18),
 						DeterminacaoBaseCalculo.VALOR_OPERACAO), 
 				new Pis(CstPis.CST_01, new Dinheiro(3513.75), new Aliquota(1.65), .0, new Double(57.98)), 
-				new Cofins(CstCofins.CST_01, new Dinheiro(3513.75), new Aliquota(7.6), .0, new Double(267.05)));		
+				new Cofins(CstCofins.CST_01, new Dinheiro(3513.75), new Aliquota(7.6), .0, new Double(267.05)),
+				new IcmsInterestadual(Dinheiro.ZERO, Percentual.ZERO, Aliquota.ZERO, Aliquota.ZERO, Percentual.ZERO, Dinheiro.ZERO, Dinheiro.ZERO, Dinheiro.ZERO)
+				);		
 	}
 }

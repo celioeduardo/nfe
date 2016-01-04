@@ -151,11 +151,11 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 		
 		g = f.get("icms").getAsJsonObject();
 		
-		if (tem(f,"interestadual")){
+		if (tem(f,"icmsufdest")){
 			
-		  h = f.get("interestadual").getAsJsonObject();
+		  h = f.get("icmsufdest").getAsJsonObject();
 		  
-		  Dinheiro baseCalculo = new Dinheiro(h.get("baseCalculo").getAsDouble()); 
+		  Dinheiro baseCalculo = new Dinheiro(h.get("baseCaulculoUfDest").getAsDouble()); 
 		  Percentual percentualFundoPobreza = new Percentual(h.get("percentualFundoPobreza").getAsDouble());
 		  Aliquota aliquotaUfDestino = new Aliquota(h.get("aliquotaUfDestino").getAsDouble());
 		  Aliquota diferencialAliquota = new Aliquota(h.get("diferencialAliquota").getAsDouble());
@@ -173,7 +173,6 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 				  valorUfDestino, 
 				  valorUfOrigem);		  
 		}
-		
 		
 		icms = new Icms(
 				Origem.obterPeloCodigo(i(g,"origem")), 
@@ -208,7 +207,7 @@ public class ItemDeserializer implements JsonDeserializer<Item>{
 				d(g,"valor"));
 			
 		if (icmsInter!=null)
-			return new Imposto(new Dinheiro(d(f,"valorAproximadoTributos")), icms, pis, cofins,icmsInter);
+			return new Imposto(new Dinheiro(d(f,"valorAproximadoTributos")), icms, pis, cofins, icmsInter);
 		
 		return new Imposto(new Dinheiro(d(f,"valorAproximadoTributos")), icms, pis, cofins);
 	}

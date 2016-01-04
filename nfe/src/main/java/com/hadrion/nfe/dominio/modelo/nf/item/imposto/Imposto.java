@@ -50,12 +50,9 @@ public class Imposto {
 	}
 
 	public Imposto(Dinheiro valorTotalAproximado, Icms icms, Pis pis,
-			Cofins cofins,IcmsInterestadual icmsInterestadual) {
-		super();
-		this.valorTotalAproximado = valorTotalAproximado;
-		this.icms = icms;
-		this.pis = pis;
-		this.cofins = cofins;
+			Cofins cofins, IcmsInterestadual icmsInterestadual) {
+		this(valorTotalAproximado, icms, pis,
+			cofins);
 		this.icmsInterestadual = icmsInterestadual;
 	}
 

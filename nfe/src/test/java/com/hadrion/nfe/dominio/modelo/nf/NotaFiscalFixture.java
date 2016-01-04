@@ -205,7 +205,7 @@ public class NotaFiscalFixture {
 		return new Destinatario(
 			null,
 			new Cpf(72014253668L),
-			"",
+			null,
 			"DENISIO DONIZETE TEODORO",
 			null,
 			new Endereco(

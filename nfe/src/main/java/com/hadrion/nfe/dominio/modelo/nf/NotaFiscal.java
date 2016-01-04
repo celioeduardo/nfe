@@ -502,10 +502,11 @@ public class NotaFiscal {
 		return result;
 	}
 	public Dinheiro totalIcmsInterestadual() {
-		Dinheiro result = Dinheiro.ZERO;
-		for (Item item : getItens())
-			result = result.soma(item.imposto().icmsInterestadual().baseCalculo());//TODO MARCELAO VER O CAMPO CORRETO
-		return result;
+//		Dinheiro result = Dinheiro.ZERO;
+//		for (Item item : getItens())
+//			result = result.soma(item.imposto().icmsInterestadual().baseCalculo());//TODO MARCELAO VER O CAMPO CORRETO
+//		return result;
+		return Dinheiro.ZERO;
 	}
 
 	public Dinheiro totalBaseCalculoIcmsSt() {

@@ -95,7 +95,54 @@ public class IcmsInterestadual {
 		this.valorUfDestino = valorUfDestino;
 		this.valorUfOrigem = valorUfOrigem;
 	}
-	//TODO marcelao HASHCODE TOSTRING EQUALS
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(3197,177)
+				.append(baseCalculo())
+				.append(percentualFundoPobreza())
+				.append(aliquotaUfDestino())
+				.append(diferencialAliquota())
+				.append(percentualPartilha())
+				.append(valorFundoPobreza())
+				.append(valorUfDestino())
+				.append(valorUfOrigem())
+				.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object objeto) {
+		boolean objetosIguais = false;
+		
+		if (objeto != null && this.getClass() == objeto.getClass()) {
+			IcmsInterestadual objetoTipado = (IcmsInterestadual) objeto;
+			objetosIguais = new EqualsBuilder()
+					.append(baseCalculo(), objetoTipado.baseCalculo())
+					.append(percentualFundoPobreza(), objetoTipado.percentualFundoPobreza())
+					.append(aliquotaUfDestino(), objetoTipado.aliquotaUfDestino())
+					.append(diferencialAliquota(), objetoTipado.diferencialAliquota())
+					.append(percentualPartilha(), objetoTipado.percentualPartilha())
+					.append(valorFundoPobreza(), objetoTipado.valorFundoPobreza())
+					.append(valorUfDestino(), objetoTipado.valorUfDestino())
+					.append(valorUfOrigem(), objetoTipado.valorUfOrigem())
+					.isEquals();
+		}
+		return objetosIguais;
+	}
+
+	@Override
+	public String toString() {
+		return "IcmsInterestadual ["
+			+	"baseCalculo"  + baseCalculo() 
+			+	",percentualFundoPobreza" + percentualFundoPobreza()
+			+	",aliquotaUfDestino" + aliquotaUfDestino()
+			+	",diferencialAliquota" + diferencialAliquota()
+			+	",percentualPartilha" + percentualPartilha()
+			+	",valorFundoPobreza" + valorFundoPobreza()
+			+	",valorUfDestino" + valorUfDestino()
+			+	",valorUfOrigem" + valorUfOrigem()
+			+	"]";
+	}
 	/*
 	 * Somente para JPA
 	 */

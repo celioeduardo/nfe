@@ -58,7 +58,13 @@
 			"ipi" : 0,
 			"outras" : 0,
 			"valorSt" : 0,
-			"st" : 20
+			"st" : 20,
+			"destino" :0,
+			"aliquotaDest":0,
+			"baseDest":0,
+			"percentualFundoPobreza": 0,
+			"valorFundoPobreza":0,
+			"percentualPartilha":0
 		},
 		"pis" : {
 			"aliquota" : 1.65,
@@ -147,7 +153,13 @@
 			"ipi" : 0,
 			"outras" : 0,
 			"valorSt" : 0,
-			"st" : 20
+			"st" : 20,
+			"destino" :0,
+			"aliquotaDest":0,
+			"baseDest":0,
+			"percentualFundoPobreza": 0,
+			"valorFundoPobreza":0,
+			"percentualPartilha":0
 		},
 		"pis" : {
 			"aliquota" : 1.65,
@@ -232,7 +244,13 @@
 			"ipi" : 0,
 			"outras" : 0,
 			"valorSt" : 0,
-			"st" : 20
+			"st" : 20,
+			"destino" :0,
+			"aliquotaDest":0,
+			"baseDest":0,
+			"percentualFundoPobreza": 0,
+			"valorFundoPobreza":0,
+			"percentualPartilha":0
 		},
 		"pis" : {
 			"aliquota" : 1.65,
@@ -295,7 +313,13 @@
 			"ipi" : 0,
 			"outras" : 0,
 			"valorSt" : 0,
-			"st" : 20
+			"st" : 20,
+			"destino" :0,
+			"aliquotaDest":0,
+			"baseDest":0,
+			"percentualFundoPobreza": 0,
+			"valorFundoPobreza":0,
+			"percentualPartilha":0
 		},
 		"pis" : {
 			"aliquota" : 1.65,

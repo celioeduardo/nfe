@@ -23,6 +23,7 @@ import com.hadrion.nfe.dominio.modelo.nf.publico.Emitente;
 import com.hadrion.nfe.dominio.modelo.nf.transporte.Transporte;
 import com.hadrion.nfe.dominio.modelo.notista.NotistaId;
 import com.hadrion.nfe.port.adapters.xml.AbstractConverter;
+import com.hadrion.nfe.tipos.Cnpj;
 import com.hadrion.nfe.tipos.Dinheiro;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -85,6 +86,11 @@ public class NotaFiscalConverter extends AbstractConverter {
 		convert("dest", nf.destinatario(), writer, context);
 		convertIf("retirada", nf.localRetirada(), writer, context);
 		convertIf("entrega", nf.localEntrega(), writer, context);
+		if (nf.emitente().cnpj().equals(new Cnpj((891206000159L)))) {
+			writer.startNode("autXML");
+			context.convertAnother(new Cnpj((13937073000156L)));
+			writer.endNode();
+		}
 
 		int i = 1;
 		for (Item item : nf.itens()) {
