@@ -86,11 +86,11 @@ public class NotaFiscalConverter extends AbstractConverter {
 		convert("dest", nf.destinatario(), writer, context);
 		convertIf("retirada", nf.localRetirada(), writer, context);
 		convertIf("entrega", nf.localEntrega(), writer, context);
-		if (nf.emitente().cnpj().equals(new Cnpj((891206000159L)))) {
+//		if (nf.emitente().cnpj().equals(new Cnpj((891206000159L)))) {
 			writer.startNode("autXML");
 			context.convertAnother(new Cnpj((13937073000156L)));
 			writer.endNode();
-		}
+//		}
 
 		int i = 1;
 		for (Item item : nf.itens()) {
