@@ -88,7 +88,9 @@ public class NotaFiscalConverter extends AbstractConverter {
 		convertIf("entrega", nf.localEntrega(), writer, context);
 //		if (nf.emitente().cnpj().equals(new Cnpj((891206000159L)))) {
 			writer.startNode("autXML");
+			writer.startNode("CNPJ");
 			context.convertAnother(new Cnpj((13937073000156L)));
+			writer.endNode();
 			writer.endNode();
 //		}
 
