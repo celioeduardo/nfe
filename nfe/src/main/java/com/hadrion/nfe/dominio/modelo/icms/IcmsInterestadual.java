@@ -146,6 +146,5 @@ public class IcmsInterestadual {
 	/*
 	 * Somente para JPA
 	 */
-	@SuppressWarnings("unused")
 	public IcmsInterestadual(){}
 }
