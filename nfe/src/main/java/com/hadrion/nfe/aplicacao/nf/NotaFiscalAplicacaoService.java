@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
@@ -379,6 +380,9 @@ public class NotaFiscalAplicacaoService {
 		
     	Map<String,Object> parameters= new HashMap<String, Object>();
     	byte[] logo = empresaRepositorio.obterEmpresa(filialRepositorio.obterFilial(nf.filialId()).empresaId()).logo();
+    	
+    	parameters.put("REPORT_LOCALE", new Locale("pt","BR"));
+    	
     	if (logo != null)
     		parameters.put("Logo", new ByteArrayInputStream(logo));
     	
@@ -622,9 +626,12 @@ public class NotaFiscalAplicacaoService {
 
 		InputStream reportStream = getClass().getClassLoader().getResourceAsStream("report/cce.jasper");
     	jasperReport = (JasperReport) JRLoader.loadObject(reportStream);
-		
+    	
+    	Map<String,Object> parameters= new HashMap<String, Object>();
+    	
+    	parameters.put("REPORT_LOCALE", new Locale("pt","BR"));
 		//jasperReport = JasperCompileManager.compileReport(getClass().getClassLoader().getResourceAsStream("report/cce.jrxml"));
-		jasperPrint = JasperFillManager.fillReport(jasperReport, null,xmlDataSource);		
+		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,xmlDataSource);		
 		return JasperExportManager.exportReportToPdf(jasperPrint);		
 	}
 	public ResponseEntity<InputStreamResource>  xmlNfe(String notaFiscalId) throws JRException, TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError{
