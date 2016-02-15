@@ -306,7 +306,7 @@ public class NotaFiscalAplicacaoService {
 
 	public void definirNotaComoRejeitada(DefinirNotaComoRejeitadaComando comando) {
 		NotaFiscal nota = nota(comando.getNotaFiscalId());
-		if (nota != null && !nota.estaAutorizada())
+		if (nota != null && !nota.estaAutorizada() && !nota.estaCancelada())
 			nota.rejeitada(new Mensagem(comando.getMsgCodigo(), comando
 					.getMsgDescricao()));
 		notaFiscalRepositorio.salvar(nota);
@@ -315,7 +315,7 @@ public class NotaFiscalAplicacaoService {
 	public void definirNotaComoAutorizada(
 			DefinirNotaComoAutorizadaComando comando) {
 		NotaFiscal nota = nota(comando.getNotaFiscalId());
-		if (nota != null)
+		if (nota != null && !nota.estaAutorizada() && !nota.estaCancelada())
 			nota.autorizada(
 					new NumeroProtocolo(comando.getNumeroProtocolo()),
 					new Mensagem(comando.getMsgCodigo(), comando
@@ -653,8 +653,10 @@ public class NotaFiscalAplicacaoService {
 
 	public void definirNotaEmLote(DefinirNotaFiscalEmLoteComando comando) {
 		NotaFiscal nf = nota(comando.getNotaFiscalId());
-		nf.definirComoEmLote();
-		salvar(nf);
+		if (nf != null && !nf.estaAutorizada() && !nf.estaCancelada()){
+			nf.definirComoEmLote();
+			salvar(nf);
+		}
 	}
 	
 	private void salvar(NotaFiscal nf){

@@ -55,7 +55,11 @@ public class RetornoConsultaProcessamentoLote {
 	public boolean loteEmProcessamento() {
 		return mensagem.codigo() ==  105;
 	}
-	
+
+	public boolean loteNaoLocalizado() {
+		return mensagem.codigo() ==  106;
+	}
+
 	@Override
 	public boolean equals(Object objeto) {
 		boolean objetosIguais = false;
@@ -91,4 +95,5 @@ public class RetornoConsultaProcessamentoLote {
 				+",protocolos=" + protocolos()
 				+ "]";
 	}
+
 }

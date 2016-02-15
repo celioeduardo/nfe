@@ -50,7 +50,7 @@ public class ProcessarRetornoLoteService {
 			processarProtocolos(lote, retorno.protocolos(), retorno.ambiente());
 		} else if(retorno.loteEmProcessamento())
 			;//Não faz nada
-		else
+		else if(retorno.loteNaoLocalizado())
 			lote.inconsistente(retorno.mensagem());
 	}
 	
